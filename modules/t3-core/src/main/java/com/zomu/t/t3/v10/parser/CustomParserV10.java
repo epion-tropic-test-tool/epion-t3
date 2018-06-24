@@ -6,9 +6,8 @@ import com.zomu.t.t3.core.exception.T3ScenarioParseException;
 import com.zomu.t.t3.core.model.context.CommandInfo;
 import com.zomu.t.t3.core.model.context.T3Context;
 import com.zomu.t.t3.core.model.context.holder.CustomConfigHolder;
-import com.zomu.t.t3.core.scenario.parser.CustomParser;
+import com.zomu.t.t3.core.scenario.parser.IndividualTargetParser;
 import com.zomu.t.t3.v10.model.context.T3ContextV10;
-import com.zomu.t.t3.v10.model.scenario.Custom;
 import com.zomu.t.t3.v10.model.scenario.Process;
 import com.zomu.t.t3.v10.model.scenario.T3Base;
 import lombok.extern.slf4j.Slf4j;
@@ -25,7 +24,7 @@ import java.util.stream.Collectors;
  * @author takashno
  */
 @Slf4j
-public class CustomParserV10 implements CustomParser {
+public class CustomParserV10 implements IndividualTargetParser {
 
     /**
      * カスタム機能定義のファイルパターン（正規表現）.
@@ -47,7 +46,7 @@ public class CustomParserV10 implements CustomParser {
     }
 
     @Override
-    public void parse(T3Context context, String fileNamePattern) {
+    public void parse(final T3Context context, String fileNamePattern) {
 
         T3ContextV10 t3ContextV10 = T3ContextV10.class.cast(context);
 
@@ -57,23 +56,19 @@ public class CustomParserV10 implements CustomParser {
 
     }
 
-    private void findCustom(T3ContextV10 context, String fileNamePattern) {
-
-        Custom customs = new Custom();
+    private void findCustom(final T3ContextV10 context, final String fileNamePattern) {
 
         try {
             Files.find(context.getScenarioRootPath(), Integer.MAX_VALUE, (p, attr) -> p.toFile().getName().matches(fileNamePattern)).forEach(x -> {
                 try {
-                    customs.getPackages().putAll(context.getObjectMapper().readValue(x.toFile(), T3Base.class).getCustoms().getPackages());
+                    context.getOriginal().getCustom().getPackages().putAll(context.getObjectMapper().readValue(x.toFile(), T3Base.class).getCustoms().getPackages());
                 } catch (IOException e) {
-                    // ignore
+                    throw new T3ScenarioParseException(e);
                 }
             });
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new T3ScenarioParseException(e);
         }
-
-        context.getOriginal().setCustom(customs);
 
     }
 

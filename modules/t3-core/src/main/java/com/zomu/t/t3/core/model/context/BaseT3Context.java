@@ -1,5 +1,6 @@
 package com.zomu.t.t3.core.model.context;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import lombok.Getter;
@@ -16,6 +17,10 @@ public abstract class BaseT3Context implements T3Context {
     public BaseT3Context(Path rootPath) {
         YAMLFactory yamlFactory = new YAMLFactory();
         ObjectMapper objectMapper = new ObjectMapper(yamlFactory);
+
+        // 知らない要素は無視する
+        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+
         this.objectMapper = objectMapper;
         this.scenarioRootPath = rootPath;
     }

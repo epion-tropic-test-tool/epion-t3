@@ -6,4 +6,8 @@ package com.zomu.t.t3.core.runner;
  * @author takashno
  */
 public interface CommandRunner {
+
+
+
+
 }
