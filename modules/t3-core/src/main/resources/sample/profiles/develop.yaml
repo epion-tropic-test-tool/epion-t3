@@ -1,42 +1,12 @@
-!!com.zomu.t.t3.model.v10.T3Base
-flows: []
-info:
-    description: Description
-    id: id
-    summary: Summary
-    version: null
-processes:
-  - !!com.zomu.t.t3.base.command.model.FileCopy
-    command: filecopy
-    description: null
-    from: /from
-    id: null
-    ref: null
-    summary: null
-    target: null
-    to: /to
-    value: null
-  - !!com.zomu.t.t3.base.command.model.FileCopy
-    command: filecopy
-    description: null
-    from: /from
-    id: null
-    ref: null
-    summary: null
-    target: null
-    to: /to
-    value: null
-  - !!com.zomu.t.t3.base.command.model.FileCopy
-    command: filecopy
-    description: null
-    from: /from
-    id: null
-    ref: null
-    summary: null
-    target: null
-    to: /to
-    value: null
-profiles: null
 t3: '1.0'
-type: null
-valiables: null
+type: config
+info:
+    id: profile-develop
+    version: 1.0.0
+    summary: Summary
+    description: Description
+profiles:
+  develop :
+    prop1 : 1
+    prop2 : 2
+    prop3 : 3

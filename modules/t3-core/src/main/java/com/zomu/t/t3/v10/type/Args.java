@@ -10,13 +10,15 @@ import lombok.Getter;
  */
 @Getter
 @AllArgsConstructor
-public enum ArgsType {
+public enum Args {
 
     VERSION("v", "version", true, "run tool version.", true),
 
     SCENARIO("t", "target", true, "target of tool run.", true),
 
-    ROOT_PATH("p", "path", true, "scenario root path.", true),
+    ROOT_PATH("r", "rootpath", true, "scenario root path.", true),
+
+    PROFILE("p", "profile", true, "profile of tool run.", false),
 
     MODE("m", "mode", true, "mode of tool run.", true),
 

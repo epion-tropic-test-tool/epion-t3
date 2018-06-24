@@ -2,10 +2,10 @@ package com.zomu.t.t3.v10.parser;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
-import com.zomu.t.t3.core.exception.T3ScenarioParseException;
-import com.zomu.t.t3.core.model.context.T3Context;
+import com.zomu.t.t3.core.exception.ScenarioParseException;
+import com.zomu.t.t3.core.model.context.Context;
 import com.zomu.t.t3.core.scenario.parser.IndividualTargetParser;
-import com.zomu.t.t3.v10.model.context.T3ContextV10;
+import com.zomu.t.t3.v10.model.context.ContextV10;
 import com.zomu.t.t3.v10.model.scenario.Process;
 import com.zomu.t.t3.v10.model.scenario.T3Base;
 import com.zomu.t.t3.v10.type.ScenarioType;
@@ -33,19 +33,19 @@ public class OriginalHoldParserV10 implements IndividualTargetParser {
      *
      * @param context
      */
-    public static void parseOriginal(T3Context context) {
+    public static void parseOriginal(Context context) {
         new OriginalHoldParserV10().parse(context);
     }
 
     @Override
-    public void parse(final T3Context context) {
+    public void parse(final Context context) {
         parse(context, FILENAME_REGEXP_PATTERN);
     }
 
     @Override
-    public void parse(final T3Context context, String fileNamePattern) {
+    public void parse(final Context context, String fileNamePattern) {
 
-        final T3ContextV10 t3ContextV10 = T3ContextV10.class.cast(context);
+        final ContextV10 t3ContextV10 = ContextV10.class.cast(context);
 
         FileVisitor<Path> visitor = new SimpleFileVisitor<Path>() {
             @Override
@@ -102,7 +102,7 @@ public class OriginalHoldParserV10 implements IndividualTargetParser {
         try {
             Files.walkFileTree(context.getScenarioRootPath(), visitor);
         } catch (IOException e) {
-            throw new T3ScenarioParseException(e);
+            throw new ScenarioParseException(e);
         }
 
     }

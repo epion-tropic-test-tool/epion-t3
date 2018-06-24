@@ -1,9 +1,9 @@
 package com.zomu.t.t3.core.application;
 
 import com.zomu.t.t3.basic.command.model.FileCopy;
-import com.zomu.t.t3.core.model.context.T3Context;
+import com.zomu.t.t3.core.model.context.Context;
 import com.zomu.t.t3.core.scenario.parser.ScenarioParser;
-import com.zomu.t.t3.v10.model.context.T3ContextV10;
+import com.zomu.t.t3.v10.model.context.ContextV10;
 import com.zomu.t.t3.v10.model.scenario.Information;
 import com.zomu.t.t3.v10.model.scenario.T3Base;
 import com.zomu.t.t3.v10.parser.ScenarioParserV10;
@@ -24,7 +24,7 @@ public class Application_bak {
     public static void main(String[] args) throws IOException {
 
 
-        T3Context context = new T3ContextV10(Paths.get("/Users/takashimanozomu/work/30_pgworkspaces/intellij/t3-core/modules/t3-core/src/main/resources/sample"));
+        Context context = new ContextV10(Paths.get("/Users/takashimanozomu/work/30_pgworkspaces/intellij/t3-core/modules/t3-core/src/main/resources/sample"));
 
         ScenarioParser scenarioParser = new ScenarioParserV10();
         scenarioParser.parse(context);

@@ -2,12 +2,12 @@ package com.zomu.t.t3.v10.parser;
 
 import com.google.common.reflect.ClassPath;
 import com.zomu.t.t3.core.annotation.Command;
-import com.zomu.t.t3.core.exception.T3ScenarioParseException;
+import com.zomu.t.t3.core.exception.ScenarioParseException;
 import com.zomu.t.t3.core.model.context.CommandInfo;
-import com.zomu.t.t3.core.model.context.T3Context;
+import com.zomu.t.t3.core.model.context.Context;
 import com.zomu.t.t3.core.model.context.holder.CustomConfigHolder;
 import com.zomu.t.t3.core.scenario.parser.IndividualTargetParser;
-import com.zomu.t.t3.v10.model.context.T3ContextV10;
+import com.zomu.t.t3.v10.model.context.ContextV10;
 import com.zomu.t.t3.v10.model.scenario.Process;
 import com.zomu.t.t3.v10.model.scenario.T3Base;
 import lombok.extern.slf4j.Slf4j;
@@ -36,19 +36,19 @@ public class CustomParserV10 implements IndividualTargetParser {
      *
      * @param context
      */
-    public static void parseCustom(T3Context context) {
+    public static void parseCustom(Context context) {
         new CustomParserV10().parse(context);
     }
 
     @Override
-    public void parse(T3Context context) {
+    public void parse(Context context) {
         parse(context, CUSTOM_FILENAME_REGEXP_PATTERN);
     }
 
     @Override
-    public void parse(final T3Context context, String fileNamePattern) {
+    public void parse(final Context context, String fileNamePattern) {
 
-        T3ContextV10 t3ContextV10 = T3ContextV10.class.cast(context);
+        ContextV10 t3ContextV10 = ContextV10.class.cast(context);
 
         findCustom(t3ContextV10, fileNamePattern);
 
@@ -56,23 +56,23 @@ public class CustomParserV10 implements IndividualTargetParser {
 
     }
 
-    private void findCustom(final T3ContextV10 context, final String fileNamePattern) {
+    private void findCustom(final ContextV10 context, final String fileNamePattern) {
 
         try {
             Files.find(context.getScenarioRootPath(), Integer.MAX_VALUE, (p, attr) -> p.toFile().getName().matches(fileNamePattern)).forEach(x -> {
                 try {
                     context.getOriginal().getCustom().getPackages().putAll(context.getObjectMapper().readValue(x.toFile(), T3Base.class).getCustoms().getPackages());
                 } catch (IOException e) {
-                    throw new T3ScenarioParseException(e);
+                    throw new ScenarioParseException(e);
                 }
             });
         } catch (IOException e) {
-            throw new T3ScenarioParseException(e);
+            throw new ScenarioParseException(e);
         }
 
     }
 
-    private void parseCustom(T3ContextV10 t3ContextV10) {
+    private void parseCustom(ContextV10 t3ContextV10) {
 
         ClassLoader loader = Thread.currentThread().getContextClassLoader();
 
@@ -93,7 +93,7 @@ public class CustomParserV10 implements IndividualTargetParser {
                         .map(info -> info.load())
                         .collect(Collectors.toSet());
             } catch (IOException e) {
-                throw new T3ScenarioParseException(e);
+                throw new ScenarioParseException(e);
             }
 
             // カスタムコマンドを解析

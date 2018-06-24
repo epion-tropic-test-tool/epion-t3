@@ -26,7 +26,7 @@ public class T3Base implements Serializable {
     @JsonTypeIdResolver(CommandTypeIdResolver.class)
     private List<Process> processes = new ArrayList<>();
 
-    private Valiable valiables;
+    private Variable variables;
 
     private Profile profiles;
 

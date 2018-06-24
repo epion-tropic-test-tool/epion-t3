@@ -33,6 +33,10 @@ allprojects {
         // cli interface
         compile group: 'commons-cli', name: 'commons-cli', version: '1.4'
 
+        // lang
+        compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.7'
+
+
         // for develop
         compile 'org.projectlombok:lombok:1.18.0'
 

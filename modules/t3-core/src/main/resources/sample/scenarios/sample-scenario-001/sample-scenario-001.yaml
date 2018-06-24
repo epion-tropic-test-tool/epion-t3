@@ -1,0 +1,31 @@
+t3: '1.0'
+type: scenario
+info:
+    id: sample-scenario-001
+    version: 1.0.0
+    summary: Sample Scenario 001
+    description: This is a typical example scenario of the tool.
+flows:
+  - ref : process-001
+    type : process
+  - ref : sample-parts-001-process-001
+    type : process
+processes:
+  - id: process-001
+    summary : File Copy Command.
+    description: File Copy Command Sample Process.
+    command: FileCopy
+    from: /from
+    to: /to
+  - id: process-002
+    summary : File Copy Command.
+    description: File Copy Command Sample Process.
+    command: FileCopy
+    from: /from
+    to: /to
+  - id: process-003
+    summary : File Copy Command.
+    description: File Copy Command Sample Process.
+    command: FileCopy
+    from: /from
+    to: /to

@@ -1,0 +1,26 @@
+t3: '1.0'
+type: parts
+info:
+    id: sample-parts-001
+    version: 1.0.0
+    summary: Sample Parts 001
+    description: This is a typical example parts of the tool.
+processes:
+  - id: process-001
+    summary : File Delete Command.
+    description: File Delete Command Sample Process.
+    command: FileDelete
+    from: /from
+    to: /to
+  - id: process-002
+    summary : File Delete Command.
+    description: File Delete Command Sample Process.
+    command: FileDelete
+    from: /from
+    to: /to
+  - id: process-003
+    summary : File Delete Command.
+    description: File Delete Command Sample Process.
+    command: FileDelete
+    from: /from
+    to: /to

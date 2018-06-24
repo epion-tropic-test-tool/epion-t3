@@ -10,7 +10,7 @@ import java.nio.file.Path;
  *
  * @author takashno
  */
-public interface T3Context extends Serializable {
+public interface Context extends Serializable {
 
     /**
      * シナリオを配置しているルートパス.

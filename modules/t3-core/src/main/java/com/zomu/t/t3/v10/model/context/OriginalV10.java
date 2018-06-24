@@ -14,7 +14,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * @author takashno
  */
 @Getter
-public class T3ContextV10Original {
+public class OriginalV10 {
 
     /**
      * カスタム機能定義の原本.

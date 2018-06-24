@@ -8,7 +8,7 @@ import java.util.Map;
 
 @Getter
 @Setter
-public class Valiable implements Serializable {
+public class Variable implements Serializable {
 
     private Map<String, Object> global;
 

@@ -7,14 +7,14 @@ import lombok.Getter;
 
 import java.nio.file.Path;
 
-public abstract class BaseT3Context implements T3Context {
+public abstract class BaseContext implements Context {
 
     private final ObjectMapper objectMapper;
 
     @Getter
     private final Path scenarioRootPath;
 
-    public BaseT3Context(Path rootPath) {
+    public BaseContext(Path rootPath) {
         YAMLFactory yamlFactory = new YAMLFactory();
         ObjectMapper objectMapper = new ObjectMapper(yamlFactory);
 

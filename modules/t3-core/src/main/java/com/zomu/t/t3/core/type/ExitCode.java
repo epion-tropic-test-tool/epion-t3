@@ -5,7 +5,7 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public enum ExitCodeType {
+public enum ExitCode {
 
     /**
      * 正常.
