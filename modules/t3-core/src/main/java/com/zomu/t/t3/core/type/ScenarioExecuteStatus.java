@@ -4,13 +4,13 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 /**
- * フローステータス.
+ * シナリオ実行ステータス.
  *
  * @author takashno
  */
 @Getter
 @AllArgsConstructor
-public enum FlowStatus {
+public enum ScenarioExecuteStatus {
 
     WAIT,
 

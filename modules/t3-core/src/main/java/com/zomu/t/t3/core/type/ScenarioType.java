@@ -1,10 +1,9 @@
-package com.zomu.t.t3.v10.type;
+package com.zomu.t.t3.core.type;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 import java.util.Arrays;
-import java.util.Optional;
 
 @Getter
 @AllArgsConstructor

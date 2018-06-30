@@ -1,6 +1,7 @@
 package com.zomu.t.t3.core.message;
 
 import com.google.common.reflect.ClassPath;
+import com.zomu.t.t3.core.exception.MessageNotFoundException;
 import com.zomu.t.t3.core.exception.SystemException;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FilenameUtils;
@@ -23,7 +24,7 @@ public final class MessageResolver {
     /**
      * リソースバンドルの保持リスト.
      */
-    private final List<ResourceBundle> resourceBundles = new ArrayList<>();
+    private static List<ResourceBundle> resourceBundles;
 
     /**
      * メッセージのリソースファイルを
@@ -44,8 +45,22 @@ public final class MessageResolver {
      *
      * @return シングルトンインスタンス
      */
-    public static MessageResolver getInstance() {
+    static MessageResolver getInstance() {
         return instance;
+    }
+
+    /**
+     * メッセージを取得する.
+     *
+     * @param messageCode メッセージコード
+     * @return メッセージ文字列
+     */
+    public String getMessage(String messageCode) {
+        return resourceBundles.stream()
+                .filter(x -> x.containsKey(messageCode))
+                .findFirst()
+                .orElseThrow(() -> new MessageNotFoundException(messageCode))
+                .getObject(messageCode).toString();
     }
 
     /**
@@ -54,6 +69,8 @@ public final class MessageResolver {
     private void load() {
 
         log.debug("start message resolver initial load.");
+
+        List<ResourceBundle> loadingResourceBundles = new ArrayList<>();
 
         ClassLoader loader = Thread.currentThread().getContextClassLoader();
         List<ClassPath.ResourceInfo> messageResources
@@ -71,13 +88,17 @@ public final class MessageResolver {
             try {
                 ResourceBundle rb =
                         ResourceBundle.getBundle(FilenameUtils.getBaseName(resource.getResourceName()), Locale.getDefault());
-                resourceBundles.add(rb);
+                loadingResourceBundles.add(rb);
                 log.debug("load resource bundle: {}", resource.getResourceName());
             } catch (MissingResourceException e) {
                 log.debug("can not load resource bundle: {}", resource.getResourceName());
                 continue;
             }
         }
+
+        // 読み取り専用とする
+        resourceBundles = Collections.unmodifiableList(loadingResourceBundles);
+
         log.debug("end message resolver initial load.");
     }
 

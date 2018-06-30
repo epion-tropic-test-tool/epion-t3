@@ -10,7 +10,21 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum Args {
 
-    VERSION("v", "version", true, "run tool version.", true);
+    VERSION("v", "version", true, "run tool version.", true),
+
+    SCENARIO("t", "target", true, "target of tool run.", true),
+
+    ROOT_PATH("r", "rootpath", true, "scenario root path.", true),
+
+    FILESYSTEM_KIND("f", "filesystem", true, "scenario manage filesystem kind.", false),
+
+    PROFILE("p", "profile", true, "profile of tool run.", false),
+
+    MODE("m", "mode", true, "mode of tool run.", true),
+
+    DEBUG("d", "debug", false, "run tool for debug.", false),
+
+    HELP("h", "help", true, "show the tool help.", false);
 
     /**
      * 短いオプション名.

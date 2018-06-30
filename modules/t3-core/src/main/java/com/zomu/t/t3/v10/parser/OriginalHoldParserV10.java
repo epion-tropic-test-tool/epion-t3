@@ -8,7 +8,7 @@ import com.zomu.t.t3.core.scenario.parser.IndividualTargetParser;
 import com.zomu.t.t3.v10.model.context.ContextV10;
 import com.zomu.t.t3.v10.model.scenario.Process;
 import com.zomu.t.t3.v10.model.scenario.T3Base;
-import com.zomu.t.t3.v10.type.ScenarioType;
+import com.zomu.t.t3.core.type.ScenarioType;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
@@ -89,8 +89,13 @@ public class OriginalHoldParserV10 implements IndividualTargetParser {
                     // t3BaseがfinalでないのでLambdaが利用できない・・・
                     // なんかやり方あるのかね・・・
                     for (Process process : t3Base.getProcesses()) {
+
+                        String fullProcessId = t3Base.getInfo().getId() + "." + process.getId();
+
                         t3ContextV10.getOriginal().getProcesses().put(
-                                t3Base.getInfo().getId() + "-" + process.getId(), process);
+                                fullProcessId, process);
+
+                        t3ContextV10.getOriginal().getProcessScenarioRelations().put(fullProcessId, t3Base.getInfo().getId());
                     }
 
                 }
@@ -100,7 +105,7 @@ public class OriginalHoldParserV10 implements IndividualTargetParser {
         };
 
         try {
-            Files.walkFileTree(context.getScenarioRootPath(), visitor);
+            Files.walkFileTree(Paths.get(context.getOption().getRootPath()), visitor);
         } catch (IOException e) {
             throw new ScenarioParseException(e);
         }

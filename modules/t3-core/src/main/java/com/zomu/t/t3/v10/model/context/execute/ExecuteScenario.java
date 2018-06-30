@@ -1,6 +1,6 @@
-package com.zomu.t.t3.v10.model.execute;
+package com.zomu.t.t3.v10.model.context.execute;
 
-import com.zomu.t.t3.core.type.FlowStatus;
+import com.zomu.t.t3.core.type.ScenarioExecuteStatus;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -9,16 +9,22 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Getter
 @Setter
-public class ExecuteFlow implements Serializable {
+public class ExecuteScenario implements Serializable {
+
+    /**
+     * 実行フローID
+     */
+    private UUID executeFlowId = UUID.randomUUID();
 
     /**
      * ステータス.
      */
-    private FlowStatus status = FlowStatus.WAIT;
+    private ScenarioExecuteStatus status = ScenarioExecuteStatus.WAIT;
 
     /**
      * 開始日時.

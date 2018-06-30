@@ -1,34 +1,41 @@
 package com.zomu.t.t3.v10.runner;
 
 import com.zomu.t.t3.core.annotation.ApplicationVersion;
+import com.zomu.t.t3.core.exception.ProcessNotFoundException;
+import com.zomu.t.t3.core.exception.ScenarioNotFoundException;
+import com.zomu.t.t3.core.model.context.Context;
 import com.zomu.t.t3.core.runner.ApplicationRunner;
 import com.zomu.t.t3.core.scenario.parser.ScenarioParser;
+import com.zomu.t.t3.core.type.Args;
 import com.zomu.t.t3.core.type.ExitCode;
-import com.zomu.t.t3.core.type.ProcessStatus;
 import com.zomu.t.t3.v10.model.context.ContextV10;
-import com.zomu.t.t3.v10.model.execute.ExecuteContextV10;
-import com.zomu.t.t3.v10.model.execute.ExecuteFlow;
-import com.zomu.t.t3.v10.model.execute.ExecuteProcess;
+import com.zomu.t.t3.v10.model.context.ExecuteContextV10;
+import com.zomu.t.t3.v10.model.context.execute.ExecuteProcess;
+import com.zomu.t.t3.v10.model.context.execute.ExecuteScenario;
 import com.zomu.t.t3.v10.model.scenario.Flow;
 import com.zomu.t.t3.v10.model.scenario.Process;
 import com.zomu.t.t3.v10.model.scenario.T3Base;
 import com.zomu.t.t3.v10.parser.ScenarioParserV10;
-import com.zomu.t.t3.v10.type.Args;
-import com.zomu.t.t3.v10.type.FlowType;
+import com.zomu.t.t3.core.type.FlowType;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.cli.*;
 import org.apache.commons.lang3.SerializationUtils;
+import org.apache.commons.lang3.StringUtils;
 
-import java.nio.file.Paths;
 import java.util.Arrays;
 
 @ApplicationVersion(version = "v1.0")
 @Slf4j
 public class ApplicationRunnerV10 implements ApplicationRunner {
 
+    /**
+     * CLIオプション.
+     */
     private static final Options OPTIONS = new Options();
 
     static {
+        // 引数定義をCLIオプション化する
+        // v1.0については、coreをそのまま引き継ぐ
         Arrays.stream(Args.values()).forEach(
                 x -> {
                     if (x.isRequired()) {
@@ -43,7 +50,6 @@ public class ApplicationRunnerV10 implements ApplicationRunner {
     @Override
     public void execute(String[] args) {
 
-        // バージョンの解決
         CommandLineParser parser = new DefaultParser();
         CommandLine cmd = null;
 
@@ -54,34 +60,67 @@ public class ApplicationRunnerV10 implements ApplicationRunner {
             System.exit(ExitCode.ERROR.getExitCode());
         }
 
-
-        String rootPath = cmd.getOptionValue(Args.ROOT_PATH.getShortName());
-        String target = cmd.getOptionValue(Args.SCENARIO.getShortName());
-
-
         // コンテキストの生成
-        ContextV10 context = new ContextV10(
-                Paths.get(rootPath));
+        ContextV10 context = new ContextV10();
+
+        // 引数設定
+        setOptions(context, cmd);
 
         // シナリオの解析（パース処理）
         ScenarioParser scenarioParser = new ScenarioParserV10();
         scenarioParser.parse(context);
 
         // 実行シナリオの選択
-        T3Base scenario = context.getOriginal().getScenarios().get(target);
+        T3Base scenario = context.getOriginal().getScenarios().get(context.getOption().getTarget());
+
+        if (scenario == null) {
+            throw new ScenarioNotFoundException(context.getOption().getTarget());
+        }
 
         // 実行フローの構築
-        ExecuteContextV10 executeContextV10 = new ExecuteContextV10();
-        buildExecuteFlow(context, executeContextV10, scenario);
+        buildExecuteScenario(context, scenario);
 
+        // 実行シナリオのコンパイル
+        scenarioCompile(context);
+
+        // プロファイルの値をバインド
+        bindProfileValues(context);
+
+        // 実行
+        ScenarioRunnerV10 scenarioRunner = new ScenarioRunnerV10();
+        scenarioRunner.execute(context);
 
         System.out.println(scenario);
     }
 
-    private void buildExecuteFlow(final ContextV10 context, final ExecuteContextV10 executeContextV10, final T3Base scenario) {
+    /**
+     * 実行引数オプションをコンテキストへ設定する.
+     *
+     * @param context
+     * @param commandLine
+     */
+    private void setOptions(final Context context, final CommandLine commandLine) {
+        String rootPath = commandLine.getOptionValue(Args.ROOT_PATH.getShortName());
+        String target = commandLine.getOptionValue(Args.SCENARIO.getShortName());
 
-        ExecuteFlow flow = new ExecuteFlow();
-        executeContextV10.getFlows().add(flow);
+        // 必須パラメータの取得
+        context.getOption().setRootPath(rootPath);
+        context.getOption().setTarget(target);
+
+        // プロファイルの取得
+        if (commandLine.hasOption(Args.PROFILE.getShortName())) {
+            context.getOption().setProfile(commandLine.getOptionValue(Args.PROFILE.getShortName()));
+        }
+    }
+
+    /**
+     * @param context
+     * @param scenario
+     */
+    private void buildExecuteScenario(final ContextV10 context, final T3Base scenario) {
+
+        ExecuteScenario executeScenario = new ExecuteScenario();
+        context.getExecuteOriginal().getScenarios().add(executeScenario);
 
         for (Flow f : scenario.getFlows()) {
 
@@ -100,20 +139,46 @@ public class ApplicationRunnerV10 implements ApplicationRunner {
                         }
                         if (process == null) {
                             log.error("not found process: {}", f.getRef());
+                            throw new ProcessNotFoundException(f.getRef());
                         }
 
                         // 原本の参照は利用しないのでクローンする
                         Process cloneProcess = SerializationUtils.clone(process);
 
-                        flow.getProcesses().add(
-                                ExecuteProcess.builder()
-                                        .status(ProcessStatus.WAIT)
-                                        .process(cloneProcess).build());
+                        // process実行情報を作成
+                        ExecuteProcess executeProcess = new ExecuteProcess();
+                        executeProcess.setProcess(cloneProcess);
+
+                        // プロセスが属するシナリオのIDを取得
+                        // XXX : バグ以外でここが取れないことはあり得ない
+                        String belongScenarioId = context.getOriginal().getProcessScenarioRelations().get(f.getRef());
+                        if (StringUtils.isEmpty(belongScenarioId)) {
+                            belongScenarioId = context.getOriginal().getProcessScenarioRelations().get(scenario.getInfo().getId() + "." + f.getRef());
+                        }
+
+                        // 全原本から属するシナリオを取得
+                        T3Base belongScenario = context.getOriginal().getOriginals().get(belongScenarioId);
+
+                        // 各スコープ変数の設定
+                        if (belongScenario.getVariables() != null) {
+                            if (belongScenario.getVariables().getGlobal() != null) {
+                                context.getExecuteOriginal().getGlobalVariables().putAll(belongScenario.getVariables().getGlobal());
+                            }
+                            if (belongScenario.getVariables().getScenario() != null) {
+                                executeScenario.getScenarioVariables().putAll(belongScenario.getVariables().getScenario());
+                            }
+                            if (belongScenario.getVariables().getLocal() != null) {
+                                executeProcess.getLocalVariables().putAll(belongScenario.getVariables().getLocal());
+                            }
+                        }
+
+                        // 実行フローに追加
+                        executeScenario.getProcesses().add(executeProcess);
                         break;
                     case SCENARIO:
                         // シナリオの場合は別実行フロー扱いとする
                         T3Base nestScenario = context.getOriginal().getScenarios().get(f.getRef());
-                        buildExecuteFlow(context, executeContextV10, nestScenario);
+                        buildExecuteScenario(context, nestScenario);
                         break;
                     default:
                         log.debug("no support execute flow... type:{}, id:{}", scenario.getType(), scenario.getInfo().getId());
@@ -121,9 +186,38 @@ public class ApplicationRunnerV10 implements ApplicationRunner {
 
                 }
             }
+        }
 
+    }
+
+    /**
+     * 実行シナリオをコンパイルする.
+     * コンパイルとは以下の処理のことを指す.
+     * ・変数の参照関係の整合性が保たれているか.（存在しない変数が使われている等）
+     *
+     * @param context
+     */
+    private void scenarioCompile(final ContextV10 context) {
+
+    }
+
+    /**
+     * 実行時にプロファイルが指定されている場合には、実行シナリオに対してプロファイル値を適用する.
+     *
+     * @param context
+     */
+    private void bindProfileValues(final ContextV10 context) {
+
+        // 原本をそのまま残すためクローンする
+        ExecuteContextV10 cloneExecuteContextV10 = SerializationUtils.clone(context.getExecuteOriginal());
+
+        if (StringUtils.isNotEmpty(context.getOption().getProfile())) {
+
+            // バインド処理
 
         }
+
+        context.setExecute(cloneExecuteContextV10);
 
     }
 

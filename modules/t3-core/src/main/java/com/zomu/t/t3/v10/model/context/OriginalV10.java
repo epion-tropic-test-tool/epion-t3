@@ -52,8 +52,16 @@ public class OriginalV10 {
 
     /**
      * processesの原本.
-     * キー：infoのid + '-' + processesの要素のid値
+     * キー：infoのid + '-' + processesの要素のid値　= processの識別子
      */
     private final Map<String, Process> processes = new ConcurrentHashMap<>();
+
+
+    /**
+     * processの識別子とシナリオの関係マップ.
+     * キー：processの識別子
+     * 値：infoのid
+     */
+    private final Map<String, String> processScenarioRelations = new ConcurrentHashMap<>();
 
 }

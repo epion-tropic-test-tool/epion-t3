@@ -87,7 +87,7 @@ public class Application {
                 Object obj = applicationRunnerClass.newInstance();
                 Object result = execute.invoke(obj, new Object[]{args});
             } catch (Exception e) {
-                log.error("execute application fail...", e);
+                log.error("execute application fail...", e.getCause());
                 System.exit(ExitCode.ERROR.getExitCode());
             }
         } else {

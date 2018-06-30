@@ -1,19 +1,23 @@
-package com.zomu.t.t3.v10.model.execute;
+package com.zomu.t.t3.v10.model.context.execute;
 
-import com.zomu.t.t3.core.type.FlowStatus;
 import com.zomu.t.t3.core.type.ProcessStatus;
 import com.zomu.t.t3.v10.model.scenario.Process;
 import lombok.*;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.Map;
+import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 @Getter
 @Setter
-@Builder
-@AllArgsConstructor
-@NoArgsConstructor
 public class ExecuteProcess implements Serializable {
+
+    /**
+     * 実行プロセスID
+     */
+    private UUID executeProcessId = UUID.randomUUID();
 
     /**
      * ステータス.
@@ -40,5 +44,11 @@ public class ExecuteProcess implements Serializable {
      */
     @NonNull
     private Process process;
+
+    /**
+     * ローカルスコープ変数.
+     */
+    Map<String, Object> localVariables = new ConcurrentHashMap<>();
+
 
 }

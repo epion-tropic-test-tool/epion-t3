@@ -8,7 +8,7 @@ info:
 flows:
   - ref : process-001
     type : process
-  - ref : sample-parts-001-process-001
+  - ref : sample-parts-001.process-001
     type : process
 processes:
   - id: process-001
@@ -29,3 +29,16 @@ processes:
     command: FileCopy
     from: /from
     to: /to
+  - id: process-003
+    summary : File Copy Command.
+    description: File Copy Command Sample Process.
+    command: FileCopy
+    from: /from
+    to: /to
+variables:
+  global:
+    value1 : global_value_1
+  scenario:
+    value1 : scenario_value_1
+  local:
+    value1 : local_value_1

@@ -6,20 +6,23 @@ import java.io.Serializable;
 import java.nio.file.Path;
 
 /**
- * T3実行時の情報を保持するためのコンテキストクラス.
+ * 実行時の情報を保持するためのコンテキストクラス.
  *
  * @author takashno
  */
 public interface Context extends Serializable {
 
     /**
-     * シナリオを配置しているルートパス.
-     */
-    Path getScenarioRootPath();
-
-    /**
      * シナリオ解析する際に利用するYAML解析クラス.
      */
     ObjectMapper getObjectMapper();
+
+
+    /**
+     * 実行引数のオプションを取得する.
+     *
+     * @return
+     */
+    Option getOption();
 
 }
