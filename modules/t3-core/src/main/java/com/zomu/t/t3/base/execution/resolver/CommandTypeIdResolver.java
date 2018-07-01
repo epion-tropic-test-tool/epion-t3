@@ -1,11 +1,11 @@
-package com.zomu.t.t3.core.execution.scenario.resolver;
+package com.zomu.t.t3.base.execution.resolver;
 
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.databind.DatabindContext;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.jsontype.TypeIdResolver;
 import com.fasterxml.jackson.databind.type.TypeFactory;
-import com.zomu.t.t3.core.model.context.CommandInfo;
+import com.zomu.t.t3.core.context.CommandInfo;
 import com.zomu.t.t3.core.holder.CustomConfigHolder;
 
 import java.io.IOException;

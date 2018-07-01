@@ -1,9 +1,13 @@
-package com.zomu.t.t3.core.model.context;
+package com.zomu.t.t3.base.context;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
-import com.zomu.t.t3.core.model.context.execute.ExecuteContext;
+import com.zomu.t.t3.core.context.CommandInfo;
+import com.zomu.t.t3.core.context.Context;
+import com.zomu.t.t3.core.context.Option;
+import com.zomu.t.t3.core.context.Original;
+import com.zomu.t.t3.core.context.execute.ExecuteContext;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -25,7 +29,7 @@ public class BaseContext implements Context {
     private final Original original = new Original();
 
     @Getter
-    private final com.zomu.t.t3.core.model.context.execute.ExecuteContext executeOriginal = new com.zomu.t.t3.core.model.context.execute.ExecuteContext();
+    private final com.zomu.t.t3.core.context.execute.ExecuteContext executeOriginal = new com.zomu.t.t3.core.context.execute.ExecuteContext();
 
     @Getter
     @Setter

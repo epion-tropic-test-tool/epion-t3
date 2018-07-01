@@ -1,18 +1,25 @@
-package com.zomu.t.t3.core.execution.scenario.parser;
+package com.zomu.t.t3.base.execution.perser;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.zomu.t.t3.core.exception.ScenarioParseException;
-import com.zomu.t.t3.core.model.context.BaseContext;
-import com.zomu.t.t3.core.model.context.Context;
+import com.zomu.t.t3.core.execution.parser.IndividualTargetParser;
+import com.zomu.t.t3.base.context.BaseContext;
+import com.zomu.t.t3.core.context.Context;
 import com.zomu.t.t3.model.scenario.Process;
 import com.zomu.t.t3.model.scenario.T3Base;
 import com.zomu.t.t3.core.type.ScenarioType;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.bval.jsr.ApacheValidationProvider;
+import org.apache.bval.jsr.ConstraintValidation;
 
+import javax.validation.ConstraintViolation;
+import javax.validation.Validation;
+import javax.validation.ValidatorFactory;
 import java.io.IOException;
 import java.nio.file.*;
 import java.nio.file.attribute.BasicFileAttributes;
+import java.util.Set;
 
 /**
  * カスタム機能の定義を解析するクラス.
@@ -20,21 +27,35 @@ import java.nio.file.attribute.BasicFileAttributes;
  * @author takashno
  */
 @Slf4j
-public class OriginalHoldParserV10 implements IndividualTargetParser {
+public final class BaseOriginalHoldParser implements IndividualTargetParser {
+
+    /**
+     * インスタンス.
+     */
+    private static final BaseOriginalHoldParser instance = new BaseOriginalHoldParser();
 
     /**
      * シナリオファイルパターン（正規表現）.
      */
     public static final String FILENAME_REGEXP_PATTERN = ".*\\.yaml";
 
+
     /**
-     * インスタンス作るのが面倒だったので作っただけの処理.
-     *
-     * @param context
+     * プライベートコンストラクタ.
      */
-    public static void parseOriginal(Context context) {
-        new OriginalHoldParserV10().parse(context);
+    private BaseOriginalHoldParser() {
+        // Do Nothing...
     }
+
+    /**
+     * インスタンスを取得する.
+     *
+     * @return
+     */
+    public static BaseOriginalHoldParser getInstance() {
+        return instance;
+    }
+
 
     @Override
     public void parse(final Context context) {
@@ -55,6 +76,20 @@ public class OriginalHoldParserV10 implements IndividualTargetParser {
                 T3Base t3Base = null;
                 try {
                     t3Base = context.getObjectMapper().readValue(file.toFile(), T3Base.class);
+
+                    ValidatorFactory avf =
+                            Validation.byProvider(ApacheValidationProvider.class).configure().buildValidatorFactory();
+
+                    Set<ConstraintViolation<T3Base>> re = avf.getValidator().validate(t3Base);
+                    System.out.println(re);
+
+
+//                    for (Process process : t3Base.getProcesses()) {
+//                        Set<ConstraintViolation<Process>> re2 = avf.getValidator().validate(process);
+//                        System.out.println(re2);
+//                    }
+
+
                 } catch (JsonParseException | JsonMappingException e) {
                     log.warn("file is not t3 format: {} -> ignore...", file);
                     return FileVisitResult.CONTINUE;

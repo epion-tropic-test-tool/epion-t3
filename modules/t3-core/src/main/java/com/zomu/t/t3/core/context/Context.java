@@ -1,9 +1,8 @@
-package com.zomu.t.t3.core.model.context;
+package com.zomu.t.t3.core.context;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.Serializable;
-import java.nio.file.Path;
 
 /**
  * 実行時の情報を保持するためのコンテキストクラス.

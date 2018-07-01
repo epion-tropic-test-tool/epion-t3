@@ -1,4 +1,4 @@
-package com.zomu.t.t3.core.model.context;
+package com.zomu.t.t3.core.context;
 
 import com.zomu.t.t3.model.scenario.Custom;
 import com.zomu.t.t3.model.scenario.Process;

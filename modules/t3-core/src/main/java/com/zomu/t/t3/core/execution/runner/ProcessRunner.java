@@ -1,8 +1,8 @@
 package com.zomu.t.t3.core.execution.runner;
 
-import com.zomu.t.t3.core.model.context.Context;
-import com.zomu.t.t3.core.model.context.execute.ExecuteProcess;
-import com.zomu.t.t3.core.model.context.execute.ExecuteScenario;
+import com.zomu.t.t3.core.context.Context;
+import com.zomu.t.t3.core.context.execute.ExecuteProcess;
+import com.zomu.t.t3.core.context.execute.ExecuteScenario;
 
 /**
  * @param <CONTEXT>

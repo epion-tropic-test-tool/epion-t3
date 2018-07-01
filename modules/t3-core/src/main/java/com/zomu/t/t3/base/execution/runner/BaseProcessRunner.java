@@ -1,10 +1,10 @@
 package com.zomu.t.t3.base.execution.runner;
 
-import com.zomu.t.t3.base.execution.resolver.CommandResolver;
+import com.zomu.t.t3.base.execution.resolver.BaseCommandResolver;
 import com.zomu.t.t3.core.execution.runner.CommandRunner;
-import com.zomu.t.t3.core.model.context.BaseContext;
-import com.zomu.t.t3.core.model.context.execute.ExecuteProcess;
-import com.zomu.t.t3.core.model.context.execute.ExecuteScenario;
+import com.zomu.t.t3.base.context.BaseContext;
+import com.zomu.t.t3.core.context.execute.ExecuteProcess;
+import com.zomu.t.t3.core.context.execute.ExecuteScenario;
 import com.zomu.t.t3.core.type.ProcessStatus;
 import lombok.extern.slf4j.Slf4j;
 
@@ -12,7 +12,7 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 
 @Slf4j
-public class ProcessRunner implements com.zomu.t.t3.core.execution.runner.ProcessRunner<BaseContext, ExecuteScenario, ExecuteProcess> {
+public class BaseProcessRunner implements com.zomu.t.t3.core.execution.runner.ProcessRunner<BaseContext, ExecuteScenario, ExecuteProcess> {
 
 
     @Override
@@ -30,7 +30,7 @@ public class ProcessRunner implements com.zomu.t.t3.core.execution.runner.Proces
             String commandId = executeProcess.getProcess().getCommand();
 
             // コマンド実行クラスを解決
-            CommandRunner runner = CommandResolver.getInstance().getCommandRunner(commandId);
+            CommandRunner runner = BaseCommandResolver.getInstance().getCommandRunner(commandId);
 
             // コマンド実行
             runner.execute(executeProcess.getProcess(),

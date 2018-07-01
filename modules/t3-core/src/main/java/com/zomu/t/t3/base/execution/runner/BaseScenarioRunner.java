@@ -1,9 +1,9 @@
 package com.zomu.t.t3.base.execution.runner;
 
 import com.zomu.t.t3.core.exception.SystemException;
-import com.zomu.t.t3.core.model.context.BaseContext;
-import com.zomu.t.t3.core.model.context.execute.ExecuteProcess;
-import com.zomu.t.t3.core.model.context.execute.ExecuteScenario;
+import com.zomu.t.t3.base.context.BaseContext;
+import com.zomu.t.t3.core.context.execute.ExecuteProcess;
+import com.zomu.t.t3.core.context.execute.ExecuteScenario;
 import com.zomu.t.t3.core.type.ScenarioExecuteStatus;
 import lombok.extern.slf4j.Slf4j;
 
@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
  * @author takashno
  */
 @Slf4j
-public class ScenarioRunner implements com.zomu.t.t3.core.execution.runner.ScenarioRunner<BaseContext> {
+public class BaseScenarioRunner implements com.zomu.t.t3.core.execution.runner.ScenarioRunner<BaseContext> {
 
     /**
      * プロセス実行処理.
@@ -24,8 +24,8 @@ public class ScenarioRunner implements com.zomu.t.t3.core.execution.runner.Scena
     /**
      * コンストラクタ.
      */
-    public ScenarioRunner() {
-        this.processRunner = new ProcessRunner();
+    public BaseScenarioRunner() {
+        this.processRunner = new BaseProcessRunner();
     }
 
 

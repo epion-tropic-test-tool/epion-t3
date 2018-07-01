@@ -2,10 +2,13 @@ package com.zomu.t.t3.model.scenario;
 
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.databind.annotation.JsonTypeIdResolver;
-import com.zomu.t.t3.core.execution.scenario.resolver.CommandTypeIdResolver;
+import com.zomu.t.t3.base.execution.resolver.CommandTypeIdResolver;
 import lombok.Getter;
 import lombok.Setter;
+import org.apache.bval.Validate;
 
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +27,7 @@ public class T3Base implements Serializable {
 
     @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.EXISTING_PROPERTY, property = "command")
     @JsonTypeIdResolver(CommandTypeIdResolver.class)
+    @Valid
     private List<Process> processes = new ArrayList<>();
 
     private Variable variables;

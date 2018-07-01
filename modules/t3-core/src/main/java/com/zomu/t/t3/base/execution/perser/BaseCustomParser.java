@@ -1,11 +1,12 @@
-package com.zomu.t.t3.core.execution.scenario.parser;
+package com.zomu.t.t3.base.execution.perser;
 
 import com.google.common.reflect.ClassPath;
+import com.zomu.t.t3.base.context.BaseContext;
 import com.zomu.t.t3.core.annotation.Command;
+import com.zomu.t.t3.core.context.CommandInfo;
+import com.zomu.t.t3.core.context.Context;
 import com.zomu.t.t3.core.exception.ScenarioParseException;
-import com.zomu.t.t3.core.model.context.BaseContext;
-import com.zomu.t.t3.core.model.context.CommandInfo;
-import com.zomu.t.t3.core.model.context.Context;
+import com.zomu.t.t3.core.execution.parser.IndividualTargetParser;
 import com.zomu.t.t3.core.holder.CustomConfigHolder;
 import com.zomu.t.t3.model.scenario.Process;
 import com.zomu.t.t3.model.scenario.T3Base;
@@ -24,7 +25,12 @@ import java.util.stream.Collectors;
  * @author takashno
  */
 @Slf4j
-public class CustomParserV10 implements IndividualTargetParser {
+public final class BaseCustomParser implements IndividualTargetParser {
+
+    /**
+     * インスタンス.
+     */
+    private static final BaseCustomParser instance = new BaseCustomParser();
 
     /**
      * カスタム機能定義のファイルパターン（正規表現）.
@@ -32,19 +38,37 @@ public class CustomParserV10 implements IndividualTargetParser {
     public static final String CUSTOM_FILENAME_REGEXP_PATTERN = ".*[\\-]?custom.yaml";
 
     /**
-     * インスタンス作るのが面倒だったので作っただけの処理.
+     * プライベートコンストラクタ.
+     */
+    private BaseCustomParser() {
+        // Do Nothing...
+    }
+
+    /**
+     * インスタンスを取得する.
+     *
+     * @return
+     */
+    public static BaseCustomParser getInstance() {
+        return instance;
+    }
+
+    /**
+     * {@inheritDoc}
      *
      * @param context
      */
-    public static void parseCustom(Context context) {
-        new CustomParserV10().parse(context);
-    }
-
     @Override
     public void parse(Context context) {
         parse(context, CUSTOM_FILENAME_REGEXP_PATTERN);
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * @param context
+     * @param fileNamePattern
+     */
     @Override
     public void parse(final Context context, String fileNamePattern) {
 

@@ -1,21 +1,20 @@
 package com.zomu.t.t3.base.execution.runner;
 
+import com.zomu.t.t3.base.context.BaseContext;
+import com.zomu.t.t3.base.execution.perser.BaseScenarioParser;
 import com.zomu.t.t3.core.annotation.ApplicationVersion;
+import com.zomu.t.t3.core.context.Context;
+import com.zomu.t.t3.core.context.execute.ExecuteContext;
+import com.zomu.t.t3.core.context.execute.ExecuteProcess;
+import com.zomu.t.t3.core.context.execute.ExecuteScenario;
 import com.zomu.t.t3.core.exception.ProcessNotFoundException;
 import com.zomu.t.t3.core.exception.ScenarioNotFoundException;
-import com.zomu.t.t3.core.model.context.BaseContext;
-import com.zomu.t.t3.core.model.context.Context;
-import com.zomu.t.t3.core.model.context.execute.ExecuteContext;
-import com.zomu.t.t3.core.model.context.execute.ExecuteProcess;
-import com.zomu.t.t3.core.model.context.execute.ExecuteScenario;
-import com.zomu.t.t3.core.execution.scenario.parser.ScenarioParser;
 import com.zomu.t.t3.core.type.Args;
 import com.zomu.t.t3.core.type.ExitCode;
 import com.zomu.t.t3.core.type.FlowType;
 import com.zomu.t.t3.model.scenario.Flow;
 import com.zomu.t.t3.model.scenario.Process;
 import com.zomu.t.t3.model.scenario.T3Base;
-import com.zomu.t.t3.core.execution.scenario.parser.ScenarioParserV10;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.cli.*;
 import org.apache.commons.lang3.SerializationUtils;
@@ -25,7 +24,7 @@ import java.util.Arrays;
 
 @ApplicationVersion(version = "v1.0")
 @Slf4j
-public class ApplicationRunner implements com.zomu.t.t3.core.execution.runner.ApplicationRunner {
+public class BaseApplicationRunner implements com.zomu.t.t3.core.execution.runner.ApplicationRunner {
 
     /**
      * CLIオプション.
@@ -66,8 +65,7 @@ public class ApplicationRunner implements com.zomu.t.t3.core.execution.runner.Ap
         setOptions(context, cmd);
 
         // シナリオの解析（パース処理）
-        ScenarioParser scenarioParser = new ScenarioParserV10();
-        scenarioParser.parse(context);
+        BaseScenarioParser.getInstance().parse(context);
 
         // 実行シナリオの選択
         T3Base scenario = context.getOriginal().getScenarios().get(context.getOption().getTarget());
@@ -86,7 +84,7 @@ public class ApplicationRunner implements com.zomu.t.t3.core.execution.runner.Ap
         bindProfileValues(context);
 
         // 実行
-        ScenarioRunner scenarioRunner = new ScenarioRunner();
+        BaseScenarioRunner scenarioRunner = new BaseScenarioRunner();
         scenarioRunner.execute(context);
 
         System.out.println(scenario);

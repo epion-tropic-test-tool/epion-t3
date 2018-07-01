@@ -1,6 +1,6 @@
-package com.zomu.t.t3.core.execution.scenario.parser;
+package com.zomu.t.t3.core.execution.parser;
 
-import com.zomu.t.t3.core.model.context.Context;
+import com.zomu.t.t3.core.context.Context;
 
 /**
  * 個別対象用の解析クラス.

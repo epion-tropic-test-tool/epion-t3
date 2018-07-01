@@ -1,4 +1,4 @@
-package com.zomu.t.t3.core.model.context.execute;
+package com.zomu.t.t3.core.context.execute;
 
 import com.zomu.t.t3.core.type.ScenarioExecuteStatus;
 import lombok.Getter;
@@ -13,7 +13,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 @Getter
 @Setter
-public class ExecuteContext implements com.zomu.t.t3.core.model.context.ExecuteContext {
+public class ExecuteContext implements com.zomu.t.t3.core.context.ExecuteContext {
 
     /**
      * 実行ID

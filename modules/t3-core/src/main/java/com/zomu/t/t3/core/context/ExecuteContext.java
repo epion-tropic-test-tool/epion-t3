@@ -1,6 +1,6 @@
-package com.zomu.t.t3.core.model.context;
+package com.zomu.t.t3.core.context;
 
-import com.zomu.t.t3.core.model.context.execute.ExecuteScenario;
+import com.zomu.t.t3.core.context.execute.ExecuteScenario;
 
 import java.io.Serializable;
 import java.util.List;

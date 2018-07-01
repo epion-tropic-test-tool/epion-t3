@@ -1,6 +1,6 @@
 package com.zomu.t.t3.core.holder;
 
-import com.zomu.t.t3.core.model.context.CommandInfo;
+import com.zomu.t.t3.core.context.CommandInfo;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;

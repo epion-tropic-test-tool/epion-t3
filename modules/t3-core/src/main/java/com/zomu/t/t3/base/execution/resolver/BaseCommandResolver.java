@@ -4,23 +4,23 @@ import com.zomu.t.t3.core.exception.CommandNotFoundException;
 import com.zomu.t.t3.core.exception.SystemException;
 import com.zomu.t.t3.core.execution.runner.CommandRunner;
 import com.zomu.t.t3.core.holder.CustomConfigHolder;
-import com.zomu.t.t3.core.model.context.CommandInfo;
+import com.zomu.t.t3.core.context.CommandInfo;
 import org.apache.commons.lang3.StringUtils;
 
 /**
  * @author takashno
  */
-public final class CommandResolver implements com.zomu.t.t3.core.execution.resolver.CommandResolver {
+public final class BaseCommandResolver implements com.zomu.t.t3.core.execution.resolver.CommandResolver {
 
     /**
      * インスタンス.
      */
-    private static final CommandResolver instance = new CommandResolver();
+    private static final BaseCommandResolver instance = new BaseCommandResolver();
 
     /**
      * プライベートコンストラクタ.
      */
-    private CommandResolver() {
+    private BaseCommandResolver() {
         // Do Nothing...
     }
 
@@ -29,7 +29,7 @@ public final class CommandResolver implements com.zomu.t.t3.core.execution.resol
      *
      * @return
      */
-    public static CommandResolver getInstance() {
+    public static BaseCommandResolver getInstance() {
         return instance;
     }
 
