@@ -2,7 +2,7 @@ package com.zomu.t.t3.core.application;
 
 import com.google.common.reflect.ClassPath;
 import com.zomu.t.t3.core.annotation.ApplicationVersion;
-import com.zomu.t.t3.core.runner.ApplicationRunner;
+import com.zomu.t.t3.core.execution.runner.ApplicationRunner;
 import com.zomu.t.t3.core.type.Args;
 import com.zomu.t.t3.core.type.ExitCode;
 import lombok.extern.slf4j.Slf4j;
@@ -62,7 +62,7 @@ public class Application {
                 .filter(
                         info -> {
                             String[] packages = info.getPackageName().replace(BASE_PACKAGE + ".", "").split("\\.");
-                            return packages[0].matches("v[0-9]+");
+                            return packages[0].matches("v[0-9]+") || "base".equals(packages[0]);
                         })
                 // ApplicationRunnerを実装していること かつ ApplicationVersionのアノテーションを付与していること
                 .filter(

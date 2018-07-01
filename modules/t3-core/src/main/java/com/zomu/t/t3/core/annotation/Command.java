@@ -1,6 +1,7 @@
 package com.zomu.t.t3.core.annotation;
 
-import com.zomu.t.t3.core.runner.CommandRunner;
+import com.zomu.t.t3.core.execution.resolver.CommandResolver;
+import com.zomu.t.t3.core.execution.runner.CommandRunner;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

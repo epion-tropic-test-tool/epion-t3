@@ -1,6 +1,6 @@
 package com.zomu.t.t3.core.exception;
 
-import com.zomu.t.t3.core.message.MessageManager;
+import com.zomu.t.t3.core.util.message.MessageManager;
 
 /**
  * @author takashno

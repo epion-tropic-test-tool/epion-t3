@@ -1,6 +1,6 @@
 package com.zomu.t.t3.core.model.context;
 
-import com.zomu.t.t3.core.runner.CommandRunner;
+import com.zomu.t.t3.core.execution.resolver.CommandResolver;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NonNull;
@@ -24,6 +24,6 @@ public class CommandInfo implements Serializable {
     private Class<?> scenarioModel;
 
     @NonNull
-    private Class<? extends CommandRunner> runner;
+    private Class<? extends CommandResolver> runner;
 
 }
