@@ -2,24 +2,30 @@ package com.zomu.t.t3.base.execution.perser;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
-import com.zomu.t.t3.core.exception.ScenarioParseException;
-import com.zomu.t.t3.core.execution.parser.IndividualTargetParser;
 import com.zomu.t.t3.base.context.BaseContext;
-import com.zomu.t.t3.core.context.Context;
+import com.zomu.t.t3.core.exception.ScenarioParseException;
+import com.zomu.t.t3.core.exception.SystemException;
+import com.zomu.t.t3.core.exception.bean.ScenarioParseError;
+import com.zomu.t.t3.core.execution.parser.IndividualTargetParser;
+import com.zomu.t.t3.core.type.ScenarioPaseErrorType;
+import com.zomu.t.t3.core.type.ScenarioType;
 import com.zomu.t.t3.model.scenario.Process;
 import com.zomu.t.t3.model.scenario.T3Base;
-import com.zomu.t.t3.core.type.ScenarioType;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.bval.jsr.ApacheValidationProvider;
-import org.apache.bval.jsr.ConstraintValidation;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
+import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 import java.io.IOException;
 import java.nio.file.*;
 import java.nio.file.attribute.BasicFileAttributes;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * カスタム機能の定義を解析するクラス.
@@ -27,7 +33,7 @@ import java.util.Set;
  * @author takashno
  */
 @Slf4j
-public final class BaseOriginalHoldParser implements IndividualTargetParser {
+public final class BaseOriginalHoldParser implements IndividualTargetParser<BaseContext> {
 
     /**
      * インスタンス.
@@ -37,8 +43,13 @@ public final class BaseOriginalHoldParser implements IndividualTargetParser {
     /**
      * シナリオファイルパターン（正規表現）.
      */
-    public static final String FILENAME_REGEXP_PATTERN = ".*\\.yaml";
+    public static final String FILENAME_REGEXP_PATTERN = "t3_.*\\.yaml";
 
+    /**
+     * 単項目チェックValidatorFactory.
+     */
+    private ValidatorFactory validationFactory =
+            Validation.byProvider(ApacheValidationProvider.class).configure().buildValidatorFactory();
 
     /**
      * プライベートコンストラクタ.
@@ -58,40 +69,60 @@ public final class BaseOriginalHoldParser implements IndividualTargetParser {
 
 
     @Override
-    public void parse(final Context context) {
-        parse(context, FILENAME_REGEXP_PATTERN);
+    public void parse(final BaseContext context) {
+        parse(context, null);
     }
 
     @Override
-    public void parse(final Context context, String fileNamePattern) {
+    public void parse(final BaseContext context, final String fileNamePattern) {
 
         final BaseContext t3ContextV10 = BaseContext.class.cast(context);
+
+        // 正規表現パターンを作成
+        final Pattern scenarioFileNamePattern = Pattern.compile(fileNamePattern == null ? FILENAME_REGEXP_PATTERN : fileNamePattern);
+
+        // Bean Validator
+        Validator validator = validationFactory.getValidator();
+
+        // シナリオ解析エラー
+        final List<ScenarioParseError> errors = new ArrayList<>();
 
         FileVisitor<Path> visitor = new SimpleFileVisitor<Path>() {
             @Override
             public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
 
+                Matcher fileNameMatcher = scenarioFileNamePattern.matcher(file.getFileName().toString());
+
+                if (!fileNameMatcher.matches()) {
+                    log.debug("skip file: {}, scenario file must be name pattern: {}", file, fileNamePattern == null ? FILENAME_REGEXP_PATTERN : fileNamePattern);
+                    return FileVisitResult.CONTINUE;
+                }
+
                 log.debug("visit file: {}", file);
 
                 T3Base t3Base = null;
                 try {
+
+                    // YAML -> Object
                     t3Base = context.getObjectMapper().readValue(file.toFile(), T3Base.class);
 
-                    ValidatorFactory avf =
-                            Validation.byProvider(ApacheValidationProvider.class).configure().buildValidatorFactory();
+                    // Bean Validation
+                    Set<ConstraintViolation<T3Base>> validationErrors = validator.validate(t3Base);
 
-                    Set<ConstraintViolation<T3Base>> re = avf.getValidator().validate(t3Base);
-                    System.out.println(re);
-
-
-//                    for (Process process : t3Base.getProcesses()) {
-//                        Set<ConstraintViolation<Process>> re2 = avf.getValidator().validate(process);
-//                        System.out.println(re2);
-//                    }
-
+                    validationErrors.stream().forEach(
+                            x -> {
+                                errors.add(ScenarioParseError.builder()
+                                        .filePath(file)
+                                        .type(ScenarioPaseErrorType.VALIDATION_ERROR)
+                                        .message(x.getMessage())
+                                        .target(x.getPropertyPath().toString())
+                                        .value(x.getInvalidValue())
+                                        .build());
+                            });
 
                 } catch (JsonParseException | JsonMappingException e) {
                     log.warn("file is not t3 format: {} -> ignore...", file);
+                    errors.add(ScenarioParseError.builder().filePath(file).type(ScenarioPaseErrorType.PARSE_ERROR).message("").build());
                     return FileVisitResult.CONTINUE;
                 }
 
@@ -141,7 +172,12 @@ public final class BaseOriginalHoldParser implements IndividualTargetParser {
         try {
             Files.walkFileTree(Paths.get(context.getOption().getRootPath()), visitor);
         } catch (IOException e) {
-            throw new ScenarioParseException(e);
+            throw new SystemException(e);
+        } finally {
+            // シナリオに大してなんらかの不備ある場合は、この時点でエラーとする.
+            if (!errors.isEmpty()) {
+                throw new ScenarioParseException(errors);
+            }
         }
 
     }

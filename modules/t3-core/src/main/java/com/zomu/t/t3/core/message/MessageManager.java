@@ -1,4 +1,4 @@
-package com.zomu.t.t3.core.util.message;
+package com.zomu.t.t3.core.message;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -49,6 +49,16 @@ public final class MessageManager {
     }
 
     /**
+     * メッセージフォーマットを取得する.
+     *
+     * @param messages
+     * @return
+     */
+    private MessageFormat getMessageFormat(Messages messages) {
+        return new MessageFormat(resolver.getMessage(messages.getMessageCode()));
+    }
+
+    /**
      * メッセージを取得する.
      *
      * @param messageCode
@@ -56,6 +66,17 @@ public final class MessageManager {
      */
     public String getMessage(String messageCode) {
         return getMessageFormat(messageCode).format(null);
+    }
+
+
+    /**
+     * メッセージを取得する.
+     *
+     * @param messages
+     * @return
+     */
+    public String getMessage(Messages messages) {
+        return getMessageFormat(messages.getMessageCode()).format(null);
     }
 
     /**
@@ -72,12 +93,34 @@ public final class MessageManager {
     /**
      * メッセージを取得する.
      *
+     * @param messages
+     * @param params
+     * @return
+     */
+    public String getMessage(Messages messages, Object... params) {
+        return getMessageFormat(messages.getMessageCode()).format(params);
+    }
+
+    /**
+     * メッセージを取得する.
+     *
      * @param messageCode
      * @param params
      * @return
      */
     public String getMessageWithCode(String messageCode, Object... params) {
         return "[" + messageCode + "] " + getMessageFormat(messageCode).format(params);
+    }
+
+    /**
+     * メッセージを取得する.
+     *
+     * @param messages
+     * @param params
+     * @return
+     */
+    public String getMessageWithCode(Messages messages, Object... params) {
+        return "[" + messages.getMessageCode() + "] " + getMessageFormat(messages.getMessageCode()).format(params);
     }
 
 

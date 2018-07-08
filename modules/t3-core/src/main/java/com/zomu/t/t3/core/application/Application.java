@@ -7,7 +7,9 @@ import com.zomu.t.t3.core.type.Args;
 import com.zomu.t.t3.core.type.ExitCode;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.cli.*;
+import org.apache.commons.io.FileUtils;
 
+import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Method;
 import java.util.Arrays;
@@ -33,6 +35,10 @@ public class Application {
 
 
     public static void main(String[] args) throws IOException {
+
+
+        outputBanner();
+
 
         args = new String[]{
                 "-v", "v1.0",
@@ -94,6 +100,20 @@ public class Application {
             // 存在していないならエラーとする
             log.error("unknown tool version: {}", version);
             System.exit(ExitCode.ERROR.getExitCode());
+        }
+
+    }
+
+
+    private static void outputBanner() {
+
+        ClassLoader classLoader = Application.class.getClassLoader();
+        File file = new File(classLoader.getResource("banners/banner.txt").getFile());
+        try {
+            String banner = FileUtils.readFileToString(file);
+            System.out.println(banner);
+        } catch (IOException e) {
+            // ignore
         }
 
     }

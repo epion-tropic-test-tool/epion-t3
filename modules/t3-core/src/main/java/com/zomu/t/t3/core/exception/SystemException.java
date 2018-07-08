@@ -1,6 +1,7 @@
 package com.zomu.t.t3.core.exception;
 
-import com.zomu.t.t3.core.util.message.MessageManager;
+import com.zomu.t.t3.core.message.MessageManager;
+import com.zomu.t.t3.core.message.Messages;
 
 /**
  * @author takashno
@@ -11,8 +12,16 @@ public class SystemException extends RuntimeException {
         super(MessageManager.getInstance().getMessage(messageCode), t);
     }
 
+    public SystemException(Throwable t, Messages messages) {
+        super(MessageManager.getInstance().getMessage(messages.getMessageCode()), t);
+    }
+
     public SystemException(Throwable t, String messageCode, Object... objects) {
         super(MessageManager.getInstance().getMessage(messageCode, objects), t);
+    }
+
+    public SystemException(Throwable t, Messages messages, Object... objects) {
+        super(MessageManager.getInstance().getMessage(messages.getMessageCode(), objects), t);
     }
 
     public SystemException(Throwable t) {
@@ -23,8 +32,16 @@ public class SystemException extends RuntimeException {
         super(MessageManager.getInstance().getMessageWithCode(messageCode));
     }
 
+    public SystemException(Messages messages) {
+        super(MessageManager.getInstance().getMessageWithCode(messages.getMessageCode()));
+    }
+
     public SystemException(String messageCode, Object... objects) {
         super(MessageManager.getInstance().getMessageWithCode(messageCode, objects));
+    }
+
+    public SystemException(Messages messages, Object... objects) {
+        super(MessageManager.getInstance().getMessageWithCode(messages.getMessageCode(), objects));
     }
 
 }

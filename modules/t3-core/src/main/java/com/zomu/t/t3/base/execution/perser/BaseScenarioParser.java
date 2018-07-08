@@ -6,10 +6,10 @@ import com.zomu.t.t3.core.execution.parser.ScenarioParser;
 import lombok.extern.slf4j.Slf4j;
 
 /**
- *
+ * シナリオ解析処理.
  */
 @Slf4j
-public final class BaseScenarioParser implements ScenarioParser {
+public final class BaseScenarioParser implements ScenarioParser<BaseContext> {
 
     /**
      * インスタンス.
@@ -35,19 +35,14 @@ public final class BaseScenarioParser implements ScenarioParser {
      * @param context
      */
     @Override
-    public void parse(Context context) {
-
-        // コンテキストの生成
-        BaseContext baseContext = BaseContext.class.cast(context);
+    public void parse(BaseContext context) {
 
         // カスタム定義の解析
-        BaseCustomParser.getInstance().parse(baseContext);
+        BaseCustomParser.getInstance().parse(context);
 
         // オリジナルの解析
         // 全シナリオファイルをここで一度解析する
-        BaseOriginalHoldParser.getInstance().parse(baseContext);
-
-
+        BaseOriginalHoldParser.getInstance().parse(context);
 
     }
 

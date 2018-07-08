@@ -14,7 +14,7 @@ processes:
   - id: process-001
     summary : File Copy Command.
     description: File Copy Command Sample Process.
-    command: FileCopy
+    command: "FileCopy"
     from: /from
     to: /to
   - id: process-002

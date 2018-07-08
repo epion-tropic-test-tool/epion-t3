@@ -7,12 +7,12 @@ import com.zomu.t.t3.core.context.Context;
  *
  * @author takashno
  */
-public interface IndividualTargetParser {
+public interface IndividualTargetParser<C extends Context> {
 
 
-    void parse(final Context context);
+    void parse(final C context);
 
-    void parse(final Context context, final String fileNamePattern);
+    void parse(final C context, final String fileNamePattern);
 
 
 }

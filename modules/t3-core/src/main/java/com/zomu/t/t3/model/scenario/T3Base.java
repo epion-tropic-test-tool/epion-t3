@@ -25,7 +25,8 @@ public class T3Base implements Serializable {
 
     private List<Flow> flows = new ArrayList<>();
 
-    @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.EXISTING_PROPERTY, property = "command")
+    // visible属性を「true」にしないとパースした際に値が設定されないらしい
+    @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.EXISTING_PROPERTY, property = "command", visible = true)
     @JsonTypeIdResolver(CommandTypeIdResolver.class)
     @Valid
     private List<Process> processes = new ArrayList<>();

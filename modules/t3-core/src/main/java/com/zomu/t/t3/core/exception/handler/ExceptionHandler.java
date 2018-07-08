@@ -1,7 +1,9 @@
 package com.zomu.t.t3.core.exception.handler;
 
-public interface ExceptionHandler {
+import com.zomu.t.t3.core.context.Context;
 
-    void handle(Throwable t);
+public interface ExceptionHandler<C extends Context> {
+
+    void handle(final C context, final Throwable t);
 
 }

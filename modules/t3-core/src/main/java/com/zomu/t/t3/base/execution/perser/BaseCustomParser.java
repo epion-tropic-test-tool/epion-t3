@@ -6,8 +6,11 @@ import com.zomu.t.t3.core.annotation.Command;
 import com.zomu.t.t3.core.context.CommandInfo;
 import com.zomu.t.t3.core.context.Context;
 import com.zomu.t.t3.core.exception.ScenarioParseException;
+import com.zomu.t.t3.core.exception.SystemException;
+import com.zomu.t.t3.core.exception.bean.ScenarioParseError;
 import com.zomu.t.t3.core.execution.parser.IndividualTargetParser;
 import com.zomu.t.t3.core.holder.CustomConfigHolder;
+import com.zomu.t.t3.core.type.ScenarioPaseErrorType;
 import com.zomu.t.t3.model.scenario.Process;
 import com.zomu.t.t3.model.scenario.T3Base;
 import lombok.extern.slf4j.Slf4j;
@@ -28,14 +31,14 @@ import java.util.stream.Collectors;
 public final class BaseCustomParser implements IndividualTargetParser {
 
     /**
-     * インスタンス.
+     * シングルトンインスタンス.
      */
     private static final BaseCustomParser instance = new BaseCustomParser();
 
     /**
      * カスタム機能定義のファイルパターン（正規表現）.
      */
-    public static final String CUSTOM_FILENAME_REGEXP_PATTERN = ".*[\\-]?custom.yaml";
+    public static final String CUSTOM_FILENAME_REGEXP_PATTERN = "t3_.*[\\-]?custom.yaml";
 
     /**
      * プライベートコンストラクタ.
@@ -87,11 +90,11 @@ public final class BaseCustomParser implements IndividualTargetParser {
                 try {
                     context.getOriginal().getCustom().getPackages().putAll(context.getObjectMapper().readValue(x.toFile(), T3Base.class).getCustoms().getPackages());
                 } catch (IOException e) {
-                    throw new ScenarioParseException(e);
+                    throw new ScenarioParseException(ScenarioParseError.builder().filePath(x).type(ScenarioPaseErrorType.PARSE_ERROR).message("Custom Package Config Parse Error Occurred.").build());
                 }
             });
         } catch (IOException e) {
-            throw new ScenarioParseException(e);
+            throw new SystemException(e);
         }
 
     }
@@ -117,7 +120,7 @@ public final class BaseCustomParser implements IndividualTargetParser {
                         .map(info -> info.load())
                         .collect(Collectors.toSet());
             } catch (IOException e) {
-                throw new ScenarioParseException(e);
+                throw new SystemException(e);
             }
 
             // カスタムコマンドを解析
@@ -132,7 +135,7 @@ public final class BaseCustomParser implements IndividualTargetParser {
                         t3ContextV10.getCustomCommands().put(command.id(), commandInfo);
                     });
 
-            // 他機能のカスタムがあれば随時追加
+            // >>他機能のカスタムがあれば随時追加<<
 
             log.debug("end parse custom function packages -> {}:{}", entry.getKey(), entry.getValue());
         }

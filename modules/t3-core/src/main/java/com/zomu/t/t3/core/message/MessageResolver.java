@@ -1,4 +1,4 @@
-package com.zomu.t.t3.core.util.message;
+package com.zomu.t.t3.core.message;
 
 import com.google.common.reflect.ClassPath;
 import com.zomu.t.t3.core.exception.MessageNotFoundException;

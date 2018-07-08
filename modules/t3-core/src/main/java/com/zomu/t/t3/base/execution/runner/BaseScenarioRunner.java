@@ -1,5 +1,6 @@
 package com.zomu.t.t3.base.execution.runner;
 
+import com.zomu.t.t3.base.message.BaseMessages;
 import com.zomu.t.t3.core.exception.SystemException;
 import com.zomu.t.t3.base.context.BaseContext;
 import com.zomu.t.t3.core.context.execute.ExecuteProcess;
@@ -40,7 +41,7 @@ public class BaseScenarioRunner implements com.zomu.t.t3.core.execution.runner.S
         // 存在チェック
         if (context.getExecute() == null || context.getExecute().getScenarios() == null) {
             // システムエラー扱い（きちんとしたルートでの実行ではない）
-            throw new SystemException("com.zomu.t.t3.err.9001");
+            throw new SystemException(BaseMessages.BASE_ERR_9001);
         }
 
 

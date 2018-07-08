@@ -1,17 +1,26 @@
 package com.zomu.t.t3.core.exception;
 
+import com.zomu.t.t3.core.exception.bean.ScenarioParseError;
+import lombok.Getter;
+
+import java.util.ArrayList;
+import java.util.List;
+
 public class ScenarioParseException extends RuntimeException {
 
-    public ScenarioParseException(String message, Throwable t) {
-        super(message, t);
+    @Getter
+    private List<ScenarioParseError> errors;
+
+    public ScenarioParseException(List<ScenarioParseError> errors) {
+        super("Scenario Parse Error Occurred.");
+        this.errors = errors;
     }
 
-    public ScenarioParseException(Throwable t) {
-        super(t);
+    public ScenarioParseException(ScenarioParseError error) {
+        super("Scenario Parse Error Occurred.");
+        errors = new ArrayList<>();
+        errors.add(error);
     }
 
-    public ScenarioParseException(String message) {
-        super(message);
-    }
 
 }

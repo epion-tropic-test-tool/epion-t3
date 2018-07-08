@@ -1,6 +1,7 @@
 package com.zomu.t.t3.base.execution.runner;
 
 import com.zomu.t.t3.base.context.BaseContext;
+import com.zomu.t.t3.base.exception.handler.BaseExceptionHandler;
 import com.zomu.t.t3.base.execution.perser.BaseScenarioParser;
 import com.zomu.t.t3.core.annotation.ApplicationVersion;
 import com.zomu.t.t3.core.context.Context;
@@ -24,7 +25,7 @@ import java.util.Arrays;
 
 @ApplicationVersion(version = "v1.0")
 @Slf4j
-public class BaseApplicationRunner implements com.zomu.t.t3.core.execution.runner.ApplicationRunner {
+public class BaseApplicationRunner implements com.zomu.t.t3.core.execution.runner.ApplicationRunner<BaseContext> {
 
     /**
      * CLIオプション.
@@ -33,7 +34,7 @@ public class BaseApplicationRunner implements com.zomu.t.t3.core.execution.runne
 
     static {
         // 引数定義をCLIオプション化する
-        // v1.0については、coreをそのまま引き継ぐ
+        // Base(v1.0)については、coreをそのまま引き継ぐ
         Arrays.stream(Args.values()).forEach(
                 x -> {
                     if (x.isRequired()) {
@@ -61,33 +62,43 @@ public class BaseApplicationRunner implements com.zomu.t.t3.core.execution.runne
         // コンテキストの生成
         BaseContext context = new BaseContext();
 
-        // 引数設定
-        setOptions(context, cmd);
+        try {
+            // 引数設定
+            setOptions(context, cmd);
 
-        // シナリオの解析（パース処理）
-        BaseScenarioParser.getInstance().parse(context);
+            // シナリオの解析（パース処理）
+            BaseScenarioParser.getInstance().parse(context);
 
-        // 実行シナリオの選択
-        T3Base scenario = context.getOriginal().getScenarios().get(context.getOption().getTarget());
+            // 実行シナリオの選択
+            T3Base scenario = context.getOriginal().getScenarios().get(context.getOption().getTarget());
 
-        if (scenario == null) {
-            throw new ScenarioNotFoundException(context.getOption().getTarget());
+            if (scenario == null) {
+                throw new ScenarioNotFoundException(context.getOption().getTarget());
+            }
+
+            // 実行フローの構築
+            buildExecuteScenario(context, scenario);
+
+            // 実行シナリオのコンパイル
+            scenarioCompile(context);
+
+            // プロファイルの値をバインド
+            bindProfileValues(context);
+
+            // 実行
+            BaseScenarioRunner scenarioRunner = new BaseScenarioRunner();
+            scenarioRunner.execute(context);
+        } catch (Throwable t) {
+            handleGlobalException(context, t);
         }
 
-        // 実行フローの構築
-        buildExecuteScenario(context, scenario);
+    }
 
-        // 実行シナリオのコンパイル
-        scenarioCompile(context);
+    @Override
+    public void handleGlobalException(final BaseContext context, final Throwable t) {
 
-        // プロファイルの値をバインド
-        bindProfileValues(context);
+        BaseExceptionHandler.getInstance().handle(context, t);
 
-        // 実行
-        BaseScenarioRunner scenarioRunner = new BaseScenarioRunner();
-        scenarioRunner.execute(context);
-
-        System.out.println(scenario);
     }
 
     /**
