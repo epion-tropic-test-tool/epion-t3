@@ -5,11 +5,16 @@ import com.zomu.t.t3.core.execution.runner.CommandRunner;
 import com.zomu.t.t3.base.context.BaseContext;
 import com.zomu.t.t3.core.context.execute.ExecuteProcess;
 import com.zomu.t.t3.core.context.execute.ExecuteScenario;
+import com.zomu.t.t3.core.holder.ProcessLog;
+import com.zomu.t.t3.core.holder.ProcessLoggingHolder;
 import com.zomu.t.t3.core.type.ProcessStatus;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.SerializationUtils;
+import org.slf4j.LoggerFactory;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Slf4j
 public class BaseProcessRunner implements com.zomu.t.t3.core.execution.runner.ProcessRunner<BaseContext, ExecuteScenario, ExecuteProcess> {
@@ -35,14 +40,13 @@ public class BaseProcessRunner implements com.zomu.t.t3.core.execution.runner.Pr
             // コマンド実行
             runner.execute(executeProcess.getProcess(),
                     context.getExecuteContext().getGlobalVariables(),
-                    executeScenario.getScenarioVariables());
+                    executeScenario.getScenarioVariables(),
+                    LoggerFactory.getLogger("ProcessLog"));
 
             // プロセス成功
-            executeProcess.setStatus(ProcessStatus.SUUCESS);
+            executeProcess.setStatus(ProcessStatus.SUCCESS);
 
         } catch (Throwable t) {
-
-            t.printStackTrace();
 
             // 発生したエラーを設定
             executeProcess.setError(t);
@@ -60,6 +64,13 @@ public class BaseProcessRunner implements com.zomu.t.t3.core.execution.runner.Pr
 
             // プロセス終了ログ出力
             outputEndProcessLog(context, executeScenario, executeProcess);
+
+            // プロセスのログを収集
+            List<ProcessLog> processLogs = SerializationUtils.clone(ProcessLoggingHolder.get());
+
+            executeProcess.setProcessLogs(processLogs);
+
+            ProcessLoggingHolder.clear();
 
         }
 
@@ -114,7 +125,7 @@ public class BaseProcessRunner implements com.zomu.t.t3.core.execution.runner.Pr
         sb.append(executeProcess.getStatus().name());
         sb.append("\n");
         sb.append("--------------------------------------------------------------------------------------");
-        if (executeProcess.getStatus() == ProcessStatus.SUUCESS) {
+        if (executeProcess.getStatus() == ProcessStatus.SUCCESS) {
             log.info(sb.toString());
         } else if (executeProcess.getStatus() == ProcessStatus.FAIL) {
             log.error(sb.toString());

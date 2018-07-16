@@ -29,6 +29,7 @@ public final class BaseExceptionHandler implements ExceptionHandler<BaseContext>
 
         MessageManager messageManager = MessageManager.getInstance();
 
+        t.printStackTrace();
 
         if (ScenarioParseException.class.isAssignableFrom(t.getClass())) {
             ScenarioParseException spe = ScenarioParseException.class.cast(t);

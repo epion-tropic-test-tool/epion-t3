@@ -12,12 +12,14 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum ProcessStatus {
 
-    WAIT,
+    WAIT("table-secondary"),
 
-    RUNNING,
+    RUNNING("table-info"),
 
-    SUUCESS,
+    SUCCESS("table-success"),
 
-    FAIL;
+    FAIL("table-danger");
+
+    private String cssClass;
 
 }

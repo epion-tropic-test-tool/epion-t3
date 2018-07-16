@@ -5,12 +5,20 @@ import com.zomu.t.t3.core.context.CommandInfo;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+/**
+ *
+ */
 public final class CustomConfigHolder {
 
 
     private static final Map<String, String> customPackages = new ConcurrentHashMap<>();
 
     private static final Map<String, CommandInfo> customCommands = new ConcurrentHashMap<>();
+
+
+    private CustomConfigHolder() {
+        // Do Nothing...
+    }
 
 
     public static void addCustomPackage(String customName, String packageaName) {

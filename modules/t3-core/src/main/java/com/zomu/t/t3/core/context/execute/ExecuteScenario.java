@@ -30,6 +30,12 @@ public class ExecuteScenario implements Serializable {
     private Information info;
 
     /**
+     * 完全シナリオ名称.
+     * Full Query Scenario Name.
+     */
+    private String fqsn;
+
+    /**
      * ステータス.
      */
     private ScenarioExecuteStatus status = ScenarioExecuteStatus.WAIT;
@@ -68,5 +74,10 @@ public class ExecuteScenario implements Serializable {
      * 実行結果ディレクトリパス.
      */
     private Path resultPath;
+
+    /**
+     * 実行結果-エビデンス格納パス.
+     */
+    private Path evidencePath;
 
 }

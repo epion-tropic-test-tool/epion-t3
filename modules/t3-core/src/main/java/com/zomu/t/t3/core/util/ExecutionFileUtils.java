@@ -10,7 +10,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 /**
@@ -21,7 +20,16 @@ public final class ExecutionFileUtils {
     /**
      * 結果ディレクトリのフォーマット.
      */
-    private static final DateTimeFormatter DTF = DateTimeFormatter.ofPattern("yyyyMMdd-HHmmss");
+    public static final DateTimeFormatter DTF = DateTimeFormatter.ofPattern("yyyyMMdd-HHmmss");
+
+    /**
+     * エビデンス格納ディレクトリ名.
+     */
+    public static final String EVIDENCE_DIR_NAME = "evidence";
+
+    private ExecutionFileUtils() {
+        // Do Nothing...
+    }
 
     /**
      * @param context
@@ -65,6 +73,15 @@ public final class ExecutionFileUtils {
 
             Files.createDirectories(resultPath);
             scenario.setResultPath(resultPath);
+
+            Path evidencePath = Paths.get(
+                    scenario.getResultPath().toFile().getPath()
+                            + File.separator
+                            + EVIDENCE_DIR_NAME);
+
+            Files.createDirectories(evidencePath);
+            scenario.setEvidencePath(evidencePath);
+
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -72,6 +89,10 @@ public final class ExecutionFileUtils {
 
     public static Path getAllReportPath(Context context) {
         return Paths.get(context.getExecuteContext().getResultRootPath() + File.separator + "report.html");
+    }
+
+    public static Path getAllReportYamlPath(Context context) {
+        return Paths.get(context.getExecuteContext().getResultRootPath() + File.separator + "report.yaml");
     }
 
     public static Path getScenarioReportPath(final Context context, final ExecuteScenario scenario) {

@@ -7,12 +7,17 @@ import com.zomu.t.t3.core.exception.SystemException;
 import com.zomu.t.t3.base.context.BaseContext;
 import com.zomu.t.t3.core.context.execute.ExecuteProcess;
 import com.zomu.t.t3.core.context.execute.ExecuteScenario;
+import com.zomu.t.t3.core.message.CoreMessages;
+import com.zomu.t.t3.core.type.ProcessStatus;
 import com.zomu.t.t3.core.type.ScenarioExecuteStatus;
 import com.zomu.t.t3.core.util.ExecutionFileUtils;
+import com.zomu.t.t3.model.scenario.Process;
 import lombok.extern.slf4j.Slf4j;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
+import java.time.temporal.TemporalUnit;
 
 /**
  * @author takashno
@@ -73,7 +78,24 @@ public class BaseScenarioRunner implements com.zomu.t.t3.core.execution.runner.S
 
             for (ExecuteProcess process : scenario.getProcesses()) {
                 this.processRunner.execute(context, scenario, process);
+
+                if (process.getStatus() != ProcessStatus.SUCCESS) {
+                    scenario.setStatus(ScenarioExecuteStatus.FAIL);
+                    return;
+                }
+
             }
+
+            // プロセス成功
+            scenario.setStatus(ScenarioExecuteStatus.SUUCESS);
+
+        } catch (Throwable t) {
+
+            // 発生したエラーを設定
+            scenario.setError(t);
+
+            // シナリオ失敗
+            scenario.setStatus(ScenarioExecuteStatus.FAIL);
 
         } finally {
             // シナリオ実行終了時間を設定

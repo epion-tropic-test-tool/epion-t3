@@ -153,6 +153,13 @@
     </appender>
     -->
 
+    <appender name="PROCESS_LOG" class="com.zomu.t.t3.core.logging.appender.ProcessLoggingAppender"/>
+
+    <logger name="ProcessLog" level="DEBUG" additivity="false">
+        <appender-ref ref="STDOUT"/>
+        <appender-ref ref="PROCESS_LOG"/>
+    </logger>
+
     <logger name="com.zomu.t.t3.core" level="DEBUG" additivity="false">
         <appender-ref ref="STDOUT"/>
     </logger>
@@ -163,7 +170,7 @@
 
 
     <root level="INFO">
-        <appender-ref ref="STDOUT" />
+        <appender-ref ref="STDOUT"/>
     </root>
 
 </configuration>

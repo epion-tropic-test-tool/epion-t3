@@ -118,7 +118,11 @@ public class BaseApplicationRunner implements com.zomu.t.t3.core.execution.runne
                             context.getExecuteContext().getEnd()));
 
             // レポート出力
-            report(context);
+            try {
+                report(context);
+            } catch (Throwable t) {
+                t.printStackTrace();
+            }
         }
 
         return context.getExecuteContext().getExitCode().getExitCode();
@@ -192,6 +196,7 @@ public class BaseApplicationRunner implements com.zomu.t.t3.core.execution.runne
 
                         // process実行情報を作成
                         ExecuteProcess executeProcess = new ExecuteProcess();
+                        executeProcess.setFqpn(f.getRef());
                         executeProcess.setProcess(cloneProcess);
 
                         // プロセスが属するシナリオのIDを取得
@@ -288,7 +293,7 @@ public class BaseApplicationRunner implements com.zomu.t.t3.core.execution.runne
     private void report(final BaseContext context) {
 
         // レポーターに処理を移譲
-        BaseScenarioReporter.getInstance().report(context);
+        BaseScenarioReporter.getInstance().allReport(context);
 
     }
 }

@@ -25,5 +25,6 @@ public class FileCopy extends Process {
      * コピー先パス.
      */
     private String to;
+    
 
 }

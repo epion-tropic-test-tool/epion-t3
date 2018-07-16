@@ -22,6 +22,12 @@
 
 <main role="main" class="container">
 
+
+    <nav class="breadcrumb">
+        <a class="breadcrumb-item" href="./report.html" th:href="'../report.html'">All</a>
+        <a class="breadcrumb-item" href="#">Scenario</a>
+    </nav>
+
     <!-- Execute Scenario Information. -->
     <section class="row">
         <div class="col-md-12">
@@ -42,27 +48,28 @@
                 </tr>
                 <tr>
                     <th class="bg-dark" style="color:white">Description</th>
-                    <td th:text="${executeScenario.info.description}">This is a typical example scenario of the tool.</td>
+                    <td th:text="${executeScenario.info.description}">This is a typical example scenario of the tool.
+                    </td>
                 </tr>
                 <tr>
-                    <th class="bg-dark" style="color:white">Execution ID</th>
+                    <th class="bg-dark" style="color:white">Execution&nbsp;ID</th>
                     <td th:text="${executeScenario.executeScenarioId}">fef4d139-a550-490a-8365-9fd26ce3f871</td>
                 </tr>
                 <tr>
                     <th class="bg-dark" style="color:white">Status</th>
-                    <td th:text="${executeScenario.status}">SUCCESS</td>
+                    <td th:text="${executeScenario.status}" th:class="${executeScenario.status.getCssClass()}">SUCCESS</td>
                 </tr>
                 <tr>
                     <th class="bg-dark" style="color:white">Start</th>
-                    <td th:text="${executeScenario.start}">2018/09/01 12:12:12</td>
+                    <td th:text="${dateTimeUtils.formatNormal(executeScenario.start)}">2018/09/01 12:12:12</td>
                 </tr>
                 <tr>
                     <th class="bg-dark" style="color:white">End</th>
-                    <td th:text="${executeScenario.end}">2018/09/01 12:12:12</td>
+                    <td th:text="${dateTimeUtils.formatNormal(executeScenario.end)}">2018/09/01 12:12:12</td>
                 </tr>
                 <tr>
-                    <th class="bg-dark" style="color:white">Duration</th>
-                    <td th:text="${executeScenario.duration}">2018/09/01 12:12:12</td>
+                    <th class="bg-dark" style="color:white">Duration&nbsp;(ms)</th>
+                    <td th:text="${dateTimeUtils.getMillis(executeScenario.start, executeScenario.end)}">1</td>
                 </tr>
                 </tbody>
             </table>
@@ -71,6 +78,7 @@
     </section>
 
     <!-- Message Area. -->
+    <!--
     <section class="row" style="margin-top:20px">
         <div class="col-md-12">
             <div class="alert alert-danger" role="alert">
@@ -78,6 +86,7 @@
             </div>
         </div>
     </section>
+    -->
 
     <section class="row" style="margin-top:20px">
         <div class="col-md-12">
@@ -85,35 +94,35 @@
             <table class="table table-bordered table-hover table-striped">
                 <thead class="bg-dark" style="color:white">
                 <tr>
-                    <th scope="col">Execution ID</th>
+                    <th scope="col">Process&nbsp;ID</th>
                     <th scope="col">Status</th>
                     <th scope="col">Start</th>
                     <th scope="col">End</th>
-                    <th scope="col">Duration</th>
+                    <th scope="col">Duration&nbsp;(ms)</th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr th:each="process,stat : ${executeScenario.processes}">
-                    <th scope="row"><a href="" th:text="${process.executeProcessId}">fef4d139-a550-490a-8365-9fd26ce3f871</a>
+                    <th scope="row"><a href="#execution-id" th:href="${#strings.concat('#',process.executeProcessId)}" th:text="${process.fqpn}">fef4d139-a550-490a-8365-9fd26ce3f871</a>
                     </th>
-                    <td class="table-success" th:text="${process.status}">SUCCESS</td>
+                    <td class="table-success" th:text="${process.status}" th:class="${process.status.getCssClass()}">SUCCESS</td>
                     <td th:text="${process.start}">2018/09/01 12:12:12</td>
                     <td th:text="${process.end}">2018/09/01 12:12:12</td>
-                    <td th:text="${process.duration}">2018/09/01 12:12:12</td>
+                    <td th:text="${dateTimeUtils.getMillis(process.start,process.end)}">1</td>
                 </tr>
                 <tr th:remove="all">
                     <th scope="row">fef4d139-a550-490a-8365-9fd26ce3f871</th>
                     <td class="table-danger">ERROR</td>
                     <td>2018/09/01 12:12:12</td>
                     <td>2018/09/01 12:12:12</td>
-                    <td th:text="${process.duration}">2018/09/01 12:12:12</td>
+                    <td>2</td>
                 </tr>
                 <tr th:remove="all">
                     <th scope="row">fef4d139-a550-490a-8365-9fd26ce3f871</th>
                     <td class="table-warning">WARN</td>
                     <td>2018/09/01 12:12:12</td>
                     <td>2018/09/01 12:12:12</td>
-                    <td th:text="${process.duration}">2018/09/01 12:12:12</td>
+                    <td>3</td>
                 </tr>
                 </tbody>
             </table>
@@ -145,6 +154,139 @@
             </table>
         </div>
     </section>
+
+    <section class="row" style="margin-top:20px">
+        <div class="col-md-12">
+            <h2>Process Details</h2>
+            <p>* : Extension Process Parameter</p>
+            <div class="row" th:each="executeProcess,stat : ${executeScenario.processes}">
+                <div class="col-md-12">
+                    <table class="table table-sm table-bordered" id="execution-id" th:id="${executeProcess.executeProcessId}">
+                        <tbody>
+                        <tr>
+                            <th class="bg-dark" style="color:white">ID</th>
+                            <td th:text="${executeProcess.fqpn}" colspan="3">sample-scenario-001</td>
+                        </tr>
+                        <!--
+                        <tr>
+                            <th class="bg-dark" style="color:white">Belong</th>
+                            <td th:text="${executeProcess.process.id}" colspan="3">sample-scenario-001</td>
+                        </tr>
+                        -->
+                        <tr>
+                            <th class="bg-dark" style="color:white">Summary</th>
+                            <td th:text="${executeProcess.process.summary}" colspan="3">Sample Scenario 001</td>
+                        </tr>
+                        <tr>
+                            <th class="bg-dark" style="color:white">Description</th>
+                            <td th:text="${executeProcess.process.description}" colspan="3">This is a typical example scenario of the
+                                tool.
+                            </td>
+                        </tr>
+                        <tr>
+                            <th class="bg-dark" style="color:white">Command</th>
+                            <td th:text="${executeProcess.process.command}" colspan="3">FileCopy</td>
+                        </tr>
+                        <tr>
+                            <th class="bg-dark" style="color:white">Target</th>
+                            <td th:text="${executeProcess.process.target}" colspan="3">FileCopy</td>
+                        </tr>
+                        <tr>
+                            <th class="bg-dark" style="color:white">Value</th>
+                            <td th:text="${executeProcess.process.value}" colspan="3">FileCopy</td>
+                        </tr>
+                        <tr th:each="extensionProcessField,stat : ${executeProcess.extensionProcessFields}">
+                            <th class="bg-secondary" style="color:white" th:text="${#strings.concat('* ',extensionProcessField.key)}">ExtensionKey</th>
+                            <td th:text="${extensionProcessField.value}" colspan="3">ExtensionValue</td>
+                        </tr>
+                        <tr>
+                            <th class="bg-dark" style="color:white">Execution&nbsp;ID</th>
+                            <td th:text="${executeProcess.executeProcessId}" colspan="3">fef4d139-a550-490a-8365-9fd26ce3f871</td>
+                        </tr>
+                        <tr>
+                            <th class="bg-dark" style="color:white">Start</th>
+                            <td th:text="${dateTimeUtils.formatNormal(executeProcess.start)}">2018/09/01 12:12:12</td>
+                            <th class="bg-dark" style="color:white">End</th>
+                            <td th:text="${dateTimeUtils.formatNormal(executeProcess.end)}">2018/09/01 12:12:12</td>
+                        </tr>
+                        <tr>
+                            <th class="bg-dark" style="color:white">Status</th>
+                            <td th:text="${executeProcess.status}" th:class="${executeProcess.status.getCssClass()}">SUCCESS</td>
+                            <th class="bg-dark" style="color:white">Duration&nbsp;(ms)</th>
+                            <td th:text="${dateTimeUtils.getMillis(executeProcess.start, executeProcess.end)}">2018/09/01 12:12:12</td>
+                        </tr>
+                        <tr>
+                            <th class="bg-dark" style="color:white">Log</th>
+                            <td colspan="3" style="background:#eee;">
+                                <th:block th:each="processLog : ${executeProcess.processLogs}">
+                                    <span th:text="${#strings.concat(dateTimeUtils.formatNormal(processLog.dateTime),' [',processLog.level,'] ',processLog.message)}"/><br/>
+                                </th:block>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <br/>
+                </div>
+            </div>
+            <div class="row" th:remove="all">
+                <div class="col-md-12">
+                    <table class="table table-sm table-bordered" id="execution-id2">
+                        <tbody>
+                        <tr>
+                            <th class="bg-dark" style="color:white">ID</th>
+                            <td colspan="3">sample-scenario-001</td>
+                        </tr>
+                        <!--
+                        <tr>
+                            <th class="bg-dark" style="color:white">Belong</th>
+                            <td colspan="3">sample-scenario-001</td>
+                        </tr>
+                        -->
+                        <tr>
+                            <th class="bg-dark" style="color:white">Summary</th>
+                            <td colspan="3">Sample Scenario 001</td>
+                        </tr>
+                        <tr>
+                            <th class="bg-dark" style="color:white">Description</th>
+                            <td colspan="3">This is a typical example scenario of the
+                                tool.
+                            </td>
+                        </tr>
+                        <tr>
+                            <th class="bg-dark" style="color:white">Command</th>
+                            <td colspan="3">FileCopy</td>
+                        </tr>
+                        <tr>
+                            <th class="bg-dark" style="color:white">Target</th>
+                            <td colspan="3">FileCopy</td>
+                        </tr>
+                        <tr>
+                            <th class="bg-dark" style="color:white">Value</th>
+                            <td colspan="3">FileCopy</td>
+                        </tr>
+                        <tr>
+                            <th class="bg-dark" style="color:white">Execution&nbsp;ID</th>
+                            <td colspan="3">fef4d139-a550-490a-8365-9fd26ce3f871</td>
+                        </tr>
+                        <tr>
+                            <th class="bg-dark" style="color:white">Start</th>
+                            <td >2018/09/01 12:12:12</td>
+                            <th class="bg-dark" style="color:white">End</th>
+                            <td >2018/09/01 12:12:12</td>
+                        </tr>
+                        <tr>
+                            <th class="bg-dark" style="color:white">Status</th>
+                            <td >SUCCESS</td>
+                            <th class="bg-dark" style="color:white">Duration&nbsp;(ms)</th>
+                            <td >2018/09/01 12:12:12</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+
 
 </main>
 

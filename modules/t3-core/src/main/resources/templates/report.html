@@ -21,6 +21,10 @@
 
 <main role="main" class="container">
 
+    <nav class="breadcrumb">
+        <a class="breadcrumb-item" href="#" th:href="'#'">All</a>
+    </nav>
+
     <!-- Execute Scenario Information. -->
     <section class="row">
         <div class="col-md-12">
@@ -33,19 +37,19 @@
                 </tr>
                 <tr>
                     <th class="bg-dark" style="color:white">Status</th>
-                    <td class="table-success" th:text="${executeContext.status}">SUCCESS</td>
+                    <td class="table-success" th:text="${executeContext.status}" th:class="${executeContext.status.getCssClass()}">SUCCESS</td>
                 </tr>
                 <tr>
                     <th class="bg-dark" style="color:white">Start</th>
-                    <td th:text="${executeContext.start}">2018/09/01 12:12:12</td>
+                    <td th:text="${dateTimeUtils.formatNormal(executeContext.start)}">2018/09/01 12:12:12</td>
                 </tr>
                 <tr>
                     <th class="bg-dark" style="color:white">End</th>
-                    <td th:text="${executeContext.end}">2018/09/01 12:12:12</td>
+                    <td th:text="${dateTimeUtils.formatNormal(executeContext.end)}">2018/09/01 12:12:12</td>
                 </tr>
                 <tr>
                     <th class="bg-dark" style="color:white">Duration</th>
-                    <td th:text="${executeContext.duration}">2018/09/01 12:12:12</td>
+                    <td th:text="${dateTimeUtils.getMillis(executeContext.start, executeContext.end)}">1</td>
                 </tr>
                 </tbody>
             </table>
@@ -54,6 +58,7 @@
     </section>
 
     <!-- Message Area. -->
+    <!--
     <section class="row" style="margin-top:20px">
         <div class="col-md-12">
             <div class="alert alert-danger" role="alert">
@@ -61,6 +66,7 @@
             </div>
         </div>
     </section>
+    -->
 
     <section class="row" style="margin-top:20px">
         <div class="col-md-12">
@@ -68,7 +74,7 @@
             <table class="table table-bordered table-hover table-striped">
                 <thead class="bg-dark" style="color:white">
                 <tr>
-                    <th scope="col">ExecuteId</th>
+                    <th scope="col">Scenario&nbsp;ID</th>
                     <th scope="col">Status</th>
                     <th scope="col">Start</th>
                     <th scope="col">End</th>
@@ -77,12 +83,11 @@
                 </thead>
                 <tbody>
                 <tr th:each="scenario,stat : ${executeContext.scenarios}">
-                    <th scope="row"><a th:href="${#strings.concat('./',scenario.resultPath.getFileName(),'/','scenario_report.html')}" th:text="${scenario.executeScenarioId}">fef4d139-a550-490a-8365-9fd26ce3f871</a>
-                    </th>
-                    <td class="table-success" th:text="${scenario.status}">SUCCESS</td>
-                    <td th:text="${scenario.start}">2018/09/01 12:12:12</td>
-                    <td th:text="${scenario.end}">2018/09/01 12:12:12</td>
-                    <td th:text="${scenario.duration}">2018/09/01 12:12:12</td>
+                    <th scope="row"><a th:href="${#strings.concat('./',scenario.resultPath.getFileName(),'/','scenario_report.html')}" th:text="${scenario.info.id}">scenario-id</a></th>
+                    <td class="table-success" th:text="${scenario.status}" th:class="${scenario.status.getCssClass()}">SUCCESS</td>
+                    <td th:text="${dateTimeUtils.formatNormal(scenario.start)}">2018/09/01 12:12:12</td>
+                    <td th:text="${dateTimeUtils.formatNormal(scenario.end)}">2018/09/01 12:12:12</td>
+                    <td th:text="${dateTimeUtils.getMillis(scenario.start,scenario.end)}">2018/09/01 12:12:12</td>
                 </tr>
                 <tr th:remove="all">
                     <th scope="row">fef4d139-a550-490a-8365-9fd26ce3f871</th>
@@ -124,8 +129,8 @@
                 </thead>
                 <tbody>
                 <tr th:each="globalVariable,stat : ${executeContext.globalVariables}">
-                    <th scope="row"><a href="" th:text="${globalVariable.key}">fef4d139-a550-490a-8365-9fd26ce3f871</a></th>
-                    <td th:text="${globalVariable.value}">2018/09/01 12:12:12</td>
+                    <th scope="row" th:text="${globalVariable.key}">Key</th>
+                    <td th:text="${globalVariable.value}">Value</td>
                 </tr>
                 </tbody>
             </table>
