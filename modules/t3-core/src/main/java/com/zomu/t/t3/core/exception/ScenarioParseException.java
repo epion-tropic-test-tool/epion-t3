@@ -6,6 +6,11 @@ import lombok.Getter;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * シナリオが解析できない例外.
+ *
+ * @author takashno
+ */
 public class ScenarioParseException extends RuntimeException {
 
     @Getter

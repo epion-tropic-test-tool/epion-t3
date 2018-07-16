@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
-    <title>T3-Report</title>
+    <title>Epion-Report</title>
 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css"
           integrity="sha384-Smlep5jCw/wG7hdkwQ/Z5nLIefveQRIY9nfy6xoR1uRYBtpZgI6339F5dgvm/e9B" crossorigin="anonymous">
@@ -15,7 +15,7 @@
 <body>
 
 <nav class="navbar navbar-expand-md navbar-dark bg-dark mb-4">
-    <span class="navbar-brand col-md-11">Through-Test-Tool Reports</span>
+    <span class="navbar-brand col-md-11">Epion-Test-Tool Reports</span>
     <span style="color:#eee">Version:1.0.0</span>
 </nav>
 
@@ -32,7 +32,7 @@
             <table class="table table-sm table-bordered">
                 <tbody>
                 <tr>
-                    <th class="bg-dark" style="color:white">Execution ID</th>
+                    <th class="bg-dark" style="color:white">Execution&nbsp;ID</th>
                     <td th:text="${executeContext.executeContextId}">sample-scenario-001</td>
                 </tr>
                 <tr>
@@ -48,7 +48,7 @@
                     <td th:text="${dateTimeUtils.formatNormal(executeContext.end)}">2018/09/01 12:12:12</td>
                 </tr>
                 <tr>
-                    <th class="bg-dark" style="color:white">Duration</th>
+                    <th class="bg-dark" style="color:white">Duration&nbsp;(ms)</th>
                     <td th:text="${dateTimeUtils.getMillis(executeContext.start, executeContext.end)}">1</td>
                 </tr>
                 </tbody>
@@ -78,7 +78,7 @@
                     <th scope="col">Status</th>
                     <th scope="col">Start</th>
                     <th scope="col">End</th>
-                    <th scope="col">Duration</th>
+                    <th scope="col">Duration&nbsp;(ms)</th>
                 </tr>
                 </thead>
                 <tbody>

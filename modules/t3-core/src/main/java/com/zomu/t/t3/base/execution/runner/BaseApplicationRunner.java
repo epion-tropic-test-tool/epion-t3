@@ -16,6 +16,7 @@ import com.zomu.t.t3.core.execution.runner.ApplicationRunner;
 import com.zomu.t.t3.core.type.Args;
 import com.zomu.t.t3.core.type.ExitCode;
 import com.zomu.t.t3.core.type.FlowType;
+import com.zomu.t.t3.core.type.ScenarioExecuteStatus;
 import com.zomu.t.t3.core.util.ExecutionFileUtils;
 import com.zomu.t.t3.model.scenario.Flow;
 import com.zomu.t.t3.model.scenario.Process;
@@ -104,8 +105,18 @@ public class BaseApplicationRunner implements com.zomu.t.t3.core.execution.runne
             BaseScenarioRunner scenarioRunner = new BaseScenarioRunner();
             scenarioRunner.execute(context);
 
+            // 正常終了
+            context.getExecuteContext().setStatus(ScenarioExecuteStatus.SUUCESS);
+            context.getExecuteContext().setExitCode(ExitCode.NORMAL);
+
         } catch (Throwable t) {
+
+            // シナリオ失敗
+            context.getExecuteContext().setStatus(ScenarioExecuteStatus.FAIL);
+
+            // 例外ハンドリング
             handleGlobalException(context, t);
+
         } finally {
 
             // 終了
@@ -118,11 +129,8 @@ public class BaseApplicationRunner implements com.zomu.t.t3.core.execution.runne
                             context.getExecuteContext().getEnd()));
 
             // レポート出力
-            try {
-                report(context);
-            } catch (Throwable t) {
-                t.printStackTrace();
-            }
+            report(context);
+
         }
 
         return context.getExecuteContext().getExitCode().getExitCode();

@@ -3,7 +3,6 @@ package com.zomu.t.t3.core.util;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.time.temporal.Temporal;
-import java.time.temporal.TemporalUnit;
 
 /**
  * 日付時間関連のユーティリティ.
@@ -32,10 +31,16 @@ public final class DateTimeUtils {
      * @return
      */
     public long getMillis(Temporal start, Temporal end) {
+        if (start == null || end == null) {
+            return 0L;
+        }
         return ChronoUnit.MILLIS.between(start, end);
     }
 
     public String formatNormal(Temporal target) {
+        if (target==null) {
+            return null;
+        }
         return YYYYMMDD_HHMMSS_NORMAL.format(target);
     }
 

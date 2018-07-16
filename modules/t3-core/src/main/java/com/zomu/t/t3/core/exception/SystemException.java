@@ -4,6 +4,8 @@ import com.zomu.t.t3.core.message.MessageManager;
 import com.zomu.t.t3.core.message.Messages;
 
 /**
+ * 汎用システム例外.
+ *
  * @author takashno
  */
 public class SystemException extends RuntimeException {

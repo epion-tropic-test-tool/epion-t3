@@ -12,6 +12,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.SerializationUtils;
 import org.slf4j.LoggerFactory;
 
+import java.io.PrintStream;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -50,6 +53,11 @@ public class BaseProcessRunner implements com.zomu.t.t3.core.execution.runner.Pr
 
             // 発生したエラーを設定
             executeProcess.setError(t);
+            StringWriter sw = new StringWriter();
+            PrintWriter pw = new PrintWriter(sw);
+            t.printStackTrace(pw);
+            pw.flush();
+            executeProcess.setStackTrace(sw.toString());
 
             // プロセス失敗
             executeProcess.setStatus(ProcessStatus.FAIL);
@@ -67,9 +75,9 @@ public class BaseProcessRunner implements com.zomu.t.t3.core.execution.runner.Pr
 
             // プロセスのログを収集
             List<ProcessLog> processLogs = SerializationUtils.clone(ProcessLoggingHolder.get());
-
             executeProcess.setProcessLogs(processLogs);
 
+            // プロセスのログは収集し終えたらクリアする（ThreadLocalにて保持）
             ProcessLoggingHolder.clear();
 
         }

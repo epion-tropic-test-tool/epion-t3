@@ -1,5 +1,10 @@
 package com.zomu.t.t3.core.exception;
 
+/**
+ * プロセスが見つからない例外.
+ *
+ * @author takashno
+ */
 public class ProcessNotFoundException extends RuntimeException {
 
     private String messageCode;

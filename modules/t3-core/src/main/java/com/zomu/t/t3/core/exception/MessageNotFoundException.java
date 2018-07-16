@@ -1,5 +1,10 @@
 package com.zomu.t.t3.core.exception;
 
+/**
+ * メッセージが見つからない例外.
+ *
+ * @author takashno
+ */
 public class MessageNotFoundException extends RuntimeException {
 
     private String messageCode;

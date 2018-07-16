@@ -37,6 +37,8 @@ public class FileCopyRunner implements CommandRunner<FileCopy> {
         } finally {
             logger.info("end FileCopy");
         }
+
+//        throw new RuntimeException("擬似エラー");
     }
 
 }

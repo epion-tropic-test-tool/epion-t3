@@ -56,6 +56,11 @@ public class ExecuteProcess implements Serializable {
     private Throwable error;
 
     /**
+     * スタックトレース（エラー時のみ）.
+     */
+    private String stackTrace;
+
+    /**
      * 対象プロセス.
      */
     @NonNull
