@@ -1,8 +1,10 @@
 package com.zomu.t.t3.base.execution.runner;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.zomu.t.t3.base.context.BaseContext;
 import com.zomu.t.t3.base.exception.handler.BaseExceptionHandler;
 import com.zomu.t.t3.base.execution.perser.BaseScenarioParser;
+import com.zomu.t.t3.base.execution.reporter.BaseScenarioReporter;
 import com.zomu.t.t3.core.annotation.ApplicationVersion;
 import com.zomu.t.t3.core.context.Context;
 import com.zomu.t.t3.core.context.execute.ExecuteContext;
@@ -10,9 +12,11 @@ import com.zomu.t.t3.core.context.execute.ExecuteProcess;
 import com.zomu.t.t3.core.context.execute.ExecuteScenario;
 import com.zomu.t.t3.core.exception.ProcessNotFoundException;
 import com.zomu.t.t3.core.exception.ScenarioNotFoundException;
+import com.zomu.t.t3.core.execution.runner.ApplicationRunner;
 import com.zomu.t.t3.core.type.Args;
 import com.zomu.t.t3.core.type.ExitCode;
 import com.zomu.t.t3.core.type.FlowType;
+import com.zomu.t.t3.core.util.ExecutionFileUtils;
 import com.zomu.t.t3.model.scenario.Flow;
 import com.zomu.t.t3.model.scenario.Process;
 import com.zomu.t.t3.model.scenario.T3Base;
@@ -21,6 +25,8 @@ import org.apache.commons.cli.*;
 import org.apache.commons.lang3.SerializationUtils;
 import org.apache.commons.lang3.StringUtils;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 
 @ApplicationVersion(version = "v1.0")
@@ -47,7 +53,7 @@ public class BaseApplicationRunner implements com.zomu.t.t3.core.execution.runne
     }
 
     @Override
-    public void execute(String[] args) {
+    public int execute(String[] args) {
 
         CommandLineParser parser = new DefaultParser();
         CommandLine cmd = null;
@@ -56,7 +62,7 @@ public class BaseApplicationRunner implements com.zomu.t.t3.core.execution.runne
             cmd = parser.parse(OPTIONS, args);
         } catch (ParseException e) {
             log.error("args error...", e);
-            System.exit(ExitCode.ERROR.getExitCode());
+            return ExitCode.ERROR.getExitCode();
         }
 
         // コンテキストの生成
@@ -82,15 +88,40 @@ public class BaseApplicationRunner implements com.zomu.t.t3.core.execution.runne
             // 実行シナリオのコンパイル
             scenarioCompile(context);
 
+            // 実行コンテキストのクローン生成
+            cloneExecuteContext(context);
+
             // プロファイルの値をバインド
             bindProfileValues(context);
+
+            // 開始
+            context.getExecuteContext().setStart(LocalDateTime.now());
+
+            // 結果ディレクトリの作成
+            createResultDirectory(context);
 
             // 実行
             BaseScenarioRunner scenarioRunner = new BaseScenarioRunner();
             scenarioRunner.execute(context);
+
         } catch (Throwable t) {
             handleGlobalException(context, t);
+        } finally {
+
+            // 終了
+            context.getExecuteContext().setEnd(LocalDateTime.now());
+
+            // 所用時間を設定
+            context.getExecuteContext().setDuration(
+                    Duration.between(
+                            context.getExecuteContext().getStart(),
+                            context.getExecuteContext().getEnd()));
+
+            // レポート出力
+            report(context);
         }
+
+        return context.getExecuteContext().getExitCode().getExitCode();
 
     }
 
@@ -119,6 +150,11 @@ public class BaseApplicationRunner implements com.zomu.t.t3.core.execution.runne
         if (commandLine.hasOption(Args.PROFILE.getShortName())) {
             context.getOption().setProfile(commandLine.getOptionValue(Args.PROFILE.getShortName()));
         }
+
+        // 実行結果出力ディレクトリの取得
+        if (commandLine.hasOption(Args.RESULT_ROOT_PATH.getShortName())) {
+            context.getOption().setResultRootPath(commandLine.getOptionValue(Args.RESULT_ROOT_PATH.getShortName()));
+        }
     }
 
     /**
@@ -130,7 +166,6 @@ public class BaseApplicationRunner implements com.zomu.t.t3.core.execution.runne
         ExecuteScenario executeScenario = new ExecuteScenario();
         executeScenario.setInfo(scenario.getInfo());
         context.getExecuteOriginal().getScenarios().add(executeScenario);
-
 
         for (Flow f : scenario.getFlows()) {
 
@@ -208,7 +243,18 @@ public class BaseApplicationRunner implements com.zomu.t.t3.core.execution.runne
      * @param context
      */
     private void scenarioCompile(final BaseContext context) {
+        // TODO:チェック処理
+    }
 
+    /**
+     * 原本から実行コンテキストへコピーする.
+     *
+     * @param context
+     */
+    private void cloneExecuteContext(final BaseContext context) {
+        // 原本をそのまま残すためクローンする
+        ExecuteContext cloneExecuteContextV10 = SerializationUtils.clone(context.getExecuteOriginal());
+        context.setExecuteContext(cloneExecuteContextV10);
     }
 
     /**
@@ -218,17 +264,31 @@ public class BaseApplicationRunner implements com.zomu.t.t3.core.execution.runne
      */
     private void bindProfileValues(final BaseContext context) {
 
-        // 原本をそのまま残すためクローンする
-        ExecuteContext cloneExecuteContextV10 = SerializationUtils.clone(context.getExecuteOriginal());
-
         if (StringUtils.isNotEmpty(context.getOption().getProfile())) {
-
-            // バインド処理
-
+            // TODO:バインド処理
         }
-
-        context.setExecute(cloneExecuteContextV10);
 
     }
 
+
+    /**
+     * 結果ディレクトリが未作成であった場合に、作成します.
+     *
+     * @param context
+     */
+    private void createResultDirectory(Context context) {
+        ExecutionFileUtils.createResultDirectory(context);
+    }
+
+    /**
+     * レポート出力を行う.
+     *
+     * @param context
+     */
+    private void report(final BaseContext context) {
+
+        // レポーターに処理を移譲
+        BaseScenarioReporter.getInstance().report(context);
+
+    }
 }

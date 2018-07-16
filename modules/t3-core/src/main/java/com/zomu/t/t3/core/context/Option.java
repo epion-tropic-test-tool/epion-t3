@@ -29,6 +29,11 @@ public class Option implements Serializable {
     private String rootPath;
 
     /**
+     * 結果配置ルートパス.
+     */
+    private String resultRootPath;
+
+    /**
      * シナリオ管理ファイルシステム.
      */
     private ScenarioManageFileSystem filesystem = ScenarioManageFileSystem.LOCAL_FILESYSTEM;

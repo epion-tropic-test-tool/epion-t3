@@ -29,11 +29,11 @@ public class BaseContext implements Context {
     private final Original original = new Original();
 
     @Getter
-    private final com.zomu.t.t3.core.context.execute.ExecuteContext executeOriginal = new com.zomu.t.t3.core.context.execute.ExecuteContext();
+    private final ExecuteContext executeOriginal = new ExecuteContext();
 
     @Getter
     @Setter
-    private ExecuteContext execute;
+    private ExecuteContext executeContext;
 
     @Getter
     private final Map<String, CommandInfo> customCommands = new ConcurrentHashMap<>();

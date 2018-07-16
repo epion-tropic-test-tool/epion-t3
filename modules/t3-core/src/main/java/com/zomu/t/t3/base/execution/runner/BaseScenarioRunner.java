@@ -1,11 +1,14 @@
 package com.zomu.t.t3.base.execution.runner;
 
+import com.zomu.t.t3.base.execution.reporter.BaseScenarioReporter;
 import com.zomu.t.t3.base.message.BaseMessages;
+import com.zomu.t.t3.core.context.Context;
 import com.zomu.t.t3.core.exception.SystemException;
 import com.zomu.t.t3.base.context.BaseContext;
 import com.zomu.t.t3.core.context.execute.ExecuteProcess;
 import com.zomu.t.t3.core.context.execute.ExecuteScenario;
 import com.zomu.t.t3.core.type.ScenarioExecuteStatus;
+import com.zomu.t.t3.core.util.ExecutionFileUtils;
 import lombok.extern.slf4j.Slf4j;
 
 import java.time.Duration;
@@ -39,14 +42,14 @@ public class BaseScenarioRunner implements com.zomu.t.t3.core.execution.runner.S
     public void execute(BaseContext context) {
 
         // 存在チェック
-        if (context.getExecute() == null || context.getExecute().getScenarios() == null) {
+        if (context.getExecuteContext() == null || context.getExecuteContext().getScenarios() == null) {
             // システムエラー扱い（きちんとしたルートでの実行ではない）
             throw new SystemException(BaseMessages.BASE_ERR_9001);
         }
 
 
         // 全てのシナリオを実行する
-        for (ExecuteScenario scenario : context.getExecute().getScenarios()) {
+        for (ExecuteScenario scenario : context.getExecuteContext().getScenarios()) {
 
             runScenario(context, scenario);
 
@@ -65,6 +68,9 @@ public class BaseScenarioRunner implements com.zomu.t.t3.core.execution.runner.S
             // シナリオ開始ログ出力
             outputStartScenarioLog(context, scenario);
 
+            // 結果ディレクトリの作成
+            ExecutionFileUtils.createScenarioResultDirectory(context, scenario);
+
             for (ExecuteProcess process : scenario.getProcesses()) {
                 this.processRunner.execute(context, scenario, process);
             }
@@ -78,9 +84,27 @@ public class BaseScenarioRunner implements com.zomu.t.t3.core.execution.runner.S
 
             // シナリオ終了ログ出力
             outputEndScenarioLog(context, scenario);
+
+            // レポート出力
+            report(context, scenario);
         }
 
     }
+
+
+    /**
+     * 結果ディレクトリが未作成であった場合に、作成します.
+     *
+     * @param context
+     */
+    private void createResultDirectory(final BaseContext context, final ExecuteScenario scenario) {
+        ExecutionFileUtils.createResultDirectory(context);
+    }
+
+    private void report(final BaseContext context, final ExecuteScenario scenario) {
+        BaseScenarioReporter.getInstance().scenarioReport(context, scenario);
+    }
+
 
     /**
      * シナリオ開始ログ出力.
@@ -90,7 +114,7 @@ public class BaseScenarioRunner implements com.zomu.t.t3.core.execution.runner.S
      */
     protected void outputStartScenarioLog(BaseContext context, ExecuteScenario scenario) {
         StringBuilder sb = new StringBuilder();
-        sb.append("\n--------------------------------------------------------------------------------------\n");
+        sb.append("\n######################################################################################\n");
         sb.append("Start Scenario.\n");
         sb.append("Scenario ID         : ");
         sb.append(scenario.getInfo().getId());
@@ -98,7 +122,7 @@ public class BaseScenarioRunner implements com.zomu.t.t3.core.execution.runner.S
         sb.append("Execute Scenario ID : ");
         sb.append(scenario.getExecuteScenarioId());
         sb.append("\n");
-        sb.append("--------------------------------------------------------------------------------------");
+        sb.append("######################################################################################");
         log.info(sb.toString());
     }
 
@@ -110,7 +134,7 @@ public class BaseScenarioRunner implements com.zomu.t.t3.core.execution.runner.S
      */
     protected void outputEndScenarioLog(BaseContext context, ExecuteScenario scenario) {
         StringBuilder sb = new StringBuilder();
-        sb.append("\n--------------------------------------------------------------------------------------\n");
+        sb.append("\n######################################################################################\n");
         sb.append("End Scenario.\n");
         sb.append("Scenario ID         : ");
         sb.append(scenario.getInfo().getId());
@@ -118,7 +142,7 @@ public class BaseScenarioRunner implements com.zomu.t.t3.core.execution.runner.S
         sb.append("Execute Scenario ID : ");
         sb.append(scenario.getExecuteScenarioId());
         sb.append("\n");
-        sb.append("--------------------------------------------------------------------------------------");
+        sb.append("######################################################################################");
         if (scenario.getStatus() == ScenarioExecuteStatus.SUUCESS) {
             log.info(sb.toString());
         } else if (scenario.getStatus() == ScenarioExecuteStatus.FAIL) {

@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.io.Serializable;
+import java.nio.file.Path;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -62,5 +63,10 @@ public class ExecuteScenario implements Serializable {
      * シナリオスコープ変数.
      */
     Map<String, Object> scenarioVariables = new ConcurrentHashMap<>();
+
+    /**
+     * 実行結果ディレクトリパス.
+     */
+    private Path resultPath;
 
 }

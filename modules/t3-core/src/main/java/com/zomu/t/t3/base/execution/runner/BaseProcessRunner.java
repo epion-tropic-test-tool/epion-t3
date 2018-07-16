@@ -34,7 +34,7 @@ public class BaseProcessRunner implements com.zomu.t.t3.core.execution.runner.Pr
 
             // コマンド実行
             runner.execute(executeProcess.getProcess(),
-                    context.getExecute().getGlobalVariables(),
+                    context.getExecuteContext().getGlobalVariables(),
                     executeScenario.getScenarioVariables());
 
             // プロセス成功
@@ -76,7 +76,7 @@ public class BaseProcessRunner implements com.zomu.t.t3.core.execution.runner.Pr
     private void outputStartProcessLog(BaseContext context, ExecuteScenario executeScenario, ExecuteProcess executeProcess) {
         StringBuilder sb = new StringBuilder();
         sb.append("\n--------------------------------------------------------------------------------------\n");
-        sb.append("Start Process.\n");
+        sb.append("<<Start Process>>\n");
         sb.append("Scenario ID         : ");
         sb.append(executeScenario.getInfo().getId());
         sb.append("\n");
@@ -86,7 +86,7 @@ public class BaseProcessRunner implements com.zomu.t.t3.core.execution.runner.Pr
         sb.append("Execute Process ID  : ");
         sb.append(executeProcess.getExecuteProcessId());
         sb.append("\n");
-        sb.append("--------------------------------------------------------------------------------------");
+        //sb.append("--------------------------------------------------------------------------------------");
         log.info(sb.toString());
     }
 
@@ -99,8 +99,8 @@ public class BaseProcessRunner implements com.zomu.t.t3.core.execution.runner.Pr
      */
     private void outputEndProcessLog(BaseContext context, ExecuteScenario executeScenario, ExecuteProcess executeProcess) {
         StringBuilder sb = new StringBuilder();
-        sb.append("\n--------------------------------------------------------------------------------------\n");
-        sb.append("End Process.\n");
+        //sb.append("\n--------------------------------------------------------------------------------------\n");
+        sb.append("\n<<End Process>>\n");
         sb.append("Scenario ID         : ");
         sb.append(executeScenario.getInfo().getId());
         sb.append("\n");

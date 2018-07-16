@@ -3,6 +3,8 @@ package com.zomu.t.t3.core.application;
 import com.google.common.reflect.ClassPath;
 import com.zomu.t.t3.core.annotation.ApplicationVersion;
 import com.zomu.t.t3.core.execution.runner.ApplicationRunner;
+import com.zomu.t.t3.core.message.CoreMessages;
+import com.zomu.t.t3.core.message.MessageManager;
 import com.zomu.t.t3.core.type.Args;
 import com.zomu.t.t3.core.type.ExitCode;
 import lombok.extern.slf4j.Slf4j;
@@ -11,6 +13,7 @@ import org.apache.commons.io.FileUtils;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.Map;
@@ -36,9 +39,10 @@ public class Application {
 
     public static void main(String[] args) throws IOException {
 
-
+        // バナー出力
         outputBanner();
 
+        MessageManager messageManager = MessageManager.getInstance();
 
         args = new String[]{
                 "-v", "v1.0",
@@ -64,7 +68,7 @@ public class Application {
         Map<String, Class<?>> applicationRunnerClasses
                 = ClassPath.from(loader)
                 .getTopLevelClassesRecursive(BASE_PACKAGE).stream()
-                // パッケージ名にバージョンを含むこと
+                // パッケージ名にバージョンを含むこと or base のみ許可する
                 .filter(
                         info -> {
                             String[] packages = info.getPackageName().replace(BASE_PACKAGE + ".", "").split("\\.");
@@ -90,21 +94,28 @@ public class Application {
             // 存在していればメソッド決め打ちで実行する
             try {
                 Method execute = applicationRunnerClass.getDeclaredMethod("execute", String[].class);
-                Object obj = applicationRunnerClass.newInstance();
-                Object result = execute.invoke(obj, new Object[]{args});
-            } catch (Exception e) {
-                log.error("execute application fail...", e.getCause());
+                Object applicationInstance = applicationRunnerClass.newInstance();
+                int exitCode = (int) execute.invoke(applicationInstance, new Object[]{args});
+                log.info("Normal Terminate.");
+                System.exit(exitCode);
+            } catch (NoSuchMethodException e) {
+                log.error(messageManager.getMessage(CoreMessages.CORE_ERR_9001), e);
+                System.exit(ExitCode.ERROR.getExitCode());
+            } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
+                log.error(messageManager.getMessage(CoreMessages.CORE_ERR_9001), e);
                 System.exit(ExitCode.ERROR.getExitCode());
             }
         } else {
             // 存在していないならエラーとする
-            log.error("unknown tool version: {}", version);
+            log.error(messageManager.getMessage(CoreMessages.CORE_ERR_9002, version));
             System.exit(ExitCode.ERROR.getExitCode());
         }
 
     }
 
-
+    /**
+     * 標準出力に対してバナーを出力する.
+     */
     private static void outputBanner() {
 
         ClassLoader classLoader = Application.class.getClassLoader();

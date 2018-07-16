@@ -1,9 +1,13 @@
 package com.zomu.t.t3.core.context.execute;
 
+import com.zomu.t.t3.core.type.ExitCode;
 import com.zomu.t.t3.core.type.ScenarioExecuteStatus;
+import com.zomu.t.t3.model.scenario.Information;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.nio.file.Path;
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +23,7 @@ public class ExecuteContext implements com.zomu.t.t3.core.context.ExecuteContext
      * 実行ID
      */
     private UUID executeContextId = UUID.randomUUID();
-
+    
     /**
      * ステータス.
      */
@@ -35,15 +39,30 @@ public class ExecuteContext implements com.zomu.t.t3.core.context.ExecuteContext
      */
     private LocalDateTime end;
 
+    /**
+     * 所要時間.
+     */
+    private Duration duration;
 
     /**
      * 実行するフローリスト.
      */
-    List<ExecuteScenario> scenarios = new ArrayList<>();
+    private List<ExecuteScenario> scenarios = new ArrayList<>();
 
     /**
-     * Globalスコープ
+     * Globalスコープ.
      */
-    Map<String, Object> globalVariables = new ConcurrentHashMap<>();
+    private Map<String, Object> globalVariables = new ConcurrentHashMap<>();
+
+
+    /**
+     * 実行結果ディレクトリパス.
+     */
+    private Path resultRootPath;
+
+    /**
+     * 終了コード.
+     */
+    private ExitCode exitCode = ExitCode.UNASSIGNED;
 
 }

@@ -25,7 +25,13 @@ public enum ExitCode {
     /**
      * 実行時エラー.
      */
-    ERROR(9);
+    ERROR(9),
+
+
+    /**
+     * 割り当てられていない.
+     */
+    UNASSIGNED(100);
 
 
     private int exitCode;

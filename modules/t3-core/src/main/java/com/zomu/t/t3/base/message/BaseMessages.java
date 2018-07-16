@@ -8,7 +8,9 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum BaseMessages implements Messages {
 
-    /** 共通システムエラー */
+    /**
+     * 共通システムエラー
+     */
     BASE_ERR_9001("com.zomu.t.t3.base.err.9001"),
 
     BASE_ERR_9002("com.zomu.t.t3.base.err.9002"),
@@ -17,7 +19,12 @@ public enum BaseMessages implements Messages {
 
     BASE_ERR_9004("com.zomu.t.t3.base.err.9004"),
 
-    BASE_ERR_9005("com.zomu.t.t3.base.err.9005"),;
+    BASE_ERR_9005("com.zomu.t.t3.base.err.9005"),
+
+
+    BASE_ERR_9101("com.zomu.t.t3.base.err.9101"),
+
+    BASE_ERR_9102("com.zomu.t.t3.base.err.9102"),;
 
     private String messageCode;
 }
