@@ -5,6 +5,7 @@ import com.zomu.t.t3.model.scenario.Process;
 import com.zomu.t.t3.model.scenario.T3Base;
 import lombok.Getter;
 
+import java.nio.file.Path;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -59,9 +60,23 @@ public class Original {
 
     /**
      * processの識別子とシナリオの関係マップ.
-     * キー：processの識別子
+     * キー：infoのid + '-' + processesの要素のid値　= processの識別子
      * 値：infoのid
      */
     private final Map<String, String> processScenarioRelations = new ConcurrentHashMap<>();
+
+    /**
+     * scenario配置ディレクトリマップ.
+     * キー：infoのid
+     * 値：Path
+     */
+    private final Map<String, Path> scenarioPlacePaths = new ConcurrentHashMap<>();
+
+    /**
+     * process配置ディレクトリマップ.
+     * キー：infoのid + '-' + processesの要素のid値　= processの識別子
+     * 値：Path
+     */
+    private final Map<String, Path> processPlacePaths = new ConcurrentHashMap<>();
 
 }

@@ -76,7 +76,7 @@ public final class BaseOriginalHoldParser implements IndividualTargetParser<Base
     @Override
     public void parse(final BaseContext context, final String fileNamePattern) {
 
-        final BaseContext t3ContextV10 = BaseContext.class.cast(context);
+        final BaseContext baseContext = BaseContext.class.cast(context);
 
         // 正規表現パターンを作成
         final Pattern scenarioFileNamePattern = Pattern.compile(fileNamePattern == null ? FILENAME_REGEXP_PATTERN : fileNamePattern);
@@ -128,8 +128,11 @@ public final class BaseOriginalHoldParser implements IndividualTargetParser<Base
 
                 if (t3Base.getInfo() != null) {
 
+                    // process識別子とPathを紐付ける
+                    baseContext.getOriginal().getScenarioPlacePaths().put(t3Base.getInfo().getId(), file.getParent());
+
                     // ファイル原本の完全保存
-                    t3ContextV10.getOriginal().getOriginals().put(t3Base.getInfo().getId(), t3Base);
+                    baseContext.getOriginal().getOriginals().put(t3Base.getInfo().getId(), t3Base);
 
                     ScenarioType scenarioType = ScenarioType.valueOfByValue(t3Base.getType());
 
@@ -137,13 +140,13 @@ public final class BaseOriginalHoldParser implements IndividualTargetParser<Base
                         // type別に分割
                         switch (scenarioType) {
                             case SCENARIO:
-                                t3ContextV10.getOriginal().getScenarios().put(t3Base.getInfo().getId(), t3Base);
+                                baseContext.getOriginal().getScenarios().put(t3Base.getInfo().getId(), t3Base);
                                 break;
                             case PARTS:
-                                t3ContextV10.getOriginal().getParts().put(t3Base.getInfo().getId(), t3Base);
+                                baseContext.getOriginal().getParts().put(t3Base.getInfo().getId(), t3Base);
                                 break;
                             case CONFIG:
-                                t3ContextV10.getOriginal().getConfigs().put(t3Base.getInfo().getId(), t3Base);
+                                baseContext.getOriginal().getConfigs().put(t3Base.getInfo().getId(), t3Base);
                                 break;
                             default:
                                 // Do Nothing...
@@ -155,12 +158,18 @@ public final class BaseOriginalHoldParser implements IndividualTargetParser<Base
                     // なんかやり方あるのかね・・・
                     for (Process process : t3Base.getProcesses()) {
 
+                        // process識別子を作成
                         String fullProcessId = t3Base.getInfo().getId() + "." + process.getId();
 
-                        t3ContextV10.getOriginal().getProcesses().put(
+                        // process定義を追加
+                        baseContext.getOriginal().getProcesses().put(
                                 fullProcessId, process);
 
-                        t3ContextV10.getOriginal().getProcessScenarioRelations().put(fullProcessId, t3Base.getInfo().getId());
+                        // process識別子とシナリオIDを紐付ける
+                        baseContext.getOriginal().getProcessScenarioRelations().put(fullProcessId, t3Base.getInfo().getId());
+
+                        // process識別子とPathを紐付ける
+                        baseContext.getOriginal().getProcessPlacePaths().put(fullProcessId, file);
                     }
 
                 }
