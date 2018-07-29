@@ -10,6 +10,7 @@ import com.zomu.t.epion.tropic.test.tool.core.exception.SystemException;
 import com.zomu.t.epion.tropic.test.tool.core.context.execute.ExecuteProcess;
 import com.zomu.t.epion.tropic.test.tool.core.context.execute.ExecuteScenario;
 import com.zomu.t.epion.tropic.test.tool.core.type.ProcessStatus;
+import com.zomu.t.epion.tropic.test.tool.core.type.ScenarioScopeVariables;
 import com.zomu.t.epion.tropic.test.tool.core.util.ExecutionFileUtils;
 import lombok.extern.slf4j.Slf4j;
 
@@ -73,6 +74,9 @@ public class BaseScenarioRunner implements ScenarioRunner<BaseContext> {
             // 結果ディレクトリの作成
             ExecutionFileUtils.createScenarioResultDirectory(context, scenario);
 
+            // シナリオスコープの変数を設定
+            settingScenarioVariables(context, scenario);
+
             for (ExecuteProcess process : scenario.getProcesses()) {
                 this.processRunner.execute(context, scenario, process);
 
@@ -110,9 +114,20 @@ public class BaseScenarioRunner implements ScenarioRunner<BaseContext> {
 
     }
 
+    /**
+     * シナリオスコープの変数を設定する.
+     *
+     * @param context
+     * @param scenario
+     */
+    private void settingScenarioVariables(final BaseContext context, final ExecuteScenario scenario) {
+        scenario.getScenarioVariables().put(
+                ScenarioScopeVariables.SCENARIO_DIR.getName(),
+                context.getOriginal().getScenarioPlacePaths().get(scenario.getInfo().getId()));
+    }
 
     /**
-     * 結果ディレクトリが未作成であった場合に、作成します.
+     * 結果ディレクトリが未作成であった場合に、作成する.
      *
      * @param context
      */

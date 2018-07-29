@@ -8,7 +8,9 @@ import lombok.Getter;
 public enum ScenarioScopeVariables {
 
 
-    SCENARIO_DIR("scenarioDir");
+    SCENARIO_DIR("scenarioDir"),
+
+    EVIDENCE_DIR("evidenceDir");
 
     private String name;
 

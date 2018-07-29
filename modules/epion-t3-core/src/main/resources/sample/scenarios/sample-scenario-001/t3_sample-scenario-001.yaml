@@ -28,6 +28,8 @@ flows:
     type : process
   - ref : process-011
     type : process
+  - ref : process-012
+    type : process
 processes:
   - id: process-001
     summary : File Copy Command.

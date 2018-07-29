@@ -25,6 +25,8 @@ public class WebDriverScreenShotRunner implements CommandRunner<WebDriverScreenS
                 .shootingStrategy(ShootingStrategies.viewportPasting(100))
                 .takeScreenshot(driver);
 
+
+
         // 保管したイメージを任意の場所に書き出す(1行)
         ImageIO.write(screenshot.getImage(), "PNG", new File("./test.png"));
     }
