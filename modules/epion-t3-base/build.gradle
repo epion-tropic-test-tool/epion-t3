@@ -1,0 +1,19 @@
+dependencies {
+
+    // Core
+    compile project(':modules:epion-t3-core')
+
+    // Commands
+    compile project(':modules:epion-t3-basic')
+    compile project(':modules:epion-t3-selenium')
+
+
+}
+
+
+
+
+
+
+
+

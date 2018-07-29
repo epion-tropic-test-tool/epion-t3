@@ -25,7 +25,6 @@ allprojects {
         // https://mvnrepository.com/artifact/com.google.guava/guava
         compile group: 'com.google.guava', name: 'guava', version: '25.1-jre'
 
-
         // logging
         compile group: 'org.slf4j', name: 'slf4j-api', version: '1.7.25'
         compile group: 'ch.qos.logback', name: 'logback-classic', version: '1.2.3'
@@ -42,16 +41,18 @@ allprojects {
         // text
         compile group: 'org.apache.commons', name: 'commons-text', version: '1.4'
 
-
         // BeanValidation
         compile group: 'javax.validation', name: 'validation-api', version: '1.1.0.Final'
         compile group: 'org.apache.bval', name: 'bval-jsr', version: '1.1.2'
-
 
         // Reporting
         compile group: 'org.thymeleaf', name: 'thymeleaf', version: '3.0.9.RELEASE'
         compile group: 'org.thymeleaf.extras', name: 'thymeleaf-extras-java8time', version: '3.0.1.RELEASE'
 
+        // Selenium
+        compile group: 'org.seleniumhq.selenium', name: 'selenium-java', version: '3.11.0'
+        compile group: 'com.codeborne', name: 'phantomjsdriver', version: '1.4.3'
+        compile group: 'ru.yandex.qatools.ashot', name: 'ashot', version: '1.5.2'
 
         // for develop
         compile 'org.projectlombok:lombok:1.18.0'

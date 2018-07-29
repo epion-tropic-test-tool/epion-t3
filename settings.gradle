@@ -16,4 +16,7 @@ include 'services:webservice'
 */
 
 rootProject.name = 't3-core'
-include 'modules:t3-core'
+include 'modules:epion-t3-core'
+include 'modules:epion-t3-selenium'
+include 'modules:epion-t3-basic'
+include 'modules:epion-t3-base'
