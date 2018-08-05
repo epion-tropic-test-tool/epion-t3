@@ -6,7 +6,7 @@ dependencies {
     // Commands
     compile project(':modules:epion-t3-basic')
     compile project(':modules:epion-t3-selenium')
-
+    compile project(':modules:epion-t3-random')
 
 }
 

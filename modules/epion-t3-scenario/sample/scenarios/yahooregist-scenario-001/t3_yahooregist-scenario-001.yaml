@@ -6,6 +6,12 @@ info:
     summary: "Yahooアカウント新規作成"
     description: "Yahooの新規アカウント取得用シナリオ"
 flows:
+  - ref : process-0001
+    type : process
+  - ref : process-0002
+    type : process
+  - ref : process-0003
+    type : process
   - ref : process-0010
     type : process
 #  - ref : process-1010
@@ -40,6 +46,8 @@ flows:
 #    type : process
   - ref : process-0060
     type : process
+  - ref : process-0061
+    type : process
 #  - ref : process-1060
 #    type : process
   - ref : process-0070
@@ -51,6 +59,8 @@ flows:
 #  - ref : process-1080
 #    type : process
   - ref : process-0090
+    type : process
+  - ref : process-0091
     type : process
 #  - ref : process-1090
 #    type : process
@@ -67,6 +77,24 @@ flows:
   - ref : process-0130
     type : process
 processes:
+  - id: process-0001
+    description: "ランダムな文字列を作成."
+    summary : "ランダムな文字列を作成."
+    command: "GenerateRandomWord"
+    target : "mailaddressBefore"
+    length: 20
+  - id: process-0002
+    description: "ランダムな文字列を作成."
+    summary : "ランダムな文字列を作成."
+    command: "GenerateRandomString"
+    target : "mailaddressAfter"
+    length: 5
+  - id: process-0003
+    description: "メアド接頭辞作成."
+    summary : "メアドの接頭辞を作成する."
+    command: "StringConcat"
+    target : "mailaddress"
+    referenceVariables : ["scenario.mailaddressBefore", "_", "scenario.mailaddressAfter"]
   - id: process-0010
     description: "SeleniumのWebDriverを開始します."
     summary : "SeleniumのWebDriverを開始します."
@@ -106,7 +134,7 @@ processes:
     description: SendKeys Yahoo ID.
     command: "WebDriverSendKeys"
     target : "yid"
-    value : "nick_utan_1"
+    value : "${scenario.mailaddress}"
     selector : "id"
     refWebDriver: WEBDRIVER_1
   - id: process-0040
@@ -128,9 +156,15 @@ processes:
   - id: process-0060
     summary : SendKeys Yahoo ID.
     description: SendKeys Yahoo ID.
+    command: "GenerateRandomBirthdayString"
+    target : "birthday"
+    format : "yyyyMMdd"
+  - id: process-0061
+    summary : SendKeys Yahoo ID.
+    description: SendKeys Yahoo ID.
     command: "WebDriverSendKeys"
     target : "birthday"
-    value : "19991212"
+    value : "${scenario.birthday}"
     selector : "id"
     refWebDriver: WEBDRIVER_1
   - id: process-0070
@@ -157,6 +191,12 @@ processes:
     value : "東京"
     selector : "id"
     refWebDriver: WEBDRIVER_1
+  - id: process-0091
+    summary : "Captcha回避まで待機"
+    description: "Captcha回避まで待機"
+    command: "ConsoleInput"
+    target : "Captchaに表示された文字列を入力し終えたら「y」を入力してください"
+    value : "captchaInputFlg"
   - id: process-0100
     summary : SendKeys Yahoo ID.
     description: SendKeys Yahoo ID.

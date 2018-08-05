@@ -1,0 +1,11 @@
+dependencies {
+    compile project(':modules:epion-t3-core')
+}
+
+
+
+
+
+
+
+

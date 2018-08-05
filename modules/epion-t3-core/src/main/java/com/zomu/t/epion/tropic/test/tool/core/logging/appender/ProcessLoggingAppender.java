@@ -19,7 +19,7 @@ public class ProcessLoggingAppender extends AppenderBase<ILoggingEvent> {
     @Override
     protected void append(ILoggingEvent eventObject) {
         Level level = eventObject.getLevel();
-        String message = eventObject.getMessage();
+        String message = eventObject.getFormattedMessage();
         LocalDateTime now = LocalDateTime.now();
         ProcessLoggingHolder.append(ProcessLog.builder()
                 .level(level)

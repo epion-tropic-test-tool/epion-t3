@@ -7,3 +7,4 @@ customs :
   packages :
     basic : "com.zomu.t.epion.tropic.test.tool.basic"
     selenium : "com.zomu.t.epion.tropic.test.tool.selenium"
+    random : "com.zomu.t.epion.tropic.test.tool.random"
