@@ -1,14 +1,8 @@
 <!-- _coverpage.md -->
 
-![logo](_media/logoonly.svg)
+![logo](_media/logo.png)
 
-# jrand <small>0.2.5-alpha</small>
-
-> Probably the *best* Java library for random data generation.*
-
-- Simple and lightweight 
-- Minimal dependencies
-- Tons of generators
+# ETTT <small>0.0.1-beta</small>
 
 [GitHub](https://github.com/xdrop/jrand/)
 [Get Started](#jrand)
