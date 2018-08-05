@@ -14,9 +14,9 @@ public enum Args {
 
     SCENARIO("t", "target", true, "target of tool run.", true),
 
-    ROOT_PATH("r", "rootpath", true, "scenario root path.", true),
+    ROOT_PATH("s", "scenario path", true, "scenario root path.", true),
 
-    RESULT_ROOT_PATH("o", "output", true, "scenario output root path.", false),
+    RESULT_ROOT_PATH("o", "output path", true, "result output root path.", false),
 
     FILESYSTEM_KIND("f", "filesystem", true, "scenario manage filesystem kind.", false),
 
@@ -25,6 +25,8 @@ public enum Args {
     MODE("m", "mode", true, "mode of tool run.", true),
 
     DEBUG("d", "debug", false, "run tool for debug.", false),
+
+    NOREPORT("n", "noreport", false, "no report output", false),
 
     HELP("h", "help", true, "show the tool help.", false);
 

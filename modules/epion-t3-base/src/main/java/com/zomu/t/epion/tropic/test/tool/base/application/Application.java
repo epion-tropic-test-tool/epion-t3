@@ -47,8 +47,8 @@ public class Application {
         args = new String[]{
                 "-v", "v1.0",
                 "-m", "test",
-                "-t", "sample-scenario-001",
-                "-r", "/Users/takashimanozomu/work/30_pgworkspaces/intellij/t3-core/modules/epion-t3-core/src/main/resources/sample"
+                "-t", "yahooregist-scenario-001",
+                "-s", "/Users/takashimanozomu/work/30_pgworkspaces/intellij/t3-core/modules/epion-t3-core/src/main/resources/sample"
         };
 
         // バージョンの解決

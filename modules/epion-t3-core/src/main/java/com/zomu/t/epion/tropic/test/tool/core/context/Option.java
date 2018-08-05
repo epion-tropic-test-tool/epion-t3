@@ -53,4 +53,9 @@ public class Option implements Serializable {
      */
     private Boolean debug;
 
+    /**
+     * レポートを出力拒否フラグ.
+     */
+    private Boolean noreport;
+
 }
