@@ -1,5 +1,6 @@
 package com.zomu.t.epion.tropic.test.tool.selenium.runner;
 
+import com.zomu.t.epion.tropic.test.tool.core.context.EvidenceInfo;
 import com.zomu.t.epion.tropic.test.tool.selenium.command.EndLocalWebDriver;
 import com.zomu.t.epion.tropic.test.tool.core.execution.runner.CommandRunner;
 import org.openqa.selenium.WebDriver;
@@ -11,9 +12,10 @@ public class EndLocalWebDriverRunner implements CommandRunner<EndLocalWebDriver>
 
     @Override
     public void execute(
-            EndLocalWebDriver process,
-            Map<String, Object> globalScopeVariables,
-            Map<String, Object> scenarioScopeVariables,
+            final EndLocalWebDriver process,
+            final Map<String, Object> globalScopeVariables,
+            final Map<String, Object> scenarioScopeVariables,
+            final Map<String, EvidenceInfo> evidences,
             Logger logger) throws Exception {
 
         WebDriver driver = WebDriver.class.cast(globalScopeVariables.get(process.getRefWebDriver()));

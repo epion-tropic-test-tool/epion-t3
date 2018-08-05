@@ -184,6 +184,7 @@ public class BaseApplicationRunner implements ApplicationRunner<BaseContext> {
 
         ExecuteScenario executeScenario = new ExecuteScenario();
         executeScenario.setInfo(scenario.getInfo());
+        executeScenario.setFqsn(scenario.getInfo().getId());
         context.getExecuteOriginal().getScenarios().add(executeScenario);
 
         for (Flow f : scenario.getFlows()) {

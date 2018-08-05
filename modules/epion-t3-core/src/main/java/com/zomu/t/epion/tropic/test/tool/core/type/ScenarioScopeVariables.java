@@ -7,6 +7,11 @@ import lombok.Getter;
 @Getter
 public enum ScenarioScopeVariables {
 
+    CURRENT_SCENARIO("currentScenario"),
+
+    CURRENT_PROCESS("currentProcess"),
+
+    CURRENT_PROCESS_EXECUTEID("currentProcessExecuteId"),
 
     SCENARIO_DIR("scenarioDir"),
 

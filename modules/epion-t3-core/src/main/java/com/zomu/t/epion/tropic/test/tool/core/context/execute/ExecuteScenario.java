@@ -1,5 +1,6 @@
 package com.zomu.t.epion.tropic.test.tool.core.context.execute;
 
+import com.zomu.t.epion.tropic.test.tool.core.context.EvidenceInfo;
 import com.zomu.t.epion.tropic.test.tool.core.type.ScenarioExecuteStatus;
 import com.zomu.t.epion.tropic.test.tool.core.model.scenario.Information;
 import lombok.Getter;
@@ -69,6 +70,11 @@ public class ExecuteScenario implements Serializable {
      * シナリオスコープ変数.
      */
     Map<String, Object> scenarioVariables = new ConcurrentHashMap<>();
+
+    /**
+     * エビデンスマップ.
+     */
+    Map<String, EvidenceInfo> evidences = new ConcurrentHashMap<>();
 
     /**
      * 実行結果ディレクトリパス.

@@ -1,5 +1,6 @@
 package com.zomu.t.epion.tropic.test.tool.selenium.runner;
 
+import com.zomu.t.epion.tropic.test.tool.core.context.EvidenceInfo;
 import com.zomu.t.epion.tropic.test.tool.selenium.command.StartLocalWebDriver;
 import com.zomu.t.epion.tropic.test.tool.selenium.type.BrowserType;
 import com.zomu.t.epion.tropic.test.tool.selenium.message.SeleniumMessages;
@@ -14,15 +15,25 @@ import org.slf4j.Logger;
 import java.text.DecimalFormat;
 import java.util.Map;
 
+/**
+ * Selenium-WebDriver
+ * ローカルWebDriverを起動する.
+ *
+ * @author takashno
+ */
 public class StartLocalWebDriverRunner implements CommandRunner<StartLocalWebDriver> {
 
     private static final String WEBDRIVER_PREFIX = "WEBDRIVER_";
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void execute(
             StartLocalWebDriver process,
             Map<String, Object> globalScopeVariables,
             Map<String, Object> scenarioScopeVariables,
+            Map<String, EvidenceInfo> evidences,
             Logger logger) throws Exception {
 
         BrowserType browserType = BrowserType.valueOfByValue(process.getBrowser());

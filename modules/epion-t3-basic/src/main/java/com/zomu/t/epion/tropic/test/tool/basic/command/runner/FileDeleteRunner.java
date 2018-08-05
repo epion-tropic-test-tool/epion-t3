@@ -1,5 +1,6 @@
 package com.zomu.t.epion.tropic.test.tool.basic.command.runner;
 
+import com.zomu.t.epion.tropic.test.tool.core.context.EvidenceInfo;
 import com.zomu.t.epion.tropic.test.tool.core.execution.runner.CommandRunner;
 import com.zomu.t.epion.tropic.test.tool.core.model.scenario.Process;
 import org.slf4j.Logger;
@@ -13,6 +14,7 @@ public class FileDeleteRunner implements CommandRunner<Process> {
     public void execute(final Process process,
                         final Map<String, Object> globalScopeVariables,
                         final Map<String, Object> scenarioScopeVariables,
+                        final Map<String, EvidenceInfo> evidences,
                         final Logger logger) throws Exception {
 
         logger.info("start FileDelete");

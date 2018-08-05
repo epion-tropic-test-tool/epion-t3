@@ -9,6 +9,7 @@ import com.zomu.t.epion.tropic.test.tool.core.execution.runner.ProcessRunner;
 import com.zomu.t.epion.tropic.test.tool.core.holder.ProcessLog;
 import com.zomu.t.epion.tropic.test.tool.core.holder.ProcessLoggingHolder;
 import com.zomu.t.epion.tropic.test.tool.core.type.ProcessStatus;
+import com.zomu.t.epion.tropic.test.tool.core.type.ScenarioScopeVariables;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.SerializationUtils;
 import org.slf4j.LoggerFactory;
@@ -32,7 +33,16 @@ public class BaseProcessRunner implements ProcessRunner<BaseContext, ExecuteScen
         try {
 
             // プロセス開始ログ出力
-            outputStartProcessLog(context, executeScenario, executeProcess);
+            outputStartProcessLog(
+                    context,
+                    executeScenario,
+                    executeProcess);
+
+            // シナリオスコープ変数の設定
+            settingScenarioVariables(
+                    context,
+                    executeScenario,
+                    executeProcess);
 
             // コマンド解決
             String commandId = executeProcess.getProcess().getCommand();
@@ -44,6 +54,7 @@ public class BaseProcessRunner implements ProcessRunner<BaseContext, ExecuteScen
             runner.execute(executeProcess.getProcess(),
                     context.getExecuteContext().getGlobalVariables(),
                     executeScenario.getScenarioVariables(),
+                    executeScenario.getEvidences(),
                     LoggerFactory.getLogger("ProcessLog"));
 
             // プロセス成功
@@ -63,6 +74,9 @@ public class BaseProcessRunner implements ProcessRunner<BaseContext, ExecuteScen
             executeProcess.setStatus(ProcessStatus.FAIL);
 
         } finally {
+
+            // 掃除
+            cleanScenarioVariables(context, executeScenario, executeProcess);
 
             // シナリオ実行終了時間を設定
             executeProcess.setEnd(LocalDateTime.now());
@@ -84,6 +98,39 @@ public class BaseProcessRunner implements ProcessRunner<BaseContext, ExecuteScen
 
 
     }
+
+    /**
+     * シナリオスコープの変数を設定する.
+     *
+     * @param context
+     * @param scenario
+     */
+    private void settingScenarioVariables(final BaseContext context,
+                                          final ExecuteScenario scenario,
+                                          final ExecuteProcess executeProcess) {
+        scenario.getScenarioVariables().put(
+                ScenarioScopeVariables.CURRENT_PROCESS.getName(),
+                executeProcess.getFqpn());
+        scenario.getScenarioVariables().put(
+                ScenarioScopeVariables.CURRENT_PROCESS_EXECUTEID.getName(),
+                executeProcess.getExecuteProcessId());
+    }
+
+    /**
+     * シナリオスコープの変数を設定する.
+     *
+     * @param context
+     * @param scenario
+     */
+    private void cleanScenarioVariables(final BaseContext context,
+                                        final ExecuteScenario scenario,
+                                        final ExecuteProcess executeProcess) {
+        scenario.getScenarioVariables().remove(
+                ScenarioScopeVariables.CURRENT_PROCESS.getName());
+        scenario.getScenarioVariables().remove(
+                ScenarioScopeVariables.CURRENT_PROCESS_EXECUTEID.getName());
+    }
+
 
     /**
      * プロセス開始ログ出力.

@@ -99,6 +99,10 @@ public class BaseScenarioRunner implements ScenarioRunner<BaseContext> {
             scenario.setStatus(ScenarioExecuteStatus.FAIL);
 
         } finally {
+
+            // 掃除
+            cleanScenarioVariables(context, scenario);
+
             // シナリオ実行終了時間を設定
             scenario.setEnd(LocalDateTime.now());
 
@@ -124,6 +128,27 @@ public class BaseScenarioRunner implements ScenarioRunner<BaseContext> {
         scenario.getScenarioVariables().put(
                 ScenarioScopeVariables.SCENARIO_DIR.getName(),
                 context.getOriginal().getScenarioPlacePaths().get(scenario.getInfo().getId()));
+        scenario.getScenarioVariables().put(
+                ScenarioScopeVariables.EVIDENCE_DIR.getName(),
+                scenario.getEvidencePath());
+        scenario.getScenarioVariables().put(
+                ScenarioScopeVariables.CURRENT_SCENARIO.getName(),
+                scenario.getFqsn());
+    }
+
+    /**
+     * シナリオスコープの変数を掃除する.
+     *
+     * @param context
+     * @param scenario
+     */
+    private void cleanScenarioVariables(final BaseContext context, final ExecuteScenario scenario) {
+        scenario.getScenarioVariables().remove(
+                ScenarioScopeVariables.SCENARIO_DIR.getName());
+        scenario.getScenarioVariables().remove(
+                ScenarioScopeVariables.EVIDENCE_DIR.getName());
+        scenario.getScenarioVariables().remove(
+                ScenarioScopeVariables.CURRENT_SCENARIO.getName());
     }
 
     /**

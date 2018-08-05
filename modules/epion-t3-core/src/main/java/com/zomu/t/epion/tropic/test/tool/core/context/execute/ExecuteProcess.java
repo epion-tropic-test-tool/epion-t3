@@ -77,7 +77,7 @@ public class ExecuteProcess implements Serializable {
     private Map<String, Object> localVariables = new ConcurrentHashMap<>();
 
     /**
-     *
+     * プロセスログリスト.
      */
     private List<ProcessLog> processLogs;
 

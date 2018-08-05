@@ -1,5 +1,6 @@
 package com.zomu.t.epion.tropic.test.tool.selenium.runner;
 
+import com.zomu.t.epion.tropic.test.tool.core.context.EvidenceInfo;
 import com.zomu.t.epion.tropic.test.tool.core.execution.runner.CommandRunner;
 import com.zomu.t.epion.tropic.test.tool.selenium.command.WebDriverClick;
 import com.zomu.t.epion.tropic.test.tool.selenium.command.WebDriverSendKeys;
@@ -14,7 +15,7 @@ import java.util.Map;
 
 public class WebDriverClickRunner implements CommandRunner<WebDriverClick> {
     @Override
-    public void execute(WebDriverClick process, Map<String, Object> globalScopeVariables, Map<String, Object> scenarioScopeVariables, Logger logger) throws Exception {
+    public void execute(WebDriverClick process, Map<String, Object> globalScopeVariables, Map<String, Object> scenarioScopeVariables, Map<String, EvidenceInfo> evidences, Logger logger) throws Exception {
         WebDriver driver =
                 WebDriver.class.cast(globalScopeVariables.get(process.getRefWebDriver()));
         WebElement element =

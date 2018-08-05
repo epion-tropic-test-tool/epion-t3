@@ -35,6 +35,12 @@ public class EvidenceInfo implements Serializable {
     private String fqpn;
 
     /**
+     * プロセスの実行ID.
+     * レポートのアンカーリンクのために必要.
+     */
+    private String executeProcessId;
+
+    /**
      * エビデンス名.
      * ユーザーがつけるエビデンスへの論理名.
      */
