@@ -43,7 +43,7 @@ public final class BaseScenarioParser implements ScenarioParser<BaseContext> {
 
         // ルートディレクトリの存在チェック
         if (!Files.exists(Paths.get(context.getOption().getRootPath()))) {
-            throw new SystemException(BaseMessages.BASE_ERR_9005, context.getOption().getRootPath());
+            throw new SystemException(BaseMessages.BASE_ERR_0005, context.getOption().getRootPath());
         }
 
         // カスタム定義の解析

@@ -98,15 +98,15 @@ public class Application {
                 int exitCode = (int) execute.invoke(applicationInstance, new Object[]{args});
                 System.exit(exitCode);
             } catch (NoSuchMethodException e) {
-                log.error(messageManager.getMessage(CoreMessages.CORE_ERR_9001), e);
+                log.error(messageManager.getMessage(CoreMessages.CORE_ERR_0001), e);
                 System.exit(ExitCode.ERROR.getExitCode());
             } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
-                log.error(messageManager.getMessage(CoreMessages.CORE_ERR_9001), e);
+                log.error(messageManager.getMessage(CoreMessages.CORE_ERR_0001), e);
                 System.exit(ExitCode.ERROR.getExitCode());
             }
         } else {
             // 存在していないならエラーとする
-            log.error(messageManager.getMessage(CoreMessages.CORE_ERR_9002, version));
+            log.error(messageManager.getMessage(CoreMessages.CORE_ERR_0002, version));
             System.exit(ExitCode.ERROR.getExitCode());
         }
 

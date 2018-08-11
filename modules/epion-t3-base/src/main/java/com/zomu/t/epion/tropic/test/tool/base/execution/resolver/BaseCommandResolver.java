@@ -46,7 +46,7 @@ public final class BaseCommandResolver implements CommandResolver {
 
         if (StringUtils.isEmpty(commandId)) {
             // 不正
-            throw new SystemException(BaseMessages.BASE_ERR_9001);
+            throw new SystemException(BaseMessages.BASE_ERR_0001);
         }
 
         CommandInfo commandInfo = CustomConfigHolder.getCustomCommandInfo(commandId);
@@ -61,14 +61,14 @@ public final class BaseCommandResolver implements CommandResolver {
 
         if (runnerClass == null) {
             // クラスが設定されていない場合（コンパイルが通らないレベルのため通常発生しない）
-            throw new SystemException(BaseMessages.BASE_ERR_9001);
+            throw new SystemException(BaseMessages.BASE_ERR_0001);
         }
 
         try {
             // インスタンス生成＋返却
             return CommandRunner.class.cast(runnerClass.newInstance());
         } catch (Exception e) {
-            throw new SystemException(e, BaseMessages.BASE_ERR_9001);
+            throw new SystemException(e, BaseMessages.BASE_ERR_0001);
         }
     }
 }

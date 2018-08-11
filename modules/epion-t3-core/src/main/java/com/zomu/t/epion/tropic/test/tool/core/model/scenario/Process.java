@@ -8,8 +8,6 @@ import java.io.Serializable;
 
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
 public class Process implements Serializable {
 
     @NotNull

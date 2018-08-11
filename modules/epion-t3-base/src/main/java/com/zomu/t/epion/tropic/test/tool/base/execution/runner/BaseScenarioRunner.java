@@ -47,7 +47,7 @@ public class BaseScenarioRunner implements ScenarioRunner<BaseContext> {
         // 存在チェック
         if (context.getExecuteContext() == null || context.getExecuteContext().getScenarios() == null) {
             // システムエラー扱い（きちんとしたルートでの実行ではない）
-            throw new SystemException(BaseMessages.BASE_ERR_9001);
+            throw new SystemException(BaseMessages.BASE_ERR_0001);
         }
 
 

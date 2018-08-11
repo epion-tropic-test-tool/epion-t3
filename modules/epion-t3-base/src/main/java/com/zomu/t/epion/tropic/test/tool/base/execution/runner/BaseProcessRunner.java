@@ -2,6 +2,7 @@ package com.zomu.t.epion.tropic.test.tool.base.execution.runner;
 
 import com.zomu.t.epion.tropic.test.tool.base.context.BaseContext;
 import com.zomu.t.epion.tropic.test.tool.base.execution.resolver.BaseCommandResolver;
+import com.zomu.t.epion.tropic.test.tool.core.context.execute.ExecuteContext;
 import com.zomu.t.epion.tropic.test.tool.core.context.execute.ExecuteProcess;
 import com.zomu.t.epion.tropic.test.tool.core.context.execute.ExecuteScenario;
 import com.zomu.t.epion.tropic.test.tool.core.execution.runner.CommandRunner;
@@ -10,20 +11,30 @@ import com.zomu.t.epion.tropic.test.tool.core.holder.ProcessLog;
 import com.zomu.t.epion.tropic.test.tool.core.holder.ProcessLoggingHolder;
 import com.zomu.t.epion.tropic.test.tool.core.type.ProcessStatus;
 import com.zomu.t.epion.tropic.test.tool.core.type.ScenarioScopeVariables;
+import com.zomu.t.epion.tropic.test.tool.core.util.BindUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.SerializationUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.LoggerFactory;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 @Slf4j
 public class BaseProcessRunner implements ProcessRunner<BaseContext, ExecuteScenario, ExecuteProcess> {
 
 
+    /**
+     * @param context
+     * @param executeScenario
+     * @param executeProcess
+     */
     @Override
     public void execute(BaseContext context, ExecuteScenario executeScenario, ExecuteProcess executeProcess) {
 
@@ -49,6 +60,12 @@ public class BaseProcessRunner implements ProcessRunner<BaseContext, ExecuteScen
 
             // コマンド実行クラスを解決
             CommandRunner runner = BaseCommandResolver.getInstance().getCommandRunner(commandId);
+
+            // 変数バインド
+            bind(
+                    context,
+                    executeScenario,
+                    executeProcess);
 
             // コマンド実行
             runner.execute(executeProcess.getProcess(),
@@ -100,7 +117,40 @@ public class BaseProcessRunner implements ProcessRunner<BaseContext, ExecuteScen
     }
 
     /**
+     * プロセスに対して、変数をバインドする.
+     *
+     * @param context
+     * @param executeScenario
+     * @param executeProcess
+     */
+    private void bind(final BaseContext context,
+                      final ExecuteScenario executeScenario,
+                      final ExecuteProcess executeProcess) {
+
+        final Map<String, String> profiles = new ConcurrentHashMap<>();
+
+        if (StringUtils.isNotEmpty(context.getOption().getProfile())) {
+            // プロファイルを抽出
+            Arrays.stream(context.getOption().getProfile().split(","))
+                    .forEach(x -> {
+                        if (context.getOriginal().getProfiles().containsKey(x)) {
+                            profiles.putAll(context.getOriginal().getProfiles().get(x));
+                        } else {
+
+                        }
+                    });
+        }
+
+        BindUtils.getInstance().bind(
+                executeProcess.getProcess(),
+                profiles,
+                context.getExecuteContext().getGlobalVariables(),
+                executeScenario.getScenarioVariables());
+    }
+
+    /**
      * シナリオスコープの変数を設定する.
+     * プロセス実行時に指定を行うべきシナリオスコープ変数の設定処理.
      *
      * @param context
      * @param scenario
@@ -108,16 +158,21 @@ public class BaseProcessRunner implements ProcessRunner<BaseContext, ExecuteScen
     private void settingScenarioVariables(final BaseContext context,
                                           final ExecuteScenario scenario,
                                           final ExecuteProcess executeProcess) {
+
+        // 現在の処理プロセス
         scenario.getScenarioVariables().put(
                 ScenarioScopeVariables.CURRENT_PROCESS.getName(),
                 executeProcess.getFqpn());
+
+        // 現在の処理プロセスの実行ID
         scenario.getScenarioVariables().put(
                 ScenarioScopeVariables.CURRENT_PROCESS_EXECUTEID.getName(),
                 executeProcess.getExecuteProcessId());
     }
 
     /**
-     * シナリオスコープの変数を設定する.
+     * シナリオスコープの変数を掃除する.
+     * プロセス実行時にのみ指定すべきシナリオスコープの変数を確実に除去するための処理.
      *
      * @param context
      * @param scenario
@@ -125,8 +180,12 @@ public class BaseProcessRunner implements ProcessRunner<BaseContext, ExecuteScen
     private void cleanScenarioVariables(final BaseContext context,
                                         final ExecuteScenario scenario,
                                         final ExecuteProcess executeProcess) {
+
+        // 現在の処理プロセス
         scenario.getScenarioVariables().remove(
                 ScenarioScopeVariables.CURRENT_PROCESS.getName());
+
+        // 現在の処理プロセスの実行ID
         scenario.getScenarioVariables().remove(
                 ScenarioScopeVariables.CURRENT_PROCESS_EXECUTEID.getName());
     }

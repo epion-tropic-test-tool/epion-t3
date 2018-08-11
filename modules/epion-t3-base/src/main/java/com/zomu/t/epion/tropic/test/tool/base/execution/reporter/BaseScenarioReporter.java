@@ -89,7 +89,7 @@ public final class BaseScenarioReporter implements ScenarioReporter {
 //                    yamlReport.getBytes(TEMPLATE_ENCODING));
 
         } catch (IOException e) {
-            throw new SystemException(BaseMessages.BASE_ERR_9101);
+            throw new SystemException(BaseMessages.BASE_ERR_1001);
         }
 
     }
@@ -144,7 +144,7 @@ public final class BaseScenarioReporter implements ScenarioReporter {
                     templateEngine.process("scenario", icontext).getBytes(TEMPLATE_ENCODING));
 
         } catch (IOException e) {
-            throw new SystemException(BaseMessages.BASE_ERR_9102);
+            throw new SystemException(BaseMessages.BASE_ERR_1002);
         }
     }
 

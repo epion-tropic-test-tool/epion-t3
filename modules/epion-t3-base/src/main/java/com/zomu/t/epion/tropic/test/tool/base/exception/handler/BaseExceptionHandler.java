@@ -39,12 +39,12 @@ public final class BaseExceptionHandler implements ExceptionHandler<BaseContext>
                 String msg = null;
                 if (x.getTarget() != null) {
                     if (x.getValue() != null) {
-                        msg = messageManager.getMessage(BaseMessages.BASE_ERR_9004, x.getFilePath(), x.getMessage(), x.getTarget(), x.getValue());
+                        msg = messageManager.getMessage(BaseMessages.BASE_ERR_0004, x.getFilePath(), x.getMessage(), x.getTarget(), x.getValue());
                     } else {
-                        msg = messageManager.getMessage(BaseMessages.BASE_ERR_9003, x.getFilePath(), x.getMessage(), x.getTarget());
+                        msg = messageManager.getMessage(BaseMessages.BASE_ERR_0003, x.getFilePath(), x.getMessage(), x.getTarget());
                     }
                 } else {
-                    msg = messageManager.getMessage(BaseMessages.BASE_ERR_9002, x.getFilePath(), x.getMessage());
+                    msg = messageManager.getMessage(BaseMessages.BASE_ERR_0002, x.getFilePath(), x.getMessage());
                 }
                 log.error(msg);
             });

@@ -23,6 +23,7 @@ import java.nio.file.*;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -120,10 +121,22 @@ public final class BaseOriginalHoldParser implements IndividualTargetParser<Base
                                         .build());
                             });
 
+
                 } catch (JsonParseException | JsonMappingException e) {
                     log.warn("file is not t3 format: {} -> ignore...", file);
                     errors.add(ScenarioParseError.builder().filePath(file).type(ScenarioPaseErrorType.PARSE_ERROR).message("").build());
                     return FileVisitResult.CONTINUE;
+                }
+
+                // Profileの保持
+                if (t3Base.getProfiles() != null && t3Base.getProfiles().getValues() != null) {
+                    for (Map.Entry<String, Map<String, String>> entry : t3Base.getProfiles().getValues().entrySet()) {
+                        if (baseContext.getOriginal().getProfiles().containsKey(entry.getKey())) {
+                            baseContext.getOriginal().getProfiles().get(entry.getKey()).putAll(entry.getValue());
+                        } else {
+                            baseContext.getOriginal().getProfiles().put(entry.getKey(), entry.getValue());
+                        }
+                    }
                 }
 
                 if (t3Base.getInfo() != null) {
@@ -170,6 +183,7 @@ public final class BaseOriginalHoldParser implements IndividualTargetParser<Base
 
                         // process識別子とPathを紐付ける
                         baseContext.getOriginal().getProcessPlacePaths().put(fullProcessId, file);
+
                     }
 
                 }

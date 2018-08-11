@@ -79,4 +79,9 @@ public class Original {
      */
     private final Map<String, Path> processPlacePaths = new ConcurrentHashMap<>();
 
+    /**
+     * プロファイル.
+     */
+    private final Map<String, Map<String, String>> profiles = new ConcurrentHashMap<>();
+
 }

@@ -1,7 +1,6 @@
 dependencies {
 
     compile project(':modules:epion-t3-core')
-
     compile 'me.xdrop:jrand:0.2.5-alpha'
     compile 'joda-time:joda-time:2.10'
 

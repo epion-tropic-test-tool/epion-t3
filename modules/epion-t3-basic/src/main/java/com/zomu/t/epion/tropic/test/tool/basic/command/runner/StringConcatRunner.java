@@ -1,22 +1,17 @@
 package com.zomu.t.epion.tropic.test.tool.basic.command.runner;
 
-import com.zomu.t.epion.tropic.test.tool.basic.command.model.ConsoleInput;
 import com.zomu.t.epion.tropic.test.tool.basic.command.model.StringConcat;
 import com.zomu.t.epion.tropic.test.tool.basic.messages.BasicMessages;
-import com.zomu.t.epion.tropic.test.tool.basic.type.ReferenceVariableType;
+import com.zomu.t.epion.tropic.test.tool.core.type.ReferenceVariableType;
 import com.zomu.t.epion.tropic.test.tool.core.context.EvidenceInfo;
 import com.zomu.t.epion.tropic.test.tool.core.exception.SystemException;
 import com.zomu.t.epion.tropic.test.tool.core.execution.runner.CommandRunner;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 
-import java.io.BufferedReader;
-import java.io.Console;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.StringJoiner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 

@@ -7,19 +7,19 @@ import com.zomu.t.epion.tropic.test.tool.base.execution.reporter.BaseScenarioRep
 import com.zomu.t.epion.tropic.test.tool.core.annotation.ApplicationVersion;
 import com.zomu.t.epion.tropic.test.tool.core.context.Context;
 import com.zomu.t.epion.tropic.test.tool.core.context.execute.ExecuteContext;
-import com.zomu.t.epion.tropic.test.tool.core.execution.runner.ApplicationRunner;
-import com.zomu.t.epion.tropic.test.tool.core.type.ScenarioExecuteStatus;
 import com.zomu.t.epion.tropic.test.tool.core.context.execute.ExecuteProcess;
 import com.zomu.t.epion.tropic.test.tool.core.context.execute.ExecuteScenario;
 import com.zomu.t.epion.tropic.test.tool.core.exception.ProcessNotFoundException;
 import com.zomu.t.epion.tropic.test.tool.core.exception.ScenarioNotFoundException;
-import com.zomu.t.epion.tropic.test.tool.core.type.Args;
-import com.zomu.t.epion.tropic.test.tool.core.type.ExitCode;
-import com.zomu.t.epion.tropic.test.tool.core.type.FlowType;
-import com.zomu.t.epion.tropic.test.tool.core.util.ExecutionFileUtils;
+import com.zomu.t.epion.tropic.test.tool.core.execution.runner.ApplicationRunner;
 import com.zomu.t.epion.tropic.test.tool.core.model.scenario.Flow;
 import com.zomu.t.epion.tropic.test.tool.core.model.scenario.Process;
 import com.zomu.t.epion.tropic.test.tool.core.model.scenario.T3Base;
+import com.zomu.t.epion.tropic.test.tool.core.type.Args;
+import com.zomu.t.epion.tropic.test.tool.core.type.ExitCode;
+import com.zomu.t.epion.tropic.test.tool.core.type.FlowType;
+import com.zomu.t.epion.tropic.test.tool.core.type.ScenarioExecuteStatus;
+import com.zomu.t.epion.tropic.test.tool.core.util.ExecutionFileUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.cli.*;
 import org.apache.commons.lang3.SerializationUtils;
@@ -52,6 +52,9 @@ public class BaseApplicationRunner implements ApplicationRunner<BaseContext> {
         );
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public int execute(String[] args) {
 
@@ -90,9 +93,6 @@ public class BaseApplicationRunner implements ApplicationRunner<BaseContext> {
 
             // 実行コンテキストのクローン生成
             cloneExecuteContext(context);
-
-            // プロファイルの値をバインド
-            bindProfileValues(context);
 
             // 開始
             context.getExecuteContext().setStart(LocalDateTime.now());
@@ -277,20 +277,6 @@ public class BaseApplicationRunner implements ApplicationRunner<BaseContext> {
         ExecuteContext cloneExecuteContextV10 = SerializationUtils.clone(context.getExecuteOriginal());
         context.setExecuteContext(cloneExecuteContextV10);
     }
-
-    /**
-     * 実行時にプロファイルが指定されている場合には、実行シナリオに対してプロファイル値を適用する.
-     *
-     * @param context
-     */
-    private void bindProfileValues(final BaseContext context) {
-
-        if (StringUtils.isNotEmpty(context.getOption().getProfile())) {
-            // TODO:バインド処理
-        }
-
-    }
-
 
     /**
      * 結果ディレクトリが未作成であった場合に、作成します.
