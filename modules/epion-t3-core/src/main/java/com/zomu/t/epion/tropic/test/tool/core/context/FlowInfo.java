@@ -1,6 +1,7 @@
 package com.zomu.t.epion.tropic.test.tool.core.context;
 
 import com.zomu.t.epion.tropic.test.tool.core.execution.runner.CommandRunner;
+import com.zomu.t.epion.tropic.test.tool.core.execution.runner.FlowRunner;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NonNull;
@@ -11,7 +12,7 @@ import java.io.Serializable;
 @Getter
 @Setter
 @Builder
-public class CommandInfo implements Serializable {
+public class FlowInfo implements Serializable {
 
     @NonNull
     private String id;
@@ -24,6 +25,6 @@ public class CommandInfo implements Serializable {
     private Class<?> model;
 
     @NonNull
-    private Class<? extends CommandRunner> runner;
+    private Class<? extends FlowRunner> runner;
 
 }

@@ -4,9 +4,11 @@ import com.google.common.reflect.ClassPath;
 import com.zomu.t.epion.tropic.test.tool.base.context.BaseContext;
 import com.zomu.t.epion.tropic.test.tool.core.annotation.Command;
 import com.zomu.t.epion.tropic.test.tool.core.context.Context;
+import com.zomu.t.epion.tropic.test.tool.core.context.FlowInfo;
 import com.zomu.t.epion.tropic.test.tool.core.exception.SystemException;
 import com.zomu.t.epion.tropic.test.tool.core.exception.bean.ScenarioParseError;
 import com.zomu.t.epion.tropic.test.tool.core.execution.parser.IndividualTargetParser;
+import com.zomu.t.epion.tropic.test.tool.core.model.scenario.Flow;
 import com.zomu.t.epion.tropic.test.tool.core.type.ScenarioPaseErrorType;
 import com.zomu.t.epion.tropic.test.tool.core.model.scenario.Process;
 import com.zomu.t.epion.tropic.test.tool.core.context.CommandInfo;
@@ -75,11 +77,11 @@ public final class BaseCustomParser implements IndividualTargetParser {
     @Override
     public void parse(final Context context, String fileNamePattern) {
 
-        BaseContext t3ContextV10 = BaseContext.class.cast(context);
+        BaseContext baseContext = BaseContext.class.cast(context);
 
-        findCustom(t3ContextV10, fileNamePattern);
+        findCustom(baseContext, fileNamePattern);
 
-        parseCustom(t3ContextV10);
+        parseCustom(baseContext);
 
     }
 
@@ -90,7 +92,9 @@ public final class BaseCustomParser implements IndividualTargetParser {
                 try {
                     context.getOriginal().getCustom().getPackages().putAll(context.getObjectMapper().readValue(x.toFile(), T3Base.class).getCustoms().getPackages());
                 } catch (IOException e) {
-                    throw new ScenarioParseException(ScenarioParseError.builder().filePath(x).type(ScenarioPaseErrorType.PARSE_ERROR).message("Custom Package Config Parse Error Occurred.").build());
+                    throw new ScenarioParseException(
+                            ScenarioParseError.builder().filePath(x).type(ScenarioPaseErrorType.PARSE_ERROR)
+                                    .message("Custom Package Config Parse Error Occurred.").build());
                 }
             });
         } catch (IOException e) {
@@ -99,15 +103,16 @@ public final class BaseCustomParser implements IndividualTargetParser {
 
     }
 
-    private void parseCustom(BaseContext t3ContextV10) {
+    private void parseCustom(BaseContext baseContext) {
 
         ClassLoader loader = Thread.currentThread().getContextClassLoader();
 
         // カスタムコマンド
-        t3ContextV10.getOriginal().getCustom().getPackages().forEach((k, v) -> CustomConfigHolder.addCustomPackage(k, v));
+        baseContext.getOriginal().getCustom().getPackages().forEach(
+                (k, v) -> CustomConfigHolder.getInstance().addCustomPackage(k, v));
 
         // カスタム機能のパッケージを走査
-        for (Map.Entry<String, String> entry : t3ContextV10.getOriginal().getCustom().getPackages().entrySet()) {
+        for (Map.Entry<String, String> entry : baseContext.getOriginal().getCustom().getPackages().entrySet()) {
 
 
             log.debug("start parse custom function packages -> {}:{}", entry.getKey(), entry.getValue());
@@ -129,11 +134,28 @@ public final class BaseCustomParser implements IndividualTargetParser {
                     .filter(x -> Process.class.isAssignableFrom(x))
                     .forEach(x -> {
                         Command command = x.getDeclaredAnnotation(Command.class);
-                        CommandInfo commandInfo = CommandInfo.builder().id(command.id()).scenarioModel(x).runner(command.runner()).build();
-                        CustomConfigHolder.addCustomCommandInfo(
+                        CommandInfo commandInfo = CommandInfo.builder().id(command.id()).model(x).runner(command.runner()).build();
+                        CustomConfigHolder.getInstance().addCustomCommandInfo(
                                 command.id(), commandInfo);
-                        t3ContextV10.getCustomCommands().put(command.id(), commandInfo);
+                        // TODO:シナリオを動かすときに使うが、果たして重複保持が必要か？
+                        baseContext.getCustomCommands().put(command.id(), commandInfo);
                     });
+
+
+            // カスタムFlowを解析
+            allClasses.stream()
+                    .filter(x -> x.getDeclaredAnnotation(Command.class) != null)
+                    .filter(x -> Flow.class.isAssignableFrom(x))
+                    .forEach(x -> {
+                        com.zomu.t.epion.tropic.test.tool.core.annotation.Flow flow =
+                                x.getDeclaredAnnotation(com.zomu.t.epion.tropic.test.tool.core.annotation.Flow.class);
+                        FlowInfo flowInfo = FlowInfo.builder().id(flow.id()).model(x).runner(flow.runner()).build();
+                        CustomConfigHolder.getInstance().addCustomFlowInfo(
+                                flow.id(), flowInfo);
+                        // TODO:シナリオを動かすときに使うが、果たして重複保持が必要か？
+                        baseContext.getCustomFlows().put(flow.id(), flowInfo);
+                    });
+
 
             // >>他機能のカスタムがあれば随時追加<<
 

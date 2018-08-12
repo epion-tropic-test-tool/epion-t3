@@ -11,7 +11,9 @@ public enum FlowType {
 
     SCENARIO("scenario"),
 
-    PROCESS("process");
+    PROCESS("process"),
+
+    CONTROL("control");
 
     private String value;
 

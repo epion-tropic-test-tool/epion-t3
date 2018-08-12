@@ -80,6 +80,8 @@ public interface CommandRunner<PROCESS extends Process> {
     }
 
     /**
+     * エビデンスを登録する.
+     *
      * @param scenarioScopeVariables
      * @param evidences
      * @param evidence

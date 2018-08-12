@@ -78,6 +78,7 @@ public class BaseScenarioRunner implements ScenarioRunner<BaseContext> {
             settingScenarioVariables(context, scenario);
 
             for (ExecuteProcess process : scenario.getProcesses()) {
+
                 this.processRunner.execute(context, scenario, process);
 
                 if (process.getStatus() != ProcessStatus.SUCCESS) {

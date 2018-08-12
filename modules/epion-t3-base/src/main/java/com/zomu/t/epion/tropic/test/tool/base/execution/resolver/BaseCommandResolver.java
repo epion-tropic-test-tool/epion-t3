@@ -49,7 +49,7 @@ public final class BaseCommandResolver implements CommandResolver {
             throw new SystemException(BaseMessages.BASE_ERR_0001);
         }
 
-        CommandInfo commandInfo = CustomConfigHolder.getCustomCommandInfo(commandId);
+        CommandInfo commandInfo = CustomConfigHolder.getInstance().getCustomCommandInfo(commandId);
 
         if (commandInfo == null) {
             // コマンド解決が出来ない場合

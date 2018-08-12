@@ -3,10 +3,7 @@ package com.zomu.t.epion.tropic.test.tool.base.context;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
-import com.zomu.t.epion.tropic.test.tool.core.context.CommandInfo;
-import com.zomu.t.epion.tropic.test.tool.core.context.Context;
-import com.zomu.t.epion.tropic.test.tool.core.context.Option;
-import com.zomu.t.epion.tropic.test.tool.core.context.Original;
+import com.zomu.t.epion.tropic.test.tool.core.context.*;
 import com.zomu.t.epion.tropic.test.tool.core.context.execute.ExecuteContext;
 import lombok.Getter;
 import lombok.Setter;
@@ -37,6 +34,9 @@ public class BaseContext implements Context {
 
     @Getter
     private final Map<String, CommandInfo> customCommands = new ConcurrentHashMap<>();
+
+    @Getter
+    private final Map<String, FlowInfo> customFlows = new ConcurrentHashMap<>();
 
     /**
      * 実行引数オプション.

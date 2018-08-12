@@ -9,16 +9,22 @@ import com.zomu.t.epion.tropic.test.tool.core.type.Args;
 import com.zomu.t.epion.tropic.test.tool.core.type.ExitCode;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.cli.*;
-import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 
-import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.nio.charset.Charset;
 import java.util.Arrays;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+/**
+ * アプリケーション.
+ *
+ * @author takashno
+ */
 @Slf4j
 public class Application {
 
@@ -36,20 +42,16 @@ public class Application {
         });
     }
 
-
+    /**
+     * @param args
+     * @throws IOException
+     */
     public static void main(String[] args) throws IOException {
 
         // バナー出力
         outputBanner();
 
         MessageManager messageManager = MessageManager.getInstance();
-
-        args = new String[]{
-                "-v", "v1.0",
-                "-m", "test",
-                "-t", "yahooregist-scenario-001",
-                "-s", "/Users/takashimanozomu/work/30_pgworkspaces/intellij/t3-core/modules/epion-t3-scenario"
-        };
 
         // バージョンの解決
         CommandLineParser parser = new DefaultParser();
@@ -118,10 +120,9 @@ public class Application {
     private static void outputBanner() {
 
         ClassLoader classLoader = Application.class.getClassLoader();
-        File file = new File(classLoader.getResource("banners/banner.txt").getFile());
-        try {
-            String banner = FileUtils.readFileToString(file);
-            System.out.println(banner);
+
+        try (InputStream is = classLoader.getResourceAsStream("banners/banner.txt")) {
+            IOUtils.readLines(is, Charset.forName("UTF-8")).stream().forEach(System.out::println);
         } catch (IOException e) {
             // ignore
         }

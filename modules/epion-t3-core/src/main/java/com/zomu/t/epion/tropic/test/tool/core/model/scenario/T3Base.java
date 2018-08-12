@@ -3,6 +3,7 @@ package com.zomu.t.epion.tropic.test.tool.core.model.scenario;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.databind.annotation.JsonTypeIdResolver;
 import com.zomu.t.epion.tropic.test.tool.core.execution.resolver.CommandTypeIdResolver;
+import com.zomu.t.epion.tropic.test.tool.core.execution.resolver.FlowTypeIdResolver;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -21,6 +22,9 @@ public class T3Base implements Serializable {
 
     private Information info;
 
+//    @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.EXISTING_PROPERTY, property = "type", visible = true)
+//    @JsonTypeIdResolver(FlowTypeIdResolver.class)
+//    @Valid
     private List<Flow> flows = new ArrayList<>();
 
     // visible属性を「true」にしないとパースした際に値が設定されないらしい

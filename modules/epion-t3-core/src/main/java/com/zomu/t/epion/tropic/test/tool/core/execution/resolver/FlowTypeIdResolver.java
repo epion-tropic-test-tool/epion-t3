@@ -6,16 +6,12 @@ import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.jsontype.TypeIdResolver;
 import com.fasterxml.jackson.databind.type.TypeFactory;
 import com.zomu.t.epion.tropic.test.tool.core.context.CommandInfo;
+import com.zomu.t.epion.tropic.test.tool.core.context.FlowInfo;
 import com.zomu.t.epion.tropic.test.tool.core.holder.CustomConfigHolder;
 
 import java.io.IOException;
 
-/**
- * 動的にコマンドクラスのモデルを解決するためのクラス.
- *
- * @author takahsno
- */
-public class CommandTypeIdResolver implements TypeIdResolver {
+public class FlowTypeIdResolver implements TypeIdResolver {
     @Override
     public void init(JavaType baseType) {
     }
@@ -35,20 +31,12 @@ public class CommandTypeIdResolver implements TypeIdResolver {
         return null;
     }
 
-    /**
-     * YAMLに定義されたIDを利用から該当するモデルを解決し、パースに利用するモデルクラスを返却する.
-     *
-     * @param context
-     * @param id
-     * @return
-     * @throws IOException
-     */
     @Override
     public JavaType typeFromId(DatabindContext context, String id) throws IOException {
         TypeFactory typeFactory = (context != null) ? context.getTypeFactory() : TypeFactory.defaultInstance();
-        CommandInfo commandInfo = CustomConfigHolder.getInstance().getCustomCommandInfo(id);
-        if (commandInfo != null) {
-            return typeFactory.constructType(commandInfo.getModel());
+        FlowInfo flowInfo = CustomConfigHolder.getInstance().getCustomFlowInfo(id);
+        if (flowInfo != null) {
+            return typeFactory.constructType(flowInfo.getModel());
         }
         throw new IllegalArgumentException();
     }

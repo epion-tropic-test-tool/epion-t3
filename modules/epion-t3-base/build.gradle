@@ -11,7 +11,15 @@ dependencies {
 }
 
 
+jar {
+    manifest {
+        attributes "Main-Class": "com.zomu.t.epion.tropic.test.tool.base.application.Application"
+    }
 
+    from {
+        configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+}
 
 
 
