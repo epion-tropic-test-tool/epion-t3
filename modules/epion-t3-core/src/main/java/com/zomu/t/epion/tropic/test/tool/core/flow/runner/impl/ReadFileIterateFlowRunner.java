@@ -6,6 +6,7 @@ import com.zomu.t.epion.tropic.test.tool.core.context.execute.ExecuteFlow;
 import com.zomu.t.epion.tropic.test.tool.core.context.execute.ExecuteScenario;
 import com.zomu.t.epion.tropic.test.tool.core.exception.SystemException;
 import com.zomu.t.epion.tropic.test.tool.core.flow.model.CommandExecuteFlow;
+import com.zomu.t.epion.tropic.test.tool.core.flow.model.FlowResult;
 import com.zomu.t.epion.tropic.test.tool.core.flow.model.ReadFileIterateFlow;
 import com.zomu.t.epion.tropic.test.tool.core.model.scenario.Flow;
 import org.slf4j.Logger;
@@ -35,7 +36,7 @@ public class ReadFileIterateFlowRunner
      * {@inheritDoc}
      */
     @Override
-    protected void execute(
+    protected FlowResult execute(
             BaseContext context,
             ExecuteScenario executeScenario,
             ExecuteFlow executeFlow,
@@ -82,6 +83,8 @@ public class ReadFileIterateFlowRunner
                 }
             }
         }
+
+        return FlowResult.getDefault();
 
     }
 }

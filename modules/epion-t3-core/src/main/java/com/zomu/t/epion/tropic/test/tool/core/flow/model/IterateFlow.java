@@ -18,6 +18,9 @@ import java.util.List;
 @Setter
 public class IterateFlow extends Flow {
 
+    /**
+     * デフォルトシリアルバージョンUID.
+     */
     private static final long serialVersionUID = 1L;
 
     /**

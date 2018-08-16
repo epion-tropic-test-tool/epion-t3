@@ -3,6 +3,7 @@ package com.zomu.t.epion.tropic.test.tool.core.flow.runner.impl;
 import com.zomu.t.epion.tropic.test.tool.core.context.Context;
 import com.zomu.t.epion.tropic.test.tool.core.context.execute.ExecuteFlow;
 import com.zomu.t.epion.tropic.test.tool.core.context.execute.ExecuteScenario;
+import com.zomu.t.epion.tropic.test.tool.core.flow.model.FlowResult;
 import com.zomu.t.epion.tropic.test.tool.core.flow.runner.FlowRunner;
 import com.zomu.t.epion.tropic.test.tool.core.holder.FlowLog;
 import com.zomu.t.epion.tropic.test.tool.core.holder.FlowLoggingHolder;
@@ -34,7 +35,7 @@ public abstract class AbstractFlowRunner<CONTEXT extends Context, EXECUTESCENARI
      * {@inheritDoc}
      */
     @Override
-    public void execute(CONTEXT context, EXECUTESCENARIO executeScenario, FLOW flow, Logger logger) {
+    public FlowResult execute(CONTEXT context, EXECUTESCENARIO executeScenario, FLOW flow, Logger logger) {
 
         // process実行情報を作成
         EXECUTEFLOW executeFlow = getExecuteFlowInstance();
@@ -42,6 +43,8 @@ public abstract class AbstractFlowRunner<CONTEXT extends Context, EXECUTESCENARI
 
         // Flow実行開始時間を設定
         executeFlow.setStart(LocalDateTime.now());
+
+        FlowResult flowResult = null;
 
         try {
 
@@ -58,7 +61,7 @@ public abstract class AbstractFlowRunner<CONTEXT extends Context, EXECUTESCENARI
                     executeFlow);
 
             // 実行
-            execute(
+            flowResult = execute(
                     context,
                     executeScenario,
                     executeFlow,
@@ -116,6 +119,7 @@ public abstract class AbstractFlowRunner<CONTEXT extends Context, EXECUTESCENARI
 
         }
 
+        return flowResult;
     }
 
     /**
@@ -142,7 +146,7 @@ public abstract class AbstractFlowRunner<CONTEXT extends Context, EXECUTESCENARI
      * @param executeFlow
      * @param flow
      */
-    protected abstract void execute(
+    protected abstract FlowResult execute(
             CONTEXT context,
             EXECUTESCENARIO executeScenario,
             EXECUTEFLOW executeFlow,

@@ -7,17 +7,23 @@ import com.zomu.t.epion.tropic.test.tool.core.execution.reporter.impl.BaseScenar
 import com.zomu.t.epion.tropic.test.tool.core.execution.resolver.impl.BaseFlowRunnerResolver;
 import com.zomu.t.epion.tropic.test.tool.core.execution.runner.ProcessRunner;
 import com.zomu.t.epion.tropic.test.tool.core.execution.runner.ScenarioRunner;
+import com.zomu.t.epion.tropic.test.tool.core.flow.model.FlowResult;
 import com.zomu.t.epion.tropic.test.tool.core.flow.runner.FlowRunner;
 import com.zomu.t.epion.tropic.test.tool.core.model.scenario.Flow;
 import com.zomu.t.epion.tropic.test.tool.core.model.scenario.T3Base;
 import com.zomu.t.epion.tropic.test.tool.core.type.ScenarioExecuteStatus;
 import com.zomu.t.epion.tropic.test.tool.core.type.ScenarioScopeVariables;
+import com.zomu.t.epion.tropic.test.tool.core.util.BindUtils;
 import com.zomu.t.epion.tropic.test.tool.core.util.ExecutionFileUtils;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.LoggerFactory;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.Arrays;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * シナリオ実行処理.
@@ -26,20 +32,7 @@ import java.time.LocalDateTime;
  */
 @Slf4j
 public class BaseScenarioRunner implements ScenarioRunner<BaseContext> {
-
-    /**
-     * プロセス実行処理.
-     */
-    private final ProcessRunner processRunner;
-
-    /**
-     * コンストラクタ.
-     */
-    public BaseScenarioRunner() {
-        this.processRunner = new BaseProcessRunner();
-    }
-
-
+    
     /**
      * {@inheritDoc}
      *
@@ -74,14 +67,51 @@ public class BaseScenarioRunner implements ScenarioRunner<BaseContext> {
             // シナリオスコープの変数を設定
             settingScenarioVariables(context, executeScenario);
 
+            FlowResult flowResult = null;
+
+            boolean exitFlg = false;
+
+            // 全てのフローを実行
             for (Flow flow : scenario.getFlows()) {
+
+                if (flowResult != null) {
+                    switch (flowResult.getStatus()) {
+                        case NEXT:
+                            break;
+                        case CHOICE:
+                            if (StringUtils.equals(flowResult.getChoiceId(), flow.getId())) {
+                                // 合致したため実行する
+                                log.debug("Find Next Flow!!!");
+                            } else {
+                                // 次のループまで
+                                continue;
+                            }
+                            break;
+                        case EXIT:
+                            exitFlg = true;
+                            break;
+                    }
+                }
+
+                if (exitFlg) {
+                    // ループを抜ける
+                    break;
+                }
+
                 FlowRunner runner = BaseFlowRunnerResolver.getInstance().getFlowRunner(flow.getType());
-                runner.execute(
+
+                // バインド
+                bind(context, executeScenario, flow);
+
+                flowResult = runner.execute(
                         context,
                         executeScenario,
                         flow,
                         LoggerFactory.getLogger("FlowLog"));
+
+
             }
+
             // プロセス成功
             executeScenario.setStatus(ScenarioExecuteStatus.SUCCESS);
 
@@ -116,61 +146,38 @@ public class BaseScenarioRunner implements ScenarioRunner<BaseContext> {
     }
 
 
-    private void runScenario(final BaseContext context, final ExecuteScenario scenario) {
+    /**
+     * Flowに対して、変数をバインドする.
+     *
+     * @param context
+     * @param executeScenario
+     * @param flow
+     */
+    private void bind(final BaseContext context,
+                      final ExecuteScenario executeScenario,
+                      final Flow flow) {
 
+        final Map<String, String> profiles = new ConcurrentHashMap<>();
 
-//        try {
-//
-//            // シナリオ開始ログ出力
-//            outputStartScenarioLog(context, scenario);
-//
-//            // 結果ディレクトリの作成
-//            ExecutionFileUtils.createScenarioResultDirectory(context, scenario);
-//
-//            // シナリオスコープの変数を設定
-//            settingScenarioVariables(context, scenario);
-//
-//            for (ExecuteProcess process : scenario.getProcesses()) {
-//
-//                this.processRunner.execute(context, scenario, process);
-//
-//                if (process.getStatus() != ProcessStatus.SUCCESS) {
-//                    scenario.setStatus(ScenarioExecuteStatus.FAIL);
-//                    return;
-//                }
-//
-//            }
-//
-//            // プロセス成功
-//            scenario.setStatus(ScenarioExecuteStatus.SUUCESS);
-//
-//        } catch (Throwable t) {
-//
-//            // 発生したエラーを設定
-//            scenario.setError(t);
-//
-//            // シナリオ失敗
-//            scenario.setStatus(ScenarioExecuteStatus.FAIL);
-//
-//        } finally {
-//
-//            // 掃除
-//            cleanScenarioVariables(context, scenario);
-//
-//            // シナリオ実行終了時間を設定
-//            scenario.setEnd(LocalDateTime.now());
-//
-//            // 所用時間を設定
-//            scenario.setDuration(Duration.between(scenario.getStart(), scenario.getEnd()));
-//
-//            // シナリオ終了ログ出力
-//            outputEndScenarioLog(context, scenario);
-//
-//            // レポート出力
-//            report(context, scenario);
-//        }
-//
+        if (StringUtils.isNotEmpty(context.getOption().getProfile())) {
+            // プロファイルを抽出
+            Arrays.stream(context.getOption().getProfile().split(","))
+                    .forEach(x -> {
+                        if (context.getOriginal().getProfiles().containsKey(x)) {
+                            profiles.putAll(context.getOriginal().getProfiles().get(x));
+                        } else {
+
+                        }
+                    });
+        }
+
+        BindUtils.getInstance().bind(
+                flow,
+                profiles,
+                context.getExecuteContext().getGlobalVariables(),
+                executeScenario.getScenarioVariables());
     }
+
 
     /**
      * シナリオスコープの変数を設定する.

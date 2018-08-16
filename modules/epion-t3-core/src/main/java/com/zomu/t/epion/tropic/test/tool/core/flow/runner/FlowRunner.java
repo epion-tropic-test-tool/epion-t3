@@ -2,6 +2,7 @@ package com.zomu.t.epion.tropic.test.tool.core.flow.runner;
 
 import com.zomu.t.epion.tropic.test.tool.core.context.Context;
 import com.zomu.t.epion.tropic.test.tool.core.context.execute.ExecuteScenario;
+import com.zomu.t.epion.tropic.test.tool.core.flow.model.FlowResult;
 import com.zomu.t.epion.tropic.test.tool.core.model.scenario.Flow;
 import org.slf4j.Logger;
 
@@ -18,7 +19,7 @@ public interface FlowRunner<CONTEXT extends Context, SCENARIO extends ExecuteSce
      * @param executeScenario
      * @param flow
      */
-    void execute(
+    FlowResult execute(
             final CONTEXT context,
             final SCENARIO executeScenario,
             final FLOW flow,

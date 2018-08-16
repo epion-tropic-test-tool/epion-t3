@@ -12,6 +12,11 @@ import java.io.Serializable;
 @AllArgsConstructor
 public class Information implements Serializable {
 
+    /**
+     * デフォルトシリアルバージョンUID.
+     */
+    private static final long serialVersionUID = 1L;
+
     @NonNull
     private String id;
 

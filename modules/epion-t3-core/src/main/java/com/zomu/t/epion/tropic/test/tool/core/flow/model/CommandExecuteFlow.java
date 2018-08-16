@@ -15,6 +15,11 @@ import org.apache.bval.constraints.NotEmpty;
         id = "CommandExecute", runner = CommandExecuteFlowRunner.class)
 public class CommandExecuteFlow extends Flow {
 
+    /**
+     * デフォルトシリアルバージョンUID.
+     */
+    private static final long serialVersionUID = 1L;
+
     @NotEmpty
     String ref;
 

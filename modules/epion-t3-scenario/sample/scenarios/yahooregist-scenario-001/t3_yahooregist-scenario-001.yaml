@@ -6,8 +6,9 @@ info:
     summary: "Yahooアカウント新規作成"
     description: "Yahooの新規アカウント取得用シナリオ"
 flows:
-  - type: "ReadFileIterate"
-    target: "${scenarioDir}/test.csv"
+  - id: "flow-0001"
+    type: "ReadFileIterate"
+    target: "${scenario.scenarioDir}/test.csv"
     fileType: "csv"
     encoding: "UTF-8"
     lineSeparator: "LF"
