@@ -12,6 +12,8 @@ import java.util.stream.Collectors;
 
 /**
  * メッセージ解決クラス.
+ *
+ * @author takashno
  */
 @Slf4j
 public final class MessageResolver {

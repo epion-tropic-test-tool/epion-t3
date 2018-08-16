@@ -1,8 +1,8 @@
 package com.zomu.t.epion.tropic.test.tool.core.execution.runner;
 
 import com.zomu.t.epion.tropic.test.tool.core.context.EvidenceInfo;
-import com.zomu.t.epion.tropic.test.tool.core.context.execute.ExecuteScenario;
-import com.zomu.t.epion.tropic.test.tool.core.model.scenario.Process;
+import com.zomu.t.epion.tropic.test.tool.core.model.scenario.Command;
+import com.zomu.t.epion.tropic.test.tool.core.type.FlowScopeVariables;
 import com.zomu.t.epion.tropic.test.tool.core.type.ScenarioScopeVariables;
 import org.slf4j.Logger;
 
@@ -15,7 +15,7 @@ import java.util.Map;
  *
  * @param <PROCESS>
  */
-public interface CommandRunner<PROCESS extends Process> {
+public interface CommandRunner<PROCESS extends Command> {
 
     /**
      * @param process
@@ -96,13 +96,13 @@ public interface CommandRunner<PROCESS extends Process> {
                         ScenarioScopeVariables.CURRENT_SCENARIO.getName()).toString());
         evidenceInfo.setFqpn(
                 scenarioScopeVariables.get(
-                        ScenarioScopeVariables.CURRENT_PROCESS.getName()).toString());
+                        FlowScopeVariables.CURRENT_COMMAND.getName()).toString());
         evidenceInfo.setName(
                 getEvidenceBaseName(
                         scenarioScopeVariables));
         evidenceInfo.setExecuteProcessId(
                 scenarioScopeVariables.get(
-                        ScenarioScopeVariables.CURRENT_PROCESS_EXECUTEID.getName()).toString());
+                        FlowScopeVariables.CURRENT_COMMAND_EXECUTE_ID.getName()).toString());
         evidenceInfo.setPath(evidence);
         evidences.put(getEvidenceBaseName(scenarioScopeVariables), evidenceInfo);
     }
@@ -120,7 +120,7 @@ public interface CommandRunner<PROCESS extends Process> {
             String name) {
         EvidenceInfo evidenceInfo = new EvidenceInfo();
         evidenceInfo.setFqsn(scenarioScopeVariables.get(ScenarioScopeVariables.CURRENT_SCENARIO.getName()).toString());
-        evidenceInfo.setFqpn(scenarioScopeVariables.get(ScenarioScopeVariables.CURRENT_PROCESS.getName()).toString());
+        evidenceInfo.setFqpn(scenarioScopeVariables.get(FlowScopeVariables.CURRENT_COMMAND.getName()).toString());
         evidenceInfo.setName(name);
         evidenceInfo.setPath(evidence);
         evidences.put(name, evidenceInfo);
@@ -134,6 +134,6 @@ public interface CommandRunner<PROCESS extends Process> {
      */
     default String getEvidenceBaseName(
             final Map<String, Object> scenarioScopeVariables) {
-        return scenarioScopeVariables.get(ScenarioScopeVariables.CURRENT_PROCESS.getName()).toString() + "_evidence";
+        return scenarioScopeVariables.get(FlowScopeVariables.CURRENT_COMMAND.getName()).toString() + "_evidence";
     }
 }

@@ -21,6 +21,11 @@ import java.util.concurrent.ConcurrentHashMap;
 public class ExecuteScenario implements Serializable {
 
     /**
+     * デフォルトシリアルバージョンUID.
+     */
+    private static final long serialVersionUID = 1L;
+
+    /**
      * 実行フローID
      */
     private UUID executeScenarioId = UUID.randomUUID();
@@ -62,9 +67,9 @@ public class ExecuteScenario implements Serializable {
     private Throwable error;
 
     /**
-     * 対象プロセス.
+     * 実行Flowリスト.
      */
-    private List<ExecuteProcess> processes = new ArrayList<>();
+    private List<ExecuteFlow> flows = new ArrayList<>();
 
     /**
      * シナリオスコープ変数.

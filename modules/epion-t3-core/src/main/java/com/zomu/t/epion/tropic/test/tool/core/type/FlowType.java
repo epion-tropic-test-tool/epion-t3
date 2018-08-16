@@ -5,15 +5,20 @@ import lombok.Getter;
 
 import java.util.Arrays;
 
+/**
+ * Flow種別
+ */
 @Getter
 @AllArgsConstructor
 public enum FlowType {
 
-    SCENARIO("scenario"),
-
     PROCESS("process"),
 
-    CONTROL("control");
+    SCENARIO("include"),
+
+    ITERATE("iterate"),
+
+    BRANCH("branch");
 
     private String value;
 

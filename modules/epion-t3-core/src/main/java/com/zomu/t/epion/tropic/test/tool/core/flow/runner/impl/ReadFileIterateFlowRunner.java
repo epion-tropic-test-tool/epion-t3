@@ -1,0 +1,87 @@
+package com.zomu.t.epion.tropic.test.tool.core.flow.runner.impl;
+
+import com.zomu.t.epion.tropic.test.tool.core.context.BaseContext;
+import com.zomu.t.epion.tropic.test.tool.core.context.execute.ExecuteCommand;
+import com.zomu.t.epion.tropic.test.tool.core.context.execute.ExecuteFlow;
+import com.zomu.t.epion.tropic.test.tool.core.context.execute.ExecuteScenario;
+import com.zomu.t.epion.tropic.test.tool.core.exception.SystemException;
+import com.zomu.t.epion.tropic.test.tool.core.flow.model.CommandExecuteFlow;
+import com.zomu.t.epion.tropic.test.tool.core.flow.model.ReadFileIterateFlow;
+import com.zomu.t.epion.tropic.test.tool.core.model.scenario.Flow;
+import org.slf4j.Logger;
+
+import java.io.IOException;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.List;
+
+/**
+ * ファイルを読み込んで1行毎にループ処理を行う.
+ *
+ * @author takashno
+ */
+public class ReadFileIterateFlowRunner
+        extends AbstractCommandExecuteFlowRunner<
+        BaseContext,
+        ExecuteScenario,
+        ExecuteFlow,
+        ExecuteCommand,
+        ReadFileIterateFlow,
+        CommandExecuteFlow> {
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected void execute(
+            BaseContext context,
+            ExecuteScenario executeScenario,
+            ExecuteFlow executeFlow,
+            ReadFileIterateFlow flow,
+            Logger logger) {
+
+
+        Path target = Paths.get(flow.getTarget());
+
+        if (!Files.exists(target)) {
+            throw new SystemException("not found target File...");
+        }
+
+        List<String> contents = null;
+
+        try {
+            contents = Files.readAllLines(target, Charset.forName(flow.getEncoding()));
+        } catch (IOException e) {
+
+            // 解析用
+            logger.debug("error occurred...", e);
+
+            throw new SystemException(e);
+
+        }
+
+        for (String row : contents) {
+
+            String[] cols = row.split(",");
+
+            for (int i = 0; i < cols.length; i++) {
+                executeFlow.getFlowVariables().put("row_col_" + (i + 1), cols[i]);
+            }
+
+            for (Flow child : flow.getChildren()) {
+                if (CommandExecuteFlow.class.isAssignableFrom(child.getClass())) {
+                    executeCommand(
+                            context,
+                            executeScenario,
+                            executeFlow,
+                            (CommandExecuteFlow) child,
+                            logger
+                    );
+                }
+            }
+        }
+
+    }
+}

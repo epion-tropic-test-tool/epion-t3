@@ -22,7 +22,7 @@ public class ExecuteContext implements com.zomu.t.epion.tropic.test.tool.core.co
      * 実行ID
      */
     private UUID executeContextId = UUID.randomUUID();
-    
+
     /**
      * ステータス.
      */
@@ -44,7 +44,7 @@ public class ExecuteContext implements com.zomu.t.epion.tropic.test.tool.core.co
     private Duration duration;
 
     /**
-     * 実行するフローリスト.
+     * 実行したシナリオリスト.
      */
     private List<ExecuteScenario> scenarios = new ArrayList<>();
 

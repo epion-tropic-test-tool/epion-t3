@@ -11,8 +11,7 @@ import java.util.List;
 @Setter
 public class Flow implements Serializable {
 
-    @OriginalFlowField
-    private String ref;
+    private static final long serialVersionUID = 1L;
 
     @OriginalFlowField
     private String type;

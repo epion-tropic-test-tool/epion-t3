@@ -1,7 +1,7 @@
 package com.zomu.t.epion.tropic.test.tool.core.util;
 
 import com.zomu.t.epion.tropic.test.tool.core.exception.SystemException;
-import com.zomu.t.epion.tropic.test.tool.core.message.CoreMessages;
+import com.zomu.t.epion.tropic.test.tool.core.message.impl.CoreMessages;
 import com.zomu.t.epion.tropic.test.tool.core.message.MessageManager;
 import com.zomu.t.epion.tropic.test.tool.core.type.ReferenceVariableType;
 import lombok.extern.slf4j.Slf4j;

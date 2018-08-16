@@ -25,6 +25,13 @@ public interface Context extends Serializable {
     Option getOption();
 
     /**
+     * シナリオを読み込んだオリジナル情報の保持クラスを取得する.
+     *
+     * @return
+     */
+    Original getOriginal();
+
+    /**
      * 実行コンテキストを取得する.
      *
      * @return

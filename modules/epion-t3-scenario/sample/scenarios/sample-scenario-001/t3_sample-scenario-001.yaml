@@ -6,31 +6,29 @@ info:
     summary: Sample Scenario 001
     description: This is a typical example scenario of the tool.
 flows:
-  - ref : process-001
-    type : process
   - ref : process-002
-    type : process
+    type : CommandExecute
   - ref : process-003
-    type : process
+    type : CommandExecute
   - ref : process-004
-    type : process
+    type : CommandExecute
   - ref : process-005
-    type : process
+    type : CommandExecute
   - ref : process-006
-    type : process
+    type : CommandExecute
   - ref : process-007
-    type : process
+    type : CommandExecute
   - ref : process-008
-    type : process
+    type : CommandExecute
   - ref : process-009
-    type : process
+    type : CommandExecute
   - ref : process-010
-    type : process
+    type : CommandExecute
   - ref : process-011
-    type : process
+    type : CommandExecute
   - ref : process-012
-    type : process
-processes:
+    type : CommandExecute
+commands:
   - id: process-001
     summary : File Copy Command.
     description: File Copy Command Sample Process.
@@ -106,5 +104,5 @@ variables:
     value1 : global_value_1
   scenario:
     value1 : scenario_value_1
-  local:
-    value1 : local_value_1
+  flow:
+    value1 : flow_value_1

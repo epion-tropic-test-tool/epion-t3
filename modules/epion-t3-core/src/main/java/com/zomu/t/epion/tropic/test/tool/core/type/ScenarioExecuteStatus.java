@@ -14,9 +14,11 @@ public enum ScenarioExecuteStatus {
 
     WAIT("table-secondary"),
 
+    SKIP("table-secondary"),
+
     RUNNING("table-info"),
 
-    SUUCESS("table-success"),
+    SUCCESS("table-success"),
 
     FAIL("table-danger");
 

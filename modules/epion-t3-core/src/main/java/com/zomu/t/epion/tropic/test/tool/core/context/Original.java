@@ -1,7 +1,7 @@
 package com.zomu.t.epion.tropic.test.tool.core.context;
 
 import com.zomu.t.epion.tropic.test.tool.core.model.scenario.Custom;
-import com.zomu.t.epion.tropic.test.tool.core.model.scenario.Process;
+import com.zomu.t.epion.tropic.test.tool.core.model.scenario.Command;
 import com.zomu.t.epion.tropic.test.tool.core.model.scenario.T3Base;
 import lombok.Getter;
 
@@ -55,7 +55,7 @@ public class Original {
      * processesの原本.
      * キー：infoのid + '-' + processesの要素のid値　= processの識別子
      */
-    private final Map<String, Process> processes = new ConcurrentHashMap<>();
+    private final Map<String, Command> processes = new ConcurrentHashMap<>();
 
 
     /**

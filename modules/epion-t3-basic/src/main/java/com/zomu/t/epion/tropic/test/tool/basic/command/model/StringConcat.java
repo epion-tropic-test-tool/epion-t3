@@ -1,8 +1,7 @@
 package com.zomu.t.epion.tropic.test.tool.basic.command.model;
 
 import com.zomu.t.epion.tropic.test.tool.basic.command.runner.StringConcatRunner;
-import com.zomu.t.epion.tropic.test.tool.core.annotation.Command;
-import com.zomu.t.epion.tropic.test.tool.core.model.scenario.Process;
+import com.zomu.t.epion.tropic.test.tool.core.model.scenario.Command;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.bval.constraints.NotEmpty;
@@ -14,8 +13,8 @@ import java.util.List;
  */
 @Getter
 @Setter
-@Command(id = "StringConcat", runner = StringConcatRunner.class)
-public class StringConcat extends Process {
+@com.zomu.t.epion.tropic.test.tool.core.annotation.Command(id = "StringConcat", runner = StringConcatRunner.class)
+public class StringConcat extends Command {
 
     @NotEmpty
     private List<String> referenceVariables;

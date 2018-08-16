@@ -1,82 +1,61 @@
-t3: '1.0'
-type: scenario
+t3: "1.0"
+type: "scenario"
 info:
-    id: yahooregist-scenario-001
-    version: 1.0.0
+    id: "yahooregist-scenario-001"
+    version: "1.0.0"
     summary: "Yahooアカウント新規作成"
     description: "Yahooの新規アカウント取得用シナリオ"
 flows:
-  - ref : process-0001
-    type : process
-  - ref : process-0002
-    type : process
-  - ref : process-0003
-    type : process
-  - ref : process-0010
-    type : process
-#  - ref : process-1010
-#    type : process
-  - ref : process-0020
-    type : process
-#  - ref : process-1020
-#    type : process
-  - ref : process-0021
-    type : process
-#  - ref : process-1021
-#    type : process
-  - ref : process-0022
-    type : process
-#  - ref : process-1022
-#    type : process
-  - ref : process-0030
-    type : process
-#  - ref : process-1030
-#    type : process
-  - ref : process-0031
-    type : process
-#  - ref : process-1031
-#    type : process
-  - ref : process-0040
-    type : process
-#  - ref : process-1040
-#    type : process
-  - ref : process-0050
-    type : process
-#  - ref : process-1050
-#    type : process
-  - ref : process-0060
-    type : process
-  - ref : process-0061
-    type : process
-#  - ref : process-1060
-#    type : process
-  - ref : process-0070
-    type : process
-#  - ref : process-1070
-#    type : process
-  - ref : process-0080
-    type : process
-#  - ref : process-1080
-#    type : process
-  - ref : process-0090
-    type : process
-  - ref : process-0091
-    type : process
-#  - ref : process-1090
-#    type : process
-  - ref : process-0100
-    type : process
-#  - ref : process-1100
-#    type : process
-  - ref : process-0110
-    type : process
-#  - ref : process-1110
-#    type : process
-  - ref : process-0120
-    type : process
-  - ref : process-0130
-    type : process
-processes:
+  - type: "ReadFileIterate"
+    target: "${scenarioDir}/test.csv"
+    fileType: "csv"
+    encoding: "UTF-8"
+    lineSeparator: "LF"
+    wrapstring: "DC"
+    children:
+      - type: CommandExecute
+        ref: process-0001
+      - type: CommandExecute
+        ref: process-0002
+      - type: CommandExecute
+        ref: process-0003
+      - type: CommandExecute
+        ref: process-0010
+      - type: CommandExecute
+        ref: process-0020
+      - type: CommandExecute
+        ref: process-0021
+      - type: CommandExecute
+        ref: process-0022
+      - type: CommandExecute
+        ref: process-0030
+      - type: CommandExecute
+        ref: process-0031
+      - type: CommandExecute
+        ref: process-0040
+      - type: CommandExecute
+        ref: process-0050
+      - type: CommandExecute
+        ref: process-0060
+      - type: CommandExecute
+        ref: process-0061
+      - type: CommandExecute
+        ref: process-0070
+      - type: CommandExecute
+        ref: process-0080
+      - type: CommandExecute
+        ref: process-0090
+      - type: CommandExecute
+        ref: process-0091
+      - type: CommandExecute
+        ref: process-0100
+      - type: CommandExecute
+        ref: process-0110
+      - type: CommandExecute
+        ref: process-0120
+      - type: CommandExecute
+        ref: process-0130
+commands:
   - id: process-0001
     description: "ランダムな文字列を作成."
     summary : "ランダムな文字列を作成."
@@ -222,111 +201,3 @@ processes:
     description: "WebDriverを閉じる."
     command: "EndLocalWebDriver"
     refWebDriver: WEBDRIVER_1
-
-# これ以降は、複数ブラウザを一度に扱えるか確かめるために定義した部分
-
-  - id: process-1010
-    description: "SeleniumのWebDriverを開始します."
-    summary : "SeleniumのWebDriverを開始します."
-    command: "StartLocalWebDriver"
-    browser: chrome
-    variableName: WEBDRIVER_2
-    driverPath: "/Users/takashimanozomu/work/91_webdrivers/chromedriver"
-  - id: process-1020
-    summary : Get Url.
-    description: Get Url.
-    command: "WebDriverGet"
-    target : "https://www.yahoo.co.jp/"
-    refWebDriver: WEBDRIVER_2
-  - id: process-1021
-    summary : Get Url.
-    description: Get Url.
-    command: "WebDriverClick"
-    target : "新規取得"
-    selector : "linkText"
-    refWebDriver: WEBDRIVER_2
-  - id: process-1022
-    summary : Get Url.
-    description: Get Url.
-    command: "WebDriverClick"
-    target : "メールアドレスなしで登録する"
-    selector : "linkText"
-    refWebDriver: WEBDRIVER_2
-  - id: process-1030
-    summary : SendKeys Yahoo ID.
-    description: SendKeys Yahoo ID.
-    command: "WebDriverClick"
-    target : "yid"
-    selector : "id"
-    refWebDriver: WEBDRIVER_2
-  - id: process-1031
-    summary : SendKeys Yahoo ID.
-    description: SendKeys Yahoo ID.
-    command: "WebDriverSendKeys"
-    target : "yid"
-    value : "nick_utan_1"
-    selector : "id"
-    refWebDriver: WEBDRIVER_2
-  - id: process-1040
-    summary : Sendkeys Password.
-    description: Sendkeys Password.
-    command: "WebDriverSendKeys"
-    target : "passwd"
-    value : "Aa123456"
-    selector : "id"
-    refWebDriver: WEBDRIVER_2
-  - id: process-1050
-    summary : SendKeys Yahoo ID.
-    description: SendKeys Yahoo ID.
-    command: "WebDriverSendKeys"
-    target : "postCode"
-    value : "1730037"
-    selector : "id"
-    refWebDriver: WEBDRIVER_2
-  - id: process-1060
-    summary : SendKeys Yahoo ID.
-    description: SendKeys Yahoo ID.
-    command: "WebDriverSendKeys"
-    target : "birthday"
-    value : "19991212"
-    selector : "id"
-    refWebDriver: WEBDRIVER_2
-  - id: process-1070
-    summary : Sendeys Yahoo ID.
-    description: SendKeys Yahoo ID.
-    command: "WebDriverSendKeys"
-    target : "dispname"
-    value : "テスト　太郎"
-    selector : "id"
-    refWebDriver: WEBDRIVER_2
-  - id: process-1080
-    summary : Sendeys Yahoo ID.
-    description: SendKeys Yahoo ID.
-    command: "WebDriverSendKeysSpace"
-    target : "male"
-    value : null
-    selector : "id"
-    refWebDriver: WEBDRIVER_2
-  - id: process-1090
-    summary : SendKeys Yahoo ID.
-    description: SendKeys Yahoo ID.
-    command: "WebDriverSendKeys"
-    target : "pw_a"
-    value : "東京"
-    selector : "id"
-    refWebDriver: WEBDRIVER_2
-  - id: process-1100
-    summary : SendKeys Yahoo ID.
-    description: SendKeys Yahoo ID.
-    command: "WebDriverSendKeys"
-    target : "secword"
-    value : "あいうえおか"
-    selector : "id"
-    refWebDriver: WEBDRIVER_2
-  - id: process-1110
-    summary : SendKeys Yahoo ID.
-    description: SendKeys Yahoo ID.
-    command: "WebDriverClick"
-    target : "btnSubmit"
-    selector : "id"
-    refWebDriver: WEBDRIVER_2
