@@ -5,9 +5,8 @@ import com.zomu.t.epion.tropic.test.tool.core.exception.handler.BaseExceptionHan
 import com.zomu.t.epion.tropic.test.tool.core.execution.parser.impl.BaseScenarioParser;
 import com.zomu.t.epion.tropic.test.tool.core.annotation.ApplicationVersion;
 import com.zomu.t.epion.tropic.test.tool.core.context.Context;
-import com.zomu.t.epion.tropic.test.tool.core.execution.reporter.impl.BaseScenarioReporter;
+import com.zomu.t.epion.tropic.test.tool.core.execution.reporter.impl.ScenarioReporterImpl;
 import com.zomu.t.epion.tropic.test.tool.core.execution.runner.ApplicationRunner;
-import com.zomu.t.epion.tropic.test.tool.core.model.scenario.T3Base;
 import com.zomu.t.epion.tropic.test.tool.core.type.Args;
 import com.zomu.t.epion.tropic.test.tool.core.type.ExitCode;
 import com.zomu.t.epion.tropic.test.tool.core.type.ScenarioExecuteStatus;
@@ -21,7 +20,7 @@ import java.util.Arrays;
 
 @ApplicationVersion(version = "v1.0")
 @Slf4j
-public class BaseApplicationRunner implements ApplicationRunner<BaseContext> {
+public class ApplicationRunnerImpl implements ApplicationRunner<BaseContext> {
 
     /**
      * CLIオプション.
@@ -76,7 +75,7 @@ public class BaseApplicationRunner implements ApplicationRunner<BaseContext> {
             createResultDirectory(context);
 
             // 実行
-            BaseScenarioRunner scenarioRunner = new BaseScenarioRunner();
+            ScenarioRunnerImpl scenarioRunner = new ScenarioRunnerImpl();
             scenarioRunner.execute(context);
 
             // 正常終了
@@ -152,108 +151,6 @@ public class BaseApplicationRunner implements ApplicationRunner<BaseContext> {
     }
 
     /**
-     * @param context
-     * @param scenario
-     */
-    private void buildExecuteScenario(final BaseContext context, final T3Base scenario) {
-
-//        ExecuteScenario executeScenario = new ExecuteScenario();
-//        executeScenario.setInfo(scenario.getInfo());
-//        executeScenario.setFqsn(scenario.getInfo().getId());
-//        //context.getExecuteOriginal().getScenarios().add(executeScenario);
-//
-//        for (Flow f : scenario.getFlows()) {
-//
-//            FlowType flowType = FlowType.valueOfByValue(f.getType());
-//
-//            if (flowType != null) {
-//                switch (flowType) {
-//                    case PROCESS:
-//                        // プロセスの場合は実行フローに追加していく
-//
-//                        // 優先度-1:自シナリオ内を参照
-//                        Process process = scenario.getProcesses().stream().filter(x -> x.getId().equals(f.getRef())).findFirst().orElse(null);
-//                        if (process == null) {
-//                            // 優先度-2:全体のプロセスから参照
-//                            process = context.getOriginal().getProcesses().get(f.getRef());
-//                        }
-//                        if (process == null) {
-//                            log.error("not found process: {}", f.getRef());
-//                            throw new ProcessNotFoundException(f.getRef());
-//                        }
-//
-//                        // 原本の参照は利用しないのでクローンする
-//                        Process cloneProcess = SerializationUtils.clone(process);
-//
-//                        // process実行情報を作成
-//                        ExecuteProcess executeProcess = new ExecuteProcess();
-//                        executeProcess.setFqpn(f.getRef());
-//                        executeProcess.setProcess(cloneProcess);
-//
-//                        // プロセスが属するシナリオのIDを取得
-//                        // XXX : バグ以外でここが取れないことはあり得ない
-//                        String belongScenarioId = context.getOriginal().getProcessScenarioRelations().get(f.getRef());
-//                        if (StringUtils.isEmpty(belongScenarioId)) {
-//                            belongScenarioId = context.getOriginal().getProcessScenarioRelations().get(scenario.getInfo().getId() + "." + f.getRef());
-//                        }
-//
-//                        // 全原本から属するシナリオを取得
-//                        T3Base belongScenario = context.getOriginal().getOriginals().get(belongScenarioId);
-//
-//                        // 各スコープ変数の設定
-//                        if (belongScenario.getVariables() != null) {
-//                            if (belongScenario.getVariables().getGlobal() != null) {
-//                                context.getExecuteOriginal().getGlobalVariables().putAll(belongScenario.getVariables().getGlobal());
-//                            }
-//                            if (belongScenario.getVariables().getScenario() != null) {
-//                                executeScenario.getScenarioVariables().putAll(belongScenario.getVariables().getScenario());
-//                            }
-//                            if (belongScenario.getVariables().getLocal() != null) {
-//                                executeProcess.getLocalVariables().putAll(belongScenario.getVariables().getLocal());
-//                            }
-//                        }
-//
-//                        // 実行フローに追加
-//                        executeScenario.getProcesses().add(executeProcess);
-//                        break;
-//                    case SCENARIO:
-//                        // シナリオの場合は別実行フロー扱いとする
-//                        T3Base nestScenario = context.getOriginal().getScenarios().get(f.getRef());
-//                        buildExecuteScenario(context, nestScenario);
-//                        break;
-//                    default:
-//                        log.debug("no support execute flow... type:{}, id:{}", scenario.getType(), scenario.getInfo().getId());
-//                        break;
-//
-//                }
-//            }
-//        }
-
-    }
-
-    /**
-     * 実行シナリオをコンパイルする.
-     * コンパイルとは以下の処理のことを指す.
-     * ・変数の参照関係の整合性が保たれているか.（存在しない変数が使われている等）
-     *
-     * @param context
-     */
-    private void scenarioCompile(final BaseContext context) {
-        // TODO:チェック処理
-    }
-
-    /**
-     * 原本から実行コンテキストへコピーする.
-     *
-     * @param context
-     */
-//    private void cloneExecuteContext(final BaseContext context) {
-//        // 原本をそのまま残すためクローンする
-//        ExecuteContext cloneExecuteContextV10 = SerializationUtils.clone(context.getExecuteOriginal());
-//        context.setExecuteContext(cloneExecuteContextV10);
-//    }
-
-    /**
      * 結果ディレクトリが未作成であった場合に、作成します.
      *
      * @param context
@@ -270,7 +167,7 @@ public class BaseApplicationRunner implements ApplicationRunner<BaseContext> {
     private void report(final BaseContext context) {
 
         // レポーターに処理を移譲
-        BaseScenarioReporter.getInstance().allReport(context);
+        ScenarioReporterImpl.getInstance().allReport(context);
 
     }
 }

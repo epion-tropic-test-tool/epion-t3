@@ -9,9 +9,17 @@ import com.zomu.t.epion.tropic.test.tool.core.context.Context;
  */
 public interface IndividualTargetParser<C extends Context> {
 
-
+    /**
+     *
+     * @param context
+     */
     void parse(final C context);
 
+    /**
+     *
+     * @param context
+     * @param fileNamePattern
+     */
     void parse(final C context, final String fileNamePattern);
 
 

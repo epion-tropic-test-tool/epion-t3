@@ -5,7 +5,7 @@ import com.zomu.t.epion.tropic.test.tool.selenium.command.StartLocalWebDriver;
 import com.zomu.t.epion.tropic.test.tool.selenium.type.BrowserType;
 import com.zomu.t.epion.tropic.test.tool.selenium.message.SeleniumMessages;
 import com.zomu.t.epion.tropic.test.tool.core.exception.SystemException;
-import com.zomu.t.epion.tropic.test.tool.core.execution.runner.CommandRunner;
+import com.zomu.t.epion.tropic.test.tool.core.command.runner.CommandRunner;
 import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -33,6 +33,7 @@ public class StartLocalWebDriverRunner implements CommandRunner<StartLocalWebDri
             StartLocalWebDriver process,
             Map<String, Object> globalScopeVariables,
             Map<String, Object> scenarioScopeVariables,
+            final Map<String, Object> flowScopeVariables,
             Map<String, EvidenceInfo> evidences,
             Logger logger) throws Exception {
 

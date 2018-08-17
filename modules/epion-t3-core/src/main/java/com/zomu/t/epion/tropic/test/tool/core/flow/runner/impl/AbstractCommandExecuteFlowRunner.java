@@ -5,8 +5,8 @@ import com.zomu.t.epion.tropic.test.tool.core.context.execute.ExecuteCommand;
 import com.zomu.t.epion.tropic.test.tool.core.context.execute.ExecuteFlow;
 import com.zomu.t.epion.tropic.test.tool.core.context.execute.ExecuteScenario;
 import com.zomu.t.epion.tropic.test.tool.core.exception.CommandNotFoundException;
-import com.zomu.t.epion.tropic.test.tool.core.execution.resolver.impl.BaseCommandRunnerResolver;
-import com.zomu.t.epion.tropic.test.tool.core.execution.runner.CommandRunner;
+import com.zomu.t.epion.tropic.test.tool.core.command.resolver.impl.CommandRunnerResolverImpl;
+import com.zomu.t.epion.tropic.test.tool.core.command.runner.CommandRunner;
 import com.zomu.t.epion.tropic.test.tool.core.flow.model.CommandExecuteFlow;
 import com.zomu.t.epion.tropic.test.tool.core.holder.CommandLog;
 import com.zomu.t.epion.tropic.test.tool.core.holder.CommandLoggingHolder;
@@ -75,6 +75,7 @@ public abstract class AbstractCommandExecuteFlowRunner
 
         // プロセス実行情報を生成
         EXECUTE_COMMAND executeCommand = getExecuteCommandInstance();
+        executeFlow.getCommands().add(executeCommand);
         executeCommand.setCommand(command);
 
         // シナリオ実行開始時間を設定
@@ -100,7 +101,7 @@ public abstract class AbstractCommandExecuteFlowRunner
             String commandId = executeCommand.getCommand().getCommand();
 
             // コマンド実行クラスを解決
-            CommandRunner runner = BaseCommandRunnerResolver.getInstance().getCommandRunner(commandId);
+            CommandRunner runner = CommandRunnerResolverImpl.getInstance().getCommandRunner(commandId);
 
             // 変数バインド
             bind(
@@ -113,6 +114,7 @@ public abstract class AbstractCommandExecuteFlowRunner
             runner.execute(executeCommand.getCommand(),
                     context.getExecuteContext().getGlobalVariables(),
                     executeScenario.getScenarioVariables(),
+                    executeFlow.getFlowVariables(),
                     executeScenario.getEvidences(),
                     LoggerFactory.getLogger("ProcessLog"));
 
@@ -229,6 +231,12 @@ public abstract class AbstractCommandExecuteFlowRunner
                                       final EXECUTE_SCENARIO scenario,
                                       final EXECUTE_FLOW executeFlow,
                                       final EXECUTE_COMMAND executeCommand) {
+
+        // 現在の処理コマンドのID
+        executeFlow.getFlowVariables().put
+                (FlowScopeVariables.CURRENT_COMMAND.getName(),
+                        executeCommand.getCommand().getId());
+
         // 現在の処理コマンドの実行ID
         executeFlow.getFlowVariables().put(
                 FlowScopeVariables.CURRENT_COMMAND_EXECUTE_ID.getName(),
@@ -250,8 +258,12 @@ public abstract class AbstractCommandExecuteFlowRunner
             final EXECUTE_FLOW executeFlow,
             final EXECUTE_COMMAND executeCommand) {
 
+        // 現在の処理コマンドのID
+        executeFlow.getFlowVariables().remove
+                (FlowScopeVariables.CURRENT_COMMAND.getName());
+
         // 現在の処理プロセスの実行ID
-        scenario.getScenarioVariables().remove(
+        executeFlow.getFlowVariables().remove(
                 FlowScopeVariables.CURRENT_COMMAND_EXECUTE_ID.getName());
     }
 

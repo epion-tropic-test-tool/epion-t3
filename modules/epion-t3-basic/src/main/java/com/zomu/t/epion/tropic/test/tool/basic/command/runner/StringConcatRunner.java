@@ -5,7 +5,7 @@ import com.zomu.t.epion.tropic.test.tool.basic.messages.BasicMessages;
 import com.zomu.t.epion.tropic.test.tool.core.type.ReferenceVariableType;
 import com.zomu.t.epion.tropic.test.tool.core.context.EvidenceInfo;
 import com.zomu.t.epion.tropic.test.tool.core.exception.SystemException;
-import com.zomu.t.epion.tropic.test.tool.core.execution.runner.CommandRunner;
+import com.zomu.t.epion.tropic.test.tool.core.command.runner.CommandRunner;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 
@@ -32,6 +32,7 @@ public class StringConcatRunner implements CommandRunner<StringConcat> {
     public void execute(final StringConcat process,
                         final Map<String, Object> globalScopeVariables,
                         final Map<String, Object> scenarioScopeVariables,
+                        final Map<String, Object> flowScopeVariables,
                         final Map<String, EvidenceInfo> evidences,
                         final Logger logger) throws Exception {
 

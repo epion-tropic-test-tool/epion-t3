@@ -1,12 +1,10 @@
 package com.zomu.t.epion.tropic.test.tool.random.runner;
 
 import com.zomu.t.epion.tropic.test.tool.core.context.EvidenceInfo;
-import com.zomu.t.epion.tropic.test.tool.core.execution.runner.CommandRunner;
+import com.zomu.t.epion.tropic.test.tool.core.command.runner.CommandRunner;
 import com.zomu.t.epion.tropic.test.tool.random.command.GenerateRandomString;
-import com.zomu.t.epion.tropic.test.tool.random.command.GenerateRandomWord;
 import me.xdrop.jrand.JRand;
 import me.xdrop.jrand.generators.basics.StringGenerator;
-import me.xdrop.jrand.generators.text.WordGenerator;
 import org.slf4j.Logger;
 
 import java.util.Map;
@@ -18,6 +16,7 @@ public class GenerateRandomStringRunner implements CommandRunner<GenerateRandomS
             final GenerateRandomString process,
             final Map<String, Object> globalScopeVariables,
             final Map<String, Object> scenarioScopeVariables,
+            final Map<String, Object> flowScopeVariables,
             final Map<String, EvidenceInfo> evidences,
             Logger logger) throws Exception {
 

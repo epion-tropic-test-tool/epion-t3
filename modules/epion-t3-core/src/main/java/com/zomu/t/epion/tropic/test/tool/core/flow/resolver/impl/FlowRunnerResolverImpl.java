@@ -1,6 +1,6 @@
-package com.zomu.t.epion.tropic.test.tool.core.execution.resolver.impl;
+package com.zomu.t.epion.tropic.test.tool.core.flow.resolver.impl;
 
-import com.zomu.t.epion.tropic.test.tool.core.execution.resolver.FlowRunnerResolver;
+import com.zomu.t.epion.tropic.test.tool.core.flow.resolver.FlowRunnerResolver;
 import com.zomu.t.epion.tropic.test.tool.core.message.impl.BaseMessages;
 import com.zomu.t.epion.tropic.test.tool.core.context.FlowInfo;
 import com.zomu.t.epion.tropic.test.tool.core.exception.FlowNotFoundException;
@@ -12,17 +12,17 @@ import org.apache.commons.lang3.StringUtils;
 /**
  * @author takashno
  */
-public final class BaseFlowRunnerResolver implements FlowRunnerResolver {
+public final class FlowRunnerResolverImpl implements FlowRunnerResolver {
 
     /**
      * インスタンス.
      */
-    private static final BaseFlowRunnerResolver instance = new BaseFlowRunnerResolver();
+    private static final FlowRunnerResolverImpl instance = new FlowRunnerResolverImpl();
 
     /**
      * プライベートコンストラクタ.
      */
-    private BaseFlowRunnerResolver() {
+    private FlowRunnerResolverImpl() {
         // Do Nothing...
     }
 
@@ -31,7 +31,7 @@ public final class BaseFlowRunnerResolver implements FlowRunnerResolver {
      *
      * @return
      */
-    public static BaseFlowRunnerResolver getInstance() {
+    public static FlowRunnerResolverImpl getInstance() {
         return instance;
     }
 

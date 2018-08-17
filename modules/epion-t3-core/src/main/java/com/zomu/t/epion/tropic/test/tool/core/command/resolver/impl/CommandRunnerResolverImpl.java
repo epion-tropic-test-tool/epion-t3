@@ -1,10 +1,10 @@
-package com.zomu.t.epion.tropic.test.tool.core.execution.resolver.impl;
+package com.zomu.t.epion.tropic.test.tool.core.command.resolver.impl;
 
-import com.zomu.t.epion.tropic.test.tool.core.execution.resolver.CommandRunnerResolver;
+import com.zomu.t.epion.tropic.test.tool.core.command.resolver.CommandRunnerResolver;
 import com.zomu.t.epion.tropic.test.tool.core.message.impl.BaseMessages;
 import com.zomu.t.epion.tropic.test.tool.core.context.CommandInfo;
 import com.zomu.t.epion.tropic.test.tool.core.exception.SystemException;
-import com.zomu.t.epion.tropic.test.tool.core.execution.runner.CommandRunner;
+import com.zomu.t.epion.tropic.test.tool.core.command.runner.CommandRunner;
 import com.zomu.t.epion.tropic.test.tool.core.exception.CommandNotFoundException;
 import com.zomu.t.epion.tropic.test.tool.core.holder.CustomConfigHolder;
 import org.apache.commons.lang3.StringUtils;
@@ -12,17 +12,17 @@ import org.apache.commons.lang3.StringUtils;
 /**
  * @author takashno
  */
-public final class BaseCommandRunnerResolver implements CommandRunnerResolver {
+public final class CommandRunnerResolverImpl implements CommandRunnerResolver {
 
     /**
      * インスタンス.
      */
-    private static final BaseCommandRunnerResolver instance = new BaseCommandRunnerResolver();
+    private static final CommandRunnerResolverImpl instance = new CommandRunnerResolverImpl();
 
     /**
      * プライベートコンストラクタ.
      */
-    private BaseCommandRunnerResolver() {
+    private CommandRunnerResolverImpl() {
         // Do Nothing...
     }
 
@@ -31,7 +31,7 @@ public final class BaseCommandRunnerResolver implements CommandRunnerResolver {
      *
      * @return
      */
-    public static BaseCommandRunnerResolver getInstance() {
+    public static CommandRunnerResolverImpl getInstance() {
         return instance;
     }
 

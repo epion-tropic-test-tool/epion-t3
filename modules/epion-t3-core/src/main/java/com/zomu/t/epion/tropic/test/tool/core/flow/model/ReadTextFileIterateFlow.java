@@ -12,7 +12,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Flow(id = "ReadFileIterate", runner = ReadFileIterateFlowRunner.class)
-public class ReadFileIterateFlow extends IterateFlow {
+public class ReadTextFileIterateFlow extends IterateFlow {
 
     /**
      * デフォルトシリアルバージョンUID.

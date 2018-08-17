@@ -1,6 +1,7 @@
 package com.zomu.t.epion.tropic.test.tool.core.context.execute;
 
 import com.zomu.t.epion.tropic.test.tool.core.holder.FlowLog;
+import com.zomu.t.epion.tropic.test.tool.core.model.scenario.Flow;
 import com.zomu.t.epion.tropic.test.tool.core.type.FlowStatus;
 import lombok.Getter;
 import lombok.Setter;
@@ -23,6 +24,11 @@ public class ExecuteFlow extends ExecuteElement {
      * デフォルトシリアルバージョンUID.
      */
     private static final long serialVersionUID = 1L;
+
+    /**
+     * Flow.
+     */
+    private Flow flow;
 
     /**
      * ステータス.

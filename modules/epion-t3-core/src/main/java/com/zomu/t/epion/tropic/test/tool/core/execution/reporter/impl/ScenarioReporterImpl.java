@@ -11,28 +11,36 @@ import com.zomu.t.epion.tropic.test.tool.core.exception.SystemException;
 import com.zomu.t.epion.tropic.test.tool.core.util.DateTimeUtils;
 import com.zomu.t.epion.tropic.test.tool.core.util.ExecutionFileUtils;
 import lombok.extern.slf4j.Slf4j;
+import net.sourceforge.plantuml.FileFormat;
+import net.sourceforge.plantuml.FileFormatOption;
+import net.sourceforge.plantuml.SourceStringReader;
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.text.WordUtils;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.AbstractConfigurableTemplateResolver;
 import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
  *
  */
 @Slf4j
-public final class BaseScenarioReporter implements ScenarioReporter {
+public final class ScenarioReporterImpl implements ScenarioReporter {
 
-    private static final BaseScenarioReporter instance = new BaseScenarioReporter();
+    private static final ScenarioReporterImpl instance = new ScenarioReporterImpl();
 
     public static final String TEMPLATE_PREFIX = "/templates/";
 
@@ -48,7 +56,7 @@ public final class BaseScenarioReporter implements ScenarioReporter {
     /**
      * プライベートコンストラクタ.
      */
-    private BaseScenarioReporter() {
+    private ScenarioReporterImpl() {
         templateEngine = new TemplateEngine();
         AbstractConfigurableTemplateResolver tr = new ClassLoaderTemplateResolver();
         tr.setCheckExistence(true);
@@ -63,7 +71,7 @@ public final class BaseScenarioReporter implements ScenarioReporter {
      *
      * @return
      */
-    public static BaseScenarioReporter getInstance() {
+    public static ScenarioReporterImpl getInstance() {
         return instance;
     }
 
@@ -132,6 +140,7 @@ public final class BaseScenarioReporter implements ScenarioReporter {
                 }
             }
 
+            variable.put("activity", generateSvg(executeScenario));
 
             variable.put("executeScenario", executeScenario);
 
@@ -151,5 +160,67 @@ public final class BaseScenarioReporter implements ScenarioReporter {
         }
     }
 
+    /**
+     *
+     * @param executeScenario
+     * @return
+     */
+    private String generateSvg(ExecuteScenario executeScenario) {
+
+        StringBuilder activity = new StringBuilder();
+        boolean first = true;
+        for (ExecuteFlow executeFlow : executeScenario.getFlows()) {
+            if (first) {
+                activity.append("(*)-->");
+                activity.append(executeFlow.getFlow().getId());
+                first = false;
+            } else {
+                activity.append("-->");
+                activity.append(executeFlow.getFlow().getId());
+            }
+            switch (executeFlow.getStatus()) {
+                case WAIT:
+                    activity.append("<<WAIT>>");
+                    break;
+                case SKIP:
+                    activity.append("<<SKIP>>");
+                    break;
+                case SUCCESS:
+                    activity.append("<<SUCCESS>>");
+                    break;
+                case ERROR:
+                    activity.append("<<ERROR>>");
+                    break;
+                case WARN:
+                    activity.append("<<WARN>>");
+                    break;
+            }
+            activity.append("\n");
+        }
+        activity.append("-->(*)\n");
+
+        List<String> templates = null;
+        try (InputStream is = this.getClass().getClassLoader().getResourceAsStream("activity/activity_template.puml")) {
+            templates = IOUtils.readLines(is, Charset.forName("UTF-8"));
+        } catch (IOException e) {
+            throw new SystemException(e);
+        }
+
+        String activityString = activity.toString();
+        StringBuilder result = new StringBuilder();
+        for (String row : templates) {
+            result.append(row.replace("'$ACTIVITY$", activityString));
+            result.append("\n");
+        }
+
+        String plantUmlSrc = result.toString();
+        SourceStringReader reader = new SourceStringReader(plantUmlSrc);
+        try (ByteArrayOutputStream os = new ByteArrayOutputStream()) {
+            reader.generateImage(os, new FileFormatOption(FileFormat.SVG));
+            return new String(os.toByteArray(), Charset.forName("UTF-8"));
+        } catch (IOException e) {
+            throw new SystemException(e);
+        }
+    }
 
 }

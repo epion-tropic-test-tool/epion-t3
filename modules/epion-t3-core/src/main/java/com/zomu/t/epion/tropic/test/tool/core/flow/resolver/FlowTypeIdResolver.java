@@ -1,4 +1,4 @@
-package com.zomu.t.epion.tropic.test.tool.core.execution.resolver.impl;
+package com.zomu.t.epion.tropic.test.tool.core.flow.resolver;
 
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.databind.DatabindContext;

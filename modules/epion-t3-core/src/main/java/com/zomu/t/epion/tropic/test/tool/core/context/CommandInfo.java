@@ -1,6 +1,6 @@
 package com.zomu.t.epion.tropic.test.tool.core.context;
 
-import com.zomu.t.epion.tropic.test.tool.core.execution.runner.CommandRunner;
+import com.zomu.t.epion.tropic.test.tool.core.command.runner.CommandRunner;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NonNull;

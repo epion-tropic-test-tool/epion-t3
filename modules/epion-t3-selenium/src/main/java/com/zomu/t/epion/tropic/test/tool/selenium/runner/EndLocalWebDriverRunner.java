@@ -2,7 +2,7 @@ package com.zomu.t.epion.tropic.test.tool.selenium.runner;
 
 import com.zomu.t.epion.tropic.test.tool.core.context.EvidenceInfo;
 import com.zomu.t.epion.tropic.test.tool.selenium.command.EndLocalWebDriver;
-import com.zomu.t.epion.tropic.test.tool.core.execution.runner.CommandRunner;
+import com.zomu.t.epion.tropic.test.tool.core.command.runner.CommandRunner;
 import org.openqa.selenium.WebDriver;
 import org.slf4j.Logger;
 
@@ -15,6 +15,7 @@ public class EndLocalWebDriverRunner implements CommandRunner<EndLocalWebDriver>
             final EndLocalWebDriver process,
             final Map<String, Object> globalScopeVariables,
             final Map<String, Object> scenarioScopeVariables,
+            final Map<String, Object> flowScopeVariables,
             final Map<String, EvidenceInfo> evidences,
             Logger logger) throws Exception {
 

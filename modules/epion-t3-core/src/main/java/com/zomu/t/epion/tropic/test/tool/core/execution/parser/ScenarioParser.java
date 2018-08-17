@@ -7,6 +7,10 @@ import com.zomu.t.epion.tropic.test.tool.core.context.Context;
  */
 public interface ScenarioParser<C extends Context> {
 
+    /**
+     *
+     * @param context コンテキスト
+     */
     void parse(final C context);
 
 }

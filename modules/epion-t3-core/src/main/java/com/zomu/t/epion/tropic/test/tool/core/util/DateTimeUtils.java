@@ -16,6 +16,8 @@ public final class DateTimeUtils {
      */
     public static final DateTimeFormatter YYYYMMDD_HHMMSS_NORMAL = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS");
 
+    public static final DateTimeFormatter HHMMSS_NORMAL = DateTimeFormatter.ofPattern("HH:mm:ss.SSS");
+
 
     public static DateTimeUtils getInstance() {
         return instance;
@@ -38,10 +40,17 @@ public final class DateTimeUtils {
     }
 
     public String formatNormal(Temporal target) {
-        if (target==null) {
+        if (target == null) {
             return null;
         }
         return YYYYMMDD_HHMMSS_NORMAL.format(target);
+    }
+
+    public String formatTimeNormal(Temporal target) {
+        if (target == null) {
+            return null;
+        }
+        return HHMMSS_NORMAL.format(target);
     }
 
 

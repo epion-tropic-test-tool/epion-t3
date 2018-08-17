@@ -7,7 +7,7 @@ import com.zomu.t.epion.tropic.test.tool.core.context.execute.ExecuteScenario;
 import com.zomu.t.epion.tropic.test.tool.core.exception.SystemException;
 import com.zomu.t.epion.tropic.test.tool.core.flow.model.CommandExecuteFlow;
 import com.zomu.t.epion.tropic.test.tool.core.flow.model.FlowResult;
-import com.zomu.t.epion.tropic.test.tool.core.flow.model.ReadFileIterateFlow;
+import com.zomu.t.epion.tropic.test.tool.core.flow.model.ReadTextFileIterateFlow;
 import com.zomu.t.epion.tropic.test.tool.core.model.scenario.Flow;
 import org.slf4j.Logger;
 
@@ -29,7 +29,7 @@ public class ReadFileIterateFlowRunner
         ExecuteScenario,
         ExecuteFlow,
         ExecuteCommand,
-        ReadFileIterateFlow,
+        ReadTextFileIterateFlow,
         CommandExecuteFlow> {
 
     /**
@@ -40,7 +40,7 @@ public class ReadFileIterateFlowRunner
             BaseContext context,
             ExecuteScenario executeScenario,
             ExecuteFlow executeFlow,
-            ReadFileIterateFlow flow,
+            ReadTextFileIterateFlow flow,
             Logger logger) {
 
 

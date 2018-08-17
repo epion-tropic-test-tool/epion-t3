@@ -28,7 +28,7 @@ import java.util.List;
  * @param <FLOW>
  */
 @Slf4j
-public abstract class AbstractFlowRunner<CONTEXT extends Context, EXECUTESCENARIO extends ExecuteScenario, EXECUTEFLOW extends ExecuteFlow, FLOW extends Flow>
+public abstract class AbstractFlowRunner<CONTEXT extends Context, EXECUTESCENARIO extends ExecuteScenario, EXECUTE_FLOW extends ExecuteFlow, FLOW extends Flow>
         implements FlowRunner<CONTEXT, EXECUTESCENARIO, FLOW> {
 
     /**
@@ -38,8 +38,9 @@ public abstract class AbstractFlowRunner<CONTEXT extends Context, EXECUTESCENARI
     public FlowResult execute(CONTEXT context, EXECUTESCENARIO executeScenario, FLOW flow, Logger logger) {
 
         // process実行情報を作成
-        EXECUTEFLOW executeFlow = getExecuteFlowInstance();
+        EXECUTE_FLOW executeFlow = getExecuteFlowInstance();
         executeScenario.getFlows().add(executeFlow);
+        executeFlow.setFlow(flow);
 
         // Flow実行開始時間を設定
         executeFlow.setStart(LocalDateTime.now());
@@ -85,7 +86,7 @@ public abstract class AbstractFlowRunner<CONTEXT extends Context, EXECUTESCENARI
             executeFlow.setStackTrace(sw.toString());
 
             // プロセス失敗
-            executeFlow.setStatus(FlowStatus.FAIL);
+            executeFlow.setStatus(FlowStatus.ERROR);
 
             // エラー処理
             onError(context, executeScenario, executeFlow,
@@ -125,14 +126,14 @@ public abstract class AbstractFlowRunner<CONTEXT extends Context, EXECUTESCENARI
     /**
      * @return
      */
-    private EXECUTEFLOW getExecuteFlowInstance() {
+    private EXECUTE_FLOW getExecuteFlowInstance() {
         try {
             Class<?> clazz = this.getClass();
             Type type = clazz.getGenericSuperclass();
             ParameterizedType pt = (ParameterizedType) type;
             Type[] actualTypeArguments = pt.getActualTypeArguments();
             Class<?> entityClass = (Class<?>) actualTypeArguments[2];
-            return (EXECUTEFLOW) entityClass.newInstance();
+            return (EXECUTE_FLOW) entityClass.newInstance();
         } catch (ReflectiveOperationException e) {
             // TODO:ErrorProcess
             throw new RuntimeException(e);
@@ -149,7 +150,7 @@ public abstract class AbstractFlowRunner<CONTEXT extends Context, EXECUTESCENARI
     protected abstract FlowResult execute(
             CONTEXT context,
             EXECUTESCENARIO executeScenario,
-            EXECUTEFLOW executeFlow,
+            EXECUTE_FLOW executeFlow,
             FLOW flow,
             Logger logger);
 
@@ -167,7 +168,7 @@ public abstract class AbstractFlowRunner<CONTEXT extends Context, EXECUTESCENARI
     protected void onError(
             CONTEXT context,
             EXECUTESCENARIO executeScenario,
-            EXECUTEFLOW executeFlow,
+            EXECUTE_FLOW executeFlow,
             FLOW flow,
             Throwable t,
             Logger logger) {
@@ -186,7 +187,7 @@ public abstract class AbstractFlowRunner<CONTEXT extends Context, EXECUTESCENARI
     protected void onFinally(
             CONTEXT context,
             EXECUTESCENARIO executeScenario,
-            EXECUTEFLOW executeFlow,
+            EXECUTE_FLOW executeFlow,
             FLOW flow,
             Logger logger) {
         // 必要に応じてオーバーライド実装すること.
@@ -284,7 +285,7 @@ public abstract class AbstractFlowRunner<CONTEXT extends Context, EXECUTESCENARI
         sb.append("--------------------------------------------------------------------------------------");
         if (executeFlow.getStatus() == FlowStatus.SUCCESS) {
             log.info(sb.toString());
-        } else if (executeFlow.getStatus() == FlowStatus.FAIL) {
+        } else if (executeFlow.getStatus() == FlowStatus.ERROR) {
             log.error(sb.toString());
         } else {
             log.warn(sb.toString());

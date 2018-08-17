@@ -14,11 +14,15 @@ public enum FlowStatus {
 
     WAIT("table-secondary"),
 
+    SKIP("table-secondary"),
+
     RUNNING("table-info"),
 
     SUCCESS("table-success"),
 
-    FAIL("table-danger");
+    ERROR("table-danger"),
+
+    WARN("table-danger");
 
     private String cssClass;
 

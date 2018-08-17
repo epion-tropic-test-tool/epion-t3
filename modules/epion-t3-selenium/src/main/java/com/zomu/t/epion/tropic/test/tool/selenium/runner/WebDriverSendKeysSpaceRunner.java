@@ -1,12 +1,9 @@
 package com.zomu.t.epion.tropic.test.tool.selenium.runner;
 
 import com.zomu.t.epion.tropic.test.tool.core.context.EvidenceInfo;
-import com.zomu.t.epion.tropic.test.tool.core.execution.runner.CommandRunner;
-import com.zomu.t.epion.tropic.test.tool.selenium.command.WebDriverSendKeys;
+import com.zomu.t.epion.tropic.test.tool.core.command.runner.CommandRunner;
 import com.zomu.t.epion.tropic.test.tool.selenium.command.WebDriverSendKeysSpace;
-import com.zomu.t.epion.tropic.test.tool.selenium.type.SelectorType;
 import com.zomu.t.epion.tropic.test.tool.selenium.util.WebElementUtils;
-import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -26,6 +23,7 @@ public class WebDriverSendKeysSpaceRunner implements CommandRunner<WebDriverSend
             WebDriverSendKeysSpace process,
             Map<String, Object> globalScopeVariables,
             Map<String, Object> scenarioScopeVariables,
+            final Map<String, Object> flowScopeVariables,
             Map<String, EvidenceInfo> evidences,
             Logger logger) throws Exception {
         WebDriver driver = WebDriver.class.cast(globalScopeVariables.get(process.getRefWebDriver()));

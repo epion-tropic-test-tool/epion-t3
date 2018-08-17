@@ -1,4 +1,4 @@
-package com.zomu.t.epion.tropic.test.tool.core.execution.runner;
+package com.zomu.t.epion.tropic.test.tool.core.command.runner;
 
 import com.zomu.t.epion.tropic.test.tool.core.context.EvidenceInfo;
 import com.zomu.t.epion.tropic.test.tool.core.model.scenario.Command;
@@ -26,6 +26,7 @@ public interface CommandRunner<PROCESS extends Command> {
     void execute(final PROCESS process,
                  final Map<String, Object> globalScopeVariables,
                  final Map<String, Object> scenarioScopeVariables,
+                 final Map<String, Object> flowScopeVariables,
                  final Map<String, EvidenceInfo> evidences,
                  final Logger logger) throws Exception;
 
@@ -73,21 +74,33 @@ public interface CommandRunner<PROCESS extends Command> {
                 .get(ScenarioScopeVariables.EVIDENCE_DIR.getName()));
     }
 
-    default Path getEvidencePath(final Map<String, Object> scenarioScopeVariables, String fileExtension) {
+    /**
+     *
+     * @param scenarioScopeVariables
+     * @param flowScopeVariables
+     * @param fileExtension
+     * @return
+     */
+    default Path getEvidencePath(
+            final Map<String, Object> scenarioScopeVariables,
+            final Map<String, Object> flowScopeVariables,
+            String fileExtension) {
         return Paths.get(
                 getEvidenceDirectoryPath(scenarioScopeVariables).toString(),
-                getEvidenceBaseName(scenarioScopeVariables) + "." + fileExtension);
+                getEvidenceBaseName(flowScopeVariables) + "." + fileExtension);
     }
 
     /**
      * エビデンスを登録する.
      *
      * @param scenarioScopeVariables
+     * @param flowScopeVariables
      * @param evidences
      * @param evidence
      */
     default void registEvidence(
             final Map<String, Object> scenarioScopeVariables,
+            final Map<String, Object> flowScopeVariables,
             final Map<String, EvidenceInfo> evidences,
             Path evidence) {
         EvidenceInfo evidenceInfo = new EvidenceInfo();
@@ -95,16 +108,16 @@ public interface CommandRunner<PROCESS extends Command> {
                 scenarioScopeVariables.get(
                         ScenarioScopeVariables.CURRENT_SCENARIO.getName()).toString());
         evidenceInfo.setFqpn(
-                scenarioScopeVariables.get(
+                flowScopeVariables.get(
                         FlowScopeVariables.CURRENT_COMMAND.getName()).toString());
         evidenceInfo.setName(
                 getEvidenceBaseName(
-                        scenarioScopeVariables));
+                        flowScopeVariables));
         evidenceInfo.setExecuteProcessId(
-                scenarioScopeVariables.get(
+                flowScopeVariables.get(
                         FlowScopeVariables.CURRENT_COMMAND_EXECUTE_ID.getName()).toString());
         evidenceInfo.setPath(evidence);
-        evidences.put(getEvidenceBaseName(scenarioScopeVariables), evidenceInfo);
+        evidences.put(getEvidenceBaseName(flowScopeVariables), evidenceInfo);
     }
 
     /**
@@ -129,11 +142,11 @@ public interface CommandRunner<PROCESS extends Command> {
     /**
      * エビデンス名を取得する.
      *
-     * @param scenarioScopeVariables
+     * @param flowScopeVariables
      * @return
      */
     default String getEvidenceBaseName(
-            final Map<String, Object> scenarioScopeVariables) {
-        return scenarioScopeVariables.get(FlowScopeVariables.CURRENT_COMMAND.getName()).toString() + "_evidence";
+            final Map<String, Object> flowScopeVariables) {
+        return flowScopeVariables.get(FlowScopeVariables.CURRENT_COMMAND.getName()).toString() + "_evidence";
     }
 }

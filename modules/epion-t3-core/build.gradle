@@ -1,5 +1,9 @@
 dependencies {
 
+    // https://mvnrepository.com/artifact/net.sourceforge.plantuml/plantuml
+    compile group: 'net.sourceforge.plantuml', name: 'plantuml', version: '8059'
+
+
 }
 
 

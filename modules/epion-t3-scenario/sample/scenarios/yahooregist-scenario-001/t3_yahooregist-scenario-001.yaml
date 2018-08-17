@@ -15,101 +15,101 @@ flows:
     wrapstring: "DC"
     children:
       - type: CommandExecute
-        ref: process-0001
+        ref: command-0001
       - type: CommandExecute
-        ref: process-0002
+        ref: command-0002
       - type: CommandExecute
-        ref: process-0003
+        ref: command-0003
       - type: CommandExecute
-        ref: process-0010
+        ref: command-0010
       - type: CommandExecute
-        ref: process-0020
+        ref: command-0020
       - type: CommandExecute
-        ref: process-0021
+        ref: command-0021
       - type: CommandExecute
-        ref: process-0022
+        ref: command-0022
       - type: CommandExecute
-        ref: process-0030
+        ref: command-0030
       - type: CommandExecute
-        ref: process-0031
+        ref: command-0031
       - type: CommandExecute
-        ref: process-0040
+        ref: command-0040
       - type: CommandExecute
-        ref: process-0050
+        ref: command-0050
       - type: CommandExecute
-        ref: process-0060
+        ref: command-0060
       - type: CommandExecute
-        ref: process-0061
+        ref: command-0061
       - type: CommandExecute
-        ref: process-0070
+        ref: command-0070
       - type: CommandExecute
-        ref: process-0080
+        ref: command-0080
       - type: CommandExecute
-        ref: process-0090
+        ref: command-0090
       - type: CommandExecute
-        ref: process-0091
+        ref: command-0091
       - type: CommandExecute
-        ref: process-0100
+        ref: command-0100
       - type: CommandExecute
-        ref: process-0110
+        ref: command-0110
       - type: CommandExecute
-        ref: process-0120
+        ref: command-0120
       - type: CommandExecute
-        ref: process-0130
+        ref: command-0130
 commands:
-  - id: process-0001
+  - id: command-0001
     description: "ランダムな文字列を作成."
     summary : "ランダムな文字列を作成."
     command: "GenerateRandomWord"
     target : "mailaddressBefore"
     length: 20
-  - id: process-0002
+  - id: command-0002
     description: "ランダムな文字列を作成."
     summary : "ランダムな文字列を作成."
     command: "GenerateRandomString"
     target : "mailaddressAfter"
     length: 5
-  - id: process-0003
+  - id: command-0003
     description: "メアド接頭辞作成."
     summary : "メアドの接頭辞を作成する."
     command: "StringConcat"
     target : "mailaddress"
     referenceVariables : ["scenario.mailaddressBefore", "_", "scenario.mailaddressAfter"]
-  - id: process-0010
+  - id: command-0010
     description: "SeleniumのWebDriverを開始します."
     summary : "SeleniumのWebDriverを開始します."
     command: "StartLocalWebDriver"
     browser: chrome
     variableName: WEBDRIVER_1
     driverPath: "/Users/takashimanozomu/work/91_webdrivers/chromedriver"
-  - id: process-0020
+  - id: command-0020
     summary : Get Url.
     description: Get Url.
     command: "WebDriverGet"
     target : "https://www.yahoo.co.jp/"
     refWebDriver: WEBDRIVER_1
-  - id: process-0021
+  - id: command-0021
     summary : Get Url.
     description: Get Url.
     command: "WebDriverClick"
     target : "新規取得"
     selector : "linkText"
     refWebDriver: WEBDRIVER_1
-  - id: process-0022
+  - id: command-0022
     summary : Get Url.
     description: Get Url.
     command: "WebDriverClick"
     target : "メールアドレスなしで登録する"
     selector : "linkText"
     refWebDriver: WEBDRIVER_1
-  - id: process-0030
+  - id: command-0030
     summary : SendKeys Yahoo ID.
     description: SendKeys Yahoo ID.
     command: "WebDriverClick"
     target : "yid"
     selector : "id"
     refWebDriver: WEBDRIVER_1
-  - id: process-0031
+  - id: command-0031
     summary : SendKeys Yahoo ID.
     description: SendKeys Yahoo ID.
     command: "WebDriverSendKeys"
@@ -117,7 +117,7 @@ commands:
     value : "${scenario.mailaddress}"
     selector : "id"
     refWebDriver: WEBDRIVER_1
-  - id: process-0040
+  - id: command-0040
     summary : Sendkeys Password.
     description: Sendkeys Password.
     command: "WebDriverSendKeys"
@@ -125,7 +125,7 @@ commands:
     value : "Aa123456"
     selector : "id"
     refWebDriver: WEBDRIVER_1
-  - id: process-0050
+  - id: command-0050
     summary : SendKeys Yahoo ID.
     description: SendKeys Yahoo ID.
     command: "WebDriverSendKeys"
@@ -133,13 +133,13 @@ commands:
     value : "1730037"
     selector : "id"
     refWebDriver: WEBDRIVER_1
-  - id: process-0060
+  - id: command-0060
     summary : SendKeys Yahoo ID.
     description: SendKeys Yahoo ID.
     command: "GenerateRandomBirthdayString"
     target : "birthday"
     format : "yyyyMMdd"
-  - id: process-0061
+  - id: command-0061
     summary : SendKeys Yahoo ID.
     description: SendKeys Yahoo ID.
     command: "WebDriverSendKeys"
@@ -147,7 +147,7 @@ commands:
     value : "${scenario.birthday}"
     selector : "id"
     refWebDriver: WEBDRIVER_1
-  - id: process-0070
+  - id: command-0070
     summary : Sendeys Yahoo ID.
     description: SendKeys Yahoo ID.
     command: "WebDriverSendKeys"
@@ -155,7 +155,7 @@ commands:
     value : "テスト　太郎"
     selector : "id"
     refWebDriver: WEBDRIVER_1
-  - id: process-0080
+  - id: command-0080
     summary : Sendeys Yahoo ID.
     description: SendKeys Yahoo ID.
     command: "WebDriverSendKeysSpace"
@@ -163,7 +163,7 @@ commands:
     value : null
     selector : "id"
     refWebDriver: WEBDRIVER_1
-  - id: process-0090
+  - id: command-0090
     summary : SendKeys Yahoo ID.
     description: SendKeys Yahoo ID.
     command: "WebDriverSendKeys"
@@ -171,13 +171,13 @@ commands:
     value : "東京"
     selector : "id"
     refWebDriver: WEBDRIVER_1
-  - id: process-0091
+  - id: command-0091
     summary : "Captcha回避まで待機"
     description: "Captcha回避まで待機"
     command: "ConsoleInput"
     target : "Captchaに表示された文字列を入力し終えたら「y」を入力してください"
     value : "captchaInputFlg"
-  - id: process-0100
+  - id: command-0100
     summary : SendKeys Yahoo ID.
     description: SendKeys Yahoo ID.
     command: "WebDriverSendKeys"
@@ -185,19 +185,19 @@ commands:
     value : "あいうえおか"
     selector : "id"
     refWebDriver: WEBDRIVER_1
-  - id: process-0110
+  - id: command-0110
     summary : SendKeys Yahoo ID.
     description: SendKeys Yahoo ID.
     command: "WebDriverClick"
     target : "btnSubmit"
     selector : "id"
     refWebDriver: WEBDRIVER_1
-  - id: process-0120
+  - id: command-0120
     summary : "スクリーンショットをとる."
     description: "スクリーンショットをとる."
     command: "WebDriverScreenShot"
     refWebDriver: WEBDRIVER_1
-  - id: process-0130
+  - id: command-0130
     summary : "WebDriverを閉じる."
     description: "WebDriverを閉じる."
     command: "EndLocalWebDriver"

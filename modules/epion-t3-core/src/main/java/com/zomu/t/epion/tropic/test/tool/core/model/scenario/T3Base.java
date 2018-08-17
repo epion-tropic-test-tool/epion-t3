@@ -2,8 +2,8 @@ package com.zomu.t.epion.tropic.test.tool.core.model.scenario;
 
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.databind.annotation.JsonTypeIdResolver;
-import com.zomu.t.epion.tropic.test.tool.core.execution.resolver.impl.CommandTypeIdResolver;
-import com.zomu.t.epion.tropic.test.tool.core.execution.resolver.impl.FlowTypeIdResolver;
+import com.zomu.t.epion.tropic.test.tool.core.command.resolver.CommandTypeIdResolver;
+import com.zomu.t.epion.tropic.test.tool.core.flow.resolver.FlowTypeIdResolver;
 import lombok.Getter;
 import lombok.Setter;
 

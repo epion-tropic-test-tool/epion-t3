@@ -1,7 +1,7 @@
 package com.zomu.t.epion.tropic.test.tool.rest.runner;
 
 import com.zomu.t.epion.tropic.test.tool.core.context.EvidenceInfo;
-import com.zomu.t.epion.tropic.test.tool.core.execution.runner.CommandRunner;
+import com.zomu.t.epion.tropic.test.tool.core.command.runner.CommandRunner;
 import com.zomu.t.epion.tropic.test.tool.rest.command.ExecuteRestApi;
 import org.slf4j.Logger;
 

@@ -2,7 +2,7 @@ package com.zomu.t.epion.tropic.test.tool.basic.command.runner;
 
 import com.zomu.t.epion.tropic.test.tool.basic.command.model.FileCopy;
 import com.zomu.t.epion.tropic.test.tool.core.context.EvidenceInfo;
-import com.zomu.t.epion.tropic.test.tool.core.execution.runner.CommandRunner;
+import com.zomu.t.epion.tropic.test.tool.core.command.runner.CommandRunner;
 import org.slf4j.Logger;
 
 import java.io.FileOutputStream;
@@ -22,12 +22,16 @@ public class FileCopyRunner implements CommandRunner<FileCopy> {
      * @param process
      * @param globalScopeVariables
      * @param scenarioScopeVariables
+     * @param flowScopeVariables
+     * @param evidences
+     * @param logger
      * @throws Exception
      */
     @Override
     public void execute(final FileCopy process,
                         final Map<String, Object> globalScopeVariables,
                         final Map<String, Object> scenarioScopeVariables,
+                        final Map<String, Object> flowScopeVariables,
                         final Map<String, EvidenceInfo> evidences,
                         final Logger logger) throws Exception {
 

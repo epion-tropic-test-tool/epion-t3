@@ -16,7 +16,6 @@ public interface Context extends Serializable {
      */
     ObjectMapper getObjectMapper();
 
-
     /**
      * 実行引数のオプションを取得する.
      *
@@ -37,6 +36,5 @@ public interface Context extends Serializable {
      * @return
      */
     ExecuteContext getExecuteContext();
-
 
 }

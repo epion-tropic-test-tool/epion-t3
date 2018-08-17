@@ -3,9 +3,8 @@ package com.zomu.t.epion.tropic.test.tool.core.execution.runner.impl;
 import com.zomu.t.epion.tropic.test.tool.core.context.BaseContext;
 import com.zomu.t.epion.tropic.test.tool.core.context.execute.ExecuteScenario;
 import com.zomu.t.epion.tropic.test.tool.core.exception.ScenarioNotFoundException;
-import com.zomu.t.epion.tropic.test.tool.core.execution.reporter.impl.BaseScenarioReporter;
-import com.zomu.t.epion.tropic.test.tool.core.execution.resolver.impl.BaseFlowRunnerResolver;
-import com.zomu.t.epion.tropic.test.tool.core.execution.runner.ProcessRunner;
+import com.zomu.t.epion.tropic.test.tool.core.execution.reporter.impl.ScenarioReporterImpl;
+import com.zomu.t.epion.tropic.test.tool.core.flow.resolver.impl.FlowRunnerResolverImpl;
 import com.zomu.t.epion.tropic.test.tool.core.execution.runner.ScenarioRunner;
 import com.zomu.t.epion.tropic.test.tool.core.flow.model.FlowResult;
 import com.zomu.t.epion.tropic.test.tool.core.flow.runner.FlowRunner;
@@ -31,8 +30,8 @@ import java.util.concurrent.ConcurrentHashMap;
  * @author takashno
  */
 @Slf4j
-public class BaseScenarioRunner implements ScenarioRunner<BaseContext> {
-    
+public class ScenarioRunnerImpl implements ScenarioRunner<BaseContext> {
+
     /**
      * {@inheritDoc}
      *
@@ -74,11 +73,15 @@ public class BaseScenarioRunner implements ScenarioRunner<BaseContext> {
             // 全てのフローを実行
             for (Flow flow : scenario.getFlows()) {
 
+
                 if (flowResult != null) {
+                    // 前Flowの結果によって処理を振り分ける
                     switch (flowResult.getStatus()) {
                         case NEXT:
+                            // 単純に次のFlowへ遷移
                             break;
                         case CHOICE:
+                            // 指定された後続Flowへ遷移
                             if (StringUtils.equals(flowResult.getChoiceId(), flow.getId())) {
                                 // 合致したため実行する
                                 log.debug("Find Next Flow!!!");
@@ -88,21 +91,24 @@ public class BaseScenarioRunner implements ScenarioRunner<BaseContext> {
                             }
                             break;
                         case EXIT:
+                            // 即時終了
                             exitFlg = true;
                             break;
                     }
                 }
 
                 if (exitFlg) {
-                    // ループを抜ける
+                    // 即時終了のためループを抜ける
                     break;
                 }
 
-                FlowRunner runner = BaseFlowRunnerResolver.getInstance().getFlowRunner(flow.getType());
+                // Flowの実行処理を解決
+                FlowRunner runner = FlowRunnerResolverImpl.getInstance().getFlowRunner(flow.getType());
 
                 // バインド
                 bind(context, executeScenario, flow);
 
+                // 実行
                 flowResult = runner.execute(
                         context,
                         executeScenario,
@@ -222,7 +228,7 @@ public class BaseScenarioRunner implements ScenarioRunner<BaseContext> {
     }
 
     private void report(final BaseContext context, final ExecuteScenario scenario) {
-        BaseScenarioReporter.getInstance().scenarioReport(context, scenario);
+        ScenarioReporterImpl.getInstance().scenarioReport(context, scenario);
     }
 
 
