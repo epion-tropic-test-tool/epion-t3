@@ -1,6 +1,7 @@
 package com.zomu.t.epion.tropic.test.tool.core.execution.runner.impl;
 
 import com.zomu.t.epion.tropic.test.tool.core.context.BaseContext;
+import com.zomu.t.epion.tropic.test.tool.core.context.execute.ExecuteFlow;
 import com.zomu.t.epion.tropic.test.tool.core.context.execute.ExecuteScenario;
 import com.zomu.t.epion.tropic.test.tool.core.exception.ScenarioNotFoundException;
 import com.zomu.t.epion.tropic.test.tool.core.execution.reporter.impl.ScenarioReporterImpl;
@@ -10,6 +11,7 @@ import com.zomu.t.epion.tropic.test.tool.core.flow.model.FlowResult;
 import com.zomu.t.epion.tropic.test.tool.core.flow.runner.FlowRunner;
 import com.zomu.t.epion.tropic.test.tool.core.model.scenario.Flow;
 import com.zomu.t.epion.tropic.test.tool.core.model.scenario.T3Base;
+import com.zomu.t.epion.tropic.test.tool.core.type.FlowStatus;
 import com.zomu.t.epion.tropic.test.tool.core.type.ScenarioExecuteStatus;
 import com.zomu.t.epion.tropic.test.tool.core.type.ScenarioScopeVariables;
 import com.zomu.t.epion.tropic.test.tool.core.util.BindUtils;
@@ -86,6 +88,12 @@ public class ScenarioRunnerImpl implements ScenarioRunner<BaseContext> {
                                 // 合致したため実行する
                                 log.debug("Find Next Flow!!!");
                             } else {
+                                // SKIP扱いとする
+                                // TODO:ちょっと微妙だな・・・
+                                ExecuteFlow executeFlow = new ExecuteFlow();
+                                executeFlow.setStatus(FlowStatus.SKIP);
+                                executeFlow.setFlow(flow);
+                                executeScenario.getFlows().add(executeFlow);
                                 // 次のループまで
                                 continue;
                             }

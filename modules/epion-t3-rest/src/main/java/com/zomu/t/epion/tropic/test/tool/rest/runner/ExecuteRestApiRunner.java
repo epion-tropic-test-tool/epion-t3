@@ -11,9 +11,10 @@ public class ExecuteRestApiRunner implements CommandRunner<ExecuteRestApi> {
 
     @Override
     public void execute(
-            final ExecuteRestApi process,
+            final ExecuteRestApi command,
             final Map<String, Object> globalScopeVariables,
             final Map<String, Object> scenarioScopeVariables,
+            final Map<String, Object> flowScopeVariables,
             final Map<String, EvidenceInfo> evidences,
             Logger logger) throws Exception {
 

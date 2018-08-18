@@ -38,7 +38,7 @@ public final class BindUtils {
      * バインド変数抽出パターン(名前空間あり).
      * TODO:ここは外側から指定できるべきか
      */
-    public static final Pattern BIND_EXTRACT_PATTERN_WITHNAMESPACE = Pattern.compile("\\$\\{([^\\.]+)\\.(.+)\\}");
+    public static final Pattern BIND_EXTRACT_PATTERN_WITHNAMESPACE = Pattern.compile("\\$\\{([^\\.]+)\\.([^\\}]+)\\}");
 
     /**
      * インスタンスを取得します.

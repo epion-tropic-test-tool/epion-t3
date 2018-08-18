@@ -35,17 +35,31 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * シナリオレポート出力処理.
  *
+ * @author takashno
  */
 @Slf4j
 public final class ScenarioReporterImpl implements ScenarioReporter {
 
+    /**
+     * シングルトンインスタンス.
+     */
     private static final ScenarioReporterImpl instance = new ScenarioReporterImpl();
 
+    /**
+     * テンプレート接頭辞.
+     */
     public static final String TEMPLATE_PREFIX = "/templates/";
 
+    /**
+     * テンプレート接尾辞
+     */
     public static final String TEMPLATE_SUFFIX = ".html";
 
+    /**
+     * テンプレートエンコード.
+     */
     public static final String TEMPLATE_ENCODING = "UTF-8";
 
     /**
@@ -75,6 +89,11 @@ public final class ScenarioReporterImpl implements ScenarioReporter {
         return instance;
     }
 
+    /**
+     * 総合レポートを作成する.
+     *
+     * @param context コンテキスト
+     */
     public void allReport(final Context context) {
 
         try {
@@ -93,9 +112,9 @@ public final class ScenarioReporterImpl implements ScenarioReporter {
                     templateEngine.process("report", icontext).getBytes(TEMPLATE_ENCODING));
 
             // YAML出力
-//            String yamlReport = context.getObjectMapper().writeValueAsString(context.getExecuteContext());
-//            Files.write(ExecutionFileUtils.getAllReportYamlPath(context),
-//                    yamlReport.getBytes(TEMPLATE_ENCODING));
+            //String yamlReport = context.getObjectMapper().writeValueAsString(context.getExecuteContext());
+            //Files.write(ExecutionFileUtils.getAllReportYamlPath(context),
+            //        yamlReport.getBytes(TEMPLATE_ENCODING));
 
         } catch (IOException e) {
             throw new SystemException(BaseMessages.BASE_ERR_1001);
@@ -103,6 +122,12 @@ public final class ScenarioReporterImpl implements ScenarioReporter {
 
     }
 
+    /**
+     * シナリオ個別レポートを作成する.
+     *
+     * @param context コンテキスト
+     * @param executeScenario シナリオ実行情報
+     */
     public void scenarioReport(
             final Context context,
             final ExecuteScenario executeScenario) {
@@ -161,9 +186,10 @@ public final class ScenarioReporterImpl implements ScenarioReporter {
     }
 
     /**
+     * 実行Flowのアクティビティ図のSVGを出力する.
      *
-     * @param executeScenario
-     * @return
+     * @param executeScenario シナリオ実行情報
+     * @return PlantUMLのアクティビティ図の文字列表現
      */
     private String generateSvg(ExecuteScenario executeScenario) {
 

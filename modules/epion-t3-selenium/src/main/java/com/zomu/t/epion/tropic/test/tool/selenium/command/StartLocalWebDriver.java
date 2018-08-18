@@ -1,5 +1,6 @@
 package com.zomu.t.epion.tropic.test.tool.selenium.command;
 
+import com.zomu.t.epion.tropic.test.tool.core.annotation.CommandDefinition;
 import com.zomu.t.epion.tropic.test.tool.selenium.runner.StartLocalWebDriverRunner;
 import com.zomu.t.epion.tropic.test.tool.core.model.scenario.Command;
 import lombok.Getter;
@@ -8,7 +9,7 @@ import org.apache.bval.constraints.NotEmpty;
 
 @Getter
 @Setter
-@com.zomu.t.epion.tropic.test.tool.core.annotation.Command(id = "StartLocalWebDriver", runner = StartLocalWebDriverRunner.class)
+@CommandDefinition(id = "StartLocalWebDriver", runner = StartLocalWebDriverRunner.class)
 public class StartLocalWebDriver extends Command {
 
     @NotEmpty

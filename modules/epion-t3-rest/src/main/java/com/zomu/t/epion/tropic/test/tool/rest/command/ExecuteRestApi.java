@@ -1,5 +1,6 @@
 package com.zomu.t.epion.tropic.test.tool.rest.command;
 
+import com.zomu.t.epion.tropic.test.tool.core.annotation.CommandDefinition;
 import com.zomu.t.epion.tropic.test.tool.core.model.scenario.Command;
 import com.zomu.t.epion.tropic.test.tool.rest.bean.Header;
 import com.zomu.t.epion.tropic.test.tool.rest.bean.QueryParameter;
@@ -12,7 +13,7 @@ import java.util.List;
 
 @Getter
 @Setter
-@com.zomu.t.epion.tropic.test.tool.core.annotation.Command(id = "ExecuteRestApi", runner = ExecuteRestApiRunner.class)
+@CommandDefinition(id = "ExecuteRestApi", runner = ExecuteRestApiRunner.class)
 public class ExecuteRestApi extends Command {
 
     @NotEmpty

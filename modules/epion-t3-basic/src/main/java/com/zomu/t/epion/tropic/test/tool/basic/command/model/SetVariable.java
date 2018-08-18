@@ -1,18 +1,13 @@
 package com.zomu.t.epion.tropic.test.tool.basic.command.model;
 
-import com.zomu.t.epion.tropic.test.tool.basic.command.runner.FileDeleteRunner;
+import com.zomu.t.epion.tropic.test.tool.basic.command.runner.SetVariableRunner;
 import com.zomu.t.epion.tropic.test.tool.core.annotation.CommandDefinition;
 import com.zomu.t.epion.tropic.test.tool.core.model.scenario.Command;
 import lombok.Getter;
 import lombok.Setter;
 
-/**
- * ファイル削除コマンド定義.
- *
- * @author takashno
- */
 @Getter
 @Setter
-@CommandDefinition(id = "FileDelete", runner = FileDeleteRunner.class)
-public class FileDelete extends Command {
+@CommandDefinition(id = "SetVariable", runner = SetVariableRunner.class)
+public class SetVariable extends Command {
 }

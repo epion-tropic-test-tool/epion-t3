@@ -1,19 +1,14 @@
 package com.zomu.t.epion.tropic.test.tool.basic.command.runner;
 
 import com.zomu.t.epion.tropic.test.tool.basic.command.model.StringConcat;
-import com.zomu.t.epion.tropic.test.tool.basic.messages.BasicMessages;
-import com.zomu.t.epion.tropic.test.tool.core.type.ReferenceVariableType;
-import com.zomu.t.epion.tropic.test.tool.core.context.EvidenceInfo;
-import com.zomu.t.epion.tropic.test.tool.core.exception.SystemException;
 import com.zomu.t.epion.tropic.test.tool.core.command.runner.CommandRunner;
+import com.zomu.t.epion.tropic.test.tool.core.context.EvidenceInfo;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * コンソール入力コマンド実行クラス.
@@ -22,8 +17,6 @@ import java.util.regex.Pattern;
  * @author takashno
  */
 public class StringConcatRunner implements CommandRunner<StringConcat> {
-
-    private Pattern EXTRACT_PATTERN = Pattern.compile("([^.]+)\\.(.+)");
 
     /**
      * {@inheritDoc}
@@ -41,30 +34,13 @@ public class StringConcatRunner implements CommandRunner<StringConcat> {
         List<String> rawValues = new ArrayList<>();
 
         for (String referenceVariable : process.getReferenceVariables()) {
-
-            Matcher m = EXTRACT_PATTERN.matcher(referenceVariable);
-
-            if (m.find()) {
-                ReferenceVariableType referenceVariableType = ReferenceVariableType.valueOfByName(m.group(1));
-                if (referenceVariableType != null) {
-                    switch (referenceVariableType) {
-                        case FIX:
-                            rawValues.add(m.group(2));
-                            break;
-                        case GLOBAL:
-                            rawValues.add(globalScopeVariables.get(m.group(2)).toString());
-                            break;
-                        case SCENARIO:
-                            rawValues.add(scenarioScopeVariables.get(m.group(2)).toString());
-                            break;
-                        default:
-                            throw new SystemException(BasicMessages.BASIC_ERR_9001, m.group(1));
-                    }
-                } else {
-                    throw new SystemException(BasicMessages.BASIC_ERR_9001, m.group(1));
-                }
-            } else {
-                rawValues.add(referenceVariable);
+            Object variable = resolveVariables(
+                    globalScopeVariables,
+                    scenarioScopeVariables,
+                    flowScopeVariables,
+                    referenceVariable);
+            if (variable != null) {
+                rawValues.add(variable.toString());
             }
         }
 

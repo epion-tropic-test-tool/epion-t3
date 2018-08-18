@@ -1,9 +1,10 @@
 package com.zomu.t.epion.tropic.test.tool.core.model.scenario;
 
 import com.zomu.t.epion.tropic.test.tool.core.annotation.OriginalProcessField;
-import lombok.*;
+import lombok.Getter;
+import lombok.Setter;
+import org.apache.bval.constraints.NotEmpty;
 
-import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 @Getter
@@ -12,7 +13,7 @@ public class Command implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @NotNull
+    @NotEmpty
     @OriginalProcessField
     private String id;
 
@@ -22,7 +23,7 @@ public class Command implements Serializable {
     @OriginalProcessField
     private String description;
 
-    @NotNull
+    @NotEmpty
     @OriginalProcessField
     private String command;
 

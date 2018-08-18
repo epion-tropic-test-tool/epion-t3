@@ -20,6 +20,8 @@ public enum CoreMessages implements Messages {
     /**  */
     CORE_ERR_0004("com.zomu.t.epion.t3.core.err.0004"),
     /**  */
+    CORE_ERR_0005("com.zomu.t.epion.t3.core.err.0005"),
+    /**  */
     CORE_WRN_0001("com.zomu.t.epion.t3.core.wrn.0001"),
 
     ;

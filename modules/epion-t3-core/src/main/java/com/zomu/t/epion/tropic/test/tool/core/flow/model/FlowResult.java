@@ -7,6 +7,8 @@ import lombok.Setter;
 import java.io.Serializable;
 
 /**
+ * Flow結果クラス.
+ *
  * @author takashno
  */
 @Getter
@@ -18,10 +20,22 @@ public class FlowResult implements Serializable {
      */
     private static final long serialVersionUID = 1L;
 
+    /**
+     * Flowの結果ステータス.
+     */
     private FlowResultStatus status = FlowResultStatus.NEXT;
 
+    /**
+     * Flowとして次に実行するID.
+     * 結果ステータスが「CHOICE」の時のみ利用する.
+     */
     private String choiceId;
 
+    /**
+     * デフォルト状態のFlow結果オブジェクトを取得する.
+     *
+     * @return {@link FlowResult}
+     */
     public static FlowResult getDefault() {
         return new FlowResult();
     }

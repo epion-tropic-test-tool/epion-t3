@@ -1,6 +1,7 @@
 package com.zomu.t.epion.tropic.test.tool.basic.command.model;
 
 import com.zomu.t.epion.tropic.test.tool.basic.command.runner.FileCopyRunner;
+import com.zomu.t.epion.tropic.test.tool.core.annotation.CommandDefinition;
 import com.zomu.t.epion.tropic.test.tool.core.model.scenario.Command;
 import lombok.Getter;
 import lombok.Setter;
@@ -12,7 +13,7 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-@com.zomu.t.epion.tropic.test.tool.core.annotation.Command(id = "FileCopy", runner = FileCopyRunner.class)
+@CommandDefinition(id = "FileCopy", runner = FileCopyRunner.class)
 public class FileCopy extends Command {
 
     /**

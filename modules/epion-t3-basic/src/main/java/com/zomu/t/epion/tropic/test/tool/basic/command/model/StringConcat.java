@@ -1,6 +1,7 @@
 package com.zomu.t.epion.tropic.test.tool.basic.command.model;
 
 import com.zomu.t.epion.tropic.test.tool.basic.command.runner.StringConcatRunner;
+import com.zomu.t.epion.tropic.test.tool.core.annotation.CommandDefinition;
 import com.zomu.t.epion.tropic.test.tool.core.model.scenario.Command;
 import lombok.Getter;
 import lombok.Setter;
@@ -10,10 +11,14 @@ import java.util.List;
 
 /**
  * 文字列結合コマンド.
+ *
+ * @author takashno
  */
 @Getter
 @Setter
-@com.zomu.t.epion.tropic.test.tool.core.annotation.Command(id = "StringConcat", runner = StringConcatRunner.class)
+@CommandDefinition(
+        id = "StringConcat",
+        runner = StringConcatRunner.class)
 public class StringConcat extends Command {
 
     @NotEmpty

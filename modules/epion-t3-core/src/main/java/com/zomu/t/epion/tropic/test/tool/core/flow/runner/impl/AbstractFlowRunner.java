@@ -10,8 +10,10 @@ import com.zomu.t.epion.tropic.test.tool.core.holder.FlowLoggingHolder;
 import com.zomu.t.epion.tropic.test.tool.core.model.scenario.Flow;
 import com.zomu.t.epion.tropic.test.tool.core.type.FlowScopeVariables;
 import com.zomu.t.epion.tropic.test.tool.core.type.FlowStatus;
+import com.zomu.t.epion.tropic.test.tool.core.util.BindUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.SerializationUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 
 import java.io.PrintWriter;
@@ -20,7 +22,10 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @param <CONTEXT>
@@ -55,11 +60,18 @@ public abstract class AbstractFlowRunner<CONTEXT extends Context, EXECUTESCENARI
                     executeScenario,
                     executeFlow);
 
-            // シナリオスコープ変数の設定
+            // Flowスコープ変数の設定
             settingFlowVariables(
                     context,
                     executeScenario,
                     executeFlow);
+
+            // バインド
+            bind(
+                    context,
+                    executeScenario,
+                    executeFlow,
+                    flow);
 
             // 実行
             flowResult = execute(
@@ -138,6 +150,40 @@ public abstract class AbstractFlowRunner<CONTEXT extends Context, EXECUTESCENARI
             // TODO:ErrorProcess
             throw new RuntimeException(e);
         }
+    }
+
+
+    /**
+     * コマンドに対して、変数をバインドする.
+     *
+     * @param context
+     * @param executeScenario
+     * @param executeFlow
+     */
+    private void bind(final CONTEXT context,
+                      final EXECUTESCENARIO executeScenario,
+                      final EXECUTE_FLOW executeFlow,
+                      final FLOW flow) {
+
+        final Map<String, String> profiles = new ConcurrentHashMap<>();
+
+        if (StringUtils.isNotEmpty(context.getOption().getProfile())) {
+            // プロファイルを抽出
+            Arrays.stream(context.getOption().getProfile().split(","))
+                    .forEach(x -> {
+                        if (context.getOriginal().getProfiles().containsKey(x)) {
+                            profiles.putAll(context.getOriginal().getProfiles().get(x));
+                        } else {
+
+                        }
+                    });
+        }
+
+        BindUtils.getInstance().bind(
+                flow,
+                profiles,
+                context.getExecuteContext().getGlobalVariables(),
+                executeScenario.getScenarioVariables());
     }
 
 

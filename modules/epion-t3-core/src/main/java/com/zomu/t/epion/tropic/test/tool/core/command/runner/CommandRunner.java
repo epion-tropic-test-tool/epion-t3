@@ -1,34 +1,85 @@
 package com.zomu.t.epion.tropic.test.tool.core.command.runner;
 
 import com.zomu.t.epion.tropic.test.tool.core.context.EvidenceInfo;
+import com.zomu.t.epion.tropic.test.tool.core.exception.SystemException;
+import com.zomu.t.epion.tropic.test.tool.core.message.impl.CoreMessages;
 import com.zomu.t.epion.tropic.test.tool.core.model.scenario.Command;
 import com.zomu.t.epion.tropic.test.tool.core.type.FlowScopeVariables;
+import com.zomu.t.epion.tropic.test.tool.core.type.ReferenceVariableType;
 import com.zomu.t.epion.tropic.test.tool.core.type.ScenarioScopeVariables;
 import org.slf4j.Logger;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * コマンドの実行処理インターフェース.
  *
- * @param <PROCESS>
+ * @param <COMMAND>
  */
-public interface CommandRunner<PROCESS extends Command> {
+public interface CommandRunner<COMMAND extends Command> {
 
     /**
-     * @param process
+     * 変数の抽出パターン.
+     */
+    Pattern EXTRACT_PATTERN = Pattern.compile("([^.]+)\\.(.+)");
+
+    /**
+     * @param command
      * @param globalScopeVariables
      * @param scenarioScopeVariables
      * @throws Exception
      */
-    void execute(final PROCESS process,
+    void execute(final COMMAND command,
                  final Map<String, Object> globalScopeVariables,
                  final Map<String, Object> scenarioScopeVariables,
                  final Map<String, Object> flowScopeVariables,
                  final Map<String, EvidenceInfo> evidences,
                  final Logger logger) throws Exception;
+
+
+    /**
+     * 変数を解決する.
+     *
+     * @param globalScopeVariables
+     * @param scenarioScopeVariables
+     * @param flowScopeVariables
+     * @param referenceVariable
+     * @return
+     */
+    default Object resolveVariables(
+            final Map<String, Object> globalScopeVariables,
+            final Map<String, Object> scenarioScopeVariables,
+            final Map<String, Object> flowScopeVariables,
+            final String referenceVariable) {
+
+        Matcher m = EXTRACT_PATTERN.matcher(referenceVariable);
+
+        if (m.find()) {
+            ReferenceVariableType referenceVariableType = ReferenceVariableType.valueOfByName(m.group(1));
+            if (referenceVariableType != null) {
+                switch (referenceVariableType) {
+                    case FIX:
+                        return m.group(2);
+                    case GLOBAL:
+                        return globalScopeVariables.get(m.group(2));
+                    case SCENARIO:
+                        return scenarioScopeVariables.get(m.group(2));
+                    case FLOW:
+                        return flowScopeVariables.get(m.group(2));
+                    default:
+                        throw new SystemException(CoreMessages.CORE_ERR_0005, m.group(1));
+                }
+            } else {
+                throw new SystemException(CoreMessages.CORE_ERR_0005, m.group(1));
+            }
+        }
+        return null;
+    }
+
 
     /**
      * シナリオ格納ディレクトリを取得する.
@@ -75,7 +126,6 @@ public interface CommandRunner<PROCESS extends Command> {
     }
 
     /**
-     *
      * @param scenarioScopeVariables
      * @param flowScopeVariables
      * @param fileExtension

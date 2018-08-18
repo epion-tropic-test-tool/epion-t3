@@ -18,7 +18,7 @@ public class ApplicationTest {
         application.main(new String[]{
                 "-v", "v1.0",
                 "-m", "test",
-                "-t", "yahooregist-scenario-001",
+                "-t", "flowreport-scenario-001",
                 "-s", "/Users/takashimanozomu/work/30_pgworkspaces/intellij/t3-core/modules/epion-t3-scenario"
         });
     }

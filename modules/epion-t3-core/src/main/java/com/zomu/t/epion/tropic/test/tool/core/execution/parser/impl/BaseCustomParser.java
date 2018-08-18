@@ -1,6 +1,8 @@
 package com.zomu.t.epion.tropic.test.tool.core.execution.parser.impl;
 
 import com.google.common.reflect.ClassPath;
+import com.zomu.t.epion.tropic.test.tool.core.annotation.CommandDefinition;
+import com.zomu.t.epion.tropic.test.tool.core.annotation.FlowDefinition;
 import com.zomu.t.epion.tropic.test.tool.core.context.BaseContext;
 import com.zomu.t.epion.tropic.test.tool.core.context.Context;
 import com.zomu.t.epion.tropic.test.tool.core.context.FlowInfo;
@@ -129,10 +131,10 @@ public final class BaseCustomParser implements IndividualTargetParser {
 
             // カスタムコマンドを解析
             allClasses.stream()
-                    .filter(x -> x.getDeclaredAnnotation(com.zomu.t.epion.tropic.test.tool.core.annotation.Command.class) != null)
+                    .filter(x -> x.getDeclaredAnnotation(CommandDefinition.class) != null)
                     .filter(x -> Command.class.isAssignableFrom(x))
                     .forEach(x -> {
-                        com.zomu.t.epion.tropic.test.tool.core.annotation.Command command = x.getDeclaredAnnotation(com.zomu.t.epion.tropic.test.tool.core.annotation.Command.class);
+                        CommandDefinition command = x.getDeclaredAnnotation(CommandDefinition.class);
                         CommandInfo commandInfo = CommandInfo.builder().id(command.id()).model(x).runner(command.runner()).build();
                         CustomConfigHolder.getInstance().addCustomCommandInfo(
                                 command.id(), commandInfo);
@@ -143,11 +145,11 @@ public final class BaseCustomParser implements IndividualTargetParser {
 
             // カスタムFlowを解析
             allClasses.stream()
-                    .filter(x -> x.getDeclaredAnnotation(com.zomu.t.epion.tropic.test.tool.core.annotation.Flow.class) != null)
+                    .filter(x -> x.getDeclaredAnnotation(FlowDefinition.class) != null)
                     .filter(x -> Flow.class.isAssignableFrom(x))
                     .forEach(x -> {
-                        com.zomu.t.epion.tropic.test.tool.core.annotation.Flow flow =
-                                x.getDeclaredAnnotation(com.zomu.t.epion.tropic.test.tool.core.annotation.Flow.class);
+                        FlowDefinition flow =
+                                x.getDeclaredAnnotation(FlowDefinition.class);
                         FlowInfo flowInfo = FlowInfo.builder().id(flow.id()).model(x).runner(flow.runner()).build();
                         CustomConfigHolder.getInstance().addCustomFlowInfo(
                                 flow.id(), flowInfo);
