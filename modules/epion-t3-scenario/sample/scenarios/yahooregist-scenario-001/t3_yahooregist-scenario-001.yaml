@@ -55,7 +55,7 @@ flows:
       - type: CommandExecute
         ref: command-0120
       - type: CommandExecute
-        ref: command-0130
+        ref: command-0140
 commands:
   - id: command-0001
     description: "ランダムな文字列を作成."
@@ -201,4 +201,11 @@ commands:
     summary : "WebDriverを閉じる."
     description: "WebDriverを閉じる."
     command: "EndLocalWebDriver"
+    refWebDriver: WEBDRIVER_1
+  - id: command-0140
+    summary : 登録確認ボタン押下.
+    description: 登録確認ボタン押下.
+    command: "WebDriverClick"
+    target : "commit"
+    selector : "id"
     refWebDriver: WEBDRIVER_1
