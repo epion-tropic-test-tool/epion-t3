@@ -46,9 +46,4 @@ public class EvidenceInfo implements Serializable {
      */
     private String name;
 
-    /**
-     * パス.
-     */
-    private Path path;
-
 }

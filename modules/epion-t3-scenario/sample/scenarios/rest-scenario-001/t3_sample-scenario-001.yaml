@@ -1,0 +1,18 @@
+t3: '1.0'
+type: scenario
+info:
+    id: rest-scenario-001
+    version: 1.0.0
+    summary: Rest Scenario 001
+    description: This is a typical example scenario of the tool.
+flows:
+  - ref : process-001
+    type : CommandExecute
+commands:
+  - id: process-001
+    summary : REST API Call.
+    description: REST API Call.
+    command: "ExecuteRestApi"
+    request:
+        method: get
+        targetUrl: http://localhost:8080/api/v1/accounts/1

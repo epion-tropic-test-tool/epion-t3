@@ -21,6 +21,16 @@ flows:
       - type: CommandExecute
         ref: command-0003
       - type: CommandExecute
+        ref: command-0004
+      - type: CommandExecute
+        ref: command-0005
+      - type: CommandExecute
+        ref: command-0006
+      - type: CommandExecute
+        ref: command-0007
+      - type: CommandExecute
+        ref: command-0008
+      - type: CommandExecute
         ref: command-0010
       - type: CommandExecute
         ref: command-0020
@@ -49,13 +59,13 @@ flows:
       - type: CommandExecute
         ref: command-0091
       - type: CommandExecute
-        ref: command-0100
-      - type: CommandExecute
         ref: command-0110
       - type: CommandExecute
-        ref: command-0120
+        ref: command-0130
       - type: CommandExecute
         ref: command-0140
+      - type: CommandExecute
+        ref: command-0170
 commands:
   - id: command-0001
     description: "ランダムな文字列を作成."
@@ -75,6 +85,33 @@ commands:
     command: "StringConcat"
     target : "mailaddress"
     referenceVariables : ["scenario.mailaddressBefore", "_", "scenario.mailaddressAfter"]
+  - id: command-0004
+    description: "姓を作成する."
+    summary : "姓を作成する."
+    command: "GenerateRandomJapaneseLastName"
+    target : "lastName"
+  - id: command-0005
+    description: "名を作成する."
+    summary : "名を作成する."
+    command: "GenerateRandomJapaneseFirstName"
+    target : "firstName"
+  - id: command-0006
+    description: "姓名を作成する."
+    summary : "姓名を作成する."
+    command: "StringConcat"
+    target : "name"
+    referenceVariables : ["scenario.lastName", "　", "scenario.firstName"]
+  - id: command-0007
+    description: "ランダムな文字列を作成."
+    summary : "ランダムな文字列を作成."
+    command: "GenerateRandomString"
+    target : "password"
+    length: 10
+  - id: command-0008
+    description: "郵便番号を作成."
+    summary : "ランダムな文字列を作成."
+    command: "GenerateRandomJapaneseZipCode"
+    target : "zipcode"
   - id: command-0010
     description: "SeleniumのWebDriverを開始します."
     summary : "SeleniumのWebDriverを開始します."
@@ -122,7 +159,7 @@ commands:
     description: Sendkeys Password.
     command: "WebDriverSendKeys"
     target : "passwd"
-    value : "Aa123456"
+    value : "${scenario.password}"
     selector : "id"
     refWebDriver: WEBDRIVER_1
   - id: command-0050
@@ -130,7 +167,7 @@ commands:
     description: SendKeys Yahoo ID.
     command: "WebDriverSendKeys"
     target : "postCode"
-    value : "1730037"
+    value : "${scenario.zipcode}"
     selector : "id"
     refWebDriver: WEBDRIVER_1
   - id: command-0060
@@ -152,7 +189,7 @@ commands:
     description: SendKeys Yahoo ID.
     command: "WebDriverSendKeys"
     target : "dispname"
-    value : "テスト　太郎"
+    value : "${scenario.name}"
     selector : "id"
     refWebDriver: WEBDRIVER_1
   - id: command-0080
@@ -177,14 +214,6 @@ commands:
     command: "ConsoleInput"
     target : "Captchaに表示された文字列を入力し終えたら「y」を入力してください"
     value : "captchaInputFlg"
-  - id: command-0100
-    summary : SendKeys Yahoo ID.
-    description: SendKeys Yahoo ID.
-    command: "WebDriverSendKeys"
-    target : "secword"
-    value : "あいうえおか"
-    selector : "id"
-    refWebDriver: WEBDRIVER_1
   - id: command-0110
     summary : SendKeys Yahoo ID.
     description: SendKeys Yahoo ID.
@@ -192,20 +221,40 @@ commands:
     target : "btnSubmit"
     selector : "id"
     refWebDriver: WEBDRIVER_1
-  - id: command-0120
-    summary : "スクリーンショットをとる."
-    description: "スクリーンショットをとる."
-    command: "WebDriverScreenShot"
-    refWebDriver: WEBDRIVER_1
   - id: command-0130
-    summary : "WebDriverを閉じる."
-    description: "WebDriverを閉じる."
-    command: "EndLocalWebDriver"
-    refWebDriver: WEBDRIVER_1
-  - id: command-0140
     summary : 登録確認ボタン押下.
     description: 登録確認ボタン押下.
     command: "WebDriverClick"
     target : "commit"
     selector : "id"
+    refWebDriver: WEBDRIVER_1
+  - id: command-0140
+    summary : 同意して登録する確認ボタン押下.
+    description: 同意して登録するボタン押下.
+    command: "WebDriverClick"
+    target : "commit"
+    selector : "id"
+    refWebDriver: WEBDRIVER_1
+  - id: command-0170
+    summary : "AccountManagerへ登録."
+    description: "AccountManagerへ登録する."
+    command: "ExecuteRestApi"
+    request:
+        method: post
+        targetUrl: http://localhost:8080/api/v1/accounts
+        headers :
+            "Content-Type" : "application/json;charset=UTF-8"
+        body: |
+            {
+                "mailaddress" : "${scenario.mailaddress}@yahoo.co.jp",
+                "first_name" : "${scenario.firstName}",
+                "last_name" : "${scenario.lastName}",
+                "zip_code" : "${scenario.zipcode}",
+                "yahoo_id" : "${scenario.mailaddress}",
+                "yahoo_password" : "${scenario.password}"
+            }
+  - id: command-0900
+    summary : "WebDriverを閉じる."
+    description: "WebDriverを閉じる."
+    command: "EndLocalWebDriver"
     refWebDriver: WEBDRIVER_1

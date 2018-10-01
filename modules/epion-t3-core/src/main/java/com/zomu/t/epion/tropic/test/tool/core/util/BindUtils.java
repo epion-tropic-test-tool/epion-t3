@@ -5,13 +5,14 @@ import com.zomu.t.epion.tropic.test.tool.core.message.impl.CoreMessages;
 import com.zomu.t.epion.tropic.test.tool.core.message.MessageManager;
 import com.zomu.t.epion.tropic.test.tool.core.type.ReferenceVariableType;
 import lombok.extern.slf4j.Slf4j;
+import net.sourceforge.plantuml.geom.CollectionUtils;
+import org.apache.commons.lang3.ClassUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import java.beans.IntrospectionException;
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.InvocationTargetException;
-import java.util.Arrays;
-import java.util.Map;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -82,7 +83,22 @@ public final class BindUtils {
                                 pd.getWriteMethod().invoke(target, value.toString());
                             }
                         } catch (IntrospectionException | IllegalAccessException | InvocationTargetException e) {
-                            throw new RuntimeException(e);
+                            log.debug("Ignore...", e);
+                        }
+                    });
+
+            Arrays.stream(clazz.getDeclaredFields())
+                    // Stringのみ
+                    .filter(x -> !String.class.isAssignableFrom(x.getType()) && !x.getName().equals("serialVersionUID"))
+                    .forEach(x -> {
+                        try {
+                            PropertyDescriptor pd = new PropertyDescriptor(x.getName(), target.getClass());
+                            Object value = pd.getReadMethod().invoke(target);
+                            if (value != null) {
+                                bind(value, profiles, globalVariables, scenarioVariables);
+                            }
+                        } catch (IntrospectionException | IllegalAccessException | InvocationTargetException e) {
+                            log.debug("Ignore...", e);
                         }
                     });
 

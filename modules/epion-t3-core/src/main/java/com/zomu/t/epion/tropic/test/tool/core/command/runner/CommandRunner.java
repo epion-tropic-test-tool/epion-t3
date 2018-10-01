@@ -1,6 +1,8 @@
 package com.zomu.t.epion.tropic.test.tool.core.command.runner;
 
 import com.zomu.t.epion.tropic.test.tool.core.context.EvidenceInfo;
+import com.zomu.t.epion.tropic.test.tool.core.context.FileEvidenceInfo;
+import com.zomu.t.epion.tropic.test.tool.core.context.ObjectEvidenceInfo;
 import com.zomu.t.epion.tropic.test.tool.core.exception.SystemException;
 import com.zomu.t.epion.tropic.test.tool.core.message.impl.CoreMessages;
 import com.zomu.t.epion.tropic.test.tool.core.model.scenario.Command;
@@ -126,6 +128,9 @@ public interface CommandRunner<COMMAND extends Command> {
     }
 
     /**
+     * エビデンスのパスを取得する.
+     * ファイルの拡張子を指定することで、Runnerが保存すべきエビデンスの場所を取得するために利用する.
+     *
      * @param scenarioScopeVariables
      * @param flowScopeVariables
      * @param fileExtension
@@ -141,19 +146,19 @@ public interface CommandRunner<COMMAND extends Command> {
     }
 
     /**
-     * エビデンスを登録する.
+     * ファイルエビデンスを登録する.
      *
      * @param scenarioScopeVariables
      * @param flowScopeVariables
      * @param evidences
      * @param evidence
      */
-    default void registEvidence(
+    default void registrationFileEvidence(
             final Map<String, Object> scenarioScopeVariables,
             final Map<String, Object> flowScopeVariables,
             final Map<String, EvidenceInfo> evidences,
             Path evidence) {
-        EvidenceInfo evidenceInfo = new EvidenceInfo();
+        FileEvidenceInfo evidenceInfo = new FileEvidenceInfo();
         evidenceInfo.setFqsn(
                 scenarioScopeVariables.get(
                         ScenarioScopeVariables.CURRENT_SCENARIO.getName()).toString());
@@ -176,18 +181,68 @@ public interface CommandRunner<COMMAND extends Command> {
      * @param evidence
      * @param name
      */
-    default void registEvidence(
+    default void registrationFileEvidence(
             final Map<String, Object> scenarioScopeVariables,
             final Map<String, EvidenceInfo> evidences,
             Path evidence,
             String name) {
-        EvidenceInfo evidenceInfo = new EvidenceInfo();
+        FileEvidenceInfo evidenceInfo = new FileEvidenceInfo();
         evidenceInfo.setFqsn(scenarioScopeVariables.get(ScenarioScopeVariables.CURRENT_SCENARIO.getName()).toString());
         evidenceInfo.setFqpn(scenarioScopeVariables.get(FlowScopeVariables.CURRENT_COMMAND.getName()).toString());
         evidenceInfo.setName(name);
         evidenceInfo.setPath(evidence);
         evidences.put(name, evidenceInfo);
     }
+
+    /**
+     * オブジェクトエビデンスを登録する.
+     *
+     * @param scenarioScopeVariables
+     * @param flowScopeVariables
+     * @param evidences
+     * @param evidence
+     */
+    default void registrationObjectEvidence(
+            final Map<String, Object> scenarioScopeVariables,
+            final Map<String, Object> flowScopeVariables,
+            final Map<String, EvidenceInfo> evidences,
+            Object evidence) {
+        ObjectEvidenceInfo evidenceInfo = new ObjectEvidenceInfo();
+        evidenceInfo.setFqsn(
+                scenarioScopeVariables.get(
+                        ScenarioScopeVariables.CURRENT_SCENARIO.getName()).toString());
+        evidenceInfo.setFqpn(
+                flowScopeVariables.get(
+                        FlowScopeVariables.CURRENT_COMMAND.getName()).toString());
+        evidenceInfo.setName(
+                getEvidenceBaseName(
+                        flowScopeVariables));
+        evidenceInfo.setExecuteProcessId(
+                flowScopeVariables.get(
+                        FlowScopeVariables.CURRENT_COMMAND_EXECUTE_ID.getName()).toString());
+        evidenceInfo.setObject(evidence);
+        evidences.put(getEvidenceBaseName(flowScopeVariables), evidenceInfo);
+    }
+
+    /**
+     * @param scenarioScopeVariables
+     * @param evidences
+     * @param evidence
+     * @param name
+     */
+    default void registrationObjectEvidence(
+            final Map<String, Object> scenarioScopeVariables,
+            final Map<String, EvidenceInfo> evidences,
+            Object evidence,
+            String name) {
+        ObjectEvidenceInfo evidenceInfo = new ObjectEvidenceInfo();
+        evidenceInfo.setFqsn(scenarioScopeVariables.get(ScenarioScopeVariables.CURRENT_SCENARIO.getName()).toString());
+        evidenceInfo.setFqpn(scenarioScopeVariables.get(FlowScopeVariables.CURRENT_COMMAND.getName()).toString());
+        evidenceInfo.setName(name);
+        evidenceInfo.setObject(evidence);
+        evidences.put(name, evidenceInfo);
+    }
+
 
     /**
      * エビデンス名を取得する.

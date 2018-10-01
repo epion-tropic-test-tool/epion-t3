@@ -64,7 +64,8 @@
                 </tr>
                 <tr>
                     <th class="bg-dark" style="color:white">Status</th>
-                    <td th:text="${executeScenario.status}" th:class="${executeScenario.status.getCssClass()}">SUCCESS</td>
+                    <td th:text="${executeScenario.status}" th:class="${executeScenario.status.getCssClass()}">SUCCESS
+                    </td>
                 </tr>
                 <tr>
                     <th class="bg-dark" style="color:white">Start</th>
@@ -110,28 +111,42 @@
                     <tr>
                         <th scope="row">
                             <th:block th:if="${!executeFlow.commands.isEmpty}">
-                            <a style="text-decoration:none;" data-toggle="collapse" href="#collapseExample" th:href="${#strings.concat('#collapse',executeFlow.executeId)}" aria-expanded="false" aria-controls="collapseExample" th:aria-controls="${#strings.concat('collapse',executeFlow.executeId)}">
-                                <svg width="0.8em" aria-hidden="true" data-prefix="fas" data-icon="plus" class="svg-inline--fa fa-plus fa-w-14" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
-                                    <path fill="currentColor" d="M416 208H272V64c0-17.67-14.33-32-32-32h-32c-17.67 0-32 14.33-32 32v144H32c-17.67 0-32 14.33-32 32v32c0 17.67 14.33 32 32 32h144v144c0 17.67 14.33 32 32 32h32c17.67 0 32-14.33 32-32V304h144c17.67 0 32-14.33 32-32v-32c0-17.67-14.33-32-32-32z"></path>
-                                </svg>
-                            </a>
+                                <a style="text-decoration:none;" data-toggle="collapse" href="#collapseExample"
+                                   th:href="${#strings.concat('#collapse',executeFlow.executeId)}" aria-expanded="false"
+                                   aria-controls="collapseExample"
+                                   th:aria-controls="${#strings.concat('collapse',executeFlow.executeId)}">
+                                    <svg width="0.8em" aria-hidden="true" data-prefix="fas" data-icon="plus"
+                                         class="svg-inline--fa fa-plus fa-w-14" role="img"
+                                         xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+                                        <path fill="currentColor"
+                                              d="M416 208H272V64c0-17.67-14.33-32-32-32h-32c-17.67 0-32 14.33-32 32v144H32c-17.67 0-32 14.33-32 32v32c0 17.67 14.33 32 32 32h144v144c0 17.67 14.33 32 32 32h32c17.67 0 32-14.33 32-32V304h144c17.67 0 32-14.33 32-32v-32c0-17.67-14.33-32-32-32z"></path>
+                                    </svg>
+                                </a>
                             </th:block>
-                            <a href="#executionFlowId" th:href="${#strings.concat('#',executeFlow.executeId)}" th:text="${executeFlow.flow.id}">flow-0001</a>
+                            <a href="#executionFlowId" th:href="${#strings.concat('#',executeFlow.executeId)}"
+                               th:text="${executeFlow.flow.id}">flow-0001</a>
                         </th>
                         <td>Flow</td>
-                        <td class="table-success" th:text="${executeFlow.status}" th:class="${executeFlow.status.getCssClass()}">SUCCESS</td>
+                        <td class="table-success" th:text="${executeFlow.status}"
+                            th:class="${executeFlow.status.getCssClass()}">SUCCESS
+                        </td>
                         <td th:text="${dateTimeUtils.formatTimeNormal(executeFlow.start)}">12:12:12.111</td>
                         <td th:text="${dateTimeUtils.formatTimeNormal(executeFlow.end)}">12:12:12.222</td>
                         <td th:text="${dateTimeUtils.getMillis(executeFlow.start,executeFlow.end)}">1</td>
                     </tr>
                     <th:block th:if="${!executeFlow.commands.isEmpty}">
                         <th:block th:each="executeCommand,stat : ${executeFlow.commands}">
-                            <tr class="collapse" id="collapseExample" th:id="${#strings.concat('collapse',executeFlow.executeId)}">
+                            <tr class="collapse" id="collapseExample"
+                                th:id="${#strings.concat('collapse',executeFlow.executeId)}">
                                 <th scope="row" style="padding-left:30px;">
-                                    <a href="#executionCommandId" th:href="${#strings.concat('#',executeCommand.executeId)}"  th:text="${executeCommand.command.id}">command-0001</a>
+                                    <a href="#executionCommandId"
+                                       th:href="${#strings.concat('#',executeCommand.executeId)}"
+                                       th:text="${executeCommand.command.id}">command-0001</a>
                                 </th>
                                 <td>Command</td>
-                                <td class="table-secondary" th:text="${executeCommand.status}" th:class="${executeCommand.status.getCssClass()}">WAIT</td>
+                                <td class="table-secondary" th:text="${executeCommand.status}"
+                                    th:class="${executeCommand.status.getCssClass()}">WAIT
+                                </td>
                                 <td th:text="${dateTimeUtils.formatTimeNormal(executeCommand.start)}">12:12:12.222</td>
                                 <td th:text="${dateTimeUtils.formatTimeNormal(executeCommand.end)}">12:12:12.333</td>
                                 <td th:text="${dateTimeUtils.getMillis(executeCommand.start,executeCommand.end)}">1</td>
@@ -173,13 +188,17 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr th:each="evidenceInfo,stat : ${executeScenario.evidences}">
-                    <td scope="row" th:text="${evidenceInfo.value.name}">key1</td>
-                    <td scope="col">
-                        <a href="#execution-id" th:href="${#strings.concat('#',evidenceInfo.value.executeProcessId)}" th:text="${evidenceInfo.value.fqpn}">command-0001</a>
-                    </td>
-                    <td th:text="${evidenceInfo.value.path}">value1</td>
-                </tr>
+                <th:block th:each="evidenceInfo,stat : ${executeScenario.evidences}">
+                    <tr th:if="${evidenceInfo.getClass().getName() == 'com.zomu.t.epion.tropic.test.tool.core.context.FileEvidenceInfo'}">
+                        <td scope="row" th:text="${evidenceInfo.value.name}">key1</td>
+                        <td scope="col">
+                            <a href="#execution-id"
+                               th:href="${#strings.concat('#',evidenceInfo.value.executeProcessId)}"
+                               th:text="${evidenceInfo.value.fqpn}">command-0001</a>
+                        </td>
+                        <td th:text="${evidenceInfo.value.path}">value1</td>
+                    </tr>
+                </th:block>
                 </tbody>
             </table>
         </div>
@@ -216,7 +235,8 @@
             <th:block th:each="executeFlow,stat : ${executeScenario.flows}">
                 <div class="row">
                     <div class="col-md-12">
-                        <table class="table table-sm table-bordered" id="executionFlowId" th:id="${executeFlow.executeId}">
+                        <table class="table table-sm table-bordered" id="executionFlowId"
+                               th:id="${executeFlow.executeId}">
                             <tbody>
                             <tr>
                                 <th class="bg-dark" style="color:white">Type</th>
@@ -228,7 +248,9 @@
                             </tr>
                             <tr>
                                 <th class="bg-dark" style="color:white">Execution&nbsp;ID</th>
-                                <td th:text="${executeFlow.executeId}" colspan="3">fef4d139-a550-490a-8365-9fd26ce3f871</td>
+                                <td th:text="${executeFlow.executeId}" colspan="3">
+                                    fef4d139-a550-490a-8365-9fd26ce3f871
+                                </td>
                             </tr>
                             <tr>
                                 <th class="bg-dark" style="color:white">Type</th>
@@ -242,7 +264,9 @@
                             </tr>
                             <tr>
                                 <th class="bg-dark" style="color:white">Status</th>
-                                <td class="table-success" th:text="${executeFlow.status}" th:class="${executeFlow.status.getCssClass()}">SUCCESS</td>
+                                <td class="table-success" th:text="${executeFlow.status}"
+                                    th:class="${executeFlow.status.getCssClass()}">SUCCESS
+                                </td>
                                 <th class="bg-dark" style="color:white">Duration&nbsp;(ms)</th>
                                 <td th:text="${dateTimeUtils.getMillis(executeFlow.start, executeFlow.end)}">111</td>
                             </tr>
@@ -273,7 +297,8 @@
                     <th:block th:each="executeCommand,stat : ${executeFlow.commands}">
                         <div class="row">
                             <div class="col-md-12">
-                                <table class="table table-sm table-bordered" id="executionCommandId" th:id="${executeCommand.executeId}">
+                                <table class="table table-sm table-bordered" id="executionCommandId"
+                                       th:id="${executeCommand.executeId}">
                                     <tbody>
                                     <tr>
                                         <th class="bg-dark" style="color:white">Type</th>
@@ -285,7 +310,9 @@
                                     </tr>
                                     <tr>
                                         <th class="bg-dark" style="color:white">Execution&nbsp;ID</th>
-                                        <td th:text="${executeCommand.executeId}" colspan="3">fef4d139-a550-490a-8365-9fd26ce3f871</td>
+                                        <td th:text="${executeCommand.executeId}" colspan="3">
+                                            fef4d139-a550-490a-8365-9fd26ce3f871
+                                        </td>
                                     </tr>
                                     <tr>
                                         <th class="bg-dark" style="color:white">Command</th>
@@ -293,11 +320,14 @@
                                     </tr>
                                     <tr>
                                         <th class="bg-dark" style="color:white">Summary</th>
-                                        <td th:text="${executeCommand.command.summary}" colspan="3">Sample Scenario 001</td>
+                                        <td th:text="${executeCommand.command.summary}" colspan="3">Sample Scenario
+                                            001
+                                        </td>
                                     </tr>
                                     <tr>
                                         <th class="bg-dark" style="color:white">Description</th>
-                                        <td th:text="${executeCommand.command.description}" colspan="3">This is a typical example scenario of the
+                                        <td th:text="${executeCommand.command.description}" colspan="3">This is a
+                                            typical example scenario of the
                                             tool.
                                         </td>
                                     </tr>
@@ -314,20 +344,30 @@
                                         </tr>
                                     </th:block>
                                     <tr th:each="extensionProcessField,stat : ${executeCommand.extensionProcessFields}">
-                                        <th class="bg-secondary" style="color:white" th:text="${#strings.concat('* ',extensionProcessField.key)}">ExtensionKey</th>
+                                        <th class="bg-secondary" style="color:white"
+                                            th:text="${#strings.concat('* ',extensionProcessField.key)}">ExtensionKey
+                                        </th>
                                         <td th:text="${extensionProcessField.value}" colspan="3">ExtensionValue</td>
                                     </tr>
                                     <tr>
                                         <th class="bg-dark" style="color:white">Start</th>
-                                        <td th:text="${dateTimeUtils.formatTimeNormal(executeCommand.start)}">12:12:12.111</td>
+                                        <td th:text="${dateTimeUtils.formatTimeNormal(executeCommand.start)}">
+                                            12:12:12.111
+                                        </td>
                                         <th class="bg-dark" style="color:white">End</th>
-                                        <td th:text="${dateTimeUtils.formatTimeNormal(executeCommand.end)}">12:12:12.222</td>
+                                        <td th:text="${dateTimeUtils.formatTimeNormal(executeCommand.end)}">
+                                            12:12:12.222
+                                        </td>
                                     </tr>
                                     <tr>
                                         <th class="bg-dark" style="color:white">Status</th>
-                                        <td class="table-success" th:text="${executeCommand.status}" th:class="${executeCommand.status.getCssClass()}">SUCCESS</td>
+                                        <td class="table-success" th:text="${executeCommand.status}"
+                                            th:class="${executeCommand.status.getCssClass()}">SUCCESS
+                                        </td>
                                         <th class="bg-dark" style="color:white">Duration&nbsp;(ms)</th>
-                                        <td th:text="${dateTimeUtils.getMillis(executeCommand.start, executeCommand.end)}">111</td>
+                                        <td th:text="${dateTimeUtils.getMillis(executeCommand.start, executeCommand.end)}">
+                                            111
+                                        </td>
                                     </tr>
                                     <tr>
                                         <th class="bg-dark" style="color:white">Log</th>

@@ -20,7 +20,7 @@ public class EndLocalWebDriverRunner implements CommandRunner<EndLocalWebDriver>
             Logger logger) throws Exception {
 
         WebDriver driver = WebDriver.class.cast(globalScopeVariables.get(process.getRefWebDriver()));
-        driver.close();
-        driver.quit();
+        //driver.close();
+        //driver.quit();
     }
 }

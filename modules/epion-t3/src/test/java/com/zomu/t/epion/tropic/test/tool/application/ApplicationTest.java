@@ -19,7 +19,7 @@ public class ApplicationTest {
                 "-v", "v1.0",
                 "-m", "test",
                 "-t", "yahooregist-scenario-001",
-                "-s", "/Users/takashimanozomu/work/30_pgworkspaces/intellij/t3-core/modules/epion-t3-scenario"
+                "-s", "/Users/takashimanozomu/IdeaProjects/epion-t3/modules/epion-t3-scenario"
         });
     }
 

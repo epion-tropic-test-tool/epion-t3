@@ -42,6 +42,6 @@ public class WebDriverScreenShotRunner implements CommandRunner<WebDriverScreenS
                 evidence.toFile());
 
         // エビデンスを登録
-        registEvidence(scenarioScopeVariables, flowScopeVariables, evidences, evidence);
+        registrationFileEvidence(scenarioScopeVariables, flowScopeVariables, evidences, evidence);
     }
 }
