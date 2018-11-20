@@ -14,6 +14,7 @@ import com.zomu.t.epion.tropic.test.tool.core.model.scenario.Command;
 import com.zomu.t.epion.tropic.test.tool.core.model.scenario.Flow;
 import com.zomu.t.epion.tropic.test.tool.core.type.CommandStatus;
 import com.zomu.t.epion.tropic.test.tool.core.type.FlowScopeVariables;
+import com.zomu.t.epion.tropic.test.tool.core.type.FlowStatus;
 import com.zomu.t.epion.tropic.test.tool.core.util.BindUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.SerializationUtils;
@@ -120,6 +121,9 @@ public abstract class AbstractCommandExecuteFlowRunner
 
             // プロセス成功
             executeCommand.setStatus(CommandStatus.SUCCESS);
+
+            // Flow成功
+            executeFlow.setStatus(FlowStatus.SUCCESS);
 
         } catch (Throwable t) {
 

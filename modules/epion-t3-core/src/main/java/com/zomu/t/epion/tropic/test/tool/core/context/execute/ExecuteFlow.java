@@ -2,6 +2,7 @@ package com.zomu.t.epion.tropic.test.tool.core.context.execute;
 
 import com.zomu.t.epion.tropic.test.tool.core.holder.FlowLog;
 import com.zomu.t.epion.tropic.test.tool.core.model.scenario.Flow;
+import com.zomu.t.epion.tropic.test.tool.core.type.CommandStatus;
 import com.zomu.t.epion.tropic.test.tool.core.type.FlowStatus;
 import lombok.Getter;
 import lombok.Setter;
@@ -50,5 +51,10 @@ public class ExecuteFlow extends ExecuteElement {
      * Flowログ.
      */
     private List<FlowLog> flowLogs;
+
+
+    public boolean hasCommandError() {
+        return commands.stream().anyMatch(x -> x.getStatus() == CommandStatus.FAIL);
+    }
 
 }

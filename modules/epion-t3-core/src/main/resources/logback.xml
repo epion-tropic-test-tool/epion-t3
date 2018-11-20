@@ -167,17 +167,11 @@
         <appender-ref ref="FLOW_LOG"/>
     </logger>
 
-
-    <logger name="com.zomu.t.t3.core" level="DEBUG" additivity="false">
+    <logger name="com.zomu.t.t3" level="DEBUG" additivity="false">
         <appender-ref ref="STDOUT"/>
     </logger>
 
-    <logger name="com.zomu.t.t3.base" level="DEBUG" additivity="false">
-        <appender-ref ref="STDOUT"/>
-    </logger>
-
-
-    <root level="DEBUG">
+    <root level="INFO">
         <appender-ref ref="STDOUT"/>
     </root>
 

@@ -81,8 +81,14 @@ public abstract class AbstractFlowRunner<CONTEXT extends Context, EXECUTESCENARI
                     flow,
                     logger);
 
-            // プロセス成功
-            executeFlow.setStatus(FlowStatus.SUCCESS);
+
+            if (executeFlow.hasCommandError()) {
+                // プロセス失敗
+                executeFlow.setStatus(FlowStatus.ERROR);
+            } else {
+                // プロセス成功
+                executeFlow.setStatus(FlowStatus.SUCCESS);
+            }
 
         } catch (Throwable t) {
 

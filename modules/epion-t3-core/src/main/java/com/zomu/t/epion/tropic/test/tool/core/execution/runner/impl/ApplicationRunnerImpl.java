@@ -106,7 +106,10 @@ public class ApplicationRunnerImpl implements ApplicationRunner<BaseContext> {
                                 context.getExecuteContext().getEnd()));
 
                 // レポート出力
-                report(context);
+                if (!cmd.hasOption(Args.NOREPORT.getShortName())) {
+                    report(context);
+                }
+
             }
 
         }

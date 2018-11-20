@@ -4,6 +4,7 @@ import com.zomu.t.epion.tropic.test.tool.core.context.BaseContext;
 import com.zomu.t.epion.tropic.test.tool.core.context.execute.ExecuteFlow;
 import com.zomu.t.epion.tropic.test.tool.core.context.execute.ExecuteScenario;
 import com.zomu.t.epion.tropic.test.tool.core.exception.ScenarioNotFoundException;
+import com.zomu.t.epion.tropic.test.tool.core.exception.SystemException;
 import com.zomu.t.epion.tropic.test.tool.core.execution.reporter.impl.ScenarioReporterImpl;
 import com.zomu.t.epion.tropic.test.tool.core.flow.resolver.impl.FlowRunnerResolverImpl;
 import com.zomu.t.epion.tropic.test.tool.core.execution.runner.ScenarioRunner;
@@ -123,6 +124,11 @@ public class ScenarioRunnerImpl implements ScenarioRunner<BaseContext> {
                         flow,
                         LoggerFactory.getLogger("FlowLog"));
 
+                ExecuteFlow executeFlow = executeScenario.getFlows().get(executeScenario.getFlows().size() - 1);
+                if (FlowStatus.ERROR == executeFlow.getStatus()) {
+                    log.error("error occurred...");
+                    throw new SystemException("error occurred...");
+                }
 
             }
 
@@ -154,7 +160,9 @@ public class ScenarioRunnerImpl implements ScenarioRunner<BaseContext> {
             outputEndScenarioLog(context, executeScenario);
 
             // レポート出力
-            report(context, executeScenario);
+            if (!context.getOption().getNoreport()) {
+                report(context, executeScenario);
+            }
         }
 
     }
