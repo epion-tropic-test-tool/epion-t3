@@ -30,10 +30,10 @@ public interface CommandRunner<COMMAND extends Command> {
     Pattern EXTRACT_PATTERN = Pattern.compile("([^.]+)\\.(.+)");
 
     /**
-     * @param command
-     * @param globalScopeVariables
-     * @param scenarioScopeVariables
-     * @throws Exception
+     * @param command コマンド
+     * @param globalScopeVariables グローバル変数
+     * @param scenarioScopeVariables シナリオ変数
+     * @throws Exception 例外
      */
     void execute(final COMMAND command,
                  final Map<String, Object> globalScopeVariables,
@@ -46,11 +46,11 @@ public interface CommandRunner<COMMAND extends Command> {
     /**
      * 変数を解決する.
      *
-     * @param globalScopeVariables
-     * @param scenarioScopeVariables
-     * @param flowScopeVariables
-     * @param referenceVariable
-     * @return
+     * @param globalScopeVariables グローバル変数
+     * @param scenarioScopeVariables シナリオ変数
+     * @param flowScopeVariables フロー変数
+     * @param referenceVariable 参照変数
+     * @return 解決した値
      */
     default Object resolveVariables(
             final Map<String, Object> globalScopeVariables,

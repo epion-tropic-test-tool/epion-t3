@@ -34,6 +34,9 @@ public class BaseContext implements Context {
     @Getter
     private final Map<String, FlowInfo> customFlows = new ConcurrentHashMap<>();
 
+    @Getter
+    private final Map<String, CustomConfigurationInfo> customConfigurations = new ConcurrentHashMap<>();
+
     /**
      * 実行引数オプション.
      */

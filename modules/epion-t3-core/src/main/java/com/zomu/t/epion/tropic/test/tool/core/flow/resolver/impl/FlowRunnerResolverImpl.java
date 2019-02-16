@@ -6,7 +6,7 @@ import com.zomu.t.epion.tropic.test.tool.core.context.FlowInfo;
 import com.zomu.t.epion.tropic.test.tool.core.exception.FlowNotFoundException;
 import com.zomu.t.epion.tropic.test.tool.core.exception.SystemException;
 import com.zomu.t.epion.tropic.test.tool.core.flow.runner.FlowRunner;
-import com.zomu.t.epion.tropic.test.tool.core.holder.CustomConfigHolder;
+import com.zomu.t.epion.tropic.test.tool.core.holder.CustomPackageHolder;
 import org.apache.commons.lang3.StringUtils;
 
 /**
@@ -49,7 +49,7 @@ public final class FlowRunnerResolverImpl implements FlowRunnerResolver {
             throw new SystemException(BaseMessages.BASE_ERR_0001);
         }
 
-        FlowInfo flowInfo = CustomConfigHolder.getInstance().getCustomFlowInfo(type);
+        FlowInfo flowInfo = CustomPackageHolder.getInstance().getCustomFlowInfo(type);
 
         if (flowInfo == null) {
             // コマンド解決が出来ない場合

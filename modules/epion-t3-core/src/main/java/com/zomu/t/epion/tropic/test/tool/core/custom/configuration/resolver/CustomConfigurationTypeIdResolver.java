@@ -1,21 +1,21 @@
-package com.zomu.t.epion.tropic.test.tool.core.command.resolver;
+package com.zomu.t.epion.tropic.test.tool.core.custom.configuration.resolver;
 
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.databind.DatabindContext;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.jsontype.TypeIdResolver;
 import com.fasterxml.jackson.databind.type.TypeFactory;
-import com.zomu.t.epion.tropic.test.tool.core.context.CommandInfo;
-import com.zomu.t.epion.tropic.test.tool.core.holder.CustomPackageHolder;
+import com.zomu.t.epion.tropic.test.tool.core.context.CustomConfigurationInfo;
+import com.zomu.t.epion.tropic.test.tool.core.holder.CustomConfigurationHolder;
 
 import java.io.IOException;
 
 /**
- * 動的にコマンドクラスのモデルを解決するためのクラス.
+ * 動的にカスタム設定情報クラスのモデルを解決するためのクラス.
  *
  * @author takahsno
  */
-public class CommandTypeIdResolver implements TypeIdResolver {
+public class CustomConfigurationTypeIdResolver implements TypeIdResolver {
     @Override
     public void init(JavaType baseType) {
     }
@@ -36,7 +36,7 @@ public class CommandTypeIdResolver implements TypeIdResolver {
     }
 
     /**
-     * YAMLに定義されたIDを利用から該当するモデルを解決し、パースに利用するモデルクラスを返却する.
+     * YAMLに定義された「configurationId」を利用から該当するモデルを解決し、パースに利用するモデルクラスを返却する.
      *
      * @param context
      * @param id
@@ -46,9 +46,10 @@ public class CommandTypeIdResolver implements TypeIdResolver {
     @Override
     public JavaType typeFromId(DatabindContext context, String id) throws IOException {
         TypeFactory typeFactory = (context != null) ? context.getTypeFactory() : TypeFactory.defaultInstance();
-        CommandInfo commandInfo = CustomPackageHolder.getInstance().getCustomCommandInfo(id);
-        if (commandInfo != null) {
-            return typeFactory.constructType(commandInfo.getModel());
+        CustomConfigurationInfo customConfigurationInfo =
+                CustomConfigurationHolder.getInstance().getCustomConfigurationInfo(id);
+        if (customConfigurationInfo != null) {
+            return typeFactory.constructType(customConfigurationInfo.getModel());
         }
         throw new IllegalArgumentException();
     }

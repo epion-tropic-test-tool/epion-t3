@@ -5,6 +5,9 @@ import lombok.Getter;
 
 import java.util.Arrays;
 
+/**
+ * @author takashno
+ */
 @Getter
 @AllArgsConstructor
 public enum ScenarioType {

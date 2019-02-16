@@ -1,0 +1,15 @@
+dependencies {
+
+    compile project(':modules:epion-t3-core')
+
+    //compile('ch.ethz.ganymed:ganymed-ssh2:build210')
+
+}
+
+
+
+
+
+
+
+

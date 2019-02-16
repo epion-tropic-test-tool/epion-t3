@@ -7,16 +7,16 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * カスタム設定の保持クラス.
+ * カスタムパッケージの保持クラス.
  *
  * @author takashno
  */
-public final class CustomConfigHolder {
+public final class CustomPackageHolder {
 
     /**
      * インスタンス.
      */
-    private static final CustomConfigHolder instance = new CustomConfigHolder();
+    private static final CustomPackageHolder instance = new CustomPackageHolder();
 
     /**
      * カスタムパッケージ.
@@ -36,16 +36,16 @@ public final class CustomConfigHolder {
     /**
      * プライベートコンストラクタ.
      */
-    private CustomConfigHolder() {
+    private CustomPackageHolder() {
         // Do Nothing...
     }
 
     /**
      * インスタンスを取得する.
      *
-     * @return
+     * @return シングルトンインスタンス
      */
-    public static CustomConfigHolder getInstance() {
+    public static CustomPackageHolder getInstance() {
         return instance;
     }
 

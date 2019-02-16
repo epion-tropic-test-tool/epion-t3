@@ -6,7 +6,7 @@ import com.zomu.t.epion.tropic.test.tool.core.context.CommandInfo;
 import com.zomu.t.epion.tropic.test.tool.core.exception.SystemException;
 import com.zomu.t.epion.tropic.test.tool.core.command.runner.CommandRunner;
 import com.zomu.t.epion.tropic.test.tool.core.exception.CommandNotFoundException;
-import com.zomu.t.epion.tropic.test.tool.core.holder.CustomConfigHolder;
+import com.zomu.t.epion.tropic.test.tool.core.holder.CustomPackageHolder;
 import org.apache.commons.lang3.StringUtils;
 
 /**
@@ -49,7 +49,7 @@ public final class CommandRunnerResolverImpl implements CommandRunnerResolver {
             throw new SystemException(BaseMessages.BASE_ERR_0001);
         }
 
-        CommandInfo commandInfo = CustomConfigHolder.getInstance().getCustomCommandInfo(commandId);
+        CommandInfo commandInfo = CustomPackageHolder.getInstance().getCustomCommandInfo(commandId);
 
         if (commandInfo == null) {
             // コマンド解決が出来ない場合

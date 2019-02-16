@@ -3,6 +3,7 @@ package com.zomu.t.epion.tropic.test.tool.core.model.scenario;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.databind.annotation.JsonTypeIdResolver;
 import com.zomu.t.epion.tropic.test.tool.core.command.resolver.CommandTypeIdResolver;
+import com.zomu.t.epion.tropic.test.tool.core.custom.configuration.resolver.CustomConfigurationTypeIdResolver;
 import com.zomu.t.epion.tropic.test.tool.core.flow.resolver.FlowTypeIdResolver;
 import lombok.Getter;
 import lombok.Setter;
@@ -37,22 +38,50 @@ public class T3Base implements Serializable {
      */
     private Information info;
 
+    /**
+     * フロー.
+     * コマンドおよび制御フローをどの順序で利用するかを定義するもの.
+     */
     // MEMO:visible属性を「true」にしないとパースした際に値が設定されないらしい
     @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.EXISTING_PROPERTY, property = "type", visible = true)
     @JsonTypeIdResolver(FlowTypeIdResolver.class)
     @Valid
     private List<Flow> flows = new ArrayList<>();
 
+    /**
+     * コマンド.
+     * 実行指示の最小単位.コマンドに何を行うかを細かく定義することになる.
+     */
     // MEMO:visible属性を「true」にしないとパースした際に値が設定されないらしい
     @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.EXISTING_PROPERTY, property = "command", visible = true)
     @JsonTypeIdResolver(CommandTypeIdResolver.class)
     @Valid
     private List<Command> commands = new ArrayList<>();
 
+    /**
+     * 設定.
+     */
+    // MEMO:visible属性を「true」にしないとパースした際に値が設定されないらしい
+    @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.EXISTING_PROPERTY, property = "configId", visible = true)
+    @JsonTypeIdResolver(CustomConfigurationTypeIdResolver.class)
+    @Valid
+    private List<Configuration> configurations = new ArrayList<>();
+
+    /**
+     * 変数.
+     * 影響を及ぼせる範囲でスコープを切る.
+     */
     private Variable variables;
 
+    /**
+     * プロファイル.
+     * 実行する状況毎に分割する単位.
+     */
     private Profile profiles;
 
+    /**
+     * カスタム機能定義.
+     */
     private Custom customs;
 
 }

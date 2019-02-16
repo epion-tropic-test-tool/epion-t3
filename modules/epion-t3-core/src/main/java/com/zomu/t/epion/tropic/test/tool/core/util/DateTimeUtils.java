@@ -6,6 +6,8 @@ import java.time.temporal.Temporal;
 
 /**
  * 日付時間関連のユーティリティ.
+ *
+ * @author takashno
  */
 public final class DateTimeUtils {
 
