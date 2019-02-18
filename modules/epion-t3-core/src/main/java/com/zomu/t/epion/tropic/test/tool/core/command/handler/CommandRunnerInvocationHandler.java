@@ -1,5 +1,6 @@
-package com.zomu.t.epion.tropic.test.tool.core.command.proxy;
+package com.zomu.t.epion.tropic.test.tool.core.command.handler;
 
+import com.zomu.t.epion.tropic.test.tool.core.command.handler.listener.CommandListenerFactory;
 import com.zomu.t.epion.tropic.test.tool.core.command.runner.CommandRunner;
 import com.zomu.t.epion.tropic.test.tool.core.context.execute.ExecuteCommand;
 import com.zomu.t.epion.tropic.test.tool.core.context.execute.ExecuteContext;
@@ -53,7 +54,27 @@ public class CommandRunnerInvocationHandler<COMMAND_RUNNER extends CommandRunner
         Object result = null;
 
         try {
+
+            // コマンド前処理リスナーを実行
+            CommandListenerFactory.getInstance().getBeforeListener().forEach(x -> x.beforeCommand(
+                    commandRunner,
+                    executeContext,
+                    executeScenario,
+                    executeFlow,
+                    executeCommand
+            ));
+
             result = method.invoke(commandRunner, args);
+
+            // コマンド後処理リスナーを実行
+            CommandListenerFactory.getInstance().getAfterListener().forEach(x -> x.afterCommand(
+                    commandRunner,
+                    executeContext,
+                    executeScenario,
+                    executeFlow,
+                    executeCommand
+            ));
+
         } catch (Exception e) {
 
         }
