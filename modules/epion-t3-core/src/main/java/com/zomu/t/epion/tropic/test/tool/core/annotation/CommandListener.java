@@ -14,6 +14,9 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface CommandListener {
 
+    /**
+     * 適用順序.
+     */
     int order();
 
 }

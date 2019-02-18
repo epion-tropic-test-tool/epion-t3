@@ -10,10 +10,7 @@ import java.io.Serializable;
 import java.nio.file.Path;
 import java.time.Duration;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -83,13 +80,17 @@ public class ExecuteScenario implements Serializable {
 
     /**
      * エビデンスマップ.
+     * 順序保証を持たせる.
      */
-    Map<String, EvidenceInfo> evidences = new ConcurrentHashMap<>();
+    LinkedHashMap<String, EvidenceInfo> evidences = new LinkedHashMap<>();
 
     /**
      * フローIDとエビデンスIDの変換マップ.
+     * 順序保証を持たせる.
+     * FlowIDをベースでエビデンスを逆引きする場合、繰り返しFlowに対応するにはリストで保持するほかない.
+     * エビデンス参照を行う場合には、直近のFlowIDのエビデンスを参照することになる.
      */
-    Map<String, String> flowId2EvidenceId = new ConcurrentHashMap<>();
+    Map<String, List<String>> flowId2EvidenceId = new ConcurrentHashMap<>();
 
     /**
      * 実行結果ディレクトリパス.

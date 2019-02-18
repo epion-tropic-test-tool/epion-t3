@@ -175,7 +175,7 @@ public interface CommandRunner<COMMAND extends Command> {
      * @param evidence
      * @param name
      */
-    default void registrationFileEvidence(
+    default void registrationFileEvidenceWithName(
             final Map<String, Object> scenarioScopeVariables,
             final Map<String, EvidenceInfo> evidences,
             Path evidence,
@@ -220,7 +220,7 @@ public interface CommandRunner<COMMAND extends Command> {
      * @param evidence
      * @param name
      */
-    default void registrationObjectEvidence(
+    default void registrationObjectEvidenceWithName(
             final Map<String, Object> scenarioScopeVariables,
             final Map<String, EvidenceInfo> evidences,
             Object evidence,

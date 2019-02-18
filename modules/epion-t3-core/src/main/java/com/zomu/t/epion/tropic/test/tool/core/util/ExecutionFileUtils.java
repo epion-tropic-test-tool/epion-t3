@@ -1,7 +1,7 @@
 package com.zomu.t.epion.tropic.test.tool.core.util;
 
 import com.zomu.t.epion.tropic.test.tool.core.context.Context;
-import com.zomu.t.epion.tropic.test.tool.core.context.execute.ExecuteScenario;
+import com.zomu.t.epion.tropic.test.tool.core.context.execute.;
 import com.zomu.t.epion.tropic.test.tool.core.type.ScenarioScopeVariables;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.SystemUtils;
