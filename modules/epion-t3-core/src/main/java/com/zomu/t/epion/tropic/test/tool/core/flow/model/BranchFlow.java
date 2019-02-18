@@ -9,8 +9,7 @@ import org.apache.bval.constraints.NotEmpty;
 
 @Getter
 @Setter
-@FlowDefinition(
-        id = "Branch", runner = BranchFlowRunner.class)
+@FlowDefinition(id = "Branch", runner = BranchFlowRunner.class)
 public class BranchFlow extends Flow {
 
     @NotEmpty
@@ -21,6 +20,5 @@ public class BranchFlow extends Flow {
 
     @NotEmpty
     private String falseRef;
-
 
 }

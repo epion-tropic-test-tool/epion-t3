@@ -159,23 +159,17 @@ public interface CommandRunner<COMMAND extends Command> {
             final Map<String, EvidenceInfo> evidences,
             Path evidence) {
         FileEvidenceInfo evidenceInfo = new FileEvidenceInfo();
-        evidenceInfo.setFqsn(
-                scenarioScopeVariables.get(
-                        ScenarioScopeVariables.CURRENT_SCENARIO.getName()).toString());
-        evidenceInfo.setFqpn(
-                flowScopeVariables.get(
-                        FlowScopeVariables.CURRENT_COMMAND.getName()).toString());
-        evidenceInfo.setName(
-                getEvidenceBaseName(
-                        flowScopeVariables));
-        evidenceInfo.setExecuteProcessId(
-                flowScopeVariables.get(
-                        FlowScopeVariables.CURRENT_COMMAND_EXECUTE_ID.getName()).toString());
+        evidenceInfo.setFqsn(scenarioScopeVariables.get(ScenarioScopeVariables.CURRENT_SCENARIO.getName()).toString());
+        evidenceInfo.setFqpn(flowScopeVariables.get(FlowScopeVariables.CURRENT_COMMAND.getName()).toString());
+        evidenceInfo.setName(getEvidenceBaseName(flowScopeVariables));
+        evidenceInfo.setExecuteProcessId(flowScopeVariables.get(FlowScopeVariables.CURRENT_COMMAND_EXECUTE_ID.getName()).toString());
         evidenceInfo.setPath(evidence);
         evidences.put(getEvidenceBaseName(flowScopeVariables), evidenceInfo);
     }
 
     /**
+     * 名前を明示的に指定してファイルエビデンスを登録する.
+     *
      * @param scenarioScopeVariables
      * @param evidences
      * @param evidence
@@ -208,23 +202,19 @@ public interface CommandRunner<COMMAND extends Command> {
             final Map<String, EvidenceInfo> evidences,
             Object evidence) {
         ObjectEvidenceInfo evidenceInfo = new ObjectEvidenceInfo();
-        evidenceInfo.setFqsn(
-                scenarioScopeVariables.get(
-                        ScenarioScopeVariables.CURRENT_SCENARIO.getName()).toString());
-        evidenceInfo.setFqpn(
-                flowScopeVariables.get(
-                        FlowScopeVariables.CURRENT_COMMAND.getName()).toString());
-        evidenceInfo.setName(
-                getEvidenceBaseName(
-                        flowScopeVariables));
-        evidenceInfo.setExecuteProcessId(
-                flowScopeVariables.get(
-                        FlowScopeVariables.CURRENT_COMMAND_EXECUTE_ID.getName()).toString());
+        // Full Query Scenario Name として現在実行シナリオ名を設定
+        evidenceInfo.setFqsn(scenarioScopeVariables.get(ScenarioScopeVariables.CURRENT_SCENARIO.getName()).toString());
+        // Full Query Process Name として現在実行プロセス名を設定
+        evidenceInfo.setFqpn(flowScopeVariables.get(FlowScopeVariables.CURRENT_COMMAND.getName()).toString());
+        evidenceInfo.setName(getEvidenceBaseName(flowScopeVariables));
+        evidenceInfo.setExecuteProcessId(flowScopeVariables.get(FlowScopeVariables.CURRENT_COMMAND_EXECUTE_ID.getName()).toString());
         evidenceInfo.setObject(evidence);
         evidences.put(getEvidenceBaseName(flowScopeVariables), evidenceInfo);
     }
 
     /**
+     * 名前を明示的に指定してオブジェクトエビデンスを登録する.
+     *
      * @param scenarioScopeVariables
      * @param evidences
      * @param evidence
@@ -247,7 +237,7 @@ public interface CommandRunner<COMMAND extends Command> {
     /**
      * エビデンス名を取得する.
      *
-     * @param flowScopeVariables
+     * @param flowScopeVariables フロー
      * @return
      */
     default String getEvidenceBaseName(

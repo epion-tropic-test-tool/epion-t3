@@ -58,7 +58,7 @@ allprojects {
         compile group: 'ru.yandex.qatools.ashot', name: 'ashot', version: '1.5.2'
 
         // for develop
-        compile 'org.projectlombok:lombok:1.18.0'
+        compile 'org.projectlombok:lombok:1.18.6'
 
         testCompile 'junit:junit:4.12'
 

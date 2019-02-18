@@ -33,7 +33,10 @@ import java.util.concurrent.ConcurrentHashMap;
  * @param <FLOW>
  */
 @Slf4j
-public abstract class AbstractFlowRunner<CONTEXT extends Context, EXECUTESCENARIO extends ExecuteScenario, EXECUTE_FLOW extends ExecuteFlow, FLOW extends Flow>
+public abstract class AbstractFlowRunner<
+        CONTEXT extends Context, EXECUTESCENARIO extends ExecuteScenario,
+        EXECUTE_FLOW extends ExecuteFlow,
+        FLOW extends Flow>
         implements FlowRunner<CONTEXT, EXECUTESCENARIO, FLOW> {
 
     /**
@@ -260,9 +263,9 @@ public abstract class AbstractFlowRunner<CONTEXT extends Context, EXECUTESCENARI
                                       final ExecuteFlow executeFlow) {
 
         // 現在の処理Flow
-//        executeFlow.getFlowVariables().put(
-//                ScenarioScopeVariables.CURRENT_FLOW.getName(),
-//                "TODO?");
+        executeFlow.getFlowVariables().put(
+                FlowScopeVariables.CURRENT_FLOW.getName(),
+                executeFlow.getFlow().getId());
 
         // 現在の処理FLOWの実行ID
         executeFlow.getFlowVariables().put(
@@ -283,9 +286,8 @@ public abstract class AbstractFlowRunner<CONTEXT extends Context, EXECUTESCENARI
                                     final ExecuteFlow executeFlow) {
 
         // 現在の処理Flow
-//        executeFlow.getFlowVariables().put(
-//                FlowScopeVariables.CURRENT_FLOW.getName(),
-//                "TODO?");
+        executeFlow.getFlowVariables().remove(
+                FlowScopeVariables.CURRENT_FLOW.getName());
 
         // 現在の処理FLOWの実行ID
         executeFlow.getFlowVariables().remove(

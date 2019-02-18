@@ -34,10 +34,13 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
+ * コマンド実行のフロー実行処理の基底クラス.
+ *
  * @param <CONTEXT>
  * @param <EXECUTE_SCENARIO>
  * @param <EXECUTE_COMMAND>
  * @param <FLOW>
+ * @author takashno
  */
 @Slf4j
 public abstract class AbstractCommandExecuteFlowRunner
@@ -174,6 +177,8 @@ public abstract class AbstractCommandExecuteFlowRunner
     }
 
     /**
+     * 実行するコマンドのインスタンスを取得する.
+     *
      * @return
      */
     private EXECUTE_COMMAND getExecuteCommandInstance() {

@@ -24,7 +24,7 @@ public class ExecuteCommand extends ExecuteElement {
     private CommandStatus status = CommandStatus.WAIT;
 
     /**
-     * 対象プロセス.
+     * 対象コマンド.
      */
     private Command command;
 

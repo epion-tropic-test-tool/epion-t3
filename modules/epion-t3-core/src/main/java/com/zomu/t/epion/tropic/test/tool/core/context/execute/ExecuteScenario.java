@@ -16,6 +16,11 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
+/**
+ * シナリオ実行時の情報保持クラス.
+ *
+ * @author takashno
+ */
 @Getter
 @Setter
 public class ExecuteScenario implements Serializable {
@@ -80,6 +85,11 @@ public class ExecuteScenario implements Serializable {
      * エビデンスマップ.
      */
     Map<String, EvidenceInfo> evidences = new ConcurrentHashMap<>();
+
+    /**
+     * フローIDとエビデンスIDの変換マップ.
+     */
+    Map<String, String> flowId2EvidenceId = new ConcurrentHashMap<>();
 
     /**
      * 実行結果ディレクトリパス.

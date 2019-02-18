@@ -38,7 +38,7 @@ public class ScenarioRunnerImpl implements ScenarioRunner<BaseContext> {
     /**
      * {@inheritDoc}
      *
-     * @param context
+     * @param context コンテキスト
      */
     @Override
     public void execute(BaseContext context) {

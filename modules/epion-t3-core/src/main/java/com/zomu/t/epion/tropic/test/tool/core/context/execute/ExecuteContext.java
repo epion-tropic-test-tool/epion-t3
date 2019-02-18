@@ -14,6 +14,11 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
+/**
+ * 実行時の情報保持クラス.
+ *
+ * @author takashno
+ */
 @Getter
 @Setter
 public class ExecuteContext implements com.zomu.t.epion.tropic.test.tool.core.context.ExecuteContext {
