@@ -1,4 +1,4 @@
-package com.zomu.t.epion.tropic.test.tool.core.execution.parser;
+package com.zomu.t.epion.tropic.test.tool.core.scenario.parser;
 
 import com.zomu.t.epion.tropic.test.tool.core.context.Context;
 

@@ -1,13 +1,18 @@
-package com.zomu.t.epion.tropic.test.tool.core.execution.parser.impl;
+package com.zomu.t.epion.tropic.test.tool.core.custom.parser.impl;
 
 import com.google.common.reflect.ClassPath;
 import com.zomu.t.epion.tropic.test.tool.core.annotation.CommandDefinition;
+import com.zomu.t.epion.tropic.test.tool.core.annotation.CommandListener;
 import com.zomu.t.epion.tropic.test.tool.core.annotation.CustomConfigurationDefinition;
 import com.zomu.t.epion.tropic.test.tool.core.annotation.FlowDefinition;
+import com.zomu.t.epion.tropic.test.tool.core.command.handler.listener.CommandAfterListener;
+import com.zomu.t.epion.tropic.test.tool.core.command.handler.listener.CommandBeforeListener;
+import com.zomu.t.epion.tropic.test.tool.core.command.handler.listener.CommandErrorListener;
 import com.zomu.t.epion.tropic.test.tool.core.context.*;
 import com.zomu.t.epion.tropic.test.tool.core.exception.SystemException;
 import com.zomu.t.epion.tropic.test.tool.core.exception.bean.ScenarioParseError;
-import com.zomu.t.epion.tropic.test.tool.core.execution.parser.IndividualTargetParser;
+import com.zomu.t.epion.tropic.test.tool.core.custom.parser.IndividualTargetParser;
+import com.zomu.t.epion.tropic.test.tool.core.holder.CommandListenerHolder;
 import com.zomu.t.epion.tropic.test.tool.core.holder.CustomConfigurationHolder;
 import com.zomu.t.epion.tropic.test.tool.core.model.scenario.Configuration;
 import com.zomu.t.epion.tropic.test.tool.core.model.scenario.Flow;
@@ -179,6 +184,22 @@ public final class BaseCustomParser implements IndividualTargetParser {
                         CustomConfigurationHolder.getInstance().addCustomConfigurationInfo(customConfigurationInfo);
                         // TODO:いるっけ・・・？経緯を忘れすぎてよくわからん・・・
                         baseContext.getCustomConfigurations().put(configuration.id(), customConfigurationInfo);
+                    });
+
+            // カスタムコマンドリスナーを解析
+            allClasses.stream()
+                    .filter(x -> x.getDeclaredAnnotation(CommandListener.class) != null)
+                    .forEach(x -> {
+                        if (CommandBeforeListener.class.isAssignableFrom(x)) {
+                            CommandListenerHolder.getInstance()
+                                    .addCommandBeforeListener((Class<CommandBeforeListener>) x);
+                        } else if (CommandAfterListener.class.isAssignableFrom(x)) {
+                            CommandListenerHolder.getInstance()
+                                    .addCommandAfterListener((Class<CommandAfterListener>) x);
+                        } else if (CommandErrorListener.class.isAssignableFrom(x)) {
+                            CommandListenerHolder.getInstance()
+                                    .addCommandErrorListener((Class<CommandErrorListener>) x);
+                        }
                     });
 
             // >>他機能のカスタムがあれば随時追加<<

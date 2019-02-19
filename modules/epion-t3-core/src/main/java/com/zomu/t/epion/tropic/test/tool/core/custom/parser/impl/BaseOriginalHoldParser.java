@@ -1,4 +1,4 @@
-package com.zomu.t.epion.tropic.test.tool.core.execution.parser.impl;
+package com.zomu.t.epion.tropic.test.tool.core.custom.parser.impl;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
@@ -6,7 +6,7 @@ import com.zomu.t.epion.tropic.test.tool.core.context.BaseContext;
 import com.zomu.t.epion.tropic.test.tool.core.exception.bean.ScenarioParseError;
 import com.zomu.t.epion.tropic.test.tool.core.exception.ScenarioParseException;
 import com.zomu.t.epion.tropic.test.tool.core.exception.SystemException;
-import com.zomu.t.epion.tropic.test.tool.core.execution.parser.IndividualTargetParser;
+import com.zomu.t.epion.tropic.test.tool.core.custom.parser.IndividualTargetParser;
 import com.zomu.t.epion.tropic.test.tool.core.type.ScenarioPaseErrorType;
 import com.zomu.t.epion.tropic.test.tool.core.type.ScenarioType;
 import com.zomu.t.epion.tropic.test.tool.core.model.scenario.Command;
