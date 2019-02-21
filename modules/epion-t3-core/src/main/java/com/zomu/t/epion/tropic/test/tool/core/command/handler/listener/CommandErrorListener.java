@@ -23,7 +23,7 @@ public interface CommandErrorListener {
      * @param executeCommand
      * @param t
      */
-    void afterCommand(CommandRunner<?> commandRunner,
+    void afterCommand(CommandRunner commandRunner,
                       ExecuteContext executeContext,
                       ExecuteScenario executeScenario,
                       ExecuteFlow executeFlow,

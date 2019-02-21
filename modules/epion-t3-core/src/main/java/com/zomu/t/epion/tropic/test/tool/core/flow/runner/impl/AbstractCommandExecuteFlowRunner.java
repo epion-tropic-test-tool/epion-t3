@@ -130,10 +130,10 @@ public abstract class AbstractCommandExecuteFlowRunner
 
             // コマンド実行
             runner.execute(executeCommand.getCommand(),
-                    executeContext.getGlobalVariables(),
-                    executeScenario.getScenarioVariables(),
-                    executeFlow.getFlowVariables(),
-                    executeScenario.getEvidences(),
+                    context,
+                    executeContext,
+                    executeScenario,
+                    executeFlow,
                     LoggerFactory.getLogger("ProcessLog"));
 
             // プロセス成功

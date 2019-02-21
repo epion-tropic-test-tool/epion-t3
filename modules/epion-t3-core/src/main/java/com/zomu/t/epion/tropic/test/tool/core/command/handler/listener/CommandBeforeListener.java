@@ -22,7 +22,7 @@ public interface CommandBeforeListener {
      * @param executeFlow
      * @param executeCommand
      */
-    void beforeCommand(CommandRunner<?> commandRunner,
+    void beforeCommand(CommandRunner commandRunner,
                       ExecuteContext executeContext,
                       ExecuteScenario executeScenario,
                       ExecuteFlow executeFlow,

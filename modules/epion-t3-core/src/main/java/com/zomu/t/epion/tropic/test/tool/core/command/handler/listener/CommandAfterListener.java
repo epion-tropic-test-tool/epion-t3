@@ -23,7 +23,7 @@ public interface CommandAfterListener {
      * @param executeFlow
      * @param executeCommand
      */
-    void afterCommand(CommandRunner<?> commandRunner,
+    void afterCommand(CommandRunner commandRunner,
                       ExecuteContext executeContext,
                       ExecuteScenario executeScenario,
                       ExecuteFlow executeFlow,
