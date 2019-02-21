@@ -1,34 +1,74 @@
 package com.zomu.t.epion.tropic.test.tool.core.context;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
+import com.zomu.t.epion.tropic.test.tool.core.context.*;
+import com.zomu.t.epion.tropic.test.tool.core.context.execute.ExecuteContext;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.io.Serializable;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * 実行時の情報を保持するためのコンテキストクラス.
- *
- * @author takashno
+ * 基底コンテキスト.
  */
-public interface Context extends Serializable {
+public class Context implements Serializable {
 
     /**
-     * シナリオ解析する際に利用するYAML解析クラス.
+     * YAML変換用の共通ObjectMapper.
      */
-    ObjectMapper getObjectMapper();
+    @Getter
+    private final ObjectMapper objectMapper;
+
+    @Getter
+    private final Original original = new Original();
+
+    @Getter
+    private final Map<String, CommandInfo> customCommands = new ConcurrentHashMap<>();
+
+    @Getter
+    private final Map<String, FlowInfo> customFlows = new ConcurrentHashMap<>();
+
+    @Getter
+    private final Map<String, CustomConfigurationInfo> customConfigurations = new ConcurrentHashMap<>();
 
     /**
-     * 実行引数のオプションを取得する.
+     * 実行引数オプション.
+     */
+    @Getter
+    private final Option option;
+
+    public Context() {
+        this.option = createOption();
+        this.objectMapper = createObjectMapper();
+    }
+
+    /**
+     * ObjectMapperに手を加えたい場合は、オーバーライドすること.
      *
-     * @return
+     * @return {@link ObjectMapper}
      */
-    Option getOption();
+    protected ObjectMapper createObjectMapper() {
+        YAMLFactory yamlFactory = new YAMLFactory();
+        ObjectMapper objectMapper = new ObjectMapper(yamlFactory);
+
+        // 知らない要素は無視する
+        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+
+        return objectMapper;
+    }
 
     /**
-     * シナリオを読み込んだオリジナル情報の保持クラスを取得する.
+     * Optionの生成に手を加えたい場合は、オーバーライドすること.
      *
-     * @return
+     * @return {@link Option}
      */
-    Original getOriginal();
+    protected Option createOption() {
+        return new Option();
+    }
 
 
 }

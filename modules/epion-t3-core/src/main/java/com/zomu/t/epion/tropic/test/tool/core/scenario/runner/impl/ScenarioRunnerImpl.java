@@ -1,6 +1,6 @@
 package com.zomu.t.epion.tropic.test.tool.core.scenario.runner.impl;
 
-import com.zomu.t.epion.tropic.test.tool.core.context.BaseContext;
+import com.zomu.t.epion.tropic.test.tool.core.context.Context;
 import com.zomu.t.epion.tropic.test.tool.core.context.execute.ExecuteContext;
 import com.zomu.t.epion.tropic.test.tool.core.context.execute.ExecuteFlow;
 import com.zomu.t.epion.tropic.test.tool.core.context.execute.ExecuteScenario;
@@ -34,7 +34,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * @author takashno
  */
 @Slf4j
-public class ScenarioRunnerImpl implements ScenarioRunner<BaseContext, ExecuteContext> {
+public class ScenarioRunnerImpl implements ScenarioRunner<Context, ExecuteContext> {
 
     /**
      * {@inheritDoc}
@@ -42,7 +42,7 @@ public class ScenarioRunnerImpl implements ScenarioRunner<BaseContext, ExecuteCo
      * @param context コンテキスト
      */
     @Override
-    public void execute(final BaseContext context, final ExecuteContext executeContext) {
+    public void execute(final Context context, final ExecuteContext executeContext) {
 
         // 実行シナリオの選択
         T3Base scenario = context.getOriginal().getScenarios().get(context.getOption().getTarget());
@@ -177,7 +177,7 @@ public class ScenarioRunnerImpl implements ScenarioRunner<BaseContext, ExecuteCo
      * @param executeScenario
      * @param flow
      */
-    private void bind(final BaseContext context,
+    private void bind(final Context context,
                       final ExecuteContext executeContext,
                       final ExecuteScenario executeScenario,
                       final Flow flow) {
@@ -210,7 +210,7 @@ public class ScenarioRunnerImpl implements ScenarioRunner<BaseContext, ExecuteCo
      * @param context
      * @param scenario
      */
-    private void settingScenarioVariables(final BaseContext context, final ExecuteScenario scenario) {
+    private void settingScenarioVariables(final Context context, final ExecuteScenario scenario) {
         scenario.getScenarioVariables().put(
                 ScenarioScopeVariables.SCENARIO_DIR.getName(),
                 context.getOriginal().getScenarioPlacePaths().get(scenario.getInfo().getId()));
@@ -228,7 +228,7 @@ public class ScenarioRunnerImpl implements ScenarioRunner<BaseContext, ExecuteCo
      * @param context
      * @param scenario
      */
-    private void cleanScenarioVariables(final BaseContext context, final ExecuteScenario scenario) {
+    private void cleanScenarioVariables(final Context context, final ExecuteScenario scenario) {
         scenario.getScenarioVariables().remove(
                 ScenarioScopeVariables.SCENARIO_DIR.getName());
         scenario.getScenarioVariables().remove(
@@ -242,11 +242,11 @@ public class ScenarioRunnerImpl implements ScenarioRunner<BaseContext, ExecuteCo
      *
      * @param context
      */
-    private void createResultDirectory(final BaseContext context, final ExecuteContext executeContext, final ExecuteScenario scenario) {
+    private void createResultDirectory(final Context context, final ExecuteContext executeContext, final ExecuteScenario scenario) {
         ExecutionFileUtils.createResultDirectory(context, executeContext);
     }
 
-    private void report(final BaseContext context, final ExecuteContext executeContext, final ExecuteScenario scenario) {
+    private void report(final Context context, final ExecuteContext executeContext, final ExecuteScenario scenario) {
         ScenarioReporterImpl.getInstance().scenarioReport(context, executeContext, scenario);
     }
 
@@ -257,7 +257,7 @@ public class ScenarioRunnerImpl implements ScenarioRunner<BaseContext, ExecuteCo
      * @param context
      * @param scenario
      */
-    protected void outputStartScenarioLog(BaseContext context, ExecuteScenario scenario) {
+    protected void outputStartScenarioLog(Context context, ExecuteScenario scenario) {
         StringBuilder sb = new StringBuilder();
         sb.append("\n######################################################################################\n");
         sb.append("Start Scenario.\n");
@@ -277,7 +277,7 @@ public class ScenarioRunnerImpl implements ScenarioRunner<BaseContext, ExecuteCo
      * @param context
      * @param scenario
      */
-    protected void outputEndScenarioLog(BaseContext context, ExecuteScenario scenario) {
+    protected void outputEndScenarioLog(Context context, ExecuteScenario scenario) {
         StringBuilder sb = new StringBuilder();
         sb.append("\n######################################################################################\n");
         sb.append("End Scenario.\n");

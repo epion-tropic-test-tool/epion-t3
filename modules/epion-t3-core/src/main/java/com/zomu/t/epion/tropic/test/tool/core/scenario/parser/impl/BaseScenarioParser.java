@@ -1,6 +1,6 @@
 package com.zomu.t.epion.tropic.test.tool.core.scenario.parser.impl;
 
-import com.zomu.t.epion.tropic.test.tool.core.context.BaseContext;
+import com.zomu.t.epion.tropic.test.tool.core.context.Context;
 import com.zomu.t.epion.tropic.test.tool.core.exception.SystemException;
 import com.zomu.t.epion.tropic.test.tool.core.custom.parser.impl.BaseCustomParser;
 import com.zomu.t.epion.tropic.test.tool.core.custom.parser.impl.BaseOriginalHoldParser;
@@ -15,7 +15,7 @@ import java.nio.file.Paths;
  * シナリオ解析処理.
  */
 @Slf4j
-public final class BaseScenarioParser implements ScenarioParser<BaseContext> {
+public final class BaseScenarioParser implements ScenarioParser<Context> {
 
     /**
      * インスタンス.
@@ -41,7 +41,7 @@ public final class BaseScenarioParser implements ScenarioParser<BaseContext> {
      * @param context
      */
     @Override
-    public void parse(BaseContext context) {
+    public void parse(Context context) {
 
         // ルートディレクトリの存在チェック
         if (!Files.exists(Paths.get(context.getOption().getRootPath()))) {

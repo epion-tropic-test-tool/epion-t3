@@ -1,6 +1,6 @@
 package com.zomu.t.epion.tropic.test.tool.core.flow.runner.impl;
 
-import com.zomu.t.epion.tropic.test.tool.core.context.BaseContext;
+import com.zomu.t.epion.tropic.test.tool.core.context.Context;
 import com.zomu.t.epion.tropic.test.tool.core.context.execute.ExecuteCommand;
 import com.zomu.t.epion.tropic.test.tool.core.context.execute.ExecuteContext;
 import com.zomu.t.epion.tropic.test.tool.core.context.execute.ExecuteFlow;
@@ -26,7 +26,6 @@ import java.util.List;
  */
 public class ReadFileIterateFlowRunner
         extends AbstractCommandExecuteFlowRunner<
-        BaseContext,
         ExecuteContext,
         ExecuteScenario,
         ExecuteFlow,
@@ -39,7 +38,7 @@ public class ReadFileIterateFlowRunner
      */
     @Override
     protected FlowResult execute(
-            final BaseContext context,
+            final Context context,
             final ExecuteContext executeContext,
             final ExecuteScenario executeScenario,
             final ExecuteFlow executeFlow,

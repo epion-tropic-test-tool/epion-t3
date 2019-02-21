@@ -1,5 +1,6 @@
 package com.zomu.t.epion.tropic.test.tool.selenium.runner;
 
+import com.zomu.t.epion.tropic.test.tool.core.command.runner.impl.AbstractCommandRunner;
 import com.zomu.t.epion.tropic.test.tool.core.context.EvidenceInfo;
 import com.zomu.t.epion.tropic.test.tool.selenium.command.StartLocalWebDriver;
 import com.zomu.t.epion.tropic.test.tool.selenium.type.BrowserType;
@@ -21,7 +22,7 @@ import java.util.Map;
  *
  * @author takashno
  */
-public class StartLocalWebDriverRunner implements CommandRunner<StartLocalWebDriver> {
+public class StartLocalWebDriverRunner extends AbstractCommandRunner<StartLocalWebDriver> {
 
     private static final String WEBDRIVER_PREFIX = "WEBDRIVER_";
 
@@ -31,10 +32,6 @@ public class StartLocalWebDriverRunner implements CommandRunner<StartLocalWebDri
     @Override
     public void execute(
             StartLocalWebDriver process,
-            Map<String, Object> globalScopeVariables,
-            Map<String, Object> scenarioScopeVariables,
-            final Map<String, Object> flowScopeVariables,
-            Map<String, EvidenceInfo> evidences,
             Logger logger) throws Exception {
 
         BrowserType browserType = BrowserType.valueOfByValue(process.getBrowser());
@@ -66,13 +63,13 @@ public class StartLocalWebDriverRunner implements CommandRunner<StartLocalWebDri
         String globalScopeVariableName = process.getVariableName();
         if (StringUtils.isEmpty(globalScopeVariableName)) {
             int count = 0;
-            for (Map.Entry<String, Object> globalScopeVariableEntry : globalScopeVariables.entrySet()) {
+            for (Map.Entry<String, Object> globalScopeVariableEntry : getGlobalScopeVariables().entrySet()) {
                 if (globalScopeVariableEntry.getKey().startsWith(WEBDRIVER_PREFIX)) {
                     count++;
                 }
             }
             globalScopeVariableName = WEBDRIVER_PREFIX + new DecimalFormat("000").format(count);
         }
-        globalScopeVariables.put(globalScopeVariableName, driver);
+        getGlobalScopeVariables().put(globalScopeVariableName, driver);
     }
 }

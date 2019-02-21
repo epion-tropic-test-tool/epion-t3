@@ -1,24 +1,11 @@
 package com.zomu.t.epion.tropic.test.tool.core.command.runner;
 
-import com.zomu.t.epion.tropic.test.tool.core.context.Context;
-import com.zomu.t.epion.tropic.test.tool.core.context.EvidenceInfo;
-import com.zomu.t.epion.tropic.test.tool.core.context.FileEvidenceInfo;
-import com.zomu.t.epion.tropic.test.tool.core.context.ObjectEvidenceInfo;
 import com.zomu.t.epion.tropic.test.tool.core.context.execute.ExecuteContext;
 import com.zomu.t.epion.tropic.test.tool.core.context.execute.ExecuteFlow;
 import com.zomu.t.epion.tropic.test.tool.core.context.execute.ExecuteScenario;
-import com.zomu.t.epion.tropic.test.tool.core.exception.SystemException;
-import com.zomu.t.epion.tropic.test.tool.core.message.impl.CoreMessages;
 import com.zomu.t.epion.tropic.test.tool.core.model.scenario.Command;
-import com.zomu.t.epion.tropic.test.tool.core.type.FlowScopeVariables;
-import com.zomu.t.epion.tropic.test.tool.core.type.ReferenceVariableType;
-import com.zomu.t.epion.tropic.test.tool.core.type.ScenarioScopeVariables;
 import org.slf4j.Logger;
 
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.Map;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
@@ -28,7 +15,7 @@ import java.util.regex.Pattern;
  */
 public interface CommandRunner<
         COMMAND extends Command,
-        CONTEXT extends Context,
+        Context,
         EXECUTE_CONTEXT extends ExecuteContext,
         EXECUTE_SCENARIO extends ExecuteScenario,
         EXECUTE_FLOW extends ExecuteFlow> {
@@ -61,7 +48,7 @@ public interface CommandRunner<
      * @throws Exception
      */
     void execute(final COMMAND command,
-                 final CONTEXT context,
+                 final Context context,
                  final EXECUTE_CONTEXT executeContext,
                  final EXECUTE_SCENARIO executeScenario,
                  final EXECUTE_FLOW executeFlow,

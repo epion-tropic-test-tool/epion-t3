@@ -1,7 +1,6 @@
 package com.zomu.t.epion.tropic.test.tool.core.flow.runner.impl;
 
 import com.zomu.t.epion.tropic.test.tool.core.context.Context;
-import com.zomu.t.epion.tropic.test.tool.core.context.XXExecuteContext;
 import com.zomu.t.epion.tropic.test.tool.core.context.execute.ExecuteCommand;
 import com.zomu.t.epion.tropic.test.tool.core.context.execute.ExecuteContext;
 import com.zomu.t.epion.tropic.test.tool.core.context.execute.ExecuteFlow;
@@ -38,33 +37,26 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * コマンド実行のフロー実行処理の基底クラス.
  *
- * @param <CONTEXT>
  * @param <EXECUTE_SCENARIO>
  * @param <EXECUTE_COMMAND>
  * @param <FLOW>
  * @author takashno
  */
 @Slf4j
-public abstract class AbstractCommandExecuteFlowRunner
-        <CONTEXT extends Context,
-                EXECUTE_CONTEXT extends ExecuteContext,
-                EXECUTE_SCENARIO extends ExecuteScenario,
-                EXECUTE_FLOW extends ExecuteFlow,
-                EXECUTE_COMMAND extends ExecuteCommand,
-                FLOW extends Flow,
-                ELEMENT_FLOW extends CommandExecuteFlow>
-        extends AbstractFlowRunner<
-        CONTEXT,
-        EXECUTE_CONTEXT,
-        EXECUTE_SCENARIO,
-        EXECUTE_FLOW,
-        FLOW> {
+public abstract class AbstractCommandExecuteFlowRunner<
+        EXECUTE_CONTEXT extends ExecuteContext,
+        EXECUTE_SCENARIO extends ExecuteScenario,
+        EXECUTE_FLOW extends ExecuteFlow,
+        EXECUTE_COMMAND extends ExecuteCommand,
+        FLOW extends Flow,
+        ELEMENT_FLOW extends CommandExecuteFlow>
+        extends AbstractFlowRunner<EXECUTE_CONTEXT, EXECUTE_SCENARIO, EXECUTE_FLOW, FLOW> {
 
     /**
      * {@inheritDoc}
      */
     protected void executeCommand(
-            final CONTEXT context,
+            final Context context,
             final EXECUTE_CONTEXT executeContext,
             final EXECUTE_SCENARIO executeScenario,
             final EXECUTE_FLOW executeFlow,
@@ -218,7 +210,7 @@ public abstract class AbstractCommandExecuteFlowRunner
      * @param executeScenario
      * @param executeCommand
      */
-    private void bind(final CONTEXT context,
+    private void bind(final Context context,
                       final EXECUTE_CONTEXT executeContext,
                       final EXECUTE_SCENARIO executeScenario,
                       final EXECUTE_FLOW executeFlow,
@@ -253,7 +245,7 @@ public abstract class AbstractCommandExecuteFlowRunner
      * @param scenario
      * @param executeCommand
      */
-    private void settingFlowVariables(final CONTEXT context,
+    private void settingFlowVariables(final Context context,
                                       final EXECUTE_CONTEXT executeContext,
                                       final EXECUTE_SCENARIO scenario,
                                       final EXECUTE_FLOW executeFlow,
@@ -280,7 +272,7 @@ public abstract class AbstractCommandExecuteFlowRunner
      * @param executeCommand
      */
     private void cleanFlowVariables(
-            final CONTEXT context,
+            final Context context,
             final EXECUTE_CONTEXT executeContext,
             final EXECUTE_SCENARIO scenario,
             final EXECUTE_FLOW executeFlow,
@@ -304,7 +296,7 @@ public abstract class AbstractCommandExecuteFlowRunner
      * @param executeCommand
      */
     protected void outputStartProcessLog(
-            final CONTEXT context,
+            final Context context,
             final EXECUTE_CONTEXT executeContext,
             final EXECUTE_SCENARIO executeScenario,
             final EXECUTE_FLOW executeFlow,
@@ -334,7 +326,7 @@ public abstract class AbstractCommandExecuteFlowRunner
      * @param executeCommand
      */
     protected void outputEndProcessLog(
-            final CONTEXT context,
+            final Context context,
             final EXECUTE_CONTEXT executeContext,
             final EXECUTE_SCENARIO executeScenario,
             final EXECUTE_FLOW executeFlow,

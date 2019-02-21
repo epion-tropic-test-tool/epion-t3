@@ -1,11 +1,11 @@
 package com.zomu.t.epion.tropic.test.tool.core.context.execute;
 
-import com.zomu.t.epion.tropic.test.tool.core.context.XXExecuteContext;
 import com.zomu.t.epion.tropic.test.tool.core.type.ScenarioExecuteStatus;
 import com.zomu.t.epion.tropic.test.tool.core.type.ExitCode;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.io.Serializable;
 import java.nio.file.Path;
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -22,7 +22,7 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 @Getter
 @Setter
-public class ExecuteContext implements XXExecuteContext {
+public class ExecuteContext implements Serializable {
 
     /**
      * 実行ID

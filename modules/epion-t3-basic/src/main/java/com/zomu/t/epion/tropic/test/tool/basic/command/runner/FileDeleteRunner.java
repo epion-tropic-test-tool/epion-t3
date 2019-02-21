@@ -1,5 +1,6 @@
 package com.zomu.t.epion.tropic.test.tool.basic.command.runner;
 
+import com.zomu.t.epion.tropic.test.tool.core.command.runner.impl.AbstractCommandRunner;
 import com.zomu.t.epion.tropic.test.tool.core.context.EvidenceInfo;
 import com.zomu.t.epion.tropic.test.tool.core.command.runner.CommandRunner;
 import com.zomu.t.epion.tropic.test.tool.core.model.scenario.Command;
@@ -12,13 +13,9 @@ import java.util.Map;
 /**
  *
  */
-public class FileDeleteRunner implements CommandRunner<Command> {
+public class FileDeleteRunner extends AbstractCommandRunner<Command> {
     @Override
     public void execute(final Command process,
-                        final Map<String, Object> globalScopeVariables,
-                        final Map<String, Object> scenarioScopeVariables,
-                        final Map<String, Object> flowScopeVariables,
-                        final Map<String, EvidenceInfo> evidences,
                         final Logger logger) throws Exception {
 
         logger.info("start FileDelete");

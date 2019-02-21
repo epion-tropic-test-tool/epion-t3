@@ -1,12 +1,10 @@
 package com.zomu.t.epion.tropic.test.tool.core.application.runner.impl;
 
-import com.zomu.t.epion.tropic.test.tool.core.context.BaseContext;
-import com.zomu.t.epion.tropic.test.tool.core.context.XXExecuteContext;
+import com.zomu.t.epion.tropic.test.tool.core.context.Context;
 import com.zomu.t.epion.tropic.test.tool.core.context.execute.ExecuteContext;
 import com.zomu.t.epion.tropic.test.tool.core.exception.handler.BaseExceptionHandler;
 import com.zomu.t.epion.tropic.test.tool.core.scenario.parser.impl.BaseScenarioParser;
 import com.zomu.t.epion.tropic.test.tool.core.annotation.ApplicationVersion;
-import com.zomu.t.epion.tropic.test.tool.core.context.Context;
 import com.zomu.t.epion.tropic.test.tool.core.execution.reporter.impl.ScenarioReporterImpl;
 import com.zomu.t.epion.tropic.test.tool.core.application.runner.ApplicationRunner;
 import com.zomu.t.epion.tropic.test.tool.core.scenario.runner.impl.ScenarioRunnerImpl;
@@ -23,7 +21,7 @@ import java.util.Arrays;
 
 @ApplicationVersion(version = "v1.0")
 @Slf4j
-public class ApplicationRunnerImpl implements ApplicationRunner<BaseContext> {
+public class ApplicationRunnerImpl implements ApplicationRunner<Context> {
 
     /**
      * CLIオプション.
@@ -61,7 +59,7 @@ public class ApplicationRunnerImpl implements ApplicationRunner<BaseContext> {
         }
 
         // コンテキストの生成
-        BaseContext context = new BaseContext();
+        Context context = new Context();
 
         // 実行コンテキストの生成
         ExecuteContext executeContext = new ExecuteContext();
@@ -125,7 +123,7 @@ public class ApplicationRunnerImpl implements ApplicationRunner<BaseContext> {
     }
 
     @Override
-    public void handleGlobalException(final BaseContext context, final Throwable t) {
+    public void handleGlobalException(final Context context, final Throwable t) {
 
         BaseExceptionHandler.getInstance().handle(context, t);
 
@@ -170,7 +168,7 @@ public class ApplicationRunnerImpl implements ApplicationRunner<BaseContext> {
      *
      * @param context
      */
-    private void report(final BaseContext context, final ExecuteContext executeContext) {
+    private void report(final Context context, final ExecuteContext executeContext) {
 
         // レポーターに処理を移譲
         ScenarioReporterImpl.getInstance().allReport(context, executeContext);

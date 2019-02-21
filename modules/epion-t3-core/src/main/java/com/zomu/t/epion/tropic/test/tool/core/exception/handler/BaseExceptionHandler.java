@@ -3,12 +3,12 @@ package com.zomu.t.epion.tropic.test.tool.core.exception.handler;
 import com.zomu.t.epion.tropic.test.tool.core.exception.ScenarioParseException;
 import com.zomu.t.epion.tropic.test.tool.core.exception.SystemException;
 import com.zomu.t.epion.tropic.test.tool.core.message.impl.BaseMessages;
-import com.zomu.t.epion.tropic.test.tool.core.context.BaseContext;
+import com.zomu.t.epion.tropic.test.tool.core.context.Context;
 import com.zomu.t.epion.tropic.test.tool.core.message.MessageManager;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public final class BaseExceptionHandler implements ExceptionHandler<BaseContext> {
+public final class BaseExceptionHandler implements ExceptionHandler<Context> {
 
     /**
      * シングルトンインスタンス.
@@ -24,7 +24,7 @@ public final class BaseExceptionHandler implements ExceptionHandler<BaseContext>
     }
 
     @Override
-    public void handle(final BaseContext context, final Throwable t) {
+    public void handle(final Context context, final Throwable t) {
 
         MessageManager messageManager = MessageManager.getInstance();
 

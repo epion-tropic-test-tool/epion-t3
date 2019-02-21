@@ -22,11 +22,10 @@ import java.util.Map;
 import java.util.regex.Matcher;
 
 public abstract class AbstractCommandRunner<
-        COMMAND extends Command,
-        CONTEXT extends Context> implements CommandRunner<COMMAND, CONTEXT, ExecuteContext, ExecuteScenario, ExecuteFlow> {
+        COMMAND extends Command> implements CommandRunner<COMMAND, Context, ExecuteContext, ExecuteScenario, ExecuteFlow> {
 
     private COMMAND command;
-    private CONTEXT context;
+    private Context context;
     private ExecuteContext executeContext;
     private ExecuteScenario executeScenario;
     private ExecuteFlow executeFlow;
@@ -34,7 +33,7 @@ public abstract class AbstractCommandRunner<
     @Override
     public void execute(
             final COMMAND command,
-            final CONTEXT context,
+            final Context context,
             final ExecuteContext executeContext,
             final ExecuteScenario executeScenario,
             final ExecuteFlow executeFlow,
@@ -51,6 +50,21 @@ public abstract class AbstractCommandRunner<
 
     }
 
+    protected Map<String, Object> getGlobalScopeVariables() {
+        return executeContext.getGlobalVariables();
+    }
+
+    protected Map<String, Object> getScenarioScopeVariables() {
+        return executeScenario.getScenarioVariables();
+    }
+
+    protected Map<String, Object> getFlowScopeVariables() {
+        return executeFlow.getFlowVariables();
+    }
+
+    protected Map<String, EvidenceInfo> getEvidences() {
+        return executeScenario.getEvidences();
+    }
 
     /**
      * 変数を解決する.

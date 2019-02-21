@@ -1,7 +1,6 @@
 package com.zomu.t.epion.tropic.test.tool.core.flow.runner.impl;
 
 import com.zomu.t.epion.tropic.test.tool.core.context.Context;
-import com.zomu.t.epion.tropic.test.tool.core.context.XXExecuteContext;
 import com.zomu.t.epion.tropic.test.tool.core.context.execute.ExecuteContext;
 import com.zomu.t.epion.tropic.test.tool.core.context.execute.ExecuteFlow;
 import com.zomu.t.epion.tropic.test.tool.core.context.execute.ExecuteScenario;
@@ -30,26 +29,24 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * @param <CONTEXT>
  * @param <EXECUTE_CONTEXT>
  * @param <EXECUTE_SCENARIO>
  * @param <FLOW>
  */
 @Slf4j
 public abstract class AbstractFlowRunner<
-        CONTEXT extends Context,
         EXECUTE_CONTEXT extends ExecuteContext,
         EXECUTE_SCENARIO extends ExecuteScenario,
         EXECUTE_FLOW extends ExecuteFlow,
         FLOW extends Flow>
-        implements FlowRunner<CONTEXT, EXECUTE_CONTEXT, EXECUTE_SCENARIO, FLOW> {
+        implements FlowRunner<Context, EXECUTE_CONTEXT, EXECUTE_SCENARIO, FLOW> {
 
     /**
      * {@inheritDoc}
      */
     @Override
     public FlowResult execute(
-            CONTEXT context,
+            Context context,
             EXECUTE_CONTEXT executeContext,
             EXECUTE_SCENARIO executeScenario,
             FLOW flow,
@@ -181,7 +178,7 @@ public abstract class AbstractFlowRunner<
      * @param executeScenario
      * @param executeFlow
      */
-    private void bind(final CONTEXT context,
+    private void bind(final Context context,
                       final EXECUTE_CONTEXT executeContext,
                       final EXECUTE_SCENARIO executeScenario,
                       final EXECUTE_FLOW executeFlow,
@@ -216,7 +213,7 @@ public abstract class AbstractFlowRunner<
      * @param flow
      */
     protected abstract FlowResult execute(
-            CONTEXT context,
+            Context context,
             EXECUTE_CONTEXT execute_context,
             EXECUTE_SCENARIO executeScenario,
             EXECUTE_FLOW executeFlow,
@@ -235,7 +232,7 @@ public abstract class AbstractFlowRunner<
      * @param t
      */
     protected void onError(
-            CONTEXT context,
+            Context context,
             EXECUTE_CONTEXT execute_context,
             EXECUTE_SCENARIO executeScenario,
             EXECUTE_FLOW executeFlow,
@@ -255,7 +252,7 @@ public abstract class AbstractFlowRunner<
      * @param flow
      */
     protected void onFinally(
-            final CONTEXT context,
+            final Context context,
             final EXECUTE_CONTEXT execute_context,
             final EXECUTE_SCENARIO executeScenario,
             final EXECUTE_FLOW executeFlow,
@@ -274,7 +271,7 @@ public abstract class AbstractFlowRunner<
      * @param executeScenario シナリオ実行情報
      * @param executeFlow     FLOW実行情報
      */
-    private void settingFlowVariables(final CONTEXT context,
+    private void settingFlowVariables(final Context context,
                                       final EXECUTE_CONTEXT execute_context,
                                       final EXECUTE_SCENARIO executeScenario,
                                       final ExecuteFlow executeFlow) {
@@ -298,7 +295,7 @@ public abstract class AbstractFlowRunner<
      * @param executeScenario シナリオ実行情報
      * @param executeFlow     FLOW実行情報
      */
-    private void cleanFlowVariables(final CONTEXT context,
+    private void cleanFlowVariables(final Context context,
                                     final EXECUTE_CONTEXT executeContext,
                                     final EXECUTE_SCENARIO executeScenario,
                                     final ExecuteFlow executeFlow) {
@@ -320,7 +317,7 @@ public abstract class AbstractFlowRunner<
      * @param executeScenario 実行シナリオ
      * @param executeFlow     実行Flow
      */
-    protected void outputStartFlowLog(CONTEXT context, ExecuteScenario executeScenario, ExecuteFlow executeFlow) {
+    protected void outputStartFlowLog(Context context, ExecuteScenario executeScenario, ExecuteFlow executeFlow) {
         StringBuilder sb = new StringBuilder();
         sb.append("\n--------------------------------------------------------------------------------------\n");
         sb.append("<<Start Flow>>\n");
@@ -341,7 +338,7 @@ public abstract class AbstractFlowRunner<
      * @param executeScenario 実行シナリオ
      * @param executeFlow     実行Flow
      */
-    protected void outputEndFlowLog(CONTEXT context, ExecuteScenario executeScenario, ExecuteFlow executeFlow) {
+    protected void outputEndFlowLog(Context context, ExecuteScenario executeScenario, ExecuteFlow executeFlow) {
         StringBuilder sb = new StringBuilder();
         //sb.append("\n--------------------------------------------------------------------------------------\n");
         sb.append("\n<<End Flow>>\n");

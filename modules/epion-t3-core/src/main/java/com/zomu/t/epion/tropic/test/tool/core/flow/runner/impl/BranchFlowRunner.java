@@ -1,6 +1,6 @@
 package com.zomu.t.epion.tropic.test.tool.core.flow.runner.impl;
 
-import com.zomu.t.epion.tropic.test.tool.core.context.BaseContext;
+import com.zomu.t.epion.tropic.test.tool.core.context.Context;
 import com.zomu.t.epion.tropic.test.tool.core.context.execute.ExecuteContext;
 import com.zomu.t.epion.tropic.test.tool.core.context.execute.ExecuteFlow;
 import com.zomu.t.epion.tropic.test.tool.core.context.execute.ExecuteScenario;
@@ -16,7 +16,6 @@ import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
 
 public class BranchFlowRunner extends AbstractFlowRunner<
-        BaseContext,
         ExecuteContext,
         ExecuteScenario,
         ExecuteFlow,
@@ -24,7 +23,7 @@ public class BranchFlowRunner extends AbstractFlowRunner<
 
     @Override
     protected FlowResult execute(
-            final BaseContext context,
+            final Context context,
             final ExecuteContext executeContext,
             final ExecuteScenario executeScenario,
             final ExecuteFlow executeFlow,

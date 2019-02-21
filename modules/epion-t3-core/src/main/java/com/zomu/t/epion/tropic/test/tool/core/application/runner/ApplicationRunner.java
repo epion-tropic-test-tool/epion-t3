@@ -1,11 +1,9 @@
 package com.zomu.t.epion.tropic.test.tool.core.application.runner;
 
-import com.zomu.t.epion.tropic.test.tool.core.context.Context;
-
-public interface ApplicationRunner<C extends Context> {
+public interface ApplicationRunner<Context> {
 
     int execute(String[] args);
 
-    void handleGlobalException(final C context, final Throwable t);
+    void handleGlobalException(final Context context, final Throwable t);
 
 }

@@ -83,7 +83,7 @@ public final class BaseCustomParser implements IndividualTargetParser {
     @Override
     public void parse(final Context context, String fileNamePattern) {
 
-        BaseContext baseContext = BaseContext.class.cast(context);
+        Context baseContext = Context.class.cast(context);
 
         findCustom(baseContext, fileNamePattern);
 
@@ -98,7 +98,7 @@ public final class BaseCustomParser implements IndividualTargetParser {
      * @param context
      * @param fileNamePattern
      */
-    private void findCustom(final BaseContext context, final String fileNamePattern) {
+    private void findCustom(final Context context, final String fileNamePattern) {
 
         try {
             // 再帰的にカスタム定義ファイルを見つける
@@ -119,7 +119,7 @@ public final class BaseCustomParser implements IndividualTargetParser {
 
     }
 
-    private void parseCustom(BaseContext baseContext) {
+    private void parseCustom(Context baseContext) {
 
         ClassLoader loader = Thread.currentThread().getContextClassLoader();
 

@@ -2,7 +2,7 @@ package com.zomu.t.epion.tropic.test.tool.core.custom.parser.impl;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
-import com.zomu.t.epion.tropic.test.tool.core.context.BaseContext;
+import com.zomu.t.epion.tropic.test.tool.core.context.Context;
 import com.zomu.t.epion.tropic.test.tool.core.exception.bean.ScenarioParseError;
 import com.zomu.t.epion.tropic.test.tool.core.exception.ScenarioParseException;
 import com.zomu.t.epion.tropic.test.tool.core.exception.SystemException;
@@ -34,7 +34,7 @@ import java.util.regex.Pattern;
  * @author takashno
  */
 @Slf4j
-public final class BaseOriginalHoldParser implements IndividualTargetParser<BaseContext> {
+public final class BaseOriginalHoldParser implements IndividualTargetParser<Context> {
 
     /**
      * インスタンス.
@@ -70,14 +70,14 @@ public final class BaseOriginalHoldParser implements IndividualTargetParser<Base
 
 
     @Override
-    public void parse(final BaseContext context) {
+    public void parse(final Context context) {
         parse(context, null);
     }
 
     @Override
-    public void parse(final BaseContext context, final String fileNamePattern) {
+    public void parse(final Context context, final String fileNamePattern) {
 
-        final BaseContext baseContext = BaseContext.class.cast(context);
+        final Context baseContext = Context.class.cast(context);
 
         // 正規表現パターンを作成
         final Pattern scenarioFileNamePattern = Pattern.compile(fileNamePattern == null ? FILENAME_REGEXP_PATTERN : fileNamePattern);

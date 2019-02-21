@@ -1,5 +1,6 @@
 package com.zomu.t.epion.tropic.test.tool.rest.runner;
 
+import com.zomu.t.epion.tropic.test.tool.core.command.runner.impl.AbstractCommandRunner;
 import com.zomu.t.epion.tropic.test.tool.core.context.EvidenceInfo;
 import com.zomu.t.epion.tropic.test.tool.core.command.runner.CommandRunner;
 import com.zomu.t.epion.tropic.test.tool.rest.bean.Header;
@@ -12,7 +13,7 @@ import org.slf4j.Logger;
 import java.util.List;
 import java.util.Map;
 
-public class ExecuteRestApiRunner implements CommandRunner<ExecuteRestApi> {
+public class ExecuteRestApiRunner extends AbstractCommandRunner<ExecuteRestApi> {
 
     /**
      * {@inheritDoc}
@@ -20,10 +21,6 @@ public class ExecuteRestApiRunner implements CommandRunner<ExecuteRestApi> {
     @Override
     public void execute(
             final ExecuteRestApi command,
-            final Map<String, Object> globalScopeVariables,
-            final Map<String, Object> scenarioScopeVariables,
-            final Map<String, Object> flowScopeVariables,
-            final Map<String, EvidenceInfo> evidences,
             Logger logger) throws Exception {
 
 
@@ -104,7 +101,7 @@ public class ExecuteRestApiRunner implements CommandRunner<ExecuteRestApi> {
         logger.info("Body:{}", response.body().string());
 
         // エビデンス登録
-        registrationObjectEvidence(scenarioScopeVariables, flowScopeVariables, evidences, result);
+        registrationObjectEvidence(getScenarioScopeVariables(), getFlowScopeVariables(), getEvidences(), result);
 
     }
 }

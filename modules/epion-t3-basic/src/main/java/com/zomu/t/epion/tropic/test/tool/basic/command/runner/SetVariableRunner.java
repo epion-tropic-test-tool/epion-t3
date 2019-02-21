@@ -2,6 +2,7 @@ package com.zomu.t.epion.tropic.test.tool.basic.command.runner;
 
 import com.zomu.t.epion.tropic.test.tool.basic.command.model.SetVariable;
 import com.zomu.t.epion.tropic.test.tool.core.command.runner.CommandRunner;
+import com.zomu.t.epion.tropic.test.tool.core.command.runner.impl.AbstractCommandRunner;
 import com.zomu.t.epion.tropic.test.tool.core.context.EvidenceInfo;
 import com.zomu.t.epion.tropic.test.tool.core.exception.SystemException;
 import com.zomu.t.epion.tropic.test.tool.core.message.impl.CoreMessages;
@@ -15,15 +16,11 @@ import java.util.regex.Matcher;
 /**
  * @author takashno
  */
-public class SetVariableRunner implements CommandRunner<SetVariable> {
+public class SetVariableRunner extends AbstractCommandRunner<SetVariable> {
 
     @Override
     public void execute(
             final SetVariable command,
-            final Map<String, Object> globalScopeVariables,
-            final Map<String, Object> scenarioScopeVariables,
-            final Map<String, Object> flowScopeVariables,
-            final Map<String, EvidenceInfo> evidences,
             final Logger logger) throws Exception {
 
         if (StringUtils.isEmpty(command.getTarget())) {
@@ -40,13 +37,13 @@ public class SetVariableRunner implements CommandRunner<SetVariable> {
                         // Ignore
                         break;
                     case GLOBAL:
-                        globalScopeVariables.put(m.group(2), command.getValue());
+                        getGlobalScopeVariables().put(m.group(2), command.getValue());
                         break;
                     case SCENARIO:
-                        scenarioScopeVariables.put(m.group(2), command.getValue());
+                        getScenarioScopeVariables().put(m.group(2), command.getValue());
                         break;
                     case FLOW:
-                        flowScopeVariables.put(m.group(2), command.getValue());
+                        getFlowScopeVariables().put(m.group(2), command.getValue());
                         break;
                     default:
                         throw new SystemException(CoreMessages.CORE_ERR_0005, m.group(1));

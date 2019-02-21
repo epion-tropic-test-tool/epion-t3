@@ -1,5 +1,6 @@
 package com.zomu.t.epion.tropic.test.tool.selenium.runner;
 
+import com.zomu.t.epion.tropic.test.tool.core.command.runner.impl.AbstractCommandRunner;
 import com.zomu.t.epion.tropic.test.tool.core.context.EvidenceInfo;
 import com.zomu.t.epion.tropic.test.tool.selenium.command.EndLocalWebDriver;
 import com.zomu.t.epion.tropic.test.tool.core.command.runner.CommandRunner;
@@ -8,18 +9,14 @@ import org.slf4j.Logger;
 
 import java.util.Map;
 
-public class EndLocalWebDriverRunner implements CommandRunner<EndLocalWebDriver> {
+public class EndLocalWebDriverRunner extends AbstractCommandRunner<EndLocalWebDriver> {
 
     @Override
     public void execute(
             final EndLocalWebDriver process,
-            final Map<String, Object> globalScopeVariables,
-            final Map<String, Object> scenarioScopeVariables,
-            final Map<String, Object> flowScopeVariables,
-            final Map<String, EvidenceInfo> evidences,
             Logger logger) throws Exception {
 
-        WebDriver driver = WebDriver.class.cast(globalScopeVariables.get(process.getRefWebDriver()));
+        WebDriver driver = WebDriver.class.cast(getGlobalScopeVariables().get(process.getRefWebDriver()));
         //driver.close();
         //driver.quit();
     }

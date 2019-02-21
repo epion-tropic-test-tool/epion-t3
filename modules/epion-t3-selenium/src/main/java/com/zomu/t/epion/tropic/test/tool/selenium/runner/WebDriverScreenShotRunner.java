@@ -1,5 +1,6 @@
 package com.zomu.t.epion.tropic.test.tool.selenium.runner;
 
+import com.zomu.t.epion.tropic.test.tool.core.command.runner.impl.AbstractCommandRunner;
 import com.zomu.t.epion.tropic.test.tool.core.context.EvidenceInfo;
 import com.zomu.t.epion.tropic.test.tool.selenium.command.WebDriverScreenShot;
 import com.zomu.t.epion.tropic.test.tool.core.command.runner.CommandRunner;
@@ -15,24 +16,20 @@ import java.util.Map;
 /**
  *
  */
-public class WebDriverScreenShotRunner implements CommandRunner<WebDriverScreenShot> {
+public class WebDriverScreenShotRunner extends AbstractCommandRunner<WebDriverScreenShot> {
     @Override
     public void execute(
             WebDriverScreenShot process,
-            Map<String, Object> globalScopeVariables,
-            Map<String, Object> scenarioScopeVariables,
-            final Map<String, Object> flowScopeVariables,
-            Map<String, EvidenceInfo> evidences,
             Logger logger) throws Exception {
 
-        WebDriver driver = WebDriver.class.cast(globalScopeVariables.get(process.getRefWebDriver()));
+        WebDriver driver = WebDriver.class.cast(getGlobalScopeVariables().get(process.getRefWebDriver()));
         Screenshot screenshot = new AShot().takeScreenshot(driver);
 
-        getEvidenceDirectory(scenarioScopeVariables);
+        getEvidenceDirectory(getScenarioScopeVariables());
 
         Path evidence = getEvidencePath(
-                scenarioScopeVariables,
-                flowScopeVariables,
+                getScenarioScopeVariables(),
+                getFlowScopeVariables(),
                 "PNG");
 
         // 保管したイメージを任意の場所に書き出す(1行)
@@ -42,6 +39,6 @@ public class WebDriverScreenShotRunner implements CommandRunner<WebDriverScreenS
                 evidence.toFile());
 
         // エビデンスを登録
-        registrationFileEvidence(scenarioScopeVariables, flowScopeVariables, evidences, evidence);
+        registrationFileEvidence(getScenarioScopeVariables(), getFlowScopeVariables(), getEvidences(), evidence);
     }
 }

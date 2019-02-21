@@ -1,5 +1,6 @@
 package com.zomu.t.epion.tropic.test.tool.selenium.runner;
 
+import com.zomu.t.epion.tropic.test.tool.core.command.runner.impl.AbstractCommandRunner;
 import com.zomu.t.epion.tropic.test.tool.core.context.EvidenceInfo;
 import com.zomu.t.epion.tropic.test.tool.core.command.runner.CommandRunner;
 import com.zomu.t.epion.tropic.test.tool.selenium.command.WebDriverClick;
@@ -11,16 +12,12 @@ import org.slf4j.Logger;
 
 import java.util.Map;
 
-public class WebDriverSelectRunner implements CommandRunner<WebDriverClick> {
+public class WebDriverSelectRunner extends AbstractCommandRunner<WebDriverClick> {
     @Override
     public void execute(
-            WebDriverClick process,
-            Map<String, Object> globalScopeVariables,
-            Map<String, Object> scenarioScopeVariables,
-            Map<String, Object> flowScopeVariables,
-            Map<String, EvidenceInfo> evidences,
-            Logger logger) throws Exception {
-        WebDriver driver = WebDriver.class.cast(globalScopeVariables.get(process.getRefWebDriver()));
+            final WebDriverClick process,
+            final Logger logger) throws Exception {
+        WebDriver driver = WebDriver.class.cast(getGlobalScopeVariables().get(process.getRefWebDriver()));
         WebElement element =
                 WebElementUtils.getInstance().findWebElement(driver, process.getSelector(), process.getTarget());
         if (element.isEnabled()) {

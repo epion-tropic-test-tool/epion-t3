@@ -1,16 +1,14 @@
 package com.zomu.t.epion.tropic.test.tool.core.scenario.parser;
 
-import com.zomu.t.epion.tropic.test.tool.core.context.Context;
-
 /**
  * @author takashno
  */
-public interface ScenarioParser<C extends Context> {
+public interface ScenarioParser<Context> {
 
     /**
      *
      * @param context コンテキスト
      */
-    void parse(final C context);
+    void parse(final Context context);
 
 }
