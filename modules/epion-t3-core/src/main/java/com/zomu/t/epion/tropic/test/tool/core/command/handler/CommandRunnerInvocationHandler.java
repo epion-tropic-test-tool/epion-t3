@@ -10,6 +10,7 @@ import com.zomu.t.epion.tropic.test.tool.core.context.execute.ExecuteScenario;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.Map;
 
 /**
@@ -42,10 +43,6 @@ public class CommandRunnerInvocationHandler<COMMAND_RUNNER extends CommandRunner
      * コンストラクタ.
      *
      * @param commandRunner
-     * @param executeContext
-     * @param executeScenario
-     * @param executeFlow
-     * @param executeCommand
      */
     public CommandRunnerInvocationHandler(
             COMMAND_RUNNER commandRunner,
@@ -73,6 +70,7 @@ public class CommandRunnerInvocationHandler<COMMAND_RUNNER extends CommandRunner
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
 
+        // 処理結果
         Object result = null;
 
         try {
@@ -86,27 +84,15 @@ public class CommandRunnerInvocationHandler<COMMAND_RUNNER extends CommandRunner
                     executeCommand
             ));
 
-            String methodName = method.getName();
 
             // Before Handle
+            beforeHandle(proxy, method, args);
 
+            // 実行
             result = method.invoke(commandRunner, args);
 
             // After Handle
-
-            switch (methodName) {
-                case METHOD_REGISTRATION_OBJECT_EVIDENCE:
-                case METHOD_REGISTRATIONFILEEVIDENCE:
-                    Map.Entry<String, EvidenceInfo> entry =
-                            (Map.Entry<String, EvidenceInfo>) executeScenario.getEvidences().entrySet()
-                                    .toArray()[executeScenario.getEvidences().size() - 1];
-                    executeScenario.getFlowId2EvidenceId().put(executeFlow.getFlow().getId(), entry.getKey());
-                    break;
-                case METHOD_REGISTRATION_FILE_EVIDENCE_WITH_NAME:
-                case METHOD_REGISTRATION_OBJECT_EVIDENCE_WITH_NAME:
-                    break;
-                default:
-            }
+            afterHandle(proxy, method, args);
 
             // コマンド後処理リスナーを実行
             CommandListenerFactory.getInstance().getAfterListener().forEach(x -> x.afterCommand(
@@ -132,6 +118,81 @@ public class CommandRunnerInvocationHandler<COMMAND_RUNNER extends CommandRunner
         }
 
         return result;
+    }
+
+    /**
+     * 処理前ハンドリング.
+     *
+     * @param proxy  対象オブジェクト
+     * @param method メソッド
+     * @param args   引数
+     */
+    private void beforeHandle(Object proxy, Method method, Object[] args) {
+        // Do Nothing...
+    }
+
+    /**
+     * 処理後ハンドリング.
+     *
+     * @param proxy  対象オブジェクト
+     * @param method メソッド
+     * @param args   引数
+     */
+    private void afterHandle(Object proxy, Method method, Object[] args) {
+        // 実行対象のメソッド名を取得
+        String methodName = method.getName();
+        switch (methodName) {
+            case METHOD_REGISTRATION_OBJECT_EVIDENCE:
+            case METHOD_REGISTRATIONFILEEVIDENCE:
+                // FlowIdとエビデンスIDの紐付け登録
+                registrationFlowId2EvidenceId();
+                break;
+            case METHOD_REGISTRATION_FILE_EVIDENCE_WITH_NAME:
+            case METHOD_REGISTRATION_OBJECT_EVIDENCE_WITH_NAME:
+                // FlowIdとエビデンスIDの紐付け登録
+                registrationFlowId2EvidenceId();
+                registrationFlowId2EvidenceIdWithName((String) args[3]);
+                break;
+            default:
+        }
+    }
+
+
+    /**
+     * シナリオ実行中に最後に追加されたエビデンス情報と実行しているFlow情報を元にして、
+     * FlowIdとエビデンスIDの紐付けマップに登録する.
+     * なお、FlowIdは繰り返しFlow等で同一FlowIdが複数回シナリオの中で処理されることがあるため、
+     * EvidenceIdはリスト形式で保持することとする.
+     */
+    private void registrationFlowId2EvidenceId() {
+        Map.Entry<String, EvidenceInfo> entry =
+                (Map.Entry<String, EvidenceInfo>) executeScenario.getEvidences().entrySet()
+                        .toArray()[executeScenario.getEvidences().size() - 1];
+        if (executeScenario.getFlowId2EvidenceId().containsKey(executeFlow.getFlow().getId())) {
+            executeScenario.getFlowId2EvidenceId().get(executeFlow.getFlow().getId()).add(entry.getKey());
+        } else {
+            executeScenario.getFlowId2EvidenceId().put(executeFlow.getFlow().getId(), new ArrayList<>());
+        }
+    }
+
+    /**
+     * シナリオ実行中に最後に追加されたエビデンス情報と実行しているFlow情報を元にして、
+     * 指定された名称とエビデンスIDの紐付けマップに登録する.
+     * なお、名称は繰り返しFlow等で同一名称が複数回シナリオの中で処理されることがあるため、
+     * EvidenceIdはリスト形式で保持することとする.
+     *
+     * @param name 名称
+     */
+    private void registrationFlowId2EvidenceIdWithName(String name) {
+        Map.Entry<String, EvidenceInfo> entry =
+                (Map.Entry<String, EvidenceInfo>) executeScenario.getEvidences().entrySet()
+                        .toArray()[executeScenario.getEvidences().size() - 1];
+        if (executeScenario.getFlowId2EvidenceId().containsKey(name)) {
+            executeScenario.getFlowId2EvidenceId().get(name).add(entry.getKey());
+        } else {
+            executeScenario.getFlowId2EvidenceId().put(name, new ArrayList<>());
+            executeScenario.getFlowId2EvidenceId().get(name).add(entry.getKey());
+        }
     }
 
 }

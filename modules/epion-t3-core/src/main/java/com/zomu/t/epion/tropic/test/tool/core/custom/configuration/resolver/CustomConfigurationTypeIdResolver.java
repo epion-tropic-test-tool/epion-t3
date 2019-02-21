@@ -16,6 +16,7 @@ import java.io.IOException;
  * @author takahsno
  */
 public class CustomConfigurationTypeIdResolver implements TypeIdResolver {
+
     @Override
     public void init(JavaType baseType) {
     }

@@ -1,5 +1,6 @@
 package com.zomu.t.epion.tropic.test.tool.core.command.resolver.impl;
 
+import com.zomu.t.epion.tropic.test.tool.core.command.handler.CommandRunnerInvocationHandler;
 import com.zomu.t.epion.tropic.test.tool.core.command.resolver.CommandRunnerResolver;
 import com.zomu.t.epion.tropic.test.tool.core.message.impl.BaseMessages;
 import com.zomu.t.epion.tropic.test.tool.core.context.CommandInfo;
@@ -8,6 +9,8 @@ import com.zomu.t.epion.tropic.test.tool.core.command.runner.CommandRunner;
 import com.zomu.t.epion.tropic.test.tool.core.exception.CommandNotFoundException;
 import com.zomu.t.epion.tropic.test.tool.core.holder.CustomPackageHolder;
 import org.apache.commons.lang3.StringUtils;
+
+import java.lang.reflect.Proxy;
 
 /**
  * @author takashno
@@ -42,7 +45,7 @@ public final class CommandRunnerResolverImpl implements CommandRunnerResolver {
      * @return
      */
     @Override
-    public CommandRunner getCommandRunner(String commandId) {
+    public CommandRunnerInvocationHandler getCommandRunner(String commandId) {
 
         if (StringUtils.isEmpty(commandId)) {
             // 不正
@@ -66,7 +69,13 @@ public final class CommandRunnerResolverImpl implements CommandRunnerResolver {
 
         try {
             // インスタンス生成＋返却
-            return CommandRunner.class.cast(runnerClass.newInstance());
+            CommandRunnerInvocationHandler commandRunnerInvocationHandler =
+                    (CommandRunnerInvocationHandler)Proxy.newProxyInstance(
+                            CommandRunnerResolverImpl.class.getClassLoader(),
+                            new Class[]{CommandRunner.class},
+                            new CommandRunnerInvocationHandler(
+                                    CommandRunner.class.cast(runnerClass.newInstance())));
+            return commandRunnerInvocationHandler;
         } catch (Exception e) {
             throw new SystemException(e, BaseMessages.BASE_ERR_0001);
         }
