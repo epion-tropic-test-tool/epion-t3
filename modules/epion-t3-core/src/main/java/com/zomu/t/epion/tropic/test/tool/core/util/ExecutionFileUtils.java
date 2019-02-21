@@ -1,7 +1,8 @@
 package com.zomu.t.epion.tropic.test.tool.core.util;
 
 import com.zomu.t.epion.tropic.test.tool.core.context.Context;
-import com.zomu.t.epion.tropic.test.tool.core.context.execute.;
+import com.zomu.t.epion.tropic.test.tool.core.context.execute.ExecuteContext;
+import com.zomu.t.epion.tropic.test.tool.core.context.execute.ExecuteScenario;
 import com.zomu.t.epion.tropic.test.tool.core.type.ScenarioScopeVariables;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.SystemUtils;
@@ -14,7 +15,6 @@ import java.nio.file.Paths;
 import java.time.format.DateTimeFormatter;
 
 /**
- *
  * @author takashno
  */
 public final class ExecutionFileUtils {
@@ -36,7 +36,7 @@ public final class ExecutionFileUtils {
     /**
      * @param context
      */
-    public static void createResultDirectory(final Context context) {
+    public static void createResultDirectory(final Context context, final ExecuteContext executeContext) {
 
         Path resultRootPath = null;
 
@@ -49,12 +49,12 @@ public final class ExecutionFileUtils {
                             + File.separator
                             + "result"
                             + File.separator
-                            + DTF.format(context.getExecuteContext().getStart()));
+                            + DTF.format(executeContext.getStart()));
         }
 
         try {
             Files.createDirectories(resultRootPath);
-            context.getExecuteContext().setResultRootPath(resultRootPath);
+            executeContext.setResultRootPath(resultRootPath);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -63,42 +63,42 @@ public final class ExecutionFileUtils {
     /**
      * @param context
      */
-    public static void createScenarioResultDirectory(final Context context, final ExecuteScenario scenario) {
+    public static void createScenarioResultDirectory(final Context context, final ExecuteContext executeContext, final ExecuteScenario executeScenario) {
 
         try {
             Path resultPath = Paths.get(
-                    context.getExecuteContext().getResultRootPath().toFile().getPath()
+                    executeContext.getResultRootPath().toFile().getPath()
                             + File.separator
-                            + scenario.getInfo().getId()
+                            + executeScenario.getInfo().getId()
                             + "_"
-                            + DTF.format(scenario.getStart()));
+                            + DTF.format(executeScenario.getStart()));
 
             Files.createDirectories(resultPath);
-            scenario.setResultPath(resultPath);
+            executeScenario.setResultPath(resultPath);
 
             Path evidencePath = Paths.get(
-                    scenario.getResultPath().toFile().getPath()
+                    executeScenario.getResultPath().toFile().getPath()
                             + File.separator
                             + EVIDENCE_DIR_NAME);
 
             Files.createDirectories(evidencePath);
-            scenario.setEvidencePath(evidencePath);
-            scenario.getScenarioVariables().put(ScenarioScopeVariables.EVIDENCE_DIR.getName(), evidencePath.toString());
+            executeScenario.setEvidencePath(evidencePath);
+            executeScenario.getScenarioVariables().put(ScenarioScopeVariables.EVIDENCE_DIR.getName(), evidencePath.toString());
 
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 
-    public static Path getAllReportPath(Context context) {
-        return Paths.get(context.getExecuteContext().getResultRootPath() + File.separator + "report.html");
+    public static Path getAllReportPath(final Context context, final ExecuteContext executeContext) {
+        return Paths.get(executeContext.getResultRootPath() + File.separator + "report.html");
     }
 
-    public static Path getAllReportYamlPath(Context context) {
-        return Paths.get(context.getExecuteContext().getResultRootPath() + File.separator + "report.yaml");
+    public static Path getAllReportYamlPath(final Context context, final ExecuteContext executeContext) {
+        return Paths.get(executeContext.getResultRootPath() + File.separator + "report.yaml");
     }
 
-    public static Path getScenarioReportPath(final Context context, final ExecuteScenario scenario) {
+    public static Path getScenarioReportPath(final Context context, final ExecuteContext executeContext, final ExecuteScenario scenario) {
         return Paths.get(scenario.getResultPath().toString() + File.separator + "scenario_report.html");
     }
 }

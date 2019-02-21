@@ -2,6 +2,7 @@ package com.zomu.t.epion.tropic.test.tool.core.flow.runner.impl;
 
 import com.zomu.t.epion.tropic.test.tool.core.context.BaseContext;
 import com.zomu.t.epion.tropic.test.tool.core.context.execute.ExecuteCommand;
+import com.zomu.t.epion.tropic.test.tool.core.context.execute.ExecuteContext;
 import com.zomu.t.epion.tropic.test.tool.core.context.execute.ExecuteFlow;
 import com.zomu.t.epion.tropic.test.tool.core.context.execute.ExecuteScenario;
 import com.zomu.t.epion.tropic.test.tool.core.exception.SystemException;
@@ -26,6 +27,7 @@ import java.util.List;
 public class ReadFileIterateFlowRunner
         extends AbstractCommandExecuteFlowRunner<
         BaseContext,
+        ExecuteContext,
         ExecuteScenario,
         ExecuteFlow,
         ExecuteCommand,
@@ -37,11 +39,12 @@ public class ReadFileIterateFlowRunner
      */
     @Override
     protected FlowResult execute(
-            BaseContext context,
-            ExecuteScenario executeScenario,
-            ExecuteFlow executeFlow,
-            ReadTextFileIterateFlow flow,
-            Logger logger) {
+            final BaseContext context,
+            final ExecuteContext executeContext,
+            final ExecuteScenario executeScenario,
+            final ExecuteFlow executeFlow,
+            final ReadTextFileIterateFlow flow,
+            final Logger logger) {
 
 
         Path target = Paths.get(flow.getTarget());
@@ -75,6 +78,7 @@ public class ReadFileIterateFlowRunner
                 if (CommandExecuteFlow.class.isAssignableFrom(child.getClass())) {
                     executeCommand(
                             context,
+                            executeContext,
                             executeScenario,
                             executeFlow,
                             (CommandExecuteFlow) child,

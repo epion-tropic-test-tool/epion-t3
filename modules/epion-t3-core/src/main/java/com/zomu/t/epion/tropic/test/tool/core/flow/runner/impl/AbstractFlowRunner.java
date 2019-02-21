@@ -1,6 +1,8 @@
 package com.zomu.t.epion.tropic.test.tool.core.flow.runner.impl;
 
 import com.zomu.t.epion.tropic.test.tool.core.context.Context;
+import com.zomu.t.epion.tropic.test.tool.core.context.XXExecuteContext;
+import com.zomu.t.epion.tropic.test.tool.core.context.execute.ExecuteContext;
 import com.zomu.t.epion.tropic.test.tool.core.context.execute.ExecuteFlow;
 import com.zomu.t.epion.tropic.test.tool.core.context.execute.ExecuteScenario;
 import com.zomu.t.epion.tropic.test.tool.core.flow.model.FlowResult;
@@ -29,21 +31,29 @@ import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @param <CONTEXT>
- * @param <EXECUTESCENARIO>
+ * @param <EXECUTE_CONTEXT>
+ * @param <EXECUTE_SCENARIO>
  * @param <FLOW>
  */
 @Slf4j
 public abstract class AbstractFlowRunner<
-        CONTEXT extends Context, EXECUTESCENARIO extends ExecuteScenario,
+        CONTEXT extends Context,
+        EXECUTE_CONTEXT extends ExecuteContext,
+        EXECUTE_SCENARIO extends ExecuteScenario,
         EXECUTE_FLOW extends ExecuteFlow,
         FLOW extends Flow>
-        implements FlowRunner<CONTEXT, EXECUTESCENARIO, FLOW> {
+        implements FlowRunner<CONTEXT, EXECUTE_CONTEXT, EXECUTE_SCENARIO, FLOW> {
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public FlowResult execute(CONTEXT context, EXECUTESCENARIO executeScenario, FLOW flow, Logger logger) {
+    public FlowResult execute(
+            CONTEXT context,
+            EXECUTE_CONTEXT executeContext,
+            EXECUTE_SCENARIO executeScenario,
+            FLOW flow,
+            Logger logger) {
 
         // process実行情報を作成
         EXECUTE_FLOW executeFlow = getExecuteFlowInstance();
@@ -66,12 +76,14 @@ public abstract class AbstractFlowRunner<
             // Flowスコープ変数の設定
             settingFlowVariables(
                     context,
+                    executeContext,
                     executeScenario,
                     executeFlow);
 
             // バインド
             bind(
                     context,
+                    executeContext,
                     executeScenario,
                     executeFlow,
                     flow);
@@ -79,6 +91,7 @@ public abstract class AbstractFlowRunner<
             // 実行
             flowResult = execute(
                     context,
+                    executeContext,
                     executeScenario,
                     executeFlow,
                     flow,
@@ -110,13 +123,13 @@ public abstract class AbstractFlowRunner<
             executeFlow.setStatus(FlowStatus.ERROR);
 
             // エラー処理
-            onError(context, executeScenario, executeFlow,
+            onError(context, executeContext, executeScenario, executeFlow,
                     flow, t, logger);
 
         } finally {
 
             // 掃除
-            cleanFlowVariables(context, executeScenario, executeFlow);
+            cleanFlowVariables(context, executeContext, executeScenario, executeFlow);
 
             // シナリオ実行終了時間を設定
             executeFlow.setEnd(LocalDateTime.now());
@@ -136,8 +149,7 @@ public abstract class AbstractFlowRunner<
             outputEndFlowLog(context, executeScenario, executeFlow);
 
             // エラー処理
-            onFinally(context, executeScenario, executeFlow,
-                    flow, logger);
+            onFinally(context, executeContext, executeScenario, executeFlow, flow, logger);
 
         }
 
@@ -170,7 +182,8 @@ public abstract class AbstractFlowRunner<
      * @param executeFlow
      */
     private void bind(final CONTEXT context,
-                      final EXECUTESCENARIO executeScenario,
+                      final EXECUTE_CONTEXT executeContext,
+                      final EXECUTE_SCENARIO executeScenario,
                       final EXECUTE_FLOW executeFlow,
                       final FLOW flow) {
 
@@ -191,7 +204,7 @@ public abstract class AbstractFlowRunner<
         BindUtils.getInstance().bind(
                 flow,
                 profiles,
-                context.getExecuteContext().getGlobalVariables(),
+                executeContext.getGlobalVariables(),
                 executeScenario.getScenarioVariables());
     }
 
@@ -204,7 +217,8 @@ public abstract class AbstractFlowRunner<
      */
     protected abstract FlowResult execute(
             CONTEXT context,
-            EXECUTESCENARIO executeScenario,
+            EXECUTE_CONTEXT execute_context,
+            EXECUTE_SCENARIO executeScenario,
             EXECUTE_FLOW executeFlow,
             FLOW flow,
             Logger logger);
@@ -222,7 +236,8 @@ public abstract class AbstractFlowRunner<
      */
     protected void onError(
             CONTEXT context,
-            EXECUTESCENARIO executeScenario,
+            EXECUTE_CONTEXT execute_context,
+            EXECUTE_SCENARIO executeScenario,
             EXECUTE_FLOW executeFlow,
             FLOW flow,
             Throwable t,
@@ -240,11 +255,12 @@ public abstract class AbstractFlowRunner<
      * @param flow
      */
     protected void onFinally(
-            CONTEXT context,
-            EXECUTESCENARIO executeScenario,
-            EXECUTE_FLOW executeFlow,
-            FLOW flow,
-            Logger logger) {
+            final CONTEXT context,
+            final EXECUTE_CONTEXT execute_context,
+            final EXECUTE_SCENARIO executeScenario,
+            final EXECUTE_FLOW executeFlow,
+            final FLOW flow,
+            final Logger logger) {
         // 必要に応じてオーバーライド実装すること.
     }
 
@@ -259,7 +275,8 @@ public abstract class AbstractFlowRunner<
      * @param executeFlow     FLOW実行情報
      */
     private void settingFlowVariables(final CONTEXT context,
-                                      final EXECUTESCENARIO executeScenario,
+                                      final EXECUTE_CONTEXT execute_context,
+                                      final EXECUTE_SCENARIO executeScenario,
                                       final ExecuteFlow executeFlow) {
 
         // 現在の処理Flow
@@ -282,7 +299,8 @@ public abstract class AbstractFlowRunner<
      * @param executeFlow     FLOW実行情報
      */
     private void cleanFlowVariables(final CONTEXT context,
-                                    final EXECUTESCENARIO executeScenario,
+                                    final EXECUTE_CONTEXT executeContext,
+                                    final EXECUTE_SCENARIO executeScenario,
                                     final ExecuteFlow executeFlow) {
 
         // 現在の処理Flow

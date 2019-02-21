@@ -1,6 +1,8 @@
 package com.zomu.t.epion.tropic.test.tool.core.application.runner.impl;
 
 import com.zomu.t.epion.tropic.test.tool.core.context.BaseContext;
+import com.zomu.t.epion.tropic.test.tool.core.context.XXExecuteContext;
+import com.zomu.t.epion.tropic.test.tool.core.context.execute.ExecuteContext;
 import com.zomu.t.epion.tropic.test.tool.core.exception.handler.BaseExceptionHandler;
 import com.zomu.t.epion.tropic.test.tool.core.scenario.parser.impl.BaseScenarioParser;
 import com.zomu.t.epion.tropic.test.tool.core.annotation.ApplicationVersion;
@@ -61,10 +63,10 @@ public class ApplicationRunnerImpl implements ApplicationRunner<BaseContext> {
         // コンテキストの生成
         BaseContext context = new BaseContext();
 
-        try {
+        // 実行コンテキストの生成
+        ExecuteContext executeContext = new ExecuteContext();
 
-            // 開始
-            context.getExecuteContext().setStart(LocalDateTime.now());
+        try {
 
             // 引数設定
             setOptions(context, cmd);
@@ -73,21 +75,21 @@ public class ApplicationRunnerImpl implements ApplicationRunner<BaseContext> {
             BaseScenarioParser.getInstance().parse(context);
 
             // 結果ディレクトリの作成
-            createResultDirectory(context);
+            createResultDirectory(context, executeContext);
 
             // 実行
             ScenarioRunnerImpl scenarioRunner = new ScenarioRunnerImpl();
-            scenarioRunner.execute(context);
+            scenarioRunner.execute(context, executeContext);
 
             // 正常終了
-            context.getExecuteContext().setStatus(ScenarioExecuteStatus.SUCCESS);
-            context.getExecuteContext().setExitCode(ExitCode.NORMAL);
+            executeContext.setStatus(ScenarioExecuteStatus.SUCCESS);
+            executeContext.setExitCode(ExitCode.NORMAL);
 
         } catch (Throwable t) {
 
             // シナリオ失敗
-            if (context.getExecuteContext() != null) {
-                context.getExecuteContext().setStatus(ScenarioExecuteStatus.FAIL);
+            if (executeContext != null) {
+                executeContext.setStatus(ScenarioExecuteStatus.FAIL);
             }
 
             // 例外ハンドリング
@@ -96,29 +98,29 @@ public class ApplicationRunnerImpl implements ApplicationRunner<BaseContext> {
         } finally {
 
             // 終了
-            if (context.getExecuteContext() != null) {
+            if (executeContext != null) {
 
-                context.getExecuteContext().setEnd(LocalDateTime.now());
+                executeContext.setEnd(LocalDateTime.now());
 
                 // 所用時間を設定
-                context.getExecuteContext().setDuration(
+                executeContext.setDuration(
                         Duration.between(
-                                context.getExecuteContext().getStart(),
-                                context.getExecuteContext().getEnd()));
+                                executeContext.getStart(),
+                                executeContext.getEnd()));
 
                 // レポート出力
                 if (!cmd.hasOption(Args.NOREPORT.getShortName())) {
-                    report(context);
+                    report(context, executeContext);
                 }
 
             }
 
         }
 
-        if (context.getExecuteContext() == null) {
+        if (executeContext == null) {
             return ExitCode.ERROR.getExitCode();
         }
-        return context.getExecuteContext().getExitCode().getExitCode();
+        return executeContext.getExitCode().getExitCode();
 
     }
 
@@ -159,8 +161,8 @@ public class ApplicationRunnerImpl implements ApplicationRunner<BaseContext> {
      *
      * @param context
      */
-    private void createResultDirectory(Context context) {
-        ExecutionFileUtils.createResultDirectory(context);
+    private void createResultDirectory(final Context context, final ExecuteContext executeContext) {
+        ExecutionFileUtils.createResultDirectory(context, executeContext);
     }
 
     /**
@@ -168,10 +170,10 @@ public class ApplicationRunnerImpl implements ApplicationRunner<BaseContext> {
      *
      * @param context
      */
-    private void report(final BaseContext context) {
+    private void report(final BaseContext context, final ExecuteContext executeContext) {
 
         // レポーターに処理を移譲
-        ScenarioReporterImpl.getInstance().allReport(context);
+        ScenarioReporterImpl.getInstance().allReport(context, executeContext);
 
     }
 }

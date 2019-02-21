@@ -1,6 +1,7 @@
 package com.zomu.t.epion.tropic.test.tool.core.scenario.runner.impl;
 
 import com.zomu.t.epion.tropic.test.tool.core.context.BaseContext;
+import com.zomu.t.epion.tropic.test.tool.core.context.execute.ExecuteContext;
 import com.zomu.t.epion.tropic.test.tool.core.context.execute.ExecuteFlow;
 import com.zomu.t.epion.tropic.test.tool.core.context.execute.ExecuteScenario;
 import com.zomu.t.epion.tropic.test.tool.core.exception.ScenarioNotFoundException;
@@ -33,7 +34,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * @author takashno
  */
 @Slf4j
-public class ScenarioRunnerImpl implements ScenarioRunner<BaseContext> {
+public class ScenarioRunnerImpl implements ScenarioRunner<BaseContext, ExecuteContext> {
 
     /**
      * {@inheritDoc}
@@ -41,7 +42,7 @@ public class ScenarioRunnerImpl implements ScenarioRunner<BaseContext> {
      * @param context コンテキスト
      */
     @Override
-    public void execute(BaseContext context) {
+    public void execute(final BaseContext context, final ExecuteContext executeContext) {
 
         // 実行シナリオの選択
         T3Base scenario = context.getOriginal().getScenarios().get(context.getOption().getTarget());
@@ -53,7 +54,7 @@ public class ScenarioRunnerImpl implements ScenarioRunner<BaseContext> {
         ExecuteScenario executeScenario = new ExecuteScenario();
         executeScenario.setInfo(scenario.getInfo());
         executeScenario.setFqsn(scenario.getInfo().getId());
-        context.getExecuteContext().getScenarios().add(executeScenario);
+        executeContext.getScenarios().add(executeScenario);
 
         try {
 
@@ -64,7 +65,7 @@ public class ScenarioRunnerImpl implements ScenarioRunner<BaseContext> {
             outputStartScenarioLog(context, executeScenario);
 
             // 結果ディレクトリの作成
-            ExecutionFileUtils.createScenarioResultDirectory(context, executeScenario);
+            ExecutionFileUtils.createScenarioResultDirectory(context, executeContext, executeScenario);
 
             // シナリオスコープの変数を設定
             settingScenarioVariables(context, executeScenario);
@@ -115,11 +116,12 @@ public class ScenarioRunnerImpl implements ScenarioRunner<BaseContext> {
                 FlowRunner runner = FlowRunnerResolverImpl.getInstance().getFlowRunner(flow.getType());
 
                 // バインド
-                bind(context, executeScenario, flow);
+                bind(context, executeContext, executeScenario, flow);
 
                 // 実行
                 flowResult = runner.execute(
                         context,
+                        executeContext,
                         executeScenario,
                         flow,
                         LoggerFactory.getLogger("FlowLog"));
@@ -161,7 +163,7 @@ public class ScenarioRunnerImpl implements ScenarioRunner<BaseContext> {
 
             // レポート出力
             if (!context.getOption().getNoreport()) {
-                report(context, executeScenario);
+                report(context, executeContext, executeScenario);
             }
         }
 
@@ -176,6 +178,7 @@ public class ScenarioRunnerImpl implements ScenarioRunner<BaseContext> {
      * @param flow
      */
     private void bind(final BaseContext context,
+                      final ExecuteContext executeContext,
                       final ExecuteScenario executeScenario,
                       final Flow flow) {
 
@@ -196,7 +199,7 @@ public class ScenarioRunnerImpl implements ScenarioRunner<BaseContext> {
         BindUtils.getInstance().bind(
                 flow,
                 profiles,
-                context.getExecuteContext().getGlobalVariables(),
+                executeContext.getGlobalVariables(),
                 executeScenario.getScenarioVariables());
     }
 
@@ -239,12 +242,12 @@ public class ScenarioRunnerImpl implements ScenarioRunner<BaseContext> {
      *
      * @param context
      */
-    private void createResultDirectory(final BaseContext context, final ExecuteScenario scenario) {
-        ExecutionFileUtils.createResultDirectory(context);
+    private void createResultDirectory(final BaseContext context, final ExecuteContext executeContext, final ExecuteScenario scenario) {
+        ExecutionFileUtils.createResultDirectory(context, executeContext);
     }
 
-    private void report(final BaseContext context, final ExecuteScenario scenario) {
-        ScenarioReporterImpl.getInstance().scenarioReport(context, scenario);
+    private void report(final BaseContext context, final ExecuteContext executeContext, final ExecuteScenario scenario) {
+        ScenarioReporterImpl.getInstance().scenarioReport(context, executeContext, scenario);
     }
 
 

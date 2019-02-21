@@ -30,11 +30,5 @@ public interface Context extends Serializable {
      */
     Original getOriginal();
 
-    /**
-     * 実行コンテキストを取得する.
-     *
-     * @return
-     */
-    ExecuteContext getExecuteContext();
 
 }

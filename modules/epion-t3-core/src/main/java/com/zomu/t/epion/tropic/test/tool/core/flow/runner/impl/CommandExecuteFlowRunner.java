@@ -2,6 +2,7 @@ package com.zomu.t.epion.tropic.test.tool.core.flow.runner.impl;
 
 import com.zomu.t.epion.tropic.test.tool.core.context.BaseContext;
 import com.zomu.t.epion.tropic.test.tool.core.context.execute.ExecuteCommand;
+import com.zomu.t.epion.tropic.test.tool.core.context.execute.ExecuteContext;
 import com.zomu.t.epion.tropic.test.tool.core.context.execute.ExecuteFlow;
 import com.zomu.t.epion.tropic.test.tool.core.context.execute.ExecuteScenario;
 import com.zomu.t.epion.tropic.test.tool.core.flow.model.CommandExecuteFlow;
@@ -16,6 +17,7 @@ import org.slf4j.Logger;
 public class CommandExecuteFlowRunner
         extends AbstractCommandExecuteFlowRunner<
         BaseContext,
+        ExecuteContext,
         ExecuteScenario,
         ExecuteFlow,
         ExecuteCommand,
@@ -28,6 +30,7 @@ public class CommandExecuteFlowRunner
     @Override
     protected FlowResult execute(
             final BaseContext context,
+            final ExecuteContext executeContext,
             final ExecuteScenario executeScenario,
             final ExecuteFlow executeFlow,
             final CommandExecuteFlow flow,
@@ -36,6 +39,7 @@ public class CommandExecuteFlowRunner
         // コマンド実行
         executeCommand(
                 context,
+                executeContext,
                 executeScenario,
                 executeFlow,
                 flow,

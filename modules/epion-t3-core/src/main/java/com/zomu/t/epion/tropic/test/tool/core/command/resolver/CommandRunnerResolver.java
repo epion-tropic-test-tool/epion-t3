@@ -1,7 +1,11 @@
 package com.zomu.t.epion.tropic.test.tool.core.command.resolver;
 
-import com.zomu.t.epion.tropic.test.tool.core.command.handler.CommandRunnerInvocationHandler;
 import com.zomu.t.epion.tropic.test.tool.core.command.runner.CommandRunner;
+import com.zomu.t.epion.tropic.test.tool.core.context.Context;
+import com.zomu.t.epion.tropic.test.tool.core.context.execute.ExecuteCommand;
+import com.zomu.t.epion.tropic.test.tool.core.context.execute.ExecuteContext;
+import com.zomu.t.epion.tropic.test.tool.core.context.execute.ExecuteFlow;
+import com.zomu.t.epion.tropic.test.tool.core.context.execute.ExecuteScenario;
 
 /**
  * コマンド実行クラスの解決処理インタフェース.
@@ -18,6 +22,12 @@ public interface CommandRunnerResolver {
      * @param commandId コマンドID
      * @return コマンド実行処理
      */
-    CommandRunnerInvocationHandler getCommandRunner(String commandId);
+    CommandRunner getCommandRunner(
+            String commandId,
+            Context context,
+            ExecuteContext executeContext,
+            ExecuteScenario executeScenario,
+            ExecuteFlow executeFlow,
+            ExecuteCommand executeCommand);
 
 }

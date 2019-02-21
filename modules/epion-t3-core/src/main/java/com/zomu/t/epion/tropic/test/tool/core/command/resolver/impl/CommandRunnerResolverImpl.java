@@ -2,6 +2,11 @@ package com.zomu.t.epion.tropic.test.tool.core.command.resolver.impl;
 
 import com.zomu.t.epion.tropic.test.tool.core.command.handler.CommandRunnerInvocationHandler;
 import com.zomu.t.epion.tropic.test.tool.core.command.resolver.CommandRunnerResolver;
+import com.zomu.t.epion.tropic.test.tool.core.context.Context;
+import com.zomu.t.epion.tropic.test.tool.core.context.execute.ExecuteContext;
+import com.zomu.t.epion.tropic.test.tool.core.context.execute.ExecuteCommand;
+import com.zomu.t.epion.tropic.test.tool.core.context.execute.ExecuteFlow;
+import com.zomu.t.epion.tropic.test.tool.core.context.execute.ExecuteScenario;
 import com.zomu.t.epion.tropic.test.tool.core.message.impl.BaseMessages;
 import com.zomu.t.epion.tropic.test.tool.core.context.CommandInfo;
 import com.zomu.t.epion.tropic.test.tool.core.exception.SystemException;
@@ -45,7 +50,13 @@ public final class CommandRunnerResolverImpl implements CommandRunnerResolver {
      * @return
      */
     @Override
-    public CommandRunnerInvocationHandler getCommandRunner(String commandId) {
+    public CommandRunner getCommandRunner(
+            String commandId,
+            Context context,
+            ExecuteContext executeContext,
+            ExecuteScenario executeScenario,
+            ExecuteFlow executeFlow,
+            ExecuteCommand executeCommand) {
 
         if (StringUtils.isEmpty(commandId)) {
             // 不正
@@ -69,13 +80,25 @@ public final class CommandRunnerResolverImpl implements CommandRunnerResolver {
 
         try {
             // インスタンス生成＋返却
+            CommandRunner commandRunner = CommandRunner.class.cast(runnerClass.newInstance());
             CommandRunnerInvocationHandler commandRunnerInvocationHandler =
-                    (CommandRunnerInvocationHandler)Proxy.newProxyInstance(
-                            CommandRunnerResolverImpl.class.getClassLoader(),
-                            new Class[]{CommandRunner.class},
-                            new CommandRunnerInvocationHandler(
-                                    CommandRunner.class.cast(runnerClass.newInstance())));
-            return commandRunnerInvocationHandler;
+                    new CommandRunnerInvocationHandler(
+                            commandRunner,
+                            context,
+                            executeContext,
+                            executeScenario,
+                            executeFlow,
+                            executeCommand);
+
+            // Proxyを作成
+            CommandRunner commandRunnerProxy = (CommandRunner) Proxy.newProxyInstance(
+                    CommandRunnerResolverImpl.class.getClassLoader(),
+                    new Class<?>[]{CommandRunner.class},
+                    commandRunnerInvocationHandler);
+
+            // 返却
+            return commandRunnerProxy;
+
         } catch (Exception e) {
             throw new SystemException(e, BaseMessages.BASE_ERR_0001);
         }

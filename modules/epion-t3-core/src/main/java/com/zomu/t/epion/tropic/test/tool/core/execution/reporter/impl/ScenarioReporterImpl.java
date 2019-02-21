@@ -1,5 +1,6 @@
 package com.zomu.t.epion.tropic.test.tool.core.execution.reporter.impl;
 
+import com.zomu.t.epion.tropic.test.tool.core.context.execute.ExecuteContext;
 import com.zomu.t.epion.tropic.test.tool.core.context.execute.ExecuteFlow;
 import com.zomu.t.epion.tropic.test.tool.core.execution.reporter.ScenarioReporter;
 import com.zomu.t.epion.tropic.test.tool.core.message.impl.BaseMessages;
@@ -94,13 +95,13 @@ public final class ScenarioReporterImpl implements ScenarioReporter {
      *
      * @param context コンテキスト
      */
-    public void allReport(final Context context) {
+    public void allReport(final Context context, final ExecuteContext executeContext) {
 
         try {
             org.thymeleaf.context.Context icontext = new org.thymeleaf.context.Context();
             Map<String, Object> variable = new HashMap<>();
 
-            variable.put("executeContext", context.getExecuteContext());
+            variable.put("executeContext", executeContext);
 
             // DateTimeUtilsを利用できるように設定
             variable.put("dateTimeUtils", DateTimeUtils.getInstance());
@@ -108,7 +109,7 @@ public final class ScenarioReporterImpl implements ScenarioReporter {
             icontext.setVariables(variable);
 
             // HTML変換＆出力
-            Files.write(ExecutionFileUtils.getAllReportPath(context),
+            Files.write(ExecutionFileUtils.getAllReportPath(context, executeContext),
                     templateEngine.process("report", icontext).getBytes(TEMPLATE_ENCODING));
 
             // YAML出力
@@ -125,11 +126,12 @@ public final class ScenarioReporterImpl implements ScenarioReporter {
     /**
      * シナリオ個別レポートを作成する.
      *
-     * @param context コンテキスト
+     * @param context         コンテキスト
      * @param executeScenario シナリオ実行情報
      */
     public void scenarioReport(
             final Context context,
+            final ExecuteContext executeContext,
             final ExecuteScenario executeScenario) {
 
         try {
@@ -174,7 +176,7 @@ public final class ScenarioReporterImpl implements ScenarioReporter {
 
             icontext.setVariables(variable);
 
-            Path scenarioReportPath = ExecutionFileUtils.getScenarioReportPath(context, executeScenario);
+            Path scenarioReportPath = ExecutionFileUtils.getScenarioReportPath(context, executeContext, executeScenario);
 
             // HTML変換＆出力
             Files.write(scenarioReportPath,

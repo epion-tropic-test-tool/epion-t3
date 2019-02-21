@@ -13,7 +13,7 @@ import java.util.UUID;
 /**
  *
  */
-public interface ExecuteContext extends Serializable {
+public interface XXExecuteContext extends Serializable {
 
     /**
      * @return

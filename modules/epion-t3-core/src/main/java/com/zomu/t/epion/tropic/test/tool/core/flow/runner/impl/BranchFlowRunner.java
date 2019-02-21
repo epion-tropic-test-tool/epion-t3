@@ -1,6 +1,7 @@
 package com.zomu.t.epion.tropic.test.tool.core.flow.runner.impl;
 
 import com.zomu.t.epion.tropic.test.tool.core.context.BaseContext;
+import com.zomu.t.epion.tropic.test.tool.core.context.execute.ExecuteContext;
 import com.zomu.t.epion.tropic.test.tool.core.context.execute.ExecuteFlow;
 import com.zomu.t.epion.tropic.test.tool.core.context.execute.ExecuteScenario;
 import com.zomu.t.epion.tropic.test.tool.core.exception.SystemException;
@@ -16,6 +17,7 @@ import javax.script.ScriptException;
 
 public class BranchFlowRunner extends AbstractFlowRunner<
         BaseContext,
+        ExecuteContext,
         ExecuteScenario,
         ExecuteFlow,
         BranchFlow> {
@@ -23,6 +25,7 @@ public class BranchFlowRunner extends AbstractFlowRunner<
     @Override
     protected FlowResult execute(
             final BaseContext context,
+            final ExecuteContext executeContext,
             final ExecuteScenario executeScenario,
             final ExecuteFlow executeFlow,
             final BranchFlow flow,
@@ -32,7 +35,7 @@ public class BranchFlowRunner extends AbstractFlowRunner<
         ScriptEngineManager factory = new ScriptEngineManager();
         ScriptEngine engine = factory.getEngineByName("JavaScript");
 
-        engine.put("global", context.getExecuteContext().getGlobalVariables());
+        engine.put("global", executeContext.getGlobalVariables());
         engine.put("scenario", executeScenario.getScenarioVariables());
         engine.put("flow", executeFlow.getFlowVariables());
 

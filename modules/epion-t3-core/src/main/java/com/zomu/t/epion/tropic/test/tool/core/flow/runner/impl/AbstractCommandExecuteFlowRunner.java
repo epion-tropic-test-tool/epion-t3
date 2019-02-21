@@ -1,7 +1,9 @@
 package com.zomu.t.epion.tropic.test.tool.core.flow.runner.impl;
 
 import com.zomu.t.epion.tropic.test.tool.core.context.Context;
+import com.zomu.t.epion.tropic.test.tool.core.context.XXExecuteContext;
 import com.zomu.t.epion.tropic.test.tool.core.context.execute.ExecuteCommand;
+import com.zomu.t.epion.tropic.test.tool.core.context.execute.ExecuteContext;
 import com.zomu.t.epion.tropic.test.tool.core.context.execute.ExecuteFlow;
 import com.zomu.t.epion.tropic.test.tool.core.context.execute.ExecuteScenario;
 import com.zomu.t.epion.tropic.test.tool.core.exception.CommandNotFoundException;
@@ -45,6 +47,7 @@ import java.util.concurrent.ConcurrentHashMap;
 @Slf4j
 public abstract class AbstractCommandExecuteFlowRunner
         <CONTEXT extends Context,
+                EXECUTE_CONTEXT extends ExecuteContext,
                 EXECUTE_SCENARIO extends ExecuteScenario,
                 EXECUTE_FLOW extends ExecuteFlow,
                 EXECUTE_COMMAND extends ExecuteCommand,
@@ -52,6 +55,7 @@ public abstract class AbstractCommandExecuteFlowRunner
                 ELEMENT_FLOW extends CommandExecuteFlow>
         extends AbstractFlowRunner<
         CONTEXT,
+        EXECUTE_CONTEXT,
         EXECUTE_SCENARIO,
         EXECUTE_FLOW,
         FLOW> {
@@ -61,6 +65,7 @@ public abstract class AbstractCommandExecuteFlowRunner
      */
     protected void executeCommand(
             final CONTEXT context,
+            final EXECUTE_CONTEXT executeContext,
             final EXECUTE_SCENARIO executeScenario,
             final EXECUTE_FLOW executeFlow,
             final ELEMENT_FLOW flow,
@@ -90,6 +95,7 @@ public abstract class AbstractCommandExecuteFlowRunner
             // プロセス開始ログ出力
             outputStartProcessLog(
                     context,
+                    executeContext,
                     executeScenario,
                     executeFlow,
                     executeCommand);
@@ -97,6 +103,7 @@ public abstract class AbstractCommandExecuteFlowRunner
             // シナリオスコープ変数の設定
             settingFlowVariables(
                     context,
+                    executeContext,
                     executeScenario,
                     executeFlow,
                     executeCommand);
@@ -105,18 +112,25 @@ public abstract class AbstractCommandExecuteFlowRunner
             String commandId = executeCommand.getCommand().getCommand();
 
             // コマンド実行クラスを解決
-            CommandRunner runner = CommandRunnerResolverImpl.getInstance().getCommandRunner(commandId);
+            CommandRunner runner = CommandRunnerResolverImpl.getInstance().getCommandRunner(
+                    commandId,
+                    context,
+                    executeContext,
+                    executeScenario,
+                    executeFlow,
+                    executeCommand);
 
             // 変数バインド
             bind(
                     context,
+                    executeContext,
                     executeScenario,
                     executeFlow,
                     executeCommand);
 
             // コマンド実行
             runner.execute(executeCommand.getCommand(),
-                    context.getExecuteContext().getGlobalVariables(),
+                    executeContext.getGlobalVariables(),
                     executeScenario.getScenarioVariables(),
                     executeFlow.getFlowVariables(),
                     executeScenario.getEvidences(),
@@ -148,6 +162,7 @@ public abstract class AbstractCommandExecuteFlowRunner
             // 掃除
             cleanFlowVariables(
                     context,
+                    executeContext,
                     executeScenario,
                     executeFlow,
                     executeCommand);
@@ -161,6 +176,7 @@ public abstract class AbstractCommandExecuteFlowRunner
             // プロセス終了ログ出力
             outputEndProcessLog(
                     context,
+                    executeContext,
                     executeScenario,
                     executeFlow,
                     executeCommand);
@@ -203,6 +219,7 @@ public abstract class AbstractCommandExecuteFlowRunner
      * @param executeCommand
      */
     private void bind(final CONTEXT context,
+                      final EXECUTE_CONTEXT executeContext,
                       final EXECUTE_SCENARIO executeScenario,
                       final EXECUTE_FLOW executeFlow,
                       final EXECUTE_COMMAND executeCommand) {
@@ -224,7 +241,7 @@ public abstract class AbstractCommandExecuteFlowRunner
         BindUtils.getInstance().bind(
                 executeCommand.getCommand(),
                 profiles,
-                context.getExecuteContext().getGlobalVariables(),
+                executeContext.getGlobalVariables(),
                 executeScenario.getScenarioVariables());
     }
 
@@ -237,6 +254,7 @@ public abstract class AbstractCommandExecuteFlowRunner
      * @param executeCommand
      */
     private void settingFlowVariables(final CONTEXT context,
+                                      final EXECUTE_CONTEXT executeContext,
                                       final EXECUTE_SCENARIO scenario,
                                       final EXECUTE_FLOW executeFlow,
                                       final EXECUTE_COMMAND executeCommand) {
@@ -263,6 +281,7 @@ public abstract class AbstractCommandExecuteFlowRunner
      */
     private void cleanFlowVariables(
             final CONTEXT context,
+            final EXECUTE_CONTEXT executeContext,
             final EXECUTE_SCENARIO scenario,
             final EXECUTE_FLOW executeFlow,
             final EXECUTE_COMMAND executeCommand) {
@@ -286,6 +305,7 @@ public abstract class AbstractCommandExecuteFlowRunner
      */
     protected void outputStartProcessLog(
             final CONTEXT context,
+            final EXECUTE_CONTEXT executeContext,
             final EXECUTE_SCENARIO executeScenario,
             final EXECUTE_FLOW executeFlow,
             final EXECUTE_COMMAND executeCommand) {
@@ -315,6 +335,7 @@ public abstract class AbstractCommandExecuteFlowRunner
      */
     protected void outputEndProcessLog(
             final CONTEXT context,
+            final EXECUTE_CONTEXT executeContext,
             final EXECUTE_SCENARIO executeScenario,
             final EXECUTE_FLOW executeFlow,
             final EXECUTE_COMMAND executeCommand) {

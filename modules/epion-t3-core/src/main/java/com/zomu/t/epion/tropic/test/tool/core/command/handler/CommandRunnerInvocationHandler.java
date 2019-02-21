@@ -2,9 +2,10 @@ package com.zomu.t.epion.tropic.test.tool.core.command.handler;
 
 import com.zomu.t.epion.tropic.test.tool.core.command.handler.listener.CommandListenerFactory;
 import com.zomu.t.epion.tropic.test.tool.core.command.runner.CommandRunner;
+import com.zomu.t.epion.tropic.test.tool.core.context.Context;
 import com.zomu.t.epion.tropic.test.tool.core.context.EvidenceInfo;
-import com.zomu.t.epion.tropic.test.tool.core.context.execute.ExecuteCommand;
 import com.zomu.t.epion.tropic.test.tool.core.context.execute.ExecuteContext;
+import com.zomu.t.epion.tropic.test.tool.core.context.execute.ExecuteCommand;
 import com.zomu.t.epion.tropic.test.tool.core.context.execute.ExecuteFlow;
 import com.zomu.t.epion.tropic.test.tool.core.context.execute.ExecuteScenario;
 
@@ -22,6 +23,8 @@ import java.util.Map;
 public class CommandRunnerInvocationHandler<COMMAND_RUNNER extends CommandRunner> implements InvocationHandler {
 
     private final COMMAND_RUNNER commandRunner;
+
+    private final Context context;
 
     private final ExecuteContext executeContext;
 
@@ -46,11 +49,13 @@ public class CommandRunnerInvocationHandler<COMMAND_RUNNER extends CommandRunner
      */
     public CommandRunnerInvocationHandler(
             COMMAND_RUNNER commandRunner,
+            Context context,
             ExecuteContext executeContext,
             ExecuteScenario executeScenario,
             ExecuteFlow executeFlow,
             ExecuteCommand executeCommand) {
         this.commandRunner = commandRunner;
+        this.context = context;
         this.executeContext = executeContext;
         this.executeScenario = executeScenario;
         this.executeFlow = executeFlow;

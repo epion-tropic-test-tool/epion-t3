@@ -1,6 +1,8 @@
 package com.zomu.t.epion.tropic.test.tool.core.flow.runner;
 
 import com.zomu.t.epion.tropic.test.tool.core.context.Context;
+import com.zomu.t.epion.tropic.test.tool.core.context.XXExecuteContext;
+import com.zomu.t.epion.tropic.test.tool.core.context.execute.ExecuteContext;
 import com.zomu.t.epion.tropic.test.tool.core.context.execute.ExecuteScenario;
 import com.zomu.t.epion.tropic.test.tool.core.flow.model.FlowResult;
 import com.zomu.t.epion.tropic.test.tool.core.model.scenario.Flow;
@@ -12,16 +14,21 @@ import org.slf4j.Logger;
  * @param <FLOW>
  * @author takashno
  */
-public interface FlowRunner<CONTEXT extends Context, SCENARIO extends ExecuteScenario, FLOW extends Flow> {
+public interface FlowRunner<
+        CONTEXT extends Context,
+        EXECUTE_CONTEXT extends ExecuteContext,
+        EXECUTE_SCENARIO extends ExecuteScenario,
+        FLOW extends Flow> {
 
     /**
-     * @param context
+     * @param executeContext
      * @param executeScenario
      * @param flow
      */
     FlowResult execute(
-            final CONTEXT context,
-            final SCENARIO executeScenario,
+            final CONTEXT executeContext,
+            final EXECUTE_CONTEXT execute_context,
+            final EXECUTE_SCENARIO executeScenario,
             final FLOW flow,
             final Logger logger);
 

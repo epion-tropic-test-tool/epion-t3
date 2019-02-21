@@ -1,5 +1,6 @@
 package com.zomu.t.epion.tropic.test.tool.core.context.execute;
 
+import com.zomu.t.epion.tropic.test.tool.core.context.XXExecuteContext;
 import com.zomu.t.epion.tropic.test.tool.core.type.ScenarioExecuteStatus;
 import com.zomu.t.epion.tropic.test.tool.core.type.ExitCode;
 import lombok.Getter;
@@ -21,7 +22,7 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 @Getter
 @Setter
-public class ExecuteContext implements com.zomu.t.epion.tropic.test.tool.core.context.ExecuteContext {
+public class ExecuteContext implements XXExecuteContext {
 
     /**
      * 実行ID
@@ -36,7 +37,7 @@ public class ExecuteContext implements com.zomu.t.epion.tropic.test.tool.core.co
     /**
      * 開始日時.
      */
-    private LocalDateTime start;
+    private LocalDateTime start = LocalDateTime.now();
 
     /**
      * 終了日時.

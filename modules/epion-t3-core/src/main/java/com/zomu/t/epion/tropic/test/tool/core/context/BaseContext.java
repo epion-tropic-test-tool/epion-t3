@@ -26,9 +26,6 @@ public class BaseContext implements Context {
     private final Original original = new Original();
 
     @Getter
-    private final ExecuteContext executeContext = new ExecuteContext();
-
-    @Getter
     private final Map<String, CommandInfo> customCommands = new ConcurrentHashMap<>();
 
     @Getter
