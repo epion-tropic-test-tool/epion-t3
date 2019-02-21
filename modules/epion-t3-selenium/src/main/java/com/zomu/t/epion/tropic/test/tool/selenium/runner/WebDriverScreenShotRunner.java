@@ -25,12 +25,9 @@ public class WebDriverScreenShotRunner extends AbstractCommandRunner<WebDriverSc
         WebDriver driver = WebDriver.class.cast(getGlobalScopeVariables().get(process.getRefWebDriver()));
         Screenshot screenshot = new AShot().takeScreenshot(driver);
 
-        getEvidenceDirectory(getScenarioScopeVariables());
+        getEvidenceDirectory();
 
-        Path evidence = getEvidencePath(
-                getScenarioScopeVariables(),
-                getFlowScopeVariables(),
-                "PNG");
+        Path evidence = getEvidencePath("PNG");
 
         // 保管したイメージを任意の場所に書き出す(1行)
         ImageIO.write(
@@ -39,6 +36,6 @@ public class WebDriverScreenShotRunner extends AbstractCommandRunner<WebDriverSc
                 evidence.toFile());
 
         // エビデンスを登録
-        registrationFileEvidence(getScenarioScopeVariables(), getFlowScopeVariables(), getEvidences(), evidence);
+        registrationFileEvidence(evidence);
     }
 }

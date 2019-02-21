@@ -31,11 +31,7 @@ public class StringConcatRunner extends AbstractCommandRunner<StringConcat> {
         List<String> rawValues = new ArrayList<>();
 
         for (String referenceVariable : process.getReferenceVariables()) {
-            Object variable = resolveVariables(
-                    getGlobalScopeVariables(),
-                    getScenarioScopeVariables(),
-                    getFlowScopeVariables(),
-                    referenceVariable);
+            Object variable = resolveVariables(referenceVariable);
             if (variable != null) {
                 rawValues.add(variable.toString());
             }

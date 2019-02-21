@@ -101,7 +101,7 @@ public class ExecuteRestApiRunner extends AbstractCommandRunner<ExecuteRestApi> 
         logger.info("Body:{}", response.body().string());
 
         // エビデンス登録
-        registrationObjectEvidence(getScenarioScopeVariables(), getFlowScopeVariables(), getEvidences(), result);
+        registrationObjectEvidence(result);
 
     }
 }

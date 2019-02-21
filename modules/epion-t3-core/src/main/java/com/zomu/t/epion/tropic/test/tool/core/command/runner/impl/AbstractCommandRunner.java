@@ -69,16 +69,10 @@ public abstract class AbstractCommandRunner<
     /**
      * 変数を解決する.
      *
-     * @param globalScopeVariables   グローバル変数
-     * @param scenarioScopeVariables シナリオ変数
-     * @param flowScopeVariables     フロー変数
-     * @param referenceVariable      参照変数
+     * @param referenceVariable 参照変数
      * @return 解決した値
      */
     protected Object resolveVariables(
-            final Map<String, Object> globalScopeVariables,
-            final Map<String, Object> scenarioScopeVariables,
-            final Map<String, Object> flowScopeVariables,
             final String referenceVariable) {
 
         Matcher m = EXTRACT_PATTERN.matcher(referenceVariable);
@@ -90,11 +84,11 @@ public abstract class AbstractCommandRunner<
                     case FIX:
                         return m.group(2);
                     case GLOBAL:
-                        return globalScopeVariables.get(m.group(2));
+                        return executeContext.getGlobalVariables().get(m.group(2));
                     case SCENARIO:
-                        return scenarioScopeVariables.get(m.group(2));
+                        return executeScenario.getScenarioVariables().get(m.group(2));
                     case FLOW:
-                        return flowScopeVariables.get(m.group(2));
+                        return executeFlow.getFlowVariables().get(m.group(2));
                     default:
                         throw new SystemException(CoreMessages.CORE_ERR_0005, m.group(1));
                 }
@@ -109,44 +103,40 @@ public abstract class AbstractCommandRunner<
     /**
      * シナリオ格納ディレクトリを取得する.
      *
-     * @param scenarioScopeVariables
      * @return
      */
-    protected String getScenarioDirectory(final Map<String, Object> scenarioScopeVariables) {
-        return scenarioScopeVariables
+    protected String getScenarioDirectory() {
+        return executeScenario.getScenarioVariables()
                 .get(ScenarioScopeVariables.SCENARIO_DIR.getName()).toString();
     }
 
     /**
      * シナリオ格納ディレクトリを取得する.
      *
-     * @param scenarioScopeVariables
      * @return
      */
-    protected Path getScenarioDirectoryPath(final Map<String, Object> scenarioScopeVariables) {
-        return Path.class.cast(scenarioScopeVariables
+    protected Path getScenarioDirectoryPath() {
+        return Path.class.cast(executeScenario.getScenarioVariables()
                 .get(ScenarioScopeVariables.SCENARIO_DIR.getName()));
     }
 
     /**
      * エビデンス格納ディレクトリを取得する.
      *
-     * @param scenarioScopeVariables
      * @return
      */
-    protected String getEvidenceDirectory(final Map<String, Object> scenarioScopeVariables) {
-        return scenarioScopeVariables
+    protected String getEvidenceDirectory() {
+        return executeScenario.getScenarioVariables()
                 .get(ScenarioScopeVariables.EVIDENCE_DIR.getName()).toString();
     }
 
     /**
      * エビデンス格納ディレクトリを取得する.
      *
-     * @param scenarioScopeVariables
      * @return
      */
-    protected Path getEvidenceDirectoryPath(final Map<String, Object> scenarioScopeVariables) {
-        return Path.class.cast(scenarioScopeVariables
+    protected Path getEvidenceDirectoryPath() {
+        return Path.class.cast(executeScenario.getScenarioVariables()
                 .get(ScenarioScopeVariables.EVIDENCE_DIR.getName()));
     }
 
@@ -154,117 +144,91 @@ public abstract class AbstractCommandRunner<
      * エビデンスのパスを取得する.
      * ファイルの拡張子を指定することで、Runnerが保存すべきエビデンスの場所を取得するために利用する.
      *
-     * @param scenarioScopeVariables
-     * @param flowScopeVariables
      * @param fileExtension
      * @return
      */
     protected Path getEvidencePath(
-            final Map<String, Object> scenarioScopeVariables,
-            final Map<String, Object> flowScopeVariables,
             String fileExtension) {
         return Paths.get(
-                getEvidenceDirectoryPath(scenarioScopeVariables).toString(),
-                getEvidenceBaseName(flowScopeVariables) + "." + fileExtension);
+                getEvidenceDirectoryPath().toString(),
+                getEvidenceBaseName() + "." + fileExtension);
     }
 
     /**
      * ファイルエビデンスを登録する.
      *
-     * @param scenarioScopeVariables
-     * @param flowScopeVariables
-     * @param evidences
      * @param evidence
      */
     protected void registrationFileEvidence(
-            final Map<String, Object> scenarioScopeVariables,
-            final Map<String, Object> flowScopeVariables,
-            final Map<String, EvidenceInfo> evidences,
             Path evidence) {
         FileEvidenceInfo evidenceInfo = new FileEvidenceInfo();
-        evidenceInfo.setFqsn(scenarioScopeVariables.get(ScenarioScopeVariables.CURRENT_SCENARIO.getName()).toString());
-        evidenceInfo.setFqpn(flowScopeVariables.get(FlowScopeVariables.CURRENT_COMMAND.getName()).toString());
-        evidenceInfo.setName(getEvidenceBaseName(flowScopeVariables));
-        evidenceInfo.setExecuteProcessId(flowScopeVariables.get(FlowScopeVariables.CURRENT_COMMAND_EXECUTE_ID.getName()).toString());
+        evidenceInfo.setFqsn(executeScenario.getScenarioVariables().get(ScenarioScopeVariables.CURRENT_SCENARIO.getName()).toString());
+        evidenceInfo.setFqpn(executeFlow.getFlowVariables().get(FlowScopeVariables.CURRENT_COMMAND.getName()).toString());
+        evidenceInfo.setName(getEvidenceBaseName());
+        evidenceInfo.setExecuteProcessId(executeFlow.getFlowVariables().get(FlowScopeVariables.CURRENT_COMMAND_EXECUTE_ID.getName()).toString());
         evidenceInfo.setPath(evidence);
-        evidences.put(getEvidenceBaseName(flowScopeVariables), evidenceInfo);
+        executeScenario.getEvidences().put(getEvidenceBaseName(), evidenceInfo);
     }
 
     /**
      * 名前を明示的に指定してファイルエビデンスを登録する.
      *
-     * @param scenarioScopeVariables
-     * @param evidences
      * @param evidence
      * @param name
      */
     protected void registrationFileEvidenceWithName(
-            final Map<String, Object> scenarioScopeVariables,
-            final Map<String, EvidenceInfo> evidences,
             Path evidence,
             String name) {
         FileEvidenceInfo evidenceInfo = new FileEvidenceInfo();
-        evidenceInfo.setFqsn(scenarioScopeVariables.get(ScenarioScopeVariables.CURRENT_SCENARIO.getName()).toString());
-        evidenceInfo.setFqpn(scenarioScopeVariables.get(FlowScopeVariables.CURRENT_COMMAND.getName()).toString());
+        evidenceInfo.setFqsn(executeScenario.getScenarioVariables().get(ScenarioScopeVariables.CURRENT_SCENARIO.getName()).toString());
+        evidenceInfo.setFqpn(executeScenario.getScenarioVariables().get(FlowScopeVariables.CURRENT_COMMAND.getName()).toString());
         evidenceInfo.setName(name);
         evidenceInfo.setPath(evidence);
-        evidences.put(name, evidenceInfo);
+        executeScenario.getEvidences().put(name, evidenceInfo);
     }
 
     /**
      * オブジェクトエビデンスを登録する.
      *
-     * @param scenarioScopeVariables
-     * @param flowScopeVariables
-     * @param evidences
      * @param evidence
      */
     protected void registrationObjectEvidence(
-            final Map<String, Object> scenarioScopeVariables,
-            final Map<String, Object> flowScopeVariables,
-            final Map<String, EvidenceInfo> evidences,
             Object evidence) {
         ObjectEvidenceInfo evidenceInfo = new ObjectEvidenceInfo();
         // Full Query Scenario Name として現在実行シナリオ名を設定
-        evidenceInfo.setFqsn(scenarioScopeVariables.get(ScenarioScopeVariables.CURRENT_SCENARIO.getName()).toString());
+        evidenceInfo.setFqsn(executeScenario.getScenarioVariables().get(ScenarioScopeVariables.CURRENT_SCENARIO.getName()).toString());
         // Full Query Process Name として現在実行プロセス名を設定
-        evidenceInfo.setFqpn(flowScopeVariables.get(FlowScopeVariables.CURRENT_COMMAND.getName()).toString());
-        evidenceInfo.setName(getEvidenceBaseName(flowScopeVariables));
-        evidenceInfo.setExecuteProcessId(flowScopeVariables.get(FlowScopeVariables.CURRENT_COMMAND_EXECUTE_ID.getName()).toString());
+        evidenceInfo.setFqpn(executeFlow.getFlowVariables().get(FlowScopeVariables.CURRENT_COMMAND.getName()).toString());
+        evidenceInfo.setName(getEvidenceBaseName());
+        evidenceInfo.setExecuteProcessId(executeFlow.getFlowVariables().get(FlowScopeVariables.CURRENT_COMMAND_EXECUTE_ID.getName()).toString());
         evidenceInfo.setObject(evidence);
-        evidences.put(getEvidenceBaseName(flowScopeVariables), evidenceInfo);
+        executeScenario.getEvidences().put(getEvidenceBaseName(), evidenceInfo);
     }
 
     /**
      * 名前を明示的に指定してオブジェクトエビデンスを登録する.
      *
-     * @param scenarioScopeVariables
-     * @param evidences
      * @param evidence
      * @param name
      */
     protected void registrationObjectEvidenceWithName(
-            final Map<String, Object> scenarioScopeVariables,
-            final Map<String, EvidenceInfo> evidences,
             Object evidence,
             String name) {
         ObjectEvidenceInfo evidenceInfo = new ObjectEvidenceInfo();
-        evidenceInfo.setFqsn(scenarioScopeVariables.get(ScenarioScopeVariables.CURRENT_SCENARIO.getName()).toString());
-        evidenceInfo.setFqpn(scenarioScopeVariables.get(FlowScopeVariables.CURRENT_COMMAND.getName()).toString());
+        evidenceInfo.setFqsn(executeScenario.getScenarioVariables().get(ScenarioScopeVariables.CURRENT_SCENARIO.getName()).toString());
+        evidenceInfo.setFqpn(executeScenario.getScenarioVariables().get(FlowScopeVariables.CURRENT_COMMAND.getName()).toString());
         evidenceInfo.setName(name);
         evidenceInfo.setObject(evidence);
-        evidences.put(name, evidenceInfo);
+        executeScenario.getEvidences().put(name, evidenceInfo);
     }
 
 
     /**
      * エビデンス名を取得する.
      *
-     * @param flowScopeVariables フロー
      * @return
      */
-    protected String getEvidenceBaseName(
-            final Map<String, Object> flowScopeVariables) {
-        return flowScopeVariables.get(FlowScopeVariables.CURRENT_COMMAND.getName()).toString() + "_evidence";
+    protected String getEvidenceBaseName() {
+        return executeFlow.getFlowVariables().get(FlowScopeVariables.CURRENT_COMMAND.getName()).toString() + "_evidence";
     }
 }
