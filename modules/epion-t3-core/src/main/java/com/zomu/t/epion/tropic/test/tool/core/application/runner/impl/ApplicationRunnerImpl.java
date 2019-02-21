@@ -88,9 +88,9 @@ public class ApplicationRunnerImpl implements ApplicationRunner<BaseContext> {
         } catch (Throwable t) {
 
             // シナリオ失敗
-            if (executeContext != null) {
+            //if (executeContext != null) {
                 executeContext.setStatus(ScenarioExecuteStatus.FAIL);
-            }
+            //}
 
             // 例外ハンドリング
             handleGlobalException(context, t);
@@ -98,7 +98,7 @@ public class ApplicationRunnerImpl implements ApplicationRunner<BaseContext> {
         } finally {
 
             // 終了
-            if (executeContext != null) {
+            //if (executeContext != null) {
 
                 executeContext.setEnd(LocalDateTime.now());
 
@@ -113,13 +113,13 @@ public class ApplicationRunnerImpl implements ApplicationRunner<BaseContext> {
                     report(context, executeContext);
                 }
 
-            }
+            //}
 
         }
 
-        if (executeContext == null) {
-            return ExitCode.ERROR.getExitCode();
-        }
+        //if (executeContext == null) {
+        //    return ExitCode.ERROR.getExitCode();
+        //}
         return executeContext.getExitCode().getExitCode();
 
     }
