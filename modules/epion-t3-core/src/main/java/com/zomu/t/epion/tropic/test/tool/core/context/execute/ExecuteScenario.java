@@ -100,7 +100,7 @@ public class ExecuteScenario implements Serializable {
      * FlowIDをベースでエビデンスを逆引きする場合、繰り返しFlowに対応するにはリストで保持するほかない.
      * エビデンス参照を行う場合には、直近のFlowIDのエビデンスを参照することになる.
      */
-    Map<String, List<String>> flowId2EvidenceId = new ConcurrentHashMap<>();
+    Map<String, LinkedList<String>> flowId2EvidenceId = new ConcurrentHashMap<>();
 
     /**
      * 実行結果ディレクトリパス.

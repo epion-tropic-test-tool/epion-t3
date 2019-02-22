@@ -14,11 +14,14 @@ import com.zomu.t.epion.tropic.test.tool.core.model.scenario.Command;
 import com.zomu.t.epion.tropic.test.tool.core.type.FlowScopeVariables;
 import com.zomu.t.epion.tropic.test.tool.core.type.ReferenceVariableType;
 import com.zomu.t.epion.tropic.test.tool.core.type.ScenarioScopeVariables;
+import org.apache.commons.lang3.SerializationUtils;
 import org.slf4j.Logger;
 
+import java.io.Serializable;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.Map;
 import java.util.regex.Matcher;
 
@@ -173,7 +176,7 @@ public abstract class AbstractCommandRunner<
         if (executeScenario.getFlowId2EvidenceId().containsKey(executeFlow.getFlow().getId())) {
             executeScenario.getFlowId2EvidenceId().get(executeFlow.getFlow().getId()).add(evidenceId);
         } else {
-            executeScenario.getFlowId2EvidenceId().put(executeFlow.getFlow().getId(), new ArrayList<>());
+            executeScenario.getFlowId2EvidenceId().put(executeFlow.getFlow().getId(), new LinkedList<>());
             executeScenario.getFlowId2EvidenceId().get(executeFlow.getFlow().getId()).add(evidenceId);
         }
     }
@@ -198,8 +201,35 @@ public abstract class AbstractCommandRunner<
         if (executeScenario.getFlowId2EvidenceId().containsKey(executeFlow.getFlow().getId())) {
             executeScenario.getFlowId2EvidenceId().get(executeFlow.getFlow().getId()).add(evidenceId);
         } else {
-            executeScenario.getFlowId2EvidenceId().put(executeFlow.getFlow().getId(), new ArrayList<>());
+            executeScenario.getFlowId2EvidenceId().put(executeFlow.getFlow().getId(), new LinkedList<>());
             executeScenario.getFlowId2EvidenceId().get(executeFlow.getFlow().getId()).add(evidenceId);
+        }
+    }
+
+    /**
+     * FlowIDからオブジェクトエビデンスを参照.
+     * このオブジェクトはクローンであるためエビデンス原本ではない.
+     *
+     * @param flowId
+     * @param <O>
+     * @return
+     */
+    protected <O extends Serializable> O referObjectEvidence(String flowId) {
+        if (executeScenario.getFlowId2EvidenceId().containsKey(flowId)) {
+            String evidenceId = executeScenario.getFlowId2EvidenceId().get(flowId).getLast();
+            EvidenceInfo evidenceInfo = executeScenario.getEvidences().get(evidenceId);
+            if (evidenceInfo != null
+                    && ObjectEvidenceInfo.class.isAssignableFrom(evidenceInfo.getClass())) {
+                ObjectEvidenceInfo objectEvidenceInfo = ObjectEvidenceInfo.class.cast(evidenceInfo);
+                O object = (O) objectEvidenceInfo.getObject();
+                return SerializationUtils.clone(object);
+            } else {
+                // TODO: Error Process
+                throw new RuntimeException();
+            }
+        } else {
+            // TODO: Error Process
+            throw new RuntimeException();
         }
     }
 
