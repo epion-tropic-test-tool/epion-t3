@@ -23,14 +23,17 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+
 /**
  * @param <EXECUTE_CONTEXT>
  * @param <EXECUTE_SCENARIO>
+ * @param <EXECUTE_FLOW>
  * @param <FLOW>
  */
 @Slf4j
@@ -58,7 +61,13 @@ public abstract class AbstractFlowRunner<
         executeFlow.setFlow(flow);
 
         // Flow実行開始時間を設定
-        executeFlow.setStart(LocalDateTime.now());
+        LocalDateTime start = LocalDateTime.now();
+        executeFlow.setStart(start);
+        String startTimeKey = flow.getId() + executeScenario.FLOW_START_VARIABLE_SUFFIX;
+        if (!executeScenario.getScenarioVariables().containsKey(startTimeKey)) {
+            executeScenario.getScenarioVariables().put(startTimeKey, new ArrayList<>());
+        }
+        ((List) executeScenario.getScenarioVariables().get(startTimeKey)).add(start);
 
         FlowResult flowResult = null;
 
@@ -129,7 +138,14 @@ public abstract class AbstractFlowRunner<
             cleanFlowVariables(context, executeContext, executeScenario, executeFlow);
 
             // シナリオ実行終了時間を設定
-            executeFlow.setEnd(LocalDateTime.now());
+            LocalDateTime end = LocalDateTime.now();
+            executeFlow.setEnd(end);
+            String endTimeKey = flow.getId() + executeScenario.FLOW_END_VARIABLE_SUFFIX;
+            if (!executeScenario.getScenarioVariables().containsKey(endTimeKey)) {
+                executeScenario.getScenarioVariables().put(endTimeKey, new ArrayList<>());
+            }
+            ((List) executeScenario.getScenarioVariables().get(endTimeKey)).add(end);
+
 
             // 所用時間を設定
             executeFlow.setDuration(Duration.between(

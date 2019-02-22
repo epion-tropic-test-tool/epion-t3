@@ -28,6 +28,16 @@ public class ExecuteScenario implements Serializable {
     private static final long serialVersionUID = 1L;
 
     /**
+     * シナリオ中のFlowの開始時間を参照するキーの接尾辞.
+     */
+    public static final String FLOW_START_VARIABLE_SUFFIX = "_START_TIME";
+
+    /**
+     * シナリオ中のFlowの終了時間を参照するキーの接尾辞.
+     */
+    public static final String FLOW_END_VARIABLE_SUFFIX = "_END_TIME";
+
+    /**
      * 実行フローID
      */
     private UUID executeScenarioId = UUID.randomUUID();
