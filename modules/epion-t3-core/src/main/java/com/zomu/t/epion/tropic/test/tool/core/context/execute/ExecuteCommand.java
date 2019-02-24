@@ -1,5 +1,6 @@
 package com.zomu.t.epion.tropic.test.tool.core.context.execute;
 
+import com.zomu.t.epion.tropic.test.tool.core.command.model.CommandResult;
 import com.zomu.t.epion.tropic.test.tool.core.holder.CommandLog;
 import com.zomu.t.epion.tropic.test.tool.core.type.CommandStatus;
 import com.zomu.t.epion.tropic.test.tool.core.model.scenario.Command;
@@ -17,11 +18,11 @@ public class ExecuteCommand extends ExecuteElement {
      * デフォルトシリアルバージョンUID.
      */
     private static final long serialVersionUID = 1L;
-    
+
     /**
-     * ステータス.
+     * コマンド結果.
      */
-    private CommandStatus status = CommandStatus.WAIT;
+    private CommandResult commandResult;
 
     /**
      * 対象コマンド.

@@ -5,6 +5,7 @@ import com.zomu.t.epion.tropic.test.tool.core.context.Context;
 import com.zomu.t.epion.tropic.test.tool.core.context.EvidenceInfo;
 import com.zomu.t.epion.tropic.test.tool.core.context.FileEvidenceInfo;
 import com.zomu.t.epion.tropic.test.tool.core.context.ObjectEvidenceInfo;
+import com.zomu.t.epion.tropic.test.tool.core.context.execute.ExecuteCommand;
 import com.zomu.t.epion.tropic.test.tool.core.context.execute.ExecuteContext;
 import com.zomu.t.epion.tropic.test.tool.core.context.execute.ExecuteFlow;
 import com.zomu.t.epion.tropic.test.tool.core.context.execute.ExecuteScenario;
@@ -26,13 +27,14 @@ import java.util.Map;
 import java.util.regex.Matcher;
 
 public abstract class AbstractCommandRunner<
-        COMMAND extends Command> implements CommandRunner<COMMAND, Context, ExecuteContext, ExecuteScenario, ExecuteFlow> {
+        COMMAND extends Command> implements CommandRunner<COMMAND, Context, ExecuteContext, ExecuteScenario, ExecuteFlow, ExecuteCommand> {
 
     private COMMAND command;
     private Context context;
     private ExecuteContext executeContext;
     private ExecuteScenario executeScenario;
     private ExecuteFlow executeFlow;
+    private ExecuteCommand executeCommand;
 
     @Override
     public void execute(
@@ -41,6 +43,7 @@ public abstract class AbstractCommandRunner<
             final ExecuteContext executeContext,
             final ExecuteScenario executeScenario,
             final ExecuteFlow executeFlow,
+            final ExecuteCommand executeCommand,
             final Logger logger) throws Exception {
 
         this.command = command;
@@ -48,6 +51,7 @@ public abstract class AbstractCommandRunner<
         this.executeContext = executeContext;
         this.executeScenario = executeScenario;
         this.executeFlow = executeFlow;
+        this.executeCommand = executeCommand;
 
         // コマンド実行
         execute(command, logger);
@@ -178,6 +182,30 @@ public abstract class AbstractCommandRunner<
         } else {
             executeScenario.getFlowId2EvidenceId().put(executeFlow.getFlow().getId(), new LinkedList<>());
             executeScenario.getFlowId2EvidenceId().get(executeFlow.getFlow().getId()).add(evidenceId);
+        }
+    }
+
+    /**
+     * FlowIDからファイルエビデンスのPathを参照.
+     *
+     * @param flowId
+     * @return
+     */
+    protected Path referFileEvidence(String flowId) {
+        if (executeScenario.getFlowId2EvidenceId().containsKey(flowId)) {
+            String evidenceId = executeScenario.getFlowId2EvidenceId().get(flowId).getLast();
+            EvidenceInfo evidenceInfo = executeScenario.getEvidences().get(evidenceId);
+            if (evidenceInfo != null
+                    && ObjectEvidenceInfo.class.isAssignableFrom(evidenceInfo.getClass())) {
+                FileEvidenceInfo objectEvidenceInfo = FileEvidenceInfo.class.cast(evidenceInfo);
+                return objectEvidenceInfo.getPath();
+            } else {
+                // TODO: Error Process
+                throw new RuntimeException();
+            }
+        } else {
+            // TODO: Error Process
+            throw new RuntimeException();
         }
     }
 

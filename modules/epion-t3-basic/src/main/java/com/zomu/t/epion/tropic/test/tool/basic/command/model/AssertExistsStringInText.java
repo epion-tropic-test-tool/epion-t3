@@ -13,6 +13,15 @@ import lombok.Setter;
 @CommandDefinition(id = "AssertExistsStringInText", runner = AssertExistsStringInTextRunner.class)
 public class AssertExistsStringInText extends Command {
 
+    /**
+     * 正規表現として扱うかどうか.
+     */
+    private Boolean regexp;
+
+    /**
+     * 読み込みエンコーディング.
+     */
+    private String encoding;
 
 
 }

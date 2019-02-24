@@ -8,7 +8,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * T3のコマンドを表すアノテーション.
+ * コマンドを表すアノテーション.
  *
  * @author takashno
  */
