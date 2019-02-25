@@ -9,6 +9,8 @@ import com.zomu.t.epion.tropic.test.tool.core.exception.SystemException;
 import com.zomu.t.epion.tropic.test.tool.core.flow.model.CommandExecuteFlow;
 import com.zomu.t.epion.tropic.test.tool.core.flow.model.FlowResult;
 import com.zomu.t.epion.tropic.test.tool.core.flow.model.ReadTextFileIterateFlow;
+import com.zomu.t.epion.tropic.test.tool.core.flow.resolver.impl.FlowRunnerResolverImpl;
+import com.zomu.t.epion.tropic.test.tool.core.flow.runner.FlowRunner;
 import com.zomu.t.epion.tropic.test.tool.core.model.scenario.Flow;
 import org.slf4j.Logger;
 
@@ -25,13 +27,11 @@ import java.util.List;
  * @author takashno
  */
 public class ReadFileIterateFlowRunner
-        extends AbstractCommandExecuteFlowRunner<
+        extends AbstractFlowRunner<
         ExecuteContext,
         ExecuteScenario,
         ExecuteFlow,
-        ExecuteCommand,
-        ReadTextFileIterateFlow,
-        CommandExecuteFlow> {
+        ReadTextFileIterateFlow> {
 
     /**
      * {@inheritDoc}
@@ -74,16 +74,13 @@ public class ReadFileIterateFlowRunner
             }
 
             for (Flow child : flow.getChildren()) {
-                if (CommandExecuteFlow.class.isAssignableFrom(child.getClass())) {
-                    executeCommand(
-                            context,
-                            executeContext,
-                            executeScenario,
-                            executeFlow,
-                            (CommandExecuteFlow) child,
-                            logger
-                    );
-                }
+
+                FlowRunner flowRunner = FlowRunnerResolverImpl.getInstance().getFlowRunner(child.getType());
+                flowRunner.execute(context,
+                        executeContext,
+                        executeScenario,
+                        child,
+                        logger);
             }
         }
 

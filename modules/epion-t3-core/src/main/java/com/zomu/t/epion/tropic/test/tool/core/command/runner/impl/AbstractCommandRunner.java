@@ -62,14 +62,17 @@ public abstract class AbstractCommandRunner<
 
             result = execute(command, logger);
 
-            // プロセス成功
-            executeCommand.setCommandResult(result);
-
-        } catch (Exception e) {
+        } catch (Throwable t) {
 
             result = new CommandResult();
             result.setStatus(CommandStatus.FAIL);
 
+            throw t;
+
+        } finally {
+
+            // コマンド結果を設定
+            executeCommand.setCommandResult(result);
 
         }
 

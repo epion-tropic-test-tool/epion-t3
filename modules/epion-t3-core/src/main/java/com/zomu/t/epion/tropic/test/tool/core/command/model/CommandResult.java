@@ -29,6 +29,11 @@ public class CommandResult implements Serializable {
     private CommandStatus status = CommandStatus.WAIT;
 
     /**
+     * メッセージ.
+     */
+    private String message;
+
+    /**
      * デフォルト状態のFlow結果オブジェクトを取得する.
      *
      * @return {@link FlowResult}

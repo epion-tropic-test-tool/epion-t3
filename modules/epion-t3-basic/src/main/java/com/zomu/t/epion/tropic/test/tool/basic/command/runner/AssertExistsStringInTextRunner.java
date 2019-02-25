@@ -2,9 +2,16 @@ package com.zomu.t.epion.tropic.test.tool.basic.command.runner;
 
 import com.zomu.t.epion.tropic.test.tool.basic.command.model.AssertExistsStringInText;
 import com.zomu.t.epion.tropic.test.tool.basic.command.model.StringConcat;
+import com.zomu.t.epion.tropic.test.tool.basic.messages.BasicMessages;
+import com.zomu.t.epion.tropic.test.tool.core.command.model.AssertCommandResult;
+import com.zomu.t.epion.tropic.test.tool.core.command.model.CommandResult;
 import com.zomu.t.epion.tropic.test.tool.core.command.runner.CommandRunner;
 import com.zomu.t.epion.tropic.test.tool.core.command.runner.impl.AbstractCommandRunner;
 import com.zomu.t.epion.tropic.test.tool.core.context.EvidenceInfo;
+import com.zomu.t.epion.tropic.test.tool.core.message.MessageManager;
+import com.zomu.t.epion.tropic.test.tool.core.message.MessageResolver;
+import com.zomu.t.epion.tropic.test.tool.core.type.AssertStatus;
+import com.zomu.t.epion.tropic.test.tool.core.type.CommandStatus;
 import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 
@@ -18,10 +25,11 @@ import java.util.regex.Pattern;
 public class AssertExistsStringInTextRunner extends AbstractCommandRunner<AssertExistsStringInText> {
 
     @Override
-    public void execute(
+    public CommandResult execute(
             AssertExistsStringInText command,
             Logger logger) throws Exception {
 
+        AssertCommandResult commandResult = new AssertCommandResult();
 
         Path targetFile = referFileEvidence(command.getTarget());
 
@@ -39,63 +47,21 @@ public class AssertExistsStringInTextRunner extends AbstractCommandRunner<Assert
             }
 
             if (!existsFlg) {
-                RuntimeException e = new RuntimeException("指定パターンに合致する文字列が含まれていません。。エビデンスID:["
-                        + existsStrInLogAssert.getTargetId() + "] ファイル:[" + et.getFile().getPath()
-                        + "] 指定パターン:[" + command.getValue() + "]");
-                context.setTh(e);
-                throw e;
+                commandResult.setMessage(MessageManager.getInstance().getMessage(
+                        BasicMessages.BASIC_ERR_9002, command.getValue()));
+                commandResult.setAssertStatus(AssertStatus.ERROR);
+            } else {
+                commandResult.setMessage(MessageManager.getInstance().getMessage(
+                        BasicMessages.BASIC_INF_0001, command.getValue()));
+                commandResult.setAssertStatus(AssertStatus.SUCCESS);
             }
+
+            // TODO：どう扱う？
+            commandResult.setStatus(CommandStatus.FAIL);
 
         } catch (IOException e) {
-            context.setTh(e);
             throw new RuntimeException(e);
         }
-
-    } else
-
-    {
-
-        boolean existsFlg = false;
-
-        List<String> lineList = null;
-        try {
-            lineList = FileUtils.readLines(et.getFile(), getCharset(et));
-            for (String line : lineList) {
-                if (StringUtils.contains(line, existsStrInLogAssert.getPattern())) {
-                    existsFlg = true;
-                    break;
-                }
-            }
-
-            if (!existsFlg) {
-                RuntimeException e = new RuntimeException("指定パターンに合致する文字列が含まれていません。。エビデンスID:["
-                        + existsStrInLogAssert.getTargetId() + "] ファイル:[" + et.getFile().getPath()
-                        + "] 指定パターン:[" + existsStrInLogAssert.getPattern() + "]");
-                context.setTh(e);
-                throw e;
-            }
-
-        } catch (IOException e) {
-            context.setTh(e);
-            throw new RuntimeException(e);
-        }
-
+        return commandResult;
     }
-
-			LOGGER.info("アサート結果：OK");
-
-} else{
-        if(context.getMode()==ModeType.ASSERT_EXECUTE){
-        LOGGER.info("※");
-        LOGGER.info("※ 本アサートはエビデンスとの一致を取るアサートのためアサートモードでは実施できません！");
-        LOGGER.info("※");
-        }else{
-        RuntimeException e=new RuntimeException(
-        "対象のエビデンスファイルが存在しません。エビデンスID:["+existsStrInLogAssert.getTargetId()+"]");
-        context.setTh(e);
-        throw e;
-        }
-        }
-
-        }
-        }
+}

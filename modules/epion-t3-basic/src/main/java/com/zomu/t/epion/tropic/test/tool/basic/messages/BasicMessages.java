@@ -14,7 +14,9 @@ public enum BasicMessages implements Messages {
     /**  */
     BASIC_ERR_9001("com.zomu.t.epion.t3.basic.err.9001"),
 
+    BASIC_ERR_9002("com.zomu.t.epion.t3.basic.err.9002"),
 
+    BASIC_INF_0001("com.zomu.t.epion.t3.basic.inf.0001"),
 
     ;
 
