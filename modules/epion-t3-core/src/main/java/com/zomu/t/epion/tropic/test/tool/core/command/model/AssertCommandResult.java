@@ -4,13 +4,18 @@ import com.zomu.t.epion.tropic.test.tool.core.type.AssertStatus;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * アサート結果.
+ *
+ * @author takashno
+ */
 @Getter
 @Setter
 public class AssertCommandResult extends CommandResult {
 
-    private String expected;
+    private Object expected;
 
-    private String actual;
+    private Object actual;
 
     private AssertStatus assertStatus = AssertStatus.WAIT;
 

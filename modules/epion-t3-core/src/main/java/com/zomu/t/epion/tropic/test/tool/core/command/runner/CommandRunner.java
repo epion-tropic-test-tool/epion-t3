@@ -1,5 +1,6 @@
 package com.zomu.t.epion.tropic.test.tool.core.command.runner;
 
+import com.zomu.t.epion.tropic.test.tool.core.command.model.CommandResult;
 import com.zomu.t.epion.tropic.test.tool.core.context.execute.ExecuteCommand;
 import com.zomu.t.epion.tropic.test.tool.core.context.execute.ExecuteContext;
 import com.zomu.t.epion.tropic.test.tool.core.context.execute.ExecuteFlow;
@@ -32,8 +33,8 @@ public interface CommandRunner<
      * @param logger  ロガー
      * @throws Exception 例外
      */
-    void execute(final COMMAND command,
-                 final Logger logger) throws Exception;
+    CommandResult execute(final COMMAND command,
+                          final Logger logger) throws Exception;
 
 
     /**

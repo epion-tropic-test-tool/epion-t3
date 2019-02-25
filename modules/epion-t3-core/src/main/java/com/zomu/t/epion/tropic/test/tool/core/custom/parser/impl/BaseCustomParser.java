@@ -182,7 +182,7 @@ public final class BaseCustomParser implements IndividualTargetParser {
                         CustomConfigurationInfo customConfigurationInfo =
                                 CustomConfigurationInfo.builder().id(configuration.id()).model(x).build();
                         CustomConfigurationHolder.getInstance().addCustomConfigurationInfo(customConfigurationInfo);
-                        // TODO:いるっけ・・・？経緯を忘れすぎてよくわからん・・・
+                        // :いるっけ・・・？経緯を忘れすぎてよくわからん・・・
                         baseContext.getCustomConfigurations().put(configuration.id(), customConfigurationInfo);
                     });
 

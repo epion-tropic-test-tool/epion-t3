@@ -148,17 +148,12 @@ public final class ScenarioReporterImpl implements ScenarioReporter {
                             }
                             try {
                                 // Getterメソッドを参照
-                                Method getterMethod = executeCommand.getCommand().getClass().getDeclaredMethod("get" + WordUtils.capitalize(field.getName()), null);
+                                Method getterMethod = executeCommand.getCommand().getClass().getDeclaredMethod(
+                                        "get" + WordUtils.capitalize(field.getName()), null);
                                 // 値抽出
                                 Object value = getterMethod.invoke(executeCommand.getCommand());
                                 executeCommand.getExtensionProcessFields().put(field.getName(), value);
-                            } catch (IllegalAccessException e) {
-                                log.debug("error occurred...", e);
-                                // Ignore
-                            } catch (NoSuchMethodException e) {
-                                log.debug("error occurred...", e);
-                                // Ignore
-                            } catch (InvocationTargetException e) {
+                            } catch (IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
                                 log.debug("error occurred...", e);
                                 // Ignore
                             }

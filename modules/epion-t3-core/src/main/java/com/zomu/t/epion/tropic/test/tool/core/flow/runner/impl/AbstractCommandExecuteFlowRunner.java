@@ -126,10 +126,11 @@ public abstract class AbstractCommandExecuteFlowRunner<
                     executeContext,
                     executeScenario,
                     executeFlow,
+                    executeCommand,
                     LoggerFactory.getLogger("ProcessLog"));
 
             // プロセス成功
-            executeCommand.setStatus(CommandStatus.SUCCESS);
+            executeCommand.getCommandResult().setStatus(CommandStatus.SUCCESS);
 
             // Flow成功
             executeFlow.setStatus(FlowStatus.SUCCESS);
@@ -147,7 +148,7 @@ public abstract class AbstractCommandExecuteFlowRunner<
             executeCommand.setStackTrace(sw.toString());
 
             // プロセス失敗
-            executeCommand.setStatus(CommandStatus.FAIL);
+            executeCommand.getCommandResult().setStatus(CommandStatus.FAIL);
 
         } finally {
 
@@ -345,12 +346,12 @@ public abstract class AbstractCommandExecuteFlowRunner<
         sb.append(executeCommand.getExecuteId());
         sb.append("\n");
         sb.append("Process Status      : ");
-        sb.append(executeCommand.getStatus().name());
+        sb.append(executeCommand.getCommandResult().getStatus().name());
         sb.append("\n");
         sb.append("--------------------------------------------------------------------------------------");
-        if (executeCommand.getStatus() == CommandStatus.SUCCESS) {
+        if (executeCommand.getCommandResult().getStatus() == CommandStatus.SUCCESS) {
             log.info(sb.toString());
-        } else if (executeCommand.getStatus() == CommandStatus.FAIL) {
+        } else if (executeCommand.getCommandResult().getStatus() == CommandStatus.FAIL) {
             log.error(sb.toString());
         } else {
             log.warn(sb.toString());

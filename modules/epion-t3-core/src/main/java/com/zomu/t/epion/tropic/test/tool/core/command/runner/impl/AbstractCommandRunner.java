@@ -1,5 +1,6 @@
 package com.zomu.t.epion.tropic.test.tool.core.command.runner.impl;
 
+import com.zomu.t.epion.tropic.test.tool.core.command.model.CommandResult;
 import com.zomu.t.epion.tropic.test.tool.core.command.runner.CommandRunner;
 import com.zomu.t.epion.tropic.test.tool.core.context.Context;
 import com.zomu.t.epion.tropic.test.tool.core.context.EvidenceInfo;
@@ -12,6 +13,7 @@ import com.zomu.t.epion.tropic.test.tool.core.context.execute.ExecuteScenario;
 import com.zomu.t.epion.tropic.test.tool.core.exception.SystemException;
 import com.zomu.t.epion.tropic.test.tool.core.message.impl.CoreMessages;
 import com.zomu.t.epion.tropic.test.tool.core.model.scenario.Command;
+import com.zomu.t.epion.tropic.test.tool.core.type.CommandStatus;
 import com.zomu.t.epion.tropic.test.tool.core.type.FlowScopeVariables;
 import com.zomu.t.epion.tropic.test.tool.core.type.ReferenceVariableType;
 import com.zomu.t.epion.tropic.test.tool.core.type.ScenarioScopeVariables;
@@ -54,7 +56,22 @@ public abstract class AbstractCommandRunner<
         this.executeCommand = executeCommand;
 
         // コマンド実行
-        execute(command, logger);
+        CommandResult result = null;
+
+        try {
+
+            result = execute(command, logger);
+
+            // プロセス成功
+            executeCommand.setCommandResult(result);
+
+        } catch (Exception e) {
+
+            result = new CommandResult();
+            result.setStatus(CommandStatus.FAIL);
+
+
+        }
 
     }
 

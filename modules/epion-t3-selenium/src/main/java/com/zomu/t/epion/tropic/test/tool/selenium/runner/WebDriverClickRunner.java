@@ -1,15 +1,11 @@
 package com.zomu.t.epion.tropic.test.tool.selenium.runner;
 
 import com.zomu.t.epion.tropic.test.tool.core.command.runner.impl.AbstractCommandRunner;
-import com.zomu.t.epion.tropic.test.tool.core.context.EvidenceInfo;
-import com.zomu.t.epion.tropic.test.tool.core.command.runner.CommandRunner;
 import com.zomu.t.epion.tropic.test.tool.selenium.command.WebDriverClick;
 import com.zomu.t.epion.tropic.test.tool.selenium.util.WebElementUtils;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.slf4j.Logger;
-
-import java.util.Map;
 
 public class WebDriverClickRunner extends AbstractCommandRunner<WebDriverClick> {
     @Override

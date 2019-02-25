@@ -22,6 +22,11 @@ public @interface CommandDefinition {
     String id();
 
     /**
+     * アサートコマンド.
+     */
+    boolean assertCommand() default false;
+
+    /**
      * コマンド実行処理クラス.
      */
     Class<? extends CommandRunner> runner();
