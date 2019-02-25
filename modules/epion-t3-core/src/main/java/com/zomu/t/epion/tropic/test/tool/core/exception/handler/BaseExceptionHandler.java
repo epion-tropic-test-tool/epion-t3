@@ -28,7 +28,7 @@ public final class BaseExceptionHandler implements ExceptionHandler<Context> {
 
         MessageManager messageManager = MessageManager.getInstance();
 
-        //t.printStackTrace();
+        t.printStackTrace();
 
         // シナリオ不正
         if (ScenarioParseException.class.isAssignableFrom(t.getClass())) {

@@ -1,5 +1,6 @@
 package com.zomu.t.epion.tropic.test.tool.selenium.runner;
 
+import com.zomu.t.epion.tropic.test.tool.core.command.model.CommandResult;
 import com.zomu.t.epion.tropic.test.tool.core.command.runner.impl.AbstractCommandRunner;
 import com.zomu.t.epion.tropic.test.tool.core.context.EvidenceInfo;
 import com.zomu.t.epion.tropic.test.tool.core.command.runner.CommandRunner;
@@ -20,7 +21,7 @@ import java.util.Map;
  */
 public class WebDriverSendKeysSpaceRunner extends AbstractCommandRunner<WebDriverSendKeysSpace> {
     @Override
-    public void execute(
+    public CommandResult execute(
             WebDriverSendKeysSpace process,
             Logger logger) throws Exception {
         WebDriver driver = WebDriver.class.cast(getGlobalScopeVariables().get(process.getRefWebDriver()));
@@ -28,5 +29,6 @@ public class WebDriverSendKeysSpaceRunner extends AbstractCommandRunner<WebDrive
                 WebElementUtils.getInstance().findWebElement(driver, process.getSelector(), process.getTarget());
 
         element.sendKeys(Keys.SPACE);
+        return CommandResult.getSuccess();
     }
 }

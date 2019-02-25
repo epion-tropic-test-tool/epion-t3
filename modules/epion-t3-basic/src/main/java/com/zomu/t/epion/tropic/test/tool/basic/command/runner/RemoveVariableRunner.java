@@ -2,6 +2,7 @@ package com.zomu.t.epion.tropic.test.tool.basic.command.runner;
 
 import com.zomu.t.epion.tropic.test.tool.basic.command.model.RemoveVariable;
 import com.zomu.t.epion.tropic.test.tool.basic.command.model.SetVariable;
+import com.zomu.t.epion.tropic.test.tool.core.command.model.CommandResult;
 import com.zomu.t.epion.tropic.test.tool.core.command.runner.CommandRunner;
 import com.zomu.t.epion.tropic.test.tool.core.command.runner.impl.AbstractCommandRunner;
 import com.zomu.t.epion.tropic.test.tool.core.context.EvidenceInfo;
@@ -25,7 +26,7 @@ public class RemoveVariableRunner extends AbstractCommandRunner<RemoveVariable> 
      * {@inheritDoc}
      */
     @Override
-    public void execute(
+    public CommandResult execute(
             final RemoveVariable command,
             final Logger logger) throws Exception {
 
@@ -59,7 +60,6 @@ public class RemoveVariableRunner extends AbstractCommandRunner<RemoveVariable> 
                 throw new SystemException(CoreMessages.CORE_ERR_0005, m.group(1));
             }
         }
-
-
+        return CommandResult.getSuccess();
     }
 }

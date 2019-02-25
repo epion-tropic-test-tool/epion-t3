@@ -144,8 +144,8 @@
                                        th:text="${executeCommand.command.id}">command-0001</a>
                                 </th>
                                 <td>Command</td>
-                                <td class="table-secondary" th:text="${executeCommand.status}"
-                                    th:class="${executeCommand.status.getCssClass()}">WAIT
+                                <td class="table-secondary" th:text="${executeCommand.commandResult.status}"
+                                    th:class="${executeCommand.commandResult.status.getCssClass()}">WAIT
                                 </td>
                                 <td th:text="${dateTimeUtils.formatTimeNormal(executeCommand.start)}">12:12:12.222</td>
                                 <td th:text="${dateTimeUtils.formatTimeNormal(executeCommand.end)}">12:12:12.333</td>
@@ -361,8 +361,8 @@
                                     </tr>
                                     <tr>
                                         <th class="bg-dark" style="color:white">Status</th>
-                                        <td class="table-success" th:text="${executeCommand.status}"
-                                            th:class="${executeCommand.status.getCssClass()}">SUCCESS
+                                        <td class="table-success" th:text="${executeCommand.commandResult.status}"
+                                            th:class="${executeCommand.commandResult.status.getCssClass()}">SUCCESS
                                         </td>
                                         <th class="bg-dark" style="color:white">Duration&nbsp;(ms)</th>
                                         <td th:text="${dateTimeUtils.getMillis(executeCommand.start, executeCommand.end)}">

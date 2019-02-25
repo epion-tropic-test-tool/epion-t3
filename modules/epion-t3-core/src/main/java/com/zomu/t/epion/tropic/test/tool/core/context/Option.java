@@ -51,11 +51,11 @@ public class Option implements Serializable {
     /**
      * デバッグモード指定フラグ.
      */
-    private Boolean debug;
+    private Boolean debug = false;
 
     /**
      * レポートを出力拒否フラグ.
      */
-    private Boolean noreport;
+    private Boolean noreport = false;
 
 }

@@ -1,5 +1,6 @@
 package com.zomu.t.epion.tropic.test.tool.selenium.runner;
 
+import com.zomu.t.epion.tropic.test.tool.core.command.model.CommandResult;
 import com.zomu.t.epion.tropic.test.tool.core.command.runner.impl.AbstractCommandRunner;
 import com.zomu.t.epion.tropic.test.tool.core.context.EvidenceInfo;
 import com.zomu.t.epion.tropic.test.tool.core.command.runner.CommandRunner;
@@ -14,7 +15,7 @@ import java.util.Map;
 
 public class WebDriverSelectRunner extends AbstractCommandRunner<WebDriverClick> {
     @Override
-    public void execute(
+    public CommandResult execute(
             final WebDriverClick process,
             final Logger logger) throws Exception {
         WebDriver driver = WebDriver.class.cast(getGlobalScopeVariables().get(process.getRefWebDriver()));
@@ -25,5 +26,6 @@ public class WebDriverSelectRunner extends AbstractCommandRunner<WebDriverClick>
             select.selectByVisibleText(process.getValue());
 
         }
+        return CommandResult.getSuccess();
     }
 }

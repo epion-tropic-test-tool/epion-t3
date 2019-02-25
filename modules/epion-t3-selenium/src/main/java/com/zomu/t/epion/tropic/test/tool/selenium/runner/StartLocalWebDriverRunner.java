@@ -1,5 +1,6 @@
 package com.zomu.t.epion.tropic.test.tool.selenium.runner;
 
+import com.zomu.t.epion.tropic.test.tool.core.command.model.CommandResult;
 import com.zomu.t.epion.tropic.test.tool.core.command.runner.impl.AbstractCommandRunner;
 import com.zomu.t.epion.tropic.test.tool.core.context.EvidenceInfo;
 import com.zomu.t.epion.tropic.test.tool.selenium.command.StartLocalWebDriver;
@@ -30,7 +31,7 @@ public class StartLocalWebDriverRunner extends AbstractCommandRunner<StartLocalW
      * {@inheritDoc}
      */
     @Override
-    public void execute(
+    public CommandResult execute(
             StartLocalWebDriver process,
             Logger logger) throws Exception {
 
@@ -71,5 +72,7 @@ public class StartLocalWebDriverRunner extends AbstractCommandRunner<StartLocalW
             globalScopeVariableName = WEBDRIVER_PREFIX + new DecimalFormat("000").format(count);
         }
         getGlobalScopeVariables().put(globalScopeVariableName, driver);
+
+        return CommandResult.getSuccess();
     }
 }

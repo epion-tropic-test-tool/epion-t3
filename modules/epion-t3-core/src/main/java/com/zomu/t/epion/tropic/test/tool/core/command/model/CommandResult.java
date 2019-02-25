@@ -42,6 +42,12 @@ public class CommandResult implements Serializable {
         return new CommandResult();
     }
 
+    public static CommandResult getSuccess() {
+        CommandResult commandResult = new CommandResult();
+        commandResult.setStatus(CommandStatus.SUCCESS);
+        return commandResult;
+    }
+
 }
 
 

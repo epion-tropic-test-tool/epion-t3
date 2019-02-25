@@ -3,16 +3,22 @@ package com.zomu.t.epion.tropic.test.tool.core.custom.parser.impl;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.zomu.t.epion.tropic.test.tool.core.context.Context;
+import com.zomu.t.epion.tropic.test.tool.core.exception.CommandCanNotResolveException;
+import com.zomu.t.epion.tropic.test.tool.core.exception.CommandNotFoundException;
 import com.zomu.t.epion.tropic.test.tool.core.exception.bean.ScenarioParseError;
 import com.zomu.t.epion.tropic.test.tool.core.exception.ScenarioParseException;
 import com.zomu.t.epion.tropic.test.tool.core.exception.SystemException;
 import com.zomu.t.epion.tropic.test.tool.core.custom.parser.IndividualTargetParser;
+import com.zomu.t.epion.tropic.test.tool.core.message.MessageManager;
+import com.zomu.t.epion.tropic.test.tool.core.message.impl.BaseMessages;
+import com.zomu.t.epion.tropic.test.tool.core.message.impl.CoreMessages;
 import com.zomu.t.epion.tropic.test.tool.core.type.ScenarioPaseErrorType;
 import com.zomu.t.epion.tropic.test.tool.core.type.ScenarioType;
 import com.zomu.t.epion.tropic.test.tool.core.model.scenario.Command;
 import com.zomu.t.epion.tropic.test.tool.core.model.scenario.T3Base;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.bval.jsr.ApacheValidationProvider;
+import sun.plugin2.message.Message;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
@@ -122,12 +128,25 @@ public final class BaseOriginalHoldParser implements IndividualTargetParser<Cont
                             });
 
 
-                } catch (JsonParseException | JsonMappingException e) {
+                } catch (JsonParseException e) {
 
                     log.debug("debug...", e);
 
                     log.warn("file is not t3 format: {} -> ignore...", file);
                     errors.add(ScenarioParseError.builder().filePath(file).type(ScenarioPaseErrorType.PARSE_ERROR).message("").build());
+                    return FileVisitResult.CONTINUE;
+                } catch (JsonMappingException e) {
+                    log.debug("debug...", e);
+
+                    if (CommandCanNotResolveException.class.isAssignableFrom(e.getCause().getClass())) {
+                        CommandCanNotResolveException ccnre = CommandCanNotResolveException.class.cast(e.getCause());
+                        log.warn("command not found : {}", ccnre.getCommandId());
+                        errors.add(ScenarioParseError.builder().filePath(file).type(ScenarioPaseErrorType.COMMAND_ERROR)
+                                .message(MessageManager.getInstance().getMessage(CoreMessages.CORE_ERR_0006, file, ccnre.getCommandId())).build());
+                    } else {
+                        log.warn("file is not t3 format: {} -> ignore...", file);
+                        errors.add(ScenarioParseError.builder().filePath(file).type(ScenarioPaseErrorType.PARSE_ERROR).message("").build());
+                    }
                     return FileVisitResult.CONTINUE;
                 }
 

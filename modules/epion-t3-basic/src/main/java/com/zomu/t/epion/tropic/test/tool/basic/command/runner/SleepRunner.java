@@ -1,6 +1,7 @@
 package com.zomu.t.epion.tropic.test.tool.basic.command.runner;
 
 import com.zomu.t.epion.tropic.test.tool.basic.command.model.Sleep;
+import com.zomu.t.epion.tropic.test.tool.core.command.model.CommandResult;
 import com.zomu.t.epion.tropic.test.tool.core.command.runner.CommandRunner;
 import com.zomu.t.epion.tropic.test.tool.core.command.runner.impl.AbstractCommandRunner;
 import com.zomu.t.epion.tropic.test.tool.core.context.EvidenceInfo;
@@ -20,7 +21,7 @@ public class SleepRunner extends AbstractCommandRunner<Sleep> {
      * {@inheritDoc}
      */
     @Override
-    public void execute(
+    public CommandResult execute(
             Sleep command,
             Logger logger) throws Exception {
 
@@ -34,6 +35,8 @@ public class SleepRunner extends AbstractCommandRunner<Sleep> {
 
         // Sleep...
         Thread.sleep(Long.valueOf(command.getValue()));
+
+        return CommandResult.getSuccess();
 
     }
 }

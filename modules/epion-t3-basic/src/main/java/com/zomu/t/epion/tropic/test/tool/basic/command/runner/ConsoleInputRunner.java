@@ -1,6 +1,7 @@
 package com.zomu.t.epion.tropic.test.tool.basic.command.runner;
 
 import com.zomu.t.epion.tropic.test.tool.basic.command.model.ConsoleInput;
+import com.zomu.t.epion.tropic.test.tool.core.command.model.CommandResult;
 import com.zomu.t.epion.tropic.test.tool.core.command.runner.impl.AbstractCommandRunner;
 import com.zomu.t.epion.tropic.test.tool.core.context.EvidenceInfo;
 import com.zomu.t.epion.tropic.test.tool.core.command.runner.CommandRunner;
@@ -21,8 +22,8 @@ public class ConsoleInputRunner extends AbstractCommandRunner<ConsoleInput> {
      * {@inheritDoc}
      */
     @Override
-    public void execute(final ConsoleInput process,
-                        final Logger logger) throws Exception {
+    public CommandResult execute(final ConsoleInput process,
+                                 final Logger logger) throws Exception {
 
         logger.info("start ConsoleInput");
         Console c = System.console();
@@ -41,6 +42,8 @@ public class ConsoleInputRunner extends AbstractCommandRunner<ConsoleInput> {
             }
         }
         logger.info("end ConsoleInput");
+
+        return CommandResult.getSuccess();
     }
 
 }

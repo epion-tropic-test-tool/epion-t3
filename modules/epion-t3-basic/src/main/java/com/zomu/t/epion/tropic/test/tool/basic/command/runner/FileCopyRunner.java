@@ -1,6 +1,7 @@
 package com.zomu.t.epion.tropic.test.tool.basic.command.runner;
 
 import com.zomu.t.epion.tropic.test.tool.basic.command.model.FileCopy;
+import com.zomu.t.epion.tropic.test.tool.core.command.model.CommandResult;
 import com.zomu.t.epion.tropic.test.tool.core.command.runner.impl.AbstractCommandRunner;
 import com.zomu.t.epion.tropic.test.tool.core.context.EvidenceInfo;
 import com.zomu.t.epion.tropic.test.tool.core.command.runner.CommandRunner;
@@ -19,14 +20,13 @@ import java.util.Map;
 public class FileCopyRunner extends AbstractCommandRunner<FileCopy> {
 
     /**
-     *
      * @param process
      * @param logger
      * @throws Exception
      */
     @Override
-    public void execute(final FileCopy process,
-                        final Logger logger) throws Exception {
+    public CommandResult execute(final FileCopy process,
+                                 final Logger logger) throws Exception {
 
         logger.info("start FileCopy");
 
@@ -38,6 +38,8 @@ public class FileCopyRunner extends AbstractCommandRunner<FileCopy> {
         }
 
 //        throw new RuntimeException("擬似エラー");
+
+        return CommandResult.getSuccess();
     }
 
 }

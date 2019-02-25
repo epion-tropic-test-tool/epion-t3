@@ -18,8 +18,8 @@ public class ApplicationTest {
         application.main(new String[]{
                 "-v", "v1.0",
                 "-m", "test",
-                "-t", "yahooregist-scenario-001",
-                "-s", "/Users/takashimanozomu/Desktop/20181107_keta/yahooregist/scenario"
+                "-t", "flowreport-scenario-001",
+                "-s", "/Users/takashimanozomu/work/30_pgworkspaces/intellij/epion-t3/modules/epion-t3-scenario"
         });
     }
 

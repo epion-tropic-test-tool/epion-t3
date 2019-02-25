@@ -1,5 +1,6 @@
 package com.zomu.t.epion.tropic.test.tool.selenium.runner;
 
+import com.zomu.t.epion.tropic.test.tool.core.command.model.CommandResult;
 import com.zomu.t.epion.tropic.test.tool.core.command.runner.impl.AbstractCommandRunner;
 import com.zomu.t.epion.tropic.test.tool.core.context.EvidenceInfo;
 import com.zomu.t.epion.tropic.test.tool.selenium.command.WebDriverScreenShot;
@@ -18,7 +19,7 @@ import java.util.Map;
  */
 public class WebDriverScreenShotRunner extends AbstractCommandRunner<WebDriverScreenShot> {
     @Override
-    public void execute(
+    public CommandResult execute(
             WebDriverScreenShot process,
             Logger logger) throws Exception {
 
@@ -37,5 +38,7 @@ public class WebDriverScreenShotRunner extends AbstractCommandRunner<WebDriverSc
 
         // エビデンスを登録
         registrationFileEvidence(evidence);
+
+        return CommandResult.getSuccess();
     }
 }

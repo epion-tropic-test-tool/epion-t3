@@ -69,11 +69,11 @@ public class ApplicationRunnerImpl implements ApplicationRunner<Context> {
             // 引数設定
             setOptions(context, cmd);
 
-            // シナリオの解析（パース処理）
-            BaseScenarioParser.getInstance().parse(context);
-
             // 結果ディレクトリの作成
             createResultDirectory(context, executeContext);
+
+            // シナリオの解析（パース処理）
+            BaseScenarioParser.getInstance().parse(context);
 
             // 実行
             ScenarioRunnerImpl scenarioRunner = new ScenarioRunnerImpl();

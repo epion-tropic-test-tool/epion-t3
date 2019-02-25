@@ -235,6 +235,12 @@ public class ScenarioRunnerImpl implements ScenarioRunner<Context, ExecuteContex
                 ScenarioScopeVariables.EVIDENCE_DIR.getName());
         scenario.getScenarioVariables().remove(
                 ScenarioScopeVariables.CURRENT_SCENARIO.getName());
+        scenario.getScenarioVariables().entrySet().forEach(x -> {
+            if (x.getKey().contains(ExecuteScenario.FLOW_START_VARIABLE_SUFFIX)
+                    || x.getKey().contains(ExecuteScenario.FLOW_END_VARIABLE_SUFFIX)) {
+                scenario.getScenarioVariables().remove(x.getKey());
+            }
+        });
     }
 
     /**

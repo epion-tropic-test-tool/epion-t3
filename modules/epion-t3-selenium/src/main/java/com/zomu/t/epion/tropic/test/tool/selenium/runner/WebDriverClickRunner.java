@@ -1,5 +1,6 @@
 package com.zomu.t.epion.tropic.test.tool.selenium.runner;
 
+import com.zomu.t.epion.tropic.test.tool.core.command.model.CommandResult;
 import com.zomu.t.epion.tropic.test.tool.core.command.runner.impl.AbstractCommandRunner;
 import com.zomu.t.epion.tropic.test.tool.selenium.command.WebDriverClick;
 import com.zomu.t.epion.tropic.test.tool.selenium.util.WebElementUtils;
@@ -9,7 +10,7 @@ import org.slf4j.Logger;
 
 public class WebDriverClickRunner extends AbstractCommandRunner<WebDriverClick> {
     @Override
-    public void execute(WebDriverClick process, Logger logger) throws Exception {
+    public CommandResult execute(WebDriverClick process, Logger logger) throws Exception {
         WebDriver driver =
                 WebDriver.class.cast(getGlobalScopeVariables().get(process.getRefWebDriver()));
         WebElement element =
@@ -17,5 +18,7 @@ public class WebDriverClickRunner extends AbstractCommandRunner<WebDriverClick> 
         if (element.isEnabled()) {
             element.click();
         }
+
+        return CommandResult.getSuccess();
     }
 }

@@ -1,5 +1,6 @@
 package com.zomu.t.epion.tropic.test.tool.selenium.runner;
 
+import com.zomu.t.epion.tropic.test.tool.core.command.model.CommandResult;
 import com.zomu.t.epion.tropic.test.tool.core.command.runner.CommandRunner;
 import com.zomu.t.epion.tropic.test.tool.core.command.runner.impl.AbstractCommandRunner;
 import com.zomu.t.epion.tropic.test.tool.core.context.EvidenceInfo;
@@ -17,12 +18,14 @@ import java.util.Map;
 
 public class WebDriverContainsUrlTextRunner extends AbstractCommandRunner<WebDriverContainsUrlText> {
     @Override
-    public void execute(
+    public CommandResult execute(
             WebDriverContainsUrlText process,
             Logger logger) throws Exception {
         WebDriver driver = WebDriver.class.cast(getGlobalScopeVariables().get(process.getRefWebDriver()));
         if (!driver.getCurrentUrl().contains(process.getTarget())) {
             throw new SystemException(SeleniumMessages.SELENIUM_ERR_9005, process.getTarget());
         }
+
+        return CommandResult.getSuccess();
     }
 }

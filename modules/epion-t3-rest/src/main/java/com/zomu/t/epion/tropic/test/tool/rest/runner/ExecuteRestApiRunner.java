@@ -1,8 +1,10 @@
 package com.zomu.t.epion.tropic.test.tool.rest.runner;
 
+import com.zomu.t.epion.tropic.test.tool.core.command.model.CommandResult;
 import com.zomu.t.epion.tropic.test.tool.core.command.runner.impl.AbstractCommandRunner;
 import com.zomu.t.epion.tropic.test.tool.core.context.EvidenceInfo;
 import com.zomu.t.epion.tropic.test.tool.core.command.runner.CommandRunner;
+import com.zomu.t.epion.tropic.test.tool.core.model.scenario.Command;
 import com.zomu.t.epion.tropic.test.tool.rest.bean.Header;
 import com.zomu.t.epion.tropic.test.tool.rest.command.ExecuteRestApi;
 import com.zomu.t.epion.tropic.test.tool.rest.type.HttpMethodType;
@@ -19,7 +21,7 @@ public class ExecuteRestApiRunner extends AbstractCommandRunner<ExecuteRestApi> 
      * {@inheritDoc}
      */
     @Override
-    public void execute(
+    public CommandResult execute(
             final ExecuteRestApi command,
             Logger logger) throws Exception {
 
@@ -103,5 +105,6 @@ public class ExecuteRestApiRunner extends AbstractCommandRunner<ExecuteRestApi> 
         // エビデンス登録
         registrationObjectEvidence(result);
 
+        return CommandResult.getSuccess();
     }
 }

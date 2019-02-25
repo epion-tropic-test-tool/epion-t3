@@ -16,6 +16,11 @@ public enum ScenarioPaseErrorType {
     PARSE_ERROR,
 
     /**
+     * コマンドが見つからない場合のエラー.
+     */
+    COMMAND_ERROR,
+
+    /**
      * BeanValidationによるチェックエラー.
      */
     VALIDATION_ERROR

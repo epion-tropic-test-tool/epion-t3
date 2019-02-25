@@ -1,6 +1,7 @@
 package com.zomu.t.epion.tropic.test.tool.basic.command.runner;
 
 import com.zomu.t.epion.tropic.test.tool.basic.command.model.StringConcat;
+import com.zomu.t.epion.tropic.test.tool.core.command.model.CommandResult;
 import com.zomu.t.epion.tropic.test.tool.core.command.runner.CommandRunner;
 import com.zomu.t.epion.tropic.test.tool.core.command.runner.impl.AbstractCommandRunner;
 import com.zomu.t.epion.tropic.test.tool.core.context.EvidenceInfo;
@@ -23,10 +24,8 @@ public class StringConcatRunner extends AbstractCommandRunner<StringConcat> {
      * {@inheritDoc}
      */
     @Override
-    public void execute(final StringConcat process,
-                        final Logger logger) throws Exception {
-
-        logger.info("start StringConcat");
+    public CommandResult execute(final StringConcat process,
+                                 final Logger logger) throws Exception {
 
         List<String> rawValues = new ArrayList<>();
 
@@ -40,7 +39,8 @@ public class StringConcatRunner extends AbstractCommandRunner<StringConcat> {
         String joinedValue = StringUtils.join(rawValues.toArray(new String[0]));
         logger.info("Joined Value : {}", joinedValue);
         getScenarioScopeVariables().put(process.getTarget(), joinedValue);
-        logger.info("end StringConcat");
+        
+        return CommandResult.getSuccess();
     }
 
 }

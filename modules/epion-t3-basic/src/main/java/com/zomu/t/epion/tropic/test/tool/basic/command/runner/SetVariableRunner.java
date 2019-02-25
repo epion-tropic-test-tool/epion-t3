@@ -1,6 +1,7 @@
 package com.zomu.t.epion.tropic.test.tool.basic.command.runner;
 
 import com.zomu.t.epion.tropic.test.tool.basic.command.model.SetVariable;
+import com.zomu.t.epion.tropic.test.tool.core.command.model.CommandResult;
 import com.zomu.t.epion.tropic.test.tool.core.command.runner.CommandRunner;
 import com.zomu.t.epion.tropic.test.tool.core.command.runner.impl.AbstractCommandRunner;
 import com.zomu.t.epion.tropic.test.tool.core.context.EvidenceInfo;
@@ -19,7 +20,7 @@ import java.util.regex.Matcher;
 public class SetVariableRunner extends AbstractCommandRunner<SetVariable> {
 
     @Override
-    public void execute(
+    public CommandResult execute(
             final SetVariable command,
             final Logger logger) throws Exception {
 
@@ -52,7 +53,7 @@ public class SetVariableRunner extends AbstractCommandRunner<SetVariable> {
                 throw new SystemException(CoreMessages.CORE_ERR_0005, m.group(1));
             }
         }
-
+        return CommandResult.getSuccess();
 
     }
 }
