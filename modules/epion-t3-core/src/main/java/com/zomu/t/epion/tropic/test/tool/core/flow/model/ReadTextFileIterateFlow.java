@@ -25,7 +25,7 @@ public class ReadTextFileIterateFlow extends IterateFlow {
     private String target;
 
     /**
-     *
+     * ファイル種別.
      */
     private String fileType;
 
