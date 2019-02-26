@@ -19,7 +19,7 @@ public class ApplicationTest {
                 "-v", "v1.0",
                 "-m", "test",
                 "-t", "flowreport-scenario-001",
-                "-s", "/Users/takashimanozomu/work/30_pgworkspaces/intellij/epion-t3/modules/epion-t3-scenario"
+                "-s", "C:\\Users\\takashno\\IdeaProjects\\epion-t3\\modules\\epion-t3-scenario"
         });
     }
 

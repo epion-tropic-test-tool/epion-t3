@@ -1,5 +1,4 @@
 t3: '1.0'
-type: scenario
 info:
     id: sample-scenario-001
     version: 1.0.0
@@ -28,6 +27,7 @@ flows:
     type : CommandExecute
   - ref : process-012
     type : CommandExecute
+# コマンドリスト
 commands:
   - id: process-001
     summary : File Copy Command.

@@ -171,9 +171,10 @@ public abstract class AbstractCommandRunner<
     /**
      * エビデンスのパスを取得する.
      * ファイルの拡張子を指定することで、Runnerが保存すべきエビデンスの場所を取得するために利用する.
+     * 基本的に、エビデンスの保存を行うパスについては、本メソッドで取得したパスを利用すること.
      *
-     * @param fileExtension
-     * @return
+     * @param fileExtension ファイルの拡張子
+     * @return エビデンスの格納パス
      */
     protected Path getEvidencePath(
             String fileExtension) {

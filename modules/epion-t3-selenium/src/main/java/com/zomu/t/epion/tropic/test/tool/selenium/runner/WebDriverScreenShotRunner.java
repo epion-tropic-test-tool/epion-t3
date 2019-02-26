@@ -22,23 +22,16 @@ public class WebDriverScreenShotRunner extends AbstractCommandRunner<WebDriverSc
     public CommandResult execute(
             WebDriverScreenShot process,
             Logger logger) throws Exception {
-
         WebDriver driver = WebDriver.class.cast(getGlobalScopeVariables().get(process.getRefWebDriver()));
         Screenshot screenshot = new AShot().takeScreenshot(driver);
-
-        getEvidenceDirectory();
-
         Path evidence = getEvidencePath("PNG");
-
         // 保管したイメージを任意の場所に書き出す(1行)
         ImageIO.write(
                 screenshot.getImage(),
                 "PNG",
                 evidence.toFile());
-
         // エビデンスを登録
         registrationFileEvidence(evidence);
-
         return CommandResult.getSuccess();
     }
 }

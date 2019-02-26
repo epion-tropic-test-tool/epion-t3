@@ -45,7 +45,7 @@ public class ScenarioRunnerImpl implements ScenarioRunner<Context, ExecuteContex
     public void execute(final Context context, final ExecuteContext executeContext) {
 
         // 実行シナリオの選択
-        T3Base scenario = context.getOriginal().getScenarios().get(context.getOption().getTarget());
+        T3Base scenario = context.getOriginal().getOriginals().get(context.getOption().getTarget());
 
         if (scenario == null) {
             throw new ScenarioNotFoundException(context.getOption().getTarget());

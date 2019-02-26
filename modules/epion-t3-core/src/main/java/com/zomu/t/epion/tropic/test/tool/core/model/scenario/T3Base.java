@@ -27,12 +27,6 @@ public class T3Base implements Serializable {
     private String t3 = "1.0";
 
     /**
-     * シナリオ種別.
-     * 今きちんと使えていない
-     */
-    private String type;
-
-    /**
      * 情報.
      * 必須にしたいけど微妙
      */

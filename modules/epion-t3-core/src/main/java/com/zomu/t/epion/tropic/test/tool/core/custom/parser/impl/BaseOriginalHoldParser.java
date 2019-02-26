@@ -3,22 +3,18 @@ package com.zomu.t.epion.tropic.test.tool.core.custom.parser.impl;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.zomu.t.epion.tropic.test.tool.core.context.Context;
+import com.zomu.t.epion.tropic.test.tool.core.custom.parser.IndividualTargetParser;
 import com.zomu.t.epion.tropic.test.tool.core.exception.CommandCanNotResolveException;
-import com.zomu.t.epion.tropic.test.tool.core.exception.CommandNotFoundException;
-import com.zomu.t.epion.tropic.test.tool.core.exception.bean.ScenarioParseError;
 import com.zomu.t.epion.tropic.test.tool.core.exception.ScenarioParseException;
 import com.zomu.t.epion.tropic.test.tool.core.exception.SystemException;
-import com.zomu.t.epion.tropic.test.tool.core.custom.parser.IndividualTargetParser;
+import com.zomu.t.epion.tropic.test.tool.core.exception.bean.ScenarioParseError;
 import com.zomu.t.epion.tropic.test.tool.core.message.MessageManager;
-import com.zomu.t.epion.tropic.test.tool.core.message.impl.BaseMessages;
 import com.zomu.t.epion.tropic.test.tool.core.message.impl.CoreMessages;
-import com.zomu.t.epion.tropic.test.tool.core.type.ScenarioPaseErrorType;
-import com.zomu.t.epion.tropic.test.tool.core.type.ScenarioType;
 import com.zomu.t.epion.tropic.test.tool.core.model.scenario.Command;
 import com.zomu.t.epion.tropic.test.tool.core.model.scenario.T3Base;
+import com.zomu.t.epion.tropic.test.tool.core.type.ScenarioPaseErrorType;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.bval.jsr.ApacheValidationProvider;
-import sun.plugin2.message.Message;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
@@ -135,7 +131,9 @@ public final class BaseOriginalHoldParser implements IndividualTargetParser<Cont
                     log.warn("file is not t3 format: {} -> ignore...", file);
                     errors.add(ScenarioParseError.builder().filePath(file).type(ScenarioPaseErrorType.PARSE_ERROR).message("").build());
                     return FileVisitResult.CONTINUE;
+
                 } catch (JsonMappingException e) {
+
                     log.debug("debug...", e);
 
                     if (CommandCanNotResolveException.class.isAssignableFrom(e.getCause().getClass())) {
@@ -169,41 +167,21 @@ public final class BaseOriginalHoldParser implements IndividualTargetParser<Cont
                     // ファイル原本の完全保存
                     baseContext.getOriginal().getOriginals().put(t3Base.getInfo().getId(), t3Base);
 
-                    ScenarioType scenarioType = ScenarioType.valueOfByValue(t3Base.getType());
-
-                    if (scenarioType != null) {
-                        // type別に分割
-                        switch (scenarioType) {
-                            case SCENARIO:
-                                baseContext.getOriginal().getScenarios().put(t3Base.getInfo().getId(), t3Base);
-                                break;
-                            case PARTS:
-                                baseContext.getOriginal().getParts().put(t3Base.getInfo().getId(), t3Base);
-                                break;
-                            case CONFIG:
-                                baseContext.getOriginal().getConfigs().put(t3Base.getInfo().getId(), t3Base);
-                                break;
-                            default:
-                                // Do Nothing...
-                                break;
-                        }
-                    }
-
                     // t3BaseがfinalでないのでLambdaが利用できない・・・
                     // なんかやり方あるのかね・・・
                     for (Command command : t3Base.getCommands()) {
 
-                        // process識別子を作成
+                        // コマンド識別子を作成
                         String fullProcessId = t3Base.getInfo().getId() + "." + command.getId();
 
-                        // process定義を追加
-                        baseContext.getOriginal().getProcesses().put(
+                        // コマンド定義を追加
+                        baseContext.getOriginal().getCommands().put(
                                 fullProcessId, command);
 
-                        // process識別子とシナリオIDを紐付ける
+                        // コマンド識別子とシナリオIDを紐付ける
                         baseContext.getOriginal().getProcessScenarioRelations().put(fullProcessId, t3Base.getInfo().getId());
 
-                        // process識別子とPathを紐付ける
+                        // コマンド識別子とPathを紐付ける
                         baseContext.getOriginal().getProcessPlacePaths().put(fullProcessId, file);
 
                     }
@@ -218,10 +196,10 @@ public final class BaseOriginalHoldParser implements IndividualTargetParser<Cont
             Files.walkFileTree(Paths.get(context.getOption().getRootPath()), visitor);
         } catch (IOException e) {
 
-            // 解析用
             log.debug("error occurred...", e);
 
             throw new SystemException(e);
+
         } finally {
             // シナリオに大してなんらかの不備ある場合は、この時点でエラーとする.
             if (!errors.isEmpty()) {

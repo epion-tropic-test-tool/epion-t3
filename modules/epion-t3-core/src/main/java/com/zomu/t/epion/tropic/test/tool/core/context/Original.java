@@ -1,5 +1,6 @@
 package com.zomu.t.epion.tropic.test.tool.core.context;
 
+import com.zomu.t.epion.tropic.test.tool.core.model.scenario.Configuration;
 import com.zomu.t.epion.tropic.test.tool.core.model.scenario.Custom;
 import com.zomu.t.epion.tropic.test.tool.core.model.scenario.Command;
 import com.zomu.t.epion.tropic.test.tool.core.model.scenario.T3Base;
@@ -10,7 +11,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * YAMLから読み込んだ情報の原本を保存するためのもの
+ * YAMLから読み込んだ情報の原本を保存するためのもの.
  *
  * @author takashno
  */
@@ -35,35 +36,40 @@ public class Original {
      * キー：infoのid値
      * 値：ファイルの解析結果そのまま
      */
-    private final Map<String, T3Base> scenarios = new ConcurrentHashMap<>();
+    //private final Map<String, T3Base> scenarios = new ConcurrentHashMap<>();
 
     /**
      * typeがpartsの原本.
      * キー：infoのid値
      * 値：ファイルの解析結果そのまま
      */
-    private final Map<String, T3Base> parts = new ConcurrentHashMap<>();
+    //private final Map<String, T3Base> parts = new ConcurrentHashMap<>();
 
     /**
      * typeがconfigの原本.
      * キー：infoのid値
      * 値：ファイルの解析結果そのまま
      */
-    private final Map<String, T3Base> configs = new ConcurrentHashMap<>();
+    //private final Map<String, T3Base> configs = new ConcurrentHashMap<>();
 
     /**
-     * processesの原本.
-     * キー：infoのid + '-' + processesの要素のid値　= processの識別子
+     * 設定の原本.
+     * キー：infoのid + '-' + 設定の要素のid値 = 設定識別子
      */
-    private final Map<String, Command> processes = new ConcurrentHashMap<>();
-
+    private final Map<String, Configuration> configurations = new ConcurrentHashMap<>();
 
     /**
-     * processの識別子とシナリオの関係マップ.
-     * キー：infoのid + '-' + processesの要素のid値　= processの識別子
+     * コマンドの原本.
+     * キー：infoのid + '-' + コマンドの要素のid値　= コマンド識別子
+     */
+    private final Map<String, Command> commands = new ConcurrentHashMap<>();
+
+    /**
+     * コマンドの識別子とシナリオの関係マップ.
+     * キー：infoのid + '-' + コマンドの要素のid値　= コマンド識別子
      * 値：infoのid
      */
-    private final Map<String, String> processScenarioRelations = new ConcurrentHashMap<>();
+    private final Map<String, String> commandScenarioRelations = new ConcurrentHashMap<>();
 
     /**
      * scenario配置ディレクトリマップ.
@@ -73,8 +79,8 @@ public class Original {
     private final Map<String, Path> scenarioPlacePaths = new ConcurrentHashMap<>();
 
     /**
-     * process配置ディレクトリマップ.
-     * キー：infoのid + '-' + processesの要素のid値　= processの識別子
+     * コマンド配置ディレクトリマップ.
+     * キー：infoのid + '-' + コマンドの要素のid値　= コマンド識別子
      * 値：Path
      */
     private final Map<String, Path> processPlacePaths = new ConcurrentHashMap<>();

@@ -7,6 +7,7 @@ import com.zomu.t.epion.tropic.test.tool.core.scenario.parser.impl.BaseScenarioP
 import com.zomu.t.epion.tropic.test.tool.core.annotation.ApplicationVersion;
 import com.zomu.t.epion.tropic.test.tool.core.execution.reporter.impl.ScenarioReporterImpl;
 import com.zomu.t.epion.tropic.test.tool.core.application.runner.ApplicationRunner;
+import com.zomu.t.epion.tropic.test.tool.core.scenario.runner.ScenarioRunner;
 import com.zomu.t.epion.tropic.test.tool.core.scenario.runner.impl.ScenarioRunnerImpl;
 import com.zomu.t.epion.tropic.test.tool.core.type.Args;
 import com.zomu.t.epion.tropic.test.tool.core.type.ExitCode;
@@ -19,6 +20,11 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 
+/**
+ * アプリケーション実行処理.
+ *
+ * @author takashno
+ */
 @ApplicationVersion(version = "v1.0")
 @Slf4j
 public class ApplicationRunnerImpl implements ApplicationRunner<Context> {
@@ -76,7 +82,7 @@ public class ApplicationRunnerImpl implements ApplicationRunner<Context> {
             BaseScenarioParser.getInstance().parse(context);
 
             // 実行
-            ScenarioRunnerImpl scenarioRunner = new ScenarioRunnerImpl();
+            ScenarioRunner scenarioRunner = new ScenarioRunnerImpl();
             scenarioRunner.execute(context, executeContext);
 
             // 正常終了
@@ -85,39 +91,28 @@ public class ApplicationRunnerImpl implements ApplicationRunner<Context> {
 
         } catch (Throwable t) {
 
-            // シナリオ失敗
-            //if (executeContext != null) {
-                executeContext.setStatus(ScenarioExecuteStatus.FAIL);
-            //}
+            executeContext.setStatus(ScenarioExecuteStatus.FAIL);
 
             // 例外ハンドリング
             handleGlobalException(context, t);
 
         } finally {
 
-            // 終了
-            //if (executeContext != null) {
+            executeContext.setEnd(LocalDateTime.now());
 
-                executeContext.setEnd(LocalDateTime.now());
+            // 所用時間を設定
+            executeContext.setDuration(
+                    Duration.between(
+                            executeContext.getStart(),
+                            executeContext.getEnd()));
 
-                // 所用時間を設定
-                executeContext.setDuration(
-                        Duration.between(
-                                executeContext.getStart(),
-                                executeContext.getEnd()));
-
-                // レポート出力
-                if (!cmd.hasOption(Args.NOREPORT.getShortName())) {
-                    report(context, executeContext);
-                }
-
-            //}
+            // レポート出力
+            if (!cmd.hasOption(Args.NOREPORT.getShortName())) {
+                report(context, executeContext);
+            }
 
         }
-
-        //if (executeContext == null) {
-        //    return ExitCode.ERROR.getExitCode();
-        //}
+        
         return executeContext.getExitCode().getExitCode();
 
     }

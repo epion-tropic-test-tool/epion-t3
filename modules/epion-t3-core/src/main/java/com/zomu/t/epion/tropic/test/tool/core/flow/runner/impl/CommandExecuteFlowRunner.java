@@ -53,9 +53,9 @@ public class CommandExecuteFlowRunner
             CommandExecuteFlow flow, Logger logger) {
 
 
-        Command command = context.getOriginal().getProcesses().get(flow.getRef());
+        Command command = context.getOriginal().getCommands().get(flow.getRef());
         if (command == null) {
-            command = context.getOriginal().getProcesses().get(executeScenario.getFqsn() + "." + flow.getRef());
+            command = context.getOriginal().getCommands().get(executeScenario.getFqsn() + "." + flow.getRef());
         }
 
         if (command == null) {
@@ -63,7 +63,7 @@ public class CommandExecuteFlowRunner
             throw new CommandNotFoundException(flow.getRef());
         }
 
-        // プロセス実行情報を生成
+        // コマンド実行情報を生成
         ExecuteCommand executeCommand = new ExecuteCommand();
         executeFlow.getCommands().add(executeCommand);
         executeCommand.setCommand(command);
@@ -74,7 +74,7 @@ public class CommandExecuteFlowRunner
         try {
 
             // プロセス開始ログ出力
-            outputStartProcessLog(
+            outputStartCommandLog(
                     context,
                     executeContext,
                     executeScenario,
@@ -159,19 +159,19 @@ public class CommandExecuteFlowRunner
             // 所用時間を設定
             executeCommand.setDuration(Duration.between(executeCommand.getStart(), executeCommand.getEnd()));
 
-            // プロセス終了ログ出力
-            outputEndProcessLog(
+            // コマンド終了ログ出力
+            outputEndCommandLog(
                     context,
                     executeContext,
                     executeScenario,
                     executeFlow,
                     executeCommand);
 
-            // プロセスのログを収集
+            // コマンドのログを収集
             List<CommandLog> commandLogs = SerializationUtils.clone(CommandLoggingHolder.get());
             executeCommand.setCommandLogs(commandLogs);
 
-            // プロセスのログは収集し終えたらクリアする（ThreadLocalにて保持）
+            // コマンドのログは収集し終えたらクリアする（ThreadLocalにて保持）
             CommandLoggingHolder.clear();
 
         }
@@ -272,7 +272,7 @@ public class CommandExecuteFlowRunner
      * @param executeFlow
      * @param executeCommand
      */
-    protected void outputStartProcessLog(
+    protected void outputStartCommandLog(
             final Context context,
             final ExecuteContext executeContext,
             final ExecuteScenario executeScenario,
@@ -302,7 +302,7 @@ public class CommandExecuteFlowRunner
      * @param executeScenario
      * @param executeCommand
      */
-    protected void outputEndProcessLog(
+    protected void outputEndCommandLog(
             final Context context,
             final ExecuteContext executeContext,
             final ExecuteScenario executeScenario,

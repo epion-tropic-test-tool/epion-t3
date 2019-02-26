@@ -1,0 +1,13 @@
+dependencies {
+    compile project(':modules:epion-t3-core')
+
+    implementation ('org.dbunit:dnunit:2.6.0')
+}
+
+
+
+
+
+
+
+
