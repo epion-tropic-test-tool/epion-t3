@@ -14,6 +14,7 @@ import java.util.regex.Pattern;
  * コマンドの実行処理インターフェース.
  *
  * @param <COMMAND>
+ * @author takashno
  */
 public interface CommandRunner<
         COMMAND extends Command,
@@ -29,6 +30,9 @@ public interface CommandRunner<
     Pattern EXTRACT_PATTERN = Pattern.compile("([^.]+)\\.(.+)");
 
     /**
+     * コマンド実行処理.
+     * 本メソッドは、カスタムコマンドにて実装する.
+     *
      * @param command コマンド
      * @param logger  ロガー
      * @throws Exception 例外
@@ -38,8 +42,10 @@ public interface CommandRunner<
 
 
     /**
-     * @param command
-     * @param context
+     * コマンド実行処理.
+     *
+     * @param command         実行するコマンド
+     * @param context         コンテキスト
      * @param executeContext
      * @param executeScenario
      * @param executeFlow

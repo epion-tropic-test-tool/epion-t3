@@ -28,6 +28,10 @@ import java.util.LinkedList;
 import java.util.Map;
 import java.util.regex.Matcher;
 
+/**
+ *
+ * @param <COMMAND>
+ */
 public abstract class AbstractCommandRunner<
         COMMAND extends Command> implements CommandRunner<COMMAND, Context, ExecuteContext, ExecuteScenario, ExecuteFlow, ExecuteCommand> {
 
@@ -38,6 +42,17 @@ public abstract class AbstractCommandRunner<
     private ExecuteFlow executeFlow;
     private ExecuteCommand executeCommand;
 
+    /**
+     *
+     * @param command         実行するコマンド
+     * @param context         コンテキスト
+     * @param executeContext
+     * @param executeScenario
+     * @param executeFlow
+     * @param executeCommand
+     * @param logger
+     * @throws Exception
+     */
     @Override
     public void execute(
             final COMMAND command,
@@ -78,14 +93,29 @@ public abstract class AbstractCommandRunner<
 
     }
 
+    /**
+     * グローバル変数マップを取得.
+     *
+     * @return グローバル変数マップ
+     */
     protected Map<String, Object> getGlobalScopeVariables() {
         return executeContext.getGlobalVariables();
     }
 
+    /**
+     * シナリオ変数マップを取得.
+     *
+     * @return シナリオ変数マップ
+     */
     protected Map<String, Object> getScenarioScopeVariables() {
         return executeScenario.getScenarioVariables();
     }
 
+    /**
+     * Flow変数マップを取得.
+     *
+     * @return Flow変数マップ
+     */
     protected Map<String, Object> getFlowScopeVariables() {
         return executeFlow.getFlowVariables();
     }
