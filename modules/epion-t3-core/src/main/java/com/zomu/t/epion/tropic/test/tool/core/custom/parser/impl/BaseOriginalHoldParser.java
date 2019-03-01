@@ -179,7 +179,7 @@ public final class BaseOriginalHoldParser implements IndividualTargetParser<Cont
                                 fullProcessId, command);
 
                         // コマンド識別子とシナリオIDを紐付ける
-                        baseContext.getOriginal().getProcessScenarioRelations().put(fullProcessId, t3Base.getInfo().getId());
+                        baseContext.getOriginal().getCommandScenarioRelations().put(fullProcessId, t3Base.getInfo().getId());
 
                         // コマンド識別子とPathを紐付ける
                         baseContext.getOriginal().getProcessPlacePaths().put(fullProcessId, file);

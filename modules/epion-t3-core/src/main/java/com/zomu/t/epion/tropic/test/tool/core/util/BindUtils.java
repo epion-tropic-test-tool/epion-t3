@@ -87,7 +87,7 @@ public final class BindUtils {
                     });
 
             Arrays.stream(clazz.getDeclaredFields())
-                    // Stringのみ
+                    // String以外
                     .filter(x -> !String.class.isAssignableFrom(x.getType()) && !x.getName().equals("serialVersionUID"))
                     .forEach(x -> {
                         try {

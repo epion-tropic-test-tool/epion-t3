@@ -5,20 +5,12 @@ allprojects {
     apply plugin: 'idea'
     apply plugin: 'maven'
 
-
     repositories {
-//        maven {
-//            url = 'https://oss.sonatype.org/content/repositories/releases/'
-//        }
         mavenCentral()
         jcenter()
     }
 
-
     dependencies {
-
-        //compile 'org.yaml:snakeyaml:1.21'
-
 
         compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.9.6'
         compile group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: '2.9.6'
@@ -64,10 +56,18 @@ allprojects {
 
     }
 
+    // JavaDoc
+    tasks.withType(Javadoc) {
+        options.charSet = 'UTF-8'
+        options.encoding = 'UTF-8'
+        options.addBooleanOption('Xdoclint:none', true)
+    }
+
+    // Java
+    tasks.withType(JavaCompile) {
+        sourceCompatibility = '1.8'
+        targetCompatibility = '1.8'
+        it.options.encoding = 'UTF-8'
+    }
+
 }
-
-
-
-
-
-
