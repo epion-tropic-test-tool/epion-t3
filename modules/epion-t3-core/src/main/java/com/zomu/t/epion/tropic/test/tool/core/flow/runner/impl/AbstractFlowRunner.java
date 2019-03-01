@@ -14,7 +14,6 @@ import com.zomu.t.epion.tropic.test.tool.core.type.FlowStatus;
 import com.zomu.t.epion.tropic.test.tool.core.util.BindUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.SerializationUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 
 import java.io.PrintWriter;
@@ -24,13 +23,12 @@ import java.lang.reflect.Type;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 
 /**
+ * 全てのFlowの基底クラス.
+ *
  * @param <EXECUTE_CONTEXT>
  * @param <EXECUTE_SCENARIO>
  * @param <EXECUTE_FLOW>
@@ -115,7 +113,7 @@ public abstract class AbstractFlowRunner<
         } catch (Throwable t) {
 
             // 解析用
-            log.debug("error occurred...", t);
+            log.debug("Error Occurred...", t);
 
             // 発生したエラーを設定
             executeFlow.setError(t);
@@ -188,11 +186,12 @@ public abstract class AbstractFlowRunner<
 
 
     /**
-     * コマンドに対して、変数をバインドする.
+     * Flowに対して、変数をバインドする.
      *
-     * @param context
-     * @param executeScenario
-     * @param executeFlow
+     * @param context         コンテキスト
+     * @param executeScenario シナリオ実行情報
+     * @param executeFlow     Flow実行情報
+     * @param flow            Flow
      */
     private void bind(final Context context,
                       final EXECUTE_CONTEXT executeContext,
@@ -200,33 +199,19 @@ public abstract class AbstractFlowRunner<
                       final EXECUTE_FLOW executeFlow,
                       final FLOW flow) {
 
-        final Map<String, String> profiles = new ConcurrentHashMap<>();
-
-        if (StringUtils.isNotEmpty(context.getOption().getProfile())) {
-            // プロファイルを抽出
-            Arrays.stream(context.getOption().getProfile().split(","))
-                    .forEach(x -> {
-                        if (context.getOriginal().getProfiles().containsKey(x)) {
-                            profiles.putAll(context.getOriginal().getProfiles().get(x));
-                        } else {
-
-                        }
-                    });
-        }
-
         BindUtils.getInstance().bind(
                 flow,
-                profiles,
+                executeContext.getProfileConstants(),
                 executeContext.getGlobalVariables(),
                 executeScenario.getScenarioVariables());
     }
 
 
     /**
-     * @param context
-     * @param executeScenario
-     * @param executeFlow
-     * @param flow
+     * @param context         コンテキスト
+     * @param executeScenario シナリオ実行情報
+     * @param executeFlow     Flow実行情報
+     * @param flow            Flow
      */
     protected abstract FlowResult execute(
             Context context,
@@ -241,11 +226,11 @@ public abstract class AbstractFlowRunner<
      * エラー処理を行う.
      * この処理は、Flowの処理結果が失敗の場合に実行される.
      *
-     * @param context
-     * @param executeScenario
-     * @param executeFlow
-     * @param flow
-     * @param t
+     * @param context         コンテキスト
+     * @param executeScenario シナリオ実行情報
+     * @param executeFlow     Flow実行情報
+     * @param flow            Flow
+     * @param t               例外
      */
     protected void onError(
             Context context,
@@ -262,10 +247,10 @@ public abstract class AbstractFlowRunner<
      * 終了処理を行う.
      * この処理は、Flowの処理結果が成功・失敗に関わらず実行される.
      *
-     * @param context
-     * @param executeScenario
-     * @param executeFlow
-     * @param flow
+     * @param context         コンテキスト
+     * @param executeScenario シナリオ実行情報
+     * @param executeFlow     Flow実行情報
+     * @param flow            Flow
      */
     protected void onFinally(
             final Context context,
@@ -276,8 +261,6 @@ public abstract class AbstractFlowRunner<
             final Logger logger) {
         // 必要に応じてオーバーライド実装すること.
     }
-
-    ;
 
     /**
      * シナリオスコープの変数を設定する.

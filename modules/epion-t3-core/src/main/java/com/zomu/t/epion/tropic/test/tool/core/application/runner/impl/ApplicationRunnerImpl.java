@@ -3,6 +3,8 @@ package com.zomu.t.epion.tropic.test.tool.core.application.runner.impl;
 import com.zomu.t.epion.tropic.test.tool.core.context.Context;
 import com.zomu.t.epion.tropic.test.tool.core.context.execute.ExecuteContext;
 import com.zomu.t.epion.tropic.test.tool.core.exception.handler.BaseExceptionHandler;
+import com.zomu.t.epion.tropic.test.tool.core.message.MessageManager;
+import com.zomu.t.epion.tropic.test.tool.core.message.impl.CoreMessages;
 import com.zomu.t.epion.tropic.test.tool.core.scenario.parser.impl.BaseScenarioParser;
 import com.zomu.t.epion.tropic.test.tool.core.annotation.ApplicationVersion;
 import com.zomu.t.epion.tropic.test.tool.core.execution.reporter.impl.ScenarioReporterImpl;
@@ -15,10 +17,13 @@ import com.zomu.t.epion.tropic.test.tool.core.type.ScenarioExecuteStatus;
 import com.zomu.t.epion.tropic.test.tool.core.util.ExecutionFileUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.cli.*;
+import org.apache.commons.lang3.StringUtils;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.Arrays;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * アプリケーション実行処理.
@@ -81,6 +86,9 @@ public class ApplicationRunnerImpl implements ApplicationRunner<Context> {
             // シナリオの解析（パース処理）
             BaseScenarioParser.getInstance().parse(context);
 
+            // プロファイルの抽出
+            setProfiles(context, executeContext);
+
             // 実行
             ScenarioRunner scenarioRunner = new ScenarioRunnerImpl();
             scenarioRunner.execute(context, executeContext);
@@ -112,7 +120,7 @@ public class ApplicationRunnerImpl implements ApplicationRunner<Context> {
             }
 
         }
-        
+
         return executeContext.getExitCode().getExitCode();
 
     }
@@ -127,7 +135,7 @@ public class ApplicationRunnerImpl implements ApplicationRunner<Context> {
     /**
      * 実行引数オプションをコンテキストへ設定する.
      *
-     * @param context
+     * @param context コンテキスト
      * @param commandLine
      */
     private void setOptions(final Context context, final CommandLine commandLine) {
@@ -150,9 +158,35 @@ public class ApplicationRunnerImpl implements ApplicationRunner<Context> {
     }
 
     /**
+     * 実行時に指定されたプロファイルを元に、実行コンテキストに設定する.
+     *
+     * @param context        コンテキスト
+     * @param executeContext 実行コンテキスト
+     */
+    private void setProfiles(final Context context, final ExecuteContext executeContext) {
+
+        if (StringUtils.isNotEmpty(context.getOption().getProfile())) {
+            // プロファイルを抽出
+            Arrays.stream(context.getOption().getProfile().split(","))
+                    .forEach(x -> {
+                        if (context.getOriginal().getProfiles().containsKey(x)) {
+                            executeContext.getProfileConstants().putAll(context.getOriginal().getProfiles().get(x));
+                        } else {
+                            // 起動時に指定されたプロファイルが、
+                            // シナリオの中に存在しないため実質有効ではないことをWARNログにて通知
+                            log.warn(
+                                    MessageManager.getInstance().getMessage(
+                                            CoreMessages.CORE_WRN_0002, context.getOption().getProfile()));
+                        }
+                    });
+        }
+
+    }
+
+    /**
      * 結果ディレクトリが未作成であった場合に、作成します.
      *
-     * @param context
+     * @param context コンテキスト
      */
     private void createResultDirectory(final Context context, final ExecuteContext executeContext) {
         ExecutionFileUtils.createResultDirectory(context, executeContext);
@@ -161,7 +195,7 @@ public class ApplicationRunnerImpl implements ApplicationRunner<Context> {
     /**
      * レポート出力を行う.
      *
-     * @param context
+     * @param context コンテキスト
      */
     private void report(final Context context, final ExecuteContext executeContext) {
 

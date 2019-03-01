@@ -15,6 +15,15 @@ import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
 
+/**
+ * 条件分岐を判断するためのFlowRunner.
+ * <p>
+ * シナリオに記載された任意のJavaScript式を評価し、
+ * その結果をもとに、どのFlowへ実行するべきかを判定する.
+ * </p>
+ *
+ * @author takashno
+ */
 public class BranchFlowRunner extends AbstractFlowRunner<
         ExecuteContext,
         ExecuteScenario,

@@ -1,18 +1,17 @@
 package com.zomu.t.epion.tropic.test.tool.core.util;
 
 import com.zomu.t.epion.tropic.test.tool.core.exception.SystemException;
-import com.zomu.t.epion.tropic.test.tool.core.message.impl.CoreMessages;
 import com.zomu.t.epion.tropic.test.tool.core.message.MessageManager;
+import com.zomu.t.epion.tropic.test.tool.core.message.impl.CoreMessages;
 import com.zomu.t.epion.tropic.test.tool.core.type.ReferenceVariableType;
 import lombok.extern.slf4j.Slf4j;
-import net.sourceforge.plantuml.geom.CollectionUtils;
-import org.apache.commons.lang3.ClassUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import java.beans.IntrospectionException;
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.InvocationTargetException;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -58,11 +57,11 @@ public final class BindUtils {
     }
 
     /**
-     * オブジェクトの全フィールドに対してバインド処理を行う.
+     * オブジェクトの全フィールドに対して各種変数およびプロファイルの値のバインド処理を行う.
      *
-     * @param target
-     * @param globalVariables
-     * @param scenarioVariables
+     * @param target            対象オブジェクト
+     * @param globalVariables   グローバル変数
+     * @param scenarioVariables シナリオ変数
      */
     public void bind(Object target, Map<String, String> profiles, Map<String, Object> globalVariables, Map<String, Object> scenarioVariables) {
 
@@ -114,12 +113,12 @@ public final class BindUtils {
     }
 
     /**
-     * バインド.
+     * 文字列に対して各種変数およびプロファイルの値のバインド処理を行う.
      *
-     * @param target
-     * @param globalVariables
-     * @param scenarioVariables
-     * @return
+     * @param target            対象文字列
+     * @param globalVariables   グローバル変数
+     * @param scenarioVariables シナリオ変数
+     * @return バインド後の文字列
      */
     public String bind(String target, Map<String, String> profiles, Map<String, Object> globalVariables, Map<String, Object> scenarioVariables) {
 

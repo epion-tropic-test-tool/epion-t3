@@ -55,10 +55,14 @@ public class ExecuteContext implements Serializable {
     private List<ExecuteScenario> scenarios = new ArrayList<>();
 
     /**
-     * Globalスコープ.
+     * Globalスコープ変数.
      */
-    private Map<String, Object> globalVariables = new ConcurrentHashMap<>();
+    private final Map<String, Object> globalVariables = new ConcurrentHashMap<>();
 
+    /**
+     * プロファイル定数.
+     */
+    private final Map<String, String> profileConstants = new ConcurrentHashMap<>();
 
     /**
      * 実行結果ディレクトリパス.

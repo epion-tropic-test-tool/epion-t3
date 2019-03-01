@@ -8,6 +8,8 @@ import com.zomu.t.epion.tropic.test.tool.core.exception.ScenarioNotFoundExceptio
 import com.zomu.t.epion.tropic.test.tool.core.exception.SystemException;
 import com.zomu.t.epion.tropic.test.tool.core.execution.reporter.impl.ScenarioReporterImpl;
 import com.zomu.t.epion.tropic.test.tool.core.flow.resolver.impl.FlowRunnerResolverImpl;
+import com.zomu.t.epion.tropic.test.tool.core.message.MessageManager;
+import com.zomu.t.epion.tropic.test.tool.core.message.impl.CoreMessages;
 import com.zomu.t.epion.tropic.test.tool.core.scenario.runner.ScenarioRunner;
 import com.zomu.t.epion.tropic.test.tool.core.flow.model.FlowResult;
 import com.zomu.t.epion.tropic.test.tool.core.flow.runner.FlowRunner;
@@ -77,20 +79,22 @@ public class ScenarioRunnerImpl implements ScenarioRunner<Context, ExecuteContex
             // 全てのフローを実行
             for (Flow flow : scenario.getFlows()) {
 
-
                 if (flowResult != null) {
                     // 前Flowの結果によって処理を振り分ける
                     switch (flowResult.getStatus()) {
                         case NEXT:
                             // 単純に次のFlowへ遷移
+                            log.debug("Execute Next Flow.");
                             break;
                         case CHOICE:
+                            log.debug("Choice Execute Next Flow.");
                             // 指定された後続Flowへ遷移
                             if (StringUtils.equals(flowResult.getChoiceId(), flow.getId())) {
                                 // 合致したため実行する
-                                log.debug("Find Next Flow!!!");
+                                log.debug("Find To Be Executed Flow.");
                             } else {
                                 // SKIP扱いとする
+                                log.debug("Can't Find Execute Flow. -> SKIP");
                                 // TODO:ちょっと微妙だな・・・
                                 ExecuteFlow executeFlow = new ExecuteFlow();
                                 executeFlow.setStatus(FlowStatus.SKIP);
@@ -102,6 +106,7 @@ public class ScenarioRunnerImpl implements ScenarioRunner<Context, ExecuteContex
                             break;
                         case EXIT:
                             // 即時終了
+                            log.debug("Force Exit Scenario.");
                             exitFlg = true;
                             break;
                     }
@@ -128,8 +133,8 @@ public class ScenarioRunnerImpl implements ScenarioRunner<Context, ExecuteContex
 
                 ExecuteFlow executeFlow = executeScenario.getFlows().get(executeScenario.getFlows().size() - 1);
                 if (FlowStatus.ERROR == executeFlow.getStatus()) {
-                    log.error("error occurred...");
-                    throw new SystemException("error occurred...");
+                    log.error("Error Occurred...");
+                    throw new SystemException("Error Occurred...");
                 }
 
             }
@@ -139,7 +144,7 @@ public class ScenarioRunnerImpl implements ScenarioRunner<Context, ExecuteContex
 
         } catch (Throwable t) {
 
-            log.debug("error occurred...", t);
+            log.debug("Error Occurred...", t);
 
             // 発生したエラーを設定
             executeScenario.setError(t);
@@ -182,23 +187,9 @@ public class ScenarioRunnerImpl implements ScenarioRunner<Context, ExecuteContex
                       final ExecuteScenario executeScenario,
                       final Flow flow) {
 
-        final Map<String, String> profiles = new ConcurrentHashMap<>();
-
-        if (StringUtils.isNotEmpty(context.getOption().getProfile())) {
-            // プロファイルを抽出
-            Arrays.stream(context.getOption().getProfile().split(","))
-                    .forEach(x -> {
-                        if (context.getOriginal().getProfiles().containsKey(x)) {
-                            profiles.putAll(context.getOriginal().getProfiles().get(x));
-                        } else {
-
-                        }
-                    });
-        }
-
         BindUtils.getInstance().bind(
                 flow,
-                profiles,
+                executeContext.getProfileConstants(),
                 executeContext.getGlobalVariables(),
                 executeScenario.getScenarioVariables());
     }
