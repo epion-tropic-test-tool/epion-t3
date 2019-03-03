@@ -119,16 +119,21 @@ public final class BaseCustomParser implements IndividualTargetParser {
 
     }
 
-    private void parseCustom(Context baseContext) {
+    /**
+     * カスタムコマンド解析.
+     *
+     * @param context コンテキスト
+     */
+    private void parseCustom(Context context) {
 
         ClassLoader loader = Thread.currentThread().getContextClassLoader();
 
         // カスタムコマンド
-        baseContext.getOriginal().getCustom().getPackages().forEach(
+        context.getOriginal().getCustom().getPackages().forEach(
                 (k, v) -> CustomPackageHolder.getInstance().addCustomPackage(k, v));
 
         // カスタム機能のパッケージを走査
-        for (Map.Entry<String, String> entry : baseContext.getOriginal().getCustom().getPackages().entrySet()) {
+        for (Map.Entry<String, String> entry : context.getOriginal().getCustom().getPackages().entrySet()) {
 
 
             log.debug("start parse custom function packages -> {}:{}", entry.getKey(), entry.getValue());
@@ -150,11 +155,14 @@ public final class BaseCustomParser implements IndividualTargetParser {
                     .filter(x -> Command.class.isAssignableFrom(x))
                     .forEach(x -> {
                         CommandDefinition command = x.getDeclaredAnnotation(CommandDefinition.class);
-                        CommandInfo commandInfo = CommandInfo.builder().id(command.id()).model(x).runner(command.runner()).build();
+                        CommandInfo commandInfo = CommandInfo.builder().id(command.id()).model(x)
+                                .assertCommand(command.assertCommand())
+                                .runner(command.runner())
+                                .reporter(command.reporter()).build();
                         CustomPackageHolder.getInstance().addCustomCommandInfo(
                                 command.id(), commandInfo);
                         // TODO:シナリオを動かすときに使うが、果たして重複保持が必要か？
-                        baseContext.getCustomCommands().put(command.id(), commandInfo);
+                        context.getCustomCommands().put(command.id(), commandInfo);
                     });
 
 
@@ -169,7 +177,7 @@ public final class BaseCustomParser implements IndividualTargetParser {
                         CustomPackageHolder.getInstance().addCustomFlowInfo(
                                 flow.id(), flowInfo);
                         // TODO:シナリオを動かすときに使うが、果たして重複保持が必要か？
-                        baseContext.getCustomFlows().put(flow.id(), flowInfo);
+                        context.getCustomFlows().put(flow.id(), flowInfo);
                     });
 
             // カスタム設定を解析
@@ -183,7 +191,7 @@ public final class BaseCustomParser implements IndividualTargetParser {
                                 CustomConfigurationInfo.builder().id(configuration.id()).model(x).build();
                         CustomConfigurationHolder.getInstance().addCustomConfigurationInfo(customConfigurationInfo);
                         // :いるっけ・・・？経緯を忘れすぎてよくわからん・・・
-                        baseContext.getCustomConfigurations().put(configuration.id(), customConfigurationInfo);
+                        context.getCustomConfigurations().put(configuration.id(), customConfigurationInfo);
                     });
 
             // カスタムコマンドリスナーを解析

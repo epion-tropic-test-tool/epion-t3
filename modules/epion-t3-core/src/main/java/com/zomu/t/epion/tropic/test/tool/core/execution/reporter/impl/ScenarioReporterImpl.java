@@ -109,7 +109,7 @@ public final class ScenarioReporterImpl implements ScenarioReporter {
             icontext.setVariables(variable);
 
             // HTML変換＆出力
-            Files.write(ExecutionFileUtils.getAllReportPath(context, executeContext),
+            Files.write(ExecutionFileUtils.getAllReportPath(executeContext),
                     templateEngine.process("report", icontext).getBytes(TEMPLATE_ENCODING));
 
             // YAML出力
@@ -171,7 +171,7 @@ public final class ScenarioReporterImpl implements ScenarioReporter {
 
             icontext.setVariables(variable);
 
-            Path scenarioReportPath = ExecutionFileUtils.getScenarioReportPath(context, executeContext, executeScenario);
+            Path scenarioReportPath = ExecutionFileUtils.getScenarioReportPath(executeContext, executeScenario);
 
             // HTML変換＆出力
             Files.write(scenarioReportPath,

@@ -1,6 +1,7 @@
 package com.zomu.t.epion.tropic.test.tool.core.util;
 
 import com.zomu.t.epion.tropic.test.tool.core.context.Context;
+import com.zomu.t.epion.tropic.test.tool.core.context.execute.ExecuteCommand;
 import com.zomu.t.epion.tropic.test.tool.core.context.execute.ExecuteContext;
 import com.zomu.t.epion.tropic.test.tool.core.context.execute.ExecuteScenario;
 import com.zomu.t.epion.tropic.test.tool.core.type.ScenarioScopeVariables;
@@ -90,15 +91,43 @@ public final class ExecutionFileUtils {
         }
     }
 
-    public static Path getAllReportPath(final Context context, final ExecuteContext executeContext) {
+    public static Path getAllReportPath(final ExecuteContext executeContext) {
         return Paths.get(executeContext.getResultRootPath() + File.separator + "report.html");
     }
 
-    public static Path getAllReportYamlPath(final Context context, final ExecuteContext executeContext) {
+    public static Path getAllReportYamlPath(final ExecuteContext executeContext) {
         return Paths.get(executeContext.getResultRootPath() + File.separator + "report.yaml");
     }
 
-    public static Path getScenarioReportPath(final Context context, final ExecuteContext executeContext, final ExecuteScenario scenario) {
+    public static Path getScenarioReportPath(final ExecuteContext executeContext, final ExecuteScenario scenario) {
         return Paths.get(scenario.getResultPath().toString() + File.separator + "scenario_report.html");
+    }
+
+    /**
+     * コマンドレポートの出力パスを取得.
+     *
+     * @param scenario
+     * @param executeCommand
+     * @param extention
+     * @return
+     */
+    public static Path getCommandReportPath(final ExecuteScenario scenario,
+                                            final ExecuteCommand executeCommand,
+                                            final String extention) {
+        return Paths.get(scenario.getResultPath().toString()
+                + File.separator
+                + String.format("command_%s%.%s", executeCommand.getExecuteId().toString(), extention));
+    }
+
+    /**
+     * コマンドHTMLレポートの出力パスを取得.
+     *
+     * @param scenario
+     * @param executeCommand
+     * @return
+     */
+    public static Path getCommandHtmlReportPath(final ExecuteScenario scenario,
+                                                final ExecuteCommand executeCommand) {
+        return getCommandReportPath(scenario, executeCommand, "html");
     }
 }

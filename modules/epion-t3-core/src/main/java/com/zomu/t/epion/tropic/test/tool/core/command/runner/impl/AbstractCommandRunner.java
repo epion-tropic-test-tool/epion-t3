@@ -1,6 +1,9 @@
 package com.zomu.t.epion.tropic.test.tool.core.command.runner.impl;
 
 import com.zomu.t.epion.tropic.test.tool.core.command.model.CommandResult;
+import com.zomu.t.epion.tropic.test.tool.core.command.reporter.CommandReporter;
+import com.zomu.t.epion.tropic.test.tool.core.command.reporter.impl.NoneCommandReporter;
+import com.zomu.t.epion.tropic.test.tool.core.command.reporter.impl.ThymeleafCommandReporter;
 import com.zomu.t.epion.tropic.test.tool.core.command.runner.CommandRunner;
 import com.zomu.t.epion.tropic.test.tool.core.context.Context;
 import com.zomu.t.epion.tropic.test.tool.core.context.EvidenceInfo;
@@ -28,6 +31,7 @@ import java.util.Map;
 import java.util.regex.Matcher;
 
 /**
+ * コマンド実行の基底クラス.
  *
  * @param <COMMAND>
  */
@@ -42,15 +46,16 @@ public abstract class AbstractCommandRunner<
     private ExecuteCommand executeCommand;
 
     /**
+     * コマンド実行処理.
      *
      * @param command         実行するコマンド
      * @param context         コンテキスト
-     * @param executeContext
-     * @param executeScenario
-     * @param executeFlow
-     * @param executeCommand
-     * @param logger
-     * @throws Exception
+     * @param executeContext  実行コンテキスト
+     * @param executeScenario 実行シナリオ情報
+     * @param executeFlow     実行Flow情報
+     * @param executeCommand  実行コマンド情報
+     * @param logger          ロガー
+     * @throws Exception 例外
      */
     @Override
     public void execute(
@@ -62,12 +67,16 @@ public abstract class AbstractCommandRunner<
             final ExecuteCommand executeCommand,
             final Logger logger) throws Exception {
 
+        // インスタンス変数に登録
         this.command = command;
         this.context = context;
         this.executeContext = executeContext;
         this.executeScenario = executeScenario;
         this.executeFlow = executeFlow;
         this.executeCommand = executeCommand;
+
+        // エラー
+        Throwable error = null;
 
         // コマンド実行
         CommandResult result = null;
@@ -78,6 +87,8 @@ public abstract class AbstractCommandRunner<
 
         } catch (Throwable t) {
 
+            error = t;
+
             result = new CommandResult();
             result.setStatus(CommandStatus.FAIL);
 
@@ -87,6 +98,30 @@ public abstract class AbstractCommandRunner<
 
             // コマンド結果を設定
             executeCommand.setCommandResult(result);
+
+            if (!context.getOption().getNoreport()) {
+
+                Class reporterClazz = executeCommand.getCommandInfo().getReporter();
+
+                if (!NoneCommandReporter.class.isAssignableFrom(reporterClazz)) {
+
+                    CommandReporter reporter = (CommandReporter) reporterClazz.newInstance();
+
+                    // レポート出力
+                    reporter.report(
+                            command,
+                            context,
+                            executeContext,
+                            executeScenario,
+                            executeFlow,
+                            executeCommand,
+                            error);
+
+                } else {
+                    logger.debug("not exists CommandReporter.");
+                }
+
+            }
 
         }
 
@@ -132,21 +167,30 @@ public abstract class AbstractCommandRunner<
     protected Object resolveVariables(
             final String referenceVariable) {
 
+        // 正規表現からスコープと変数名に分割して解析する
         Matcher m = EXTRACT_PATTERN.matcher(referenceVariable);
 
         if (m.find()) {
+
+            // 変数参照スコープを解決
             ReferenceVariableType referenceVariableType = ReferenceVariableType.valueOfByName(m.group(1));
+
             if (referenceVariableType != null) {
                 switch (referenceVariableType) {
                     case FIX:
+                        // 固定値の場合はそのまま返却
                         return m.group(2);
                     case GLOBAL:
+                        // グローバル変数から解決
                         return executeContext.getGlobalVariables().get(m.group(2));
                     case SCENARIO:
+                        // シナリオ変数から解決
                         return executeScenario.getScenarioVariables().get(m.group(2));
                     case FLOW:
+                        // Flow変数から解決
                         return executeFlow.getFlowVariables().get(m.group(2));
                     default:
+                        // 変数解決できない場合は、エラー
                         throw new SystemException(CoreMessages.CORE_ERR_0005, m.group(1));
                 }
             } else {

@@ -23,6 +23,9 @@ public class Context implements Serializable {
     @Getter
     private final ObjectMapper objectMapper;
 
+    /**
+     * YAMLを読み込んだオリジナル
+     */
     @Getter
     private final Original original = new Original();
 

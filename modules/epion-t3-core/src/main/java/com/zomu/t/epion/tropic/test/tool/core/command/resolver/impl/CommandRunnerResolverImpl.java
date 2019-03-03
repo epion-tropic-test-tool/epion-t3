@@ -70,6 +70,9 @@ public final class CommandRunnerResolverImpl implements CommandRunnerResolver {
             throw new CommandNotFoundException(commandId);
         }
 
+        // コマンド情報を保持
+        executeCommand.setCommandInfo(commandInfo);
+
         // 実行クラスを取得
         Class runnerClass = commandInfo.getRunner();
 

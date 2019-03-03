@@ -1,5 +1,7 @@
 package com.zomu.t.epion.tropic.test.tool.core.annotation;
 
+import com.zomu.t.epion.tropic.test.tool.core.command.reporter.CommandReporter;
+import com.zomu.t.epion.tropic.test.tool.core.command.reporter.impl.NoneCommandReporter;
 import com.zomu.t.epion.tropic.test.tool.core.command.runner.CommandRunner;
 
 import java.lang.annotation.ElementType;
@@ -30,5 +32,12 @@ public @interface CommandDefinition {
      * コマンド実行処理クラス.
      */
     Class<? extends CommandRunner> runner();
+
+    /**
+     * コマンド結果レポート出力クラス.
+     *
+     * @return
+     */
+    Class<? extends CommandReporter> reporter() default NoneCommandReporter.class;
 
 }
