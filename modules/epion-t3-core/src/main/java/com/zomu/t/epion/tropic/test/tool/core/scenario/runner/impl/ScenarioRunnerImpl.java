@@ -6,10 +6,8 @@ import com.zomu.t.epion.tropic.test.tool.core.context.execute.ExecuteFlow;
 import com.zomu.t.epion.tropic.test.tool.core.context.execute.ExecuteScenario;
 import com.zomu.t.epion.tropic.test.tool.core.exception.ScenarioNotFoundException;
 import com.zomu.t.epion.tropic.test.tool.core.exception.SystemException;
-import com.zomu.t.epion.tropic.test.tool.core.execution.reporter.impl.ScenarioReporterImpl;
+import com.zomu.t.epion.tropic.test.tool.core.scenario.reporter.impl.ScenarioReporterImpl;
 import com.zomu.t.epion.tropic.test.tool.core.flow.resolver.impl.FlowRunnerResolverImpl;
-import com.zomu.t.epion.tropic.test.tool.core.message.MessageManager;
-import com.zomu.t.epion.tropic.test.tool.core.message.impl.CoreMessages;
 import com.zomu.t.epion.tropic.test.tool.core.scenario.runner.ScenarioRunner;
 import com.zomu.t.epion.tropic.test.tool.core.flow.model.FlowResult;
 import com.zomu.t.epion.tropic.test.tool.core.flow.runner.FlowRunner;
@@ -26,9 +24,6 @@ import org.slf4j.LoggerFactory;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
-import java.util.Arrays;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * シナリオ実行処理.
@@ -57,6 +52,9 @@ public class ScenarioRunnerImpl implements ScenarioRunner<Context, ExecuteContex
         executeScenario.setInfo(scenario.getInfo());
         executeScenario.setFqsn(scenario.getInfo().getId());
         executeContext.getScenarios().add(executeScenario);
+
+        // エラー
+        Throwable error = null;
 
         try {
 
@@ -147,6 +145,7 @@ public class ScenarioRunnerImpl implements ScenarioRunner<Context, ExecuteContex
             log.debug("Error Occurred...", t);
 
             // 発生したエラーを設定
+            error = t;
             executeScenario.setError(t);
 
             // シナリオ失敗
@@ -168,7 +167,7 @@ public class ScenarioRunnerImpl implements ScenarioRunner<Context, ExecuteContex
 
             // レポート出力
             if (!context.getOption().getNoreport()) {
-                report(context, executeContext, executeScenario);
+                report(context, executeContext, executeScenario, error);
             }
         }
 
@@ -243,8 +242,21 @@ public class ScenarioRunnerImpl implements ScenarioRunner<Context, ExecuteContex
         ExecutionFileUtils.createResultDirectory(context, executeContext);
     }
 
-    private void report(final Context context, final ExecuteContext executeContext, final ExecuteScenario scenario) {
-        ScenarioReporterImpl.getInstance().scenarioReport(context, executeContext, scenario);
+    /**
+     * レポート出力.
+     *
+     * @param context         コンテキスト
+     * @param executeContext  実行情報
+     * @param executeScenario シナリオ実行情報
+     * @param t               エラー
+     */
+    private void report(
+            final Context context,
+            final ExecuteContext executeContext,
+            final ExecuteScenario executeScenario,
+            final Throwable t) {
+        ScenarioReporterImpl.getInstance().report(
+                context, executeContext, executeScenario, t);
     }
 
 

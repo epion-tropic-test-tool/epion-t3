@@ -1,14 +1,14 @@
 package com.zomu.t.epion.tropic.test.tool.core.application.runner.impl;
 
+import com.zomu.t.epion.tropic.test.tool.core.annotation.ApplicationVersion;
+import com.zomu.t.epion.tropic.test.tool.core.application.reporter.impl.ApplicationReporterImpl;
+import com.zomu.t.epion.tropic.test.tool.core.application.runner.ApplicationRunner;
 import com.zomu.t.epion.tropic.test.tool.core.context.Context;
 import com.zomu.t.epion.tropic.test.tool.core.context.execute.ExecuteContext;
 import com.zomu.t.epion.tropic.test.tool.core.exception.handler.BaseExceptionHandler;
 import com.zomu.t.epion.tropic.test.tool.core.message.MessageManager;
 import com.zomu.t.epion.tropic.test.tool.core.message.impl.CoreMessages;
 import com.zomu.t.epion.tropic.test.tool.core.scenario.parser.impl.BaseScenarioParser;
-import com.zomu.t.epion.tropic.test.tool.core.annotation.ApplicationVersion;
-import com.zomu.t.epion.tropic.test.tool.core.execution.reporter.impl.ScenarioReporterImpl;
-import com.zomu.t.epion.tropic.test.tool.core.application.runner.ApplicationRunner;
 import com.zomu.t.epion.tropic.test.tool.core.scenario.runner.ScenarioRunner;
 import com.zomu.t.epion.tropic.test.tool.core.scenario.runner.impl.ScenarioRunnerImpl;
 import com.zomu.t.epion.tropic.test.tool.core.type.Args;
@@ -22,8 +22,6 @@ import org.apache.commons.lang3.StringUtils;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.Arrays;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * アプリケーション実行処理.
@@ -40,6 +38,7 @@ public class ApplicationRunnerImpl implements ApplicationRunner<Context> {
     private static final Options OPTIONS = new Options();
 
     static {
+
         // 引数定義をCLIオプション化する
         // Base(v1.0)については、coreをそのまま引き継ぐ
         Arrays.stream(Args.values()).forEach(
@@ -75,6 +74,9 @@ public class ApplicationRunnerImpl implements ApplicationRunner<Context> {
         // 実行コンテキストの生成
         ExecuteContext executeContext = new ExecuteContext();
 
+        // エラー
+        Throwable error = null;
+
         try {
 
             // 引数設定
@@ -99,6 +101,8 @@ public class ApplicationRunnerImpl implements ApplicationRunner<Context> {
 
         } catch (Throwable t) {
 
+            error = t;
+
             executeContext.setStatus(ScenarioExecuteStatus.FAIL);
 
             // 例外ハンドリング
@@ -116,7 +120,7 @@ public class ApplicationRunnerImpl implements ApplicationRunner<Context> {
 
             // レポート出力
             if (!cmd.hasOption(Args.NOREPORT.getShortName())) {
-                report(context, executeContext);
+                report(context, executeContext, error);
             }
 
         }
@@ -125,6 +129,10 @@ public class ApplicationRunnerImpl implements ApplicationRunner<Context> {
 
     }
 
+    /**
+     * @param context
+     * @param t
+     */
     @Override
     public void handleGlobalException(final Context context, final Throwable t) {
 
@@ -135,7 +143,7 @@ public class ApplicationRunnerImpl implements ApplicationRunner<Context> {
     /**
      * 実行引数オプションをコンテキストへ設定する.
      *
-     * @param context コンテキスト
+     * @param context     コンテキスト
      * @param commandLine
      */
     private void setOptions(final Context context, final CommandLine commandLine) {
@@ -197,10 +205,12 @@ public class ApplicationRunnerImpl implements ApplicationRunner<Context> {
      *
      * @param context コンテキスト
      */
-    private void report(final Context context, final ExecuteContext executeContext) {
+    private void report(final Context context,
+                        final ExecuteContext executeContext,
+                        final Throwable error) {
 
         // レポーターに処理を移譲
-        ScenarioReporterImpl.getInstance().allReport(context, executeContext);
+        ApplicationReporterImpl.getInstance().report(context, executeContext, error);
 
     }
 }

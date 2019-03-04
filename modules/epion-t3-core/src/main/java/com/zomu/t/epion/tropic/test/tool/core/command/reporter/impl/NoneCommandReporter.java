@@ -7,7 +7,7 @@ import java.util.Map;
  *
  * @author takashno
  */
-public class NoneCommandReporter extends AbstractCommandReporter {
+public class NoneCommandReporter extends AbstractThymeleafCommandReporter {
 
     /**
      * {@inheritDoc}

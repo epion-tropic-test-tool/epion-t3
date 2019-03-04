@@ -26,7 +26,7 @@ import java.util.Map;
  * @author takashno
  */
 @Slf4j
-public abstract class AbstractCommandReporter<
+public abstract class AbstractThymeleafCommandReporter<
         COMMAND extends Command> implements ThymeleafCommandReporter<COMMAND, ExecuteContext, ExecuteScenario, ExecuteFlow, ExecuteCommand> {
 
     /**
@@ -57,9 +57,6 @@ public abstract class AbstractCommandReporter<
 
         // ユーティリティ設定
         ThymeleafReportUtils.setUtility(variable);
-
-        // 変数設定
-        setVariables(variable);
 
         try {
 

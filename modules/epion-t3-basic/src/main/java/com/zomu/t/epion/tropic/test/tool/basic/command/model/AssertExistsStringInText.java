@@ -1,6 +1,7 @@
 package com.zomu.t.epion.tropic.test.tool.basic.command.model;
 
 
+import com.zomu.t.epion.tropic.test.tool.basic.command.reporter.AssertExistsStringInTextReporter;
 import com.zomu.t.epion.tropic.test.tool.basic.command.runner.AssertExistsStringInTextRunner;
 import com.zomu.t.epion.tropic.test.tool.basic.command.runner.ConsoleInputRunner;
 import com.zomu.t.epion.tropic.test.tool.core.annotation.CommandDefinition;
@@ -10,7 +11,9 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@CommandDefinition(id = "AssertExistsStringInText", runner = AssertExistsStringInTextRunner.class)
+@CommandDefinition(id = "AssertExistsStringInText",
+        runner = AssertExistsStringInTextRunner.class,
+        reporter = AssertExistsStringInTextReporter.class)
 public class AssertExistsStringInText extends Command {
 
     /**
