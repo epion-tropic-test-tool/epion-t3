@@ -162,7 +162,7 @@ public final class BindUtils {
             }
 
             // 変数バインド継続
-            m = BIND_EXTRACT_PATTERN_WITHNAMESPACE.matcher(target);
+            m = BIND_EXTRACT_PATTERN.matcher(target);
 
         }
 
