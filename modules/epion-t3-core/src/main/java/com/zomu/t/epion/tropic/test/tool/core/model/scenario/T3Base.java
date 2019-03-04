@@ -12,6 +12,7 @@ import javax.validation.Valid;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * シナリオモデル.
@@ -71,7 +72,7 @@ public class T3Base implements Serializable {
      * プロファイル.
      * 実行する状況毎に分割する単位.
      */
-    private Profile profiles;
+    private Map<String, Map<String, String>> profiles;
 
     /**
      * カスタム機能定義.

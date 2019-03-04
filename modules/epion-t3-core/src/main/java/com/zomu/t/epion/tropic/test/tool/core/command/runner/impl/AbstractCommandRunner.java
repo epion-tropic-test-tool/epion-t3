@@ -86,6 +86,8 @@ public abstract class AbstractCommandRunner<
 
         } catch (Throwable t) {
 
+            logger.debug("Error Occurred...", t);
+
             error = t;
 
             result = new CommandResult();

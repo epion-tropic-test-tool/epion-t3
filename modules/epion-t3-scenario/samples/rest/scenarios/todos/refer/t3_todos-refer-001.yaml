@@ -1,0 +1,10 @@
+t3: '1.0'
+info:
+    id: scenarios-todos-refer-001
+    version: 1.0.0
+    summary: REST-APIのTODOの試験シナリオ001
+    description: REST-APIのTODOの試験シナリオ001
+flows:
+  - id : flow-001
+    type : CommandExecute
+    ref : parts-todos-call@todos-refer-001

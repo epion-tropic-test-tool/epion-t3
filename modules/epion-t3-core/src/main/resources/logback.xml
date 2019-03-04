@@ -167,11 +167,15 @@
         <appender-ref ref="FLOW_LOG"/>
     </logger>
 
+    <logger name="org.thymeleaf" level="INFO" additivity="false">
+        <appender-ref ref="STDOUT"/>
+    </logger>
+
     <logger name="com.zomu.t.t3" level="DEBUG" additivity="false">
         <appender-ref ref="STDOUT"/>
     </logger>
 
-    <root level="INFO">
+    <root level="DEBUG">
         <appender-ref ref="STDOUT"/>
     </root>
 

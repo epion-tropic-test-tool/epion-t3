@@ -13,6 +13,7 @@ import com.zomu.t.epion.tropic.test.tool.core.message.impl.CoreMessages;
 import com.zomu.t.epion.tropic.test.tool.core.model.scenario.Command;
 import com.zomu.t.epion.tropic.test.tool.core.model.scenario.T3Base;
 import com.zomu.t.epion.tropic.test.tool.core.type.ScenarioPaseErrorType;
+import com.zomu.t.epion.tropic.test.tool.core.util.IDUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.bval.jsr.ApacheValidationProvider;
 
@@ -149,8 +150,8 @@ public final class BaseOriginalHoldParser implements IndividualTargetParser<Cont
                 }
 
                 // Profileの保持
-                if (t3Base.getProfiles() != null && t3Base.getProfiles().getValues() != null) {
-                    for (Map.Entry<String, Map<String, String>> entry : t3Base.getProfiles().getValues().entrySet()) {
+                if (t3Base.getProfiles() != null) {
+                    for (Map.Entry<String, Map<String, String>> entry : t3Base.getProfiles().entrySet()) {
                         if (baseContext.getOriginal().getProfiles().containsKey(entry.getKey())) {
                             baseContext.getOriginal().getProfiles().get(entry.getKey()).putAll(entry.getValue());
                         } else {
@@ -172,17 +173,17 @@ public final class BaseOriginalHoldParser implements IndividualTargetParser<Cont
                     for (Command command : t3Base.getCommands()) {
 
                         // コマンド識別子を作成
-                        String fullProcessId = t3Base.getInfo().getId() + "." + command.getId();
+                        String fullCommandId = IDUtils.getInstance().createFullCommandId(t3Base.getInfo().getId(), command.getId());
 
                         // コマンド定義を追加
                         baseContext.getOriginal().getCommands().put(
-                                fullProcessId, command);
+                                fullCommandId, command);
 
                         // コマンド識別子とシナリオIDを紐付ける
-                        baseContext.getOriginal().getCommandScenarioRelations().put(fullProcessId, t3Base.getInfo().getId());
+                        baseContext.getOriginal().getCommandScenarioRelations().put(fullCommandId, t3Base.getInfo().getId());
 
                         // コマンド識別子とPathを紐付ける
-                        baseContext.getOriginal().getProcessPlacePaths().put(fullProcessId, file);
+                        baseContext.getOriginal().getCommandPlacePaths().put(fullCommandId, file);
 
                     }
 

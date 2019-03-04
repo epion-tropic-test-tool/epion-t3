@@ -19,6 +19,7 @@ import com.zomu.t.epion.tropic.test.tool.core.type.CommandStatus;
 import com.zomu.t.epion.tropic.test.tool.core.type.FlowScopeVariables;
 import com.zomu.t.epion.tropic.test.tool.core.type.FlowStatus;
 import com.zomu.t.epion.tropic.test.tool.core.util.BindUtils;
+import com.zomu.t.epion.tropic.test.tool.core.util.IDUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.SerializationUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -57,7 +58,8 @@ public class CommandExecuteFlowRunner
 
         Command command = context.getOriginal().getCommands().get(flow.getRef());
         if (command == null) {
-            command = context.getOriginal().getCommands().get(executeScenario.getFqsn() + "." + flow.getRef());
+            command = context.getOriginal().getCommands().get(
+                    IDUtils.getInstance().createFullCommandId(executeScenario.getFqsn(), flow.getRef()));
         }
 
         if (command == null) {
@@ -283,11 +285,11 @@ public class CommandExecuteFlowRunner
 
         StringBuilder sb = new StringBuilder();
         sb.append("\n--------------------------------------------------------------------------------------\n");
-        sb.append("<<Start Process>>\n");
+        sb.append("<<Start Command>>\n");
         sb.append("Scenario ID         : ");
         sb.append(executeScenario.getInfo().getId());
         sb.append("\n");
-        sb.append("Process  ID         : ");
+        sb.append("Command  ID         : ");
         sb.append(executeCommand.getCommand().getId());
         sb.append("\n");
         sb.append("Execute Command ID  : ");
@@ -313,14 +315,14 @@ public class CommandExecuteFlowRunner
 
         StringBuilder sb = new StringBuilder();
         //sb.append("\n--------------------------------------------------------------------------------------\n");
-        sb.append("\n<<End Process>>\n");
+        sb.append("\n<<End Command>>\n");
         sb.append("Scenario ID         : ");
         sb.append(executeScenario.getInfo().getId());
         sb.append("\n");
-        sb.append("Process ID          : ");
+        sb.append("Command ID          : ");
         sb.append(executeCommand.getCommand().getId());
         sb.append("\n");
-        sb.append("Execute Process ID  : ");
+        sb.append("Execute Command ID  : ");
         sb.append(executeCommand.getExecuteId());
         sb.append("\n");
         sb.append("Process Status      : ");

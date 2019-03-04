@@ -66,7 +66,7 @@ public class Original {
 
     /**
      * コマンドの識別子とシナリオの関係マップ.
-     * キー：infoのid + '-' + コマンドの要素のid値　= コマンド識別子
+     * キー：infoのid + '@' + コマンドの要素のid値　= コマンド識別子
      * 値：infoのid
      */
     private final Map<String, String> commandScenarioRelations = new ConcurrentHashMap<>();
@@ -80,10 +80,10 @@ public class Original {
 
     /**
      * コマンド配置ディレクトリマップ.
-     * キー：infoのid + '-' + コマンドの要素のid値　= コマンド識別子
+     * キー：infoのid + '@' + コマンドの要素のid値　= コマンド識別子
      * 値：Path
      */
-    private final Map<String, Path> processPlacePaths = new ConcurrentHashMap<>();
+    private final Map<String, Path> commandPlacePaths = new ConcurrentHashMap<>();
 
     /**
      * プロファイル.
