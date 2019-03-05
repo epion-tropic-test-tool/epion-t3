@@ -12,6 +12,7 @@ import com.zomu.t.epion.tropic.test.tool.core.model.scenario.Flow;
 import com.zomu.t.epion.tropic.test.tool.core.type.FlowScopeVariables;
 import com.zomu.t.epion.tropic.test.tool.core.type.FlowStatus;
 import com.zomu.t.epion.tropic.test.tool.core.util.BindUtils;
+import com.zomu.t.epion.tropic.test.tool.core.util.ErrorUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.SerializationUtils;
 import org.slf4j.Logger;
@@ -117,11 +118,7 @@ public abstract class AbstractFlowRunner<
 
             // 発生したエラーを設定
             executeFlow.setError(t);
-            StringWriter sw = new StringWriter();
-            PrintWriter pw = new PrintWriter(sw);
-            t.printStackTrace(pw);
-            pw.flush();
-            executeFlow.setStackTrace(sw.toString());
+            executeFlow.setStackTrace(ErrorUtils.getInstance().getStacktrace(t));
 
             // プロセス失敗
             executeFlow.setStatus(FlowStatus.ERROR);

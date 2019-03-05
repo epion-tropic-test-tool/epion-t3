@@ -130,4 +130,27 @@ public final class ExecutionFileUtils {
                                                 final ExecuteCommand executeCommand) {
         return getCommandReportPath(scenario, executeCommand, "html");
     }
+
+
+    /**
+     * FullコマンドIDを引数に属するシナリオが配置しているパスを取得.
+     *
+     * @param context
+     * @param executeContext
+     * @param fullQueryCommandId
+     * @return
+     */
+    public static Path getBelongScenarioDirectory(final Context context,
+                                                  final ExecuteContext executeContext,
+                                                  final String fullQueryCommandId) {
+
+        String scenarioId = IDUtils.getInstance().extractBelongScenarioId(fullQueryCommandId);
+        if (!StringUtils.isNotEmpty(scenarioId)) {
+            Path scenarioPath = context.getOriginal().getScenarioPlacePaths().get(scenarioId);
+            return scenarioPath;
+        }
+        return null;
+    }
+
+
 }

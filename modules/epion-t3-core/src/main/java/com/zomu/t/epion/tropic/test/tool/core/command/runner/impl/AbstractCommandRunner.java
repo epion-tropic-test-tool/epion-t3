@@ -33,15 +33,40 @@ import java.util.regex.Matcher;
  * コマンド実行の基底クラス.
  *
  * @param <COMMAND>
+ * @author takashno
  */
-public abstract class AbstractCommandRunner<
-        COMMAND extends Command> implements CommandRunner<COMMAND, Context, ExecuteContext, ExecuteScenario, ExecuteFlow, ExecuteCommand> {
+public abstract class AbstractCommandRunner<COMMAND extends Command>
+        implements CommandRunner<
+        COMMAND, Context, ExecuteContext, ExecuteScenario, ExecuteFlow, ExecuteCommand> {
 
+    /**
+     * コマンド.
+     */
     private COMMAND command;
+
+    /**
+     * コンテキスト.
+     */
     private Context context;
+
+    /**
+     * 実行情報.
+     */
     private ExecuteContext executeContext;
+
+    /**
+     * シナリオ実行情報.
+     */
     private ExecuteScenario executeScenario;
+
+    /**
+     * Flow実行情報.
+     */
     private ExecuteFlow executeFlow;
+
+    /**
+     * コマンド実行情報.
+     */
     private ExecuteCommand executeCommand;
 
     /**
@@ -155,6 +180,11 @@ public abstract class AbstractCommandRunner<
         return executeFlow.getFlowVariables();
     }
 
+    /**
+     * エビデンスマップ取得.
+     *
+     * @return エビデンスマップ
+     */
     protected Map<String, EvidenceInfo> getEvidences() {
         return executeScenario.getEvidences();
     }
