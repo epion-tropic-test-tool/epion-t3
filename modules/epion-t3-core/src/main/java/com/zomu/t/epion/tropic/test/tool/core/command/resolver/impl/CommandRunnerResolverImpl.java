@@ -7,12 +7,12 @@ import com.zomu.t.epion.tropic.test.tool.core.context.execute.ExecuteContext;
 import com.zomu.t.epion.tropic.test.tool.core.context.execute.ExecuteCommand;
 import com.zomu.t.epion.tropic.test.tool.core.context.execute.ExecuteFlow;
 import com.zomu.t.epion.tropic.test.tool.core.context.execute.ExecuteScenario;
-import com.zomu.t.epion.tropic.test.tool.core.message.impl.BaseMessages;
 import com.zomu.t.epion.tropic.test.tool.core.context.CommandInfo;
 import com.zomu.t.epion.tropic.test.tool.core.exception.SystemException;
 import com.zomu.t.epion.tropic.test.tool.core.command.runner.CommandRunner;
 import com.zomu.t.epion.tropic.test.tool.core.exception.CommandNotFoundException;
 import com.zomu.t.epion.tropic.test.tool.core.holder.CustomPackageHolder;
+import com.zomu.t.epion.tropic.test.tool.core.message.impl.CoreMessages;
 import org.apache.commons.lang3.StringUtils;
 
 import java.lang.reflect.Proxy;
@@ -60,7 +60,7 @@ public final class CommandRunnerResolverImpl implements CommandRunnerResolver {
 
         if (StringUtils.isEmpty(commandId)) {
             // 不正
-            throw new SystemException(BaseMessages.BASE_ERR_0001);
+            throw new SystemException(CoreMessages.CORE_ERR_0001);
         }
 
         CommandInfo commandInfo = CustomPackageHolder.getInstance().getCustomCommandInfo(commandId);
@@ -78,7 +78,7 @@ public final class CommandRunnerResolverImpl implements CommandRunnerResolver {
 
         if (runnerClass == null) {
             // クラスが設定されていない場合（コンパイルが通らないレベルのため通常発生しない）
-            throw new SystemException(BaseMessages.BASE_ERR_0001);
+            throw new SystemException(CoreMessages.CORE_ERR_0001);
         }
 
         try {
@@ -103,7 +103,7 @@ public final class CommandRunnerResolverImpl implements CommandRunnerResolver {
             return commandRunnerProxy;
 
         } catch (Exception e) {
-            throw new SystemException(e, BaseMessages.BASE_ERR_0001);
+            throw new SystemException(e, CoreMessages.CORE_ERR_0001);
         }
     }
 }

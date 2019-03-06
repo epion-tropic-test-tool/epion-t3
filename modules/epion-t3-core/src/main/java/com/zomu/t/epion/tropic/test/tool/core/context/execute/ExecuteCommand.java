@@ -21,6 +21,11 @@ public class ExecuteCommand extends ExecuteElement {
     private static final long serialVersionUID = 1L;
 
     /**
+     * コマンド識別子.
+     */
+    private String fqcn;
+
+    /**
      * コマンド結果.
      */
     private CommandResult commandResult;

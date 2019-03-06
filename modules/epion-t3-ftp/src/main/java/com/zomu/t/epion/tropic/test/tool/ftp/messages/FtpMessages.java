@@ -14,8 +14,8 @@ import lombok.Getter;
 public enum FtpMessages implements Messages {
 
     FTP_ERR_9001("com.zomu.t.epion.t3.ftp.err.9001"),
-
-    FTP_ERR_9002("com.zomu.t.epion.t3.ftp.err.9002"),;
+    FTP_ERR_9002("com.zomu.t.epion.t3.ftp.err.9002"),
+    FTP_ERR_9003("com.zomu.t.epion.t3.ftp.err.9003"),;
 
     /**
      * メッセージコード.

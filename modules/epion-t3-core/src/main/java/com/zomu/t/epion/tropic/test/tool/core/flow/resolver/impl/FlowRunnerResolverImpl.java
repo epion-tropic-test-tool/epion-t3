@@ -1,12 +1,12 @@
 package com.zomu.t.epion.tropic.test.tool.core.flow.resolver.impl;
 
 import com.zomu.t.epion.tropic.test.tool.core.flow.resolver.FlowRunnerResolver;
-import com.zomu.t.epion.tropic.test.tool.core.message.impl.BaseMessages;
 import com.zomu.t.epion.tropic.test.tool.core.context.FlowInfo;
 import com.zomu.t.epion.tropic.test.tool.core.exception.FlowNotFoundException;
 import com.zomu.t.epion.tropic.test.tool.core.exception.SystemException;
 import com.zomu.t.epion.tropic.test.tool.core.flow.runner.FlowRunner;
 import com.zomu.t.epion.tropic.test.tool.core.holder.CustomPackageHolder;
+import com.zomu.t.epion.tropic.test.tool.core.message.impl.CoreMessages;
 import org.apache.commons.lang3.StringUtils;
 
 /**
@@ -46,7 +46,7 @@ public final class FlowRunnerResolverImpl implements FlowRunnerResolver {
 
         if (StringUtils.isEmpty(type)) {
             // 不正
-            throw new SystemException(BaseMessages.BASE_ERR_0001);
+            throw new SystemException(CoreMessages.CORE_ERR_0001);
         }
 
         FlowInfo flowInfo = CustomPackageHolder.getInstance().getCustomFlowInfo(type);
@@ -61,14 +61,14 @@ public final class FlowRunnerResolverImpl implements FlowRunnerResolver {
 
         if (runnerClass == null) {
             // クラスが設定されていない場合（コンパイルが通らないレベルのため通常発生しない）
-            throw new SystemException(BaseMessages.BASE_ERR_0001);
+            throw new SystemException(CoreMessages.CORE_ERR_0001);
         }
 
         try {
             // インスタンス生成＋返却
             return FlowRunner.class.cast(runnerClass.newInstance());
         } catch (Exception e) {
-            throw new SystemException(e, BaseMessages.BASE_ERR_0001);
+            throw new SystemException(e, CoreMessages.CORE_ERR_0001);
         }
     }
 }

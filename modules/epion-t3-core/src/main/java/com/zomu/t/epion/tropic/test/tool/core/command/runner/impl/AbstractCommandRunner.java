@@ -234,6 +234,27 @@ public abstract class AbstractCommandRunner<COMMAND extends Command>
         return null;
     }
 
+    /**
+     * 実行中のコマンドが属するシナリオ格納ディレクトリを取得する.
+     * コマンドに定義されているファイル等を参照する場合には、このメソッドで解決したパスからの相対パスを利用する.
+     *
+     * @return
+     */
+    protected String getCommandBelongScenarioDirectory() {
+        String belongScenarioId = IDUtils.getInstance().extractBelongScenarioIdFromFqcn(executeCommand.getFqcn());
+        return context.getOriginal().getScenarioPlacePaths().get(belongScenarioId).toString();
+    }
+
+    /**
+     * 実行中のコマンドが属するシナリオ格納ディレクトリを取得する.
+     * コマンドに定義されているファイル等を参照する場合には、このメソッドで解決したパスからの相対パスを利用する.
+     *
+     * @return
+     */
+    protected Path getCommandBelongScenarioDirectoryPath() {
+        String belongScenarioId = IDUtils.getInstance().extractBelongScenarioIdFromFqcn(executeCommand.getFqcn());
+        return context.getOriginal().getScenarioPlacePaths().get(belongScenarioId);
+    }
 
     /**
      * シナリオ格納ディレクトリを取得する.
@@ -328,12 +349,10 @@ public abstract class AbstractCommandRunner<COMMAND extends Command>
                 FileEvidenceInfo objectEvidenceInfo = FileEvidenceInfo.class.cast(evidenceInfo);
                 return objectEvidenceInfo.getPath();
             } else {
-                // TODO: Error Process
-                throw new RuntimeException();
+                throw new SystemException(CoreMessages.CORE_ERR_0007, flowId);
             }
         } else {
-            // TODO: Error Process
-            throw new RuntimeException();
+            throw new SystemException(CoreMessages.CORE_ERR_0007, flowId);
         }
     }
 
@@ -380,12 +399,10 @@ public abstract class AbstractCommandRunner<COMMAND extends Command>
                 O object = (O) objectEvidenceInfo.getObject();
                 return SerializationUtils.clone(object);
             } else {
-                // TODO: Error Process
-                throw new RuntimeException();
+                throw new SystemException(CoreMessages.CORE_ERR_0008, flowId);
             }
         } else {
-            // TODO: Error Process
-            throw new RuntimeException();
+            throw new SystemException(CoreMessages.CORE_ERR_0008, flowId);
         }
     }
 

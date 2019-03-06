@@ -4,8 +4,8 @@ import com.zomu.t.epion.tropic.test.tool.core.context.Context;
 import com.zomu.t.epion.tropic.test.tool.core.exception.SystemException;
 import com.zomu.t.epion.tropic.test.tool.core.custom.parser.impl.BaseCustomParser;
 import com.zomu.t.epion.tropic.test.tool.core.custom.parser.impl.BaseOriginalHoldParser;
+import com.zomu.t.epion.tropic.test.tool.core.message.impl.CoreMessages;
 import com.zomu.t.epion.tropic.test.tool.core.scenario.parser.ScenarioParser;
-import com.zomu.t.epion.tropic.test.tool.core.message.impl.BaseMessages;
 import lombok.extern.slf4j.Slf4j;
 
 import java.nio.file.Files;
@@ -45,7 +45,7 @@ public final class BaseScenarioParser implements ScenarioParser<Context> {
 
         // ルートディレクトリの存在チェック
         if (!Files.exists(Paths.get(context.getOption().getRootPath()))) {
-            throw new SystemException(BaseMessages.BASE_ERR_0005, context.getOption().getRootPath());
+            throw new SystemException(CoreMessages.CORE_ERR_0009, context.getOption().getRootPath());
         }
 
         // カスタム定義の解析

@@ -2,11 +2,14 @@ package com.zomu.t.epion.tropic.test.tool.core.exception.handler;
 
 import com.zomu.t.epion.tropic.test.tool.core.exception.ScenarioParseException;
 import com.zomu.t.epion.tropic.test.tool.core.exception.SystemException;
-import com.zomu.t.epion.tropic.test.tool.core.message.impl.BaseMessages;
 import com.zomu.t.epion.tropic.test.tool.core.context.Context;
 import com.zomu.t.epion.tropic.test.tool.core.message.MessageManager;
+import com.zomu.t.epion.tropic.test.tool.core.message.impl.CoreMessages;
 import lombok.extern.slf4j.Slf4j;
 
+/**
+ * @author takashno
+ */
 @Slf4j
 public final class BaseExceptionHandler implements ExceptionHandler<Context> {
 
@@ -15,6 +18,9 @@ public final class BaseExceptionHandler implements ExceptionHandler<Context> {
      */
     private static final BaseExceptionHandler instance = new BaseExceptionHandler();
 
+    /**
+     * プライベートコンストラクタ.
+     */
     private BaseExceptionHandler() {
         // Do Nothing...
     }
@@ -37,12 +43,12 @@ public final class BaseExceptionHandler implements ExceptionHandler<Context> {
                 String msg = null;
                 if (x.getTarget() != null) {
                     if (x.getValue() != null) {
-                        msg = messageManager.getMessage(BaseMessages.BASE_ERR_0004, x.getFilePath(), x.getMessage(), x.getTarget(), x.getValue());
+                        msg = messageManager.getMessage(CoreMessages.CORE_ERR_0010, x.getFilePath(), x.getMessage(), x.getTarget(), x.getValue());
                     } else {
-                        msg = messageManager.getMessage(BaseMessages.BASE_ERR_0003, x.getFilePath(), x.getMessage(), x.getTarget());
+                        msg = messageManager.getMessage(CoreMessages.CORE_ERR_0012, x.getFilePath(), x.getMessage(), x.getTarget());
                     }
                 } else {
-                    msg = messageManager.getMessage(BaseMessages.BASE_ERR_0002, x.getFilePath(), x.getMessage());
+                    msg = messageManager.getMessage(CoreMessages.CORE_ERR_0011, x.getFilePath(), x.getMessage());
                 }
                 log.error(msg);
             });

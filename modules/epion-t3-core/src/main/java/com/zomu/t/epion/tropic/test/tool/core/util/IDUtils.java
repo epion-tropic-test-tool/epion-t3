@@ -78,12 +78,12 @@ public final class IDUtils {
     }
 
     /**
-     * FullコマンドIDから属するシナリオIDを取得.
+     * FQCNから属するシナリオIDを取得.
      *
      * @param fullQueryCommandId FullコマンドID
      * @return シナリオID
      */
-    public String extractBelongScenarioIdFromFullCommandId(String fullQueryCommandId) {
+    public String extractBelongScenarioIdFromFqcn(String fullQueryCommandId) {
         if (!StringUtils.isNotEmpty(fullQueryCommandId)) {
             Matcher m = FULL_COMMAND_ID_PATTERN.matcher(fullQueryCommandId);
             if (m.find()) {
@@ -116,12 +116,12 @@ public final class IDUtils {
     }
 
     /**
-     * FullコマンドIDであるか判定する.
+     * FQCNであるか判定する.
      *
      * @param target 対象文字列
      * @return 判定結果
      */
-    public Boolean isFullQueryCommandId(String target) {
+    public Boolean isFullQueryCommandName(String target) {
         if (StringUtils.isNotEmpty(target)) {
             Matcher m = FULL_COMMAND_ID_PATTERN.matcher(target);
             return m.find();

@@ -1,5 +1,7 @@
 package com.zomu.t.epion.tropic.test.tool.core.util;
 
+import com.zomu.t.epion.tropic.test.tool.core.exception.SystemException;
+import com.zomu.t.epion.tropic.test.tool.core.message.impl.CoreMessages;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
@@ -7,22 +9,39 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 
 /**
- *
+ * エラー関連のユーティリティ.
  *
  * @author takashno
  */
 @Slf4j
 public final class ErrorUtils {
 
+    /**
+     * シングルトンインスタンス.
+     */
     private static final ErrorUtils instance = new ErrorUtils();
 
+    /**
+     * プライベートコンストラクタ.
+     */
     private ErrorUtils() {
     }
 
+    /**
+     * インスタンスを取得.
+     *
+     * @return
+     */
     public static ErrorUtils getInstance() {
         return instance;
     }
 
+    /**
+     * スタックトレースを文字列で取得.
+     *
+     * @param t
+     * @return
+     */
     public String getStacktrace(Throwable t) {
         try (StringWriter sw = new StringWriter();
              PrintWriter pw = new PrintWriter(sw);) {
@@ -30,9 +49,7 @@ public final class ErrorUtils {
             pw.flush();
             return sw.toString();
         } catch (IOException e) {
-            // Ignore...
-            log.debug("ignore exception...", e);
-            return null;
+            throw new SystemException(CoreMessages.CORE_ERR_0001, e);
         }
     }
 

@@ -8,17 +8,16 @@ import com.zomu.t.epion.tropic.test.tool.core.context.execute.ExecuteContext;
 import com.zomu.t.epion.tropic.test.tool.core.context.execute.ExecuteFlow;
 import com.zomu.t.epion.tropic.test.tool.core.context.execute.ExecuteScenario;
 import com.zomu.t.epion.tropic.test.tool.core.exception.CommandNotFoundException;
-import com.zomu.t.epion.tropic.test.tool.core.exception.SystemException;
 import com.zomu.t.epion.tropic.test.tool.core.flow.model.CommandExecuteFlow;
 import com.zomu.t.epion.tropic.test.tool.core.flow.model.FlowResult;
 import com.zomu.t.epion.tropic.test.tool.core.holder.CommandLog;
 import com.zomu.t.epion.tropic.test.tool.core.holder.CommandLoggingHolder;
-import com.zomu.t.epion.tropic.test.tool.core.message.impl.CoreMessages;
 import com.zomu.t.epion.tropic.test.tool.core.model.scenario.Command;
 import com.zomu.t.epion.tropic.test.tool.core.type.CommandStatus;
 import com.zomu.t.epion.tropic.test.tool.core.type.FlowScopeVariables;
 import com.zomu.t.epion.tropic.test.tool.core.type.FlowStatus;
 import com.zomu.t.epion.tropic.test.tool.core.util.BindUtils;
+import com.zomu.t.epion.tropic.test.tool.core.util.ErrorUtils;
 import com.zomu.t.epion.tropic.test.tool.core.util.IDUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.SerializationUtils;
@@ -26,9 +25,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.StringWriter;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.Arrays;
@@ -55,12 +51,17 @@ public class CommandExecuteFlowRunner
             ExecuteFlow executeFlow,
             CommandExecuteFlow flow, Logger logger) {
 
+        // コマンド識別子
+        String fqcn = flow.getRef();
 
-        Command command = context.getOriginal().getCommands().get(flow.getRef());
-        if (command == null) {
-            command = context.getOriginal().getCommands().get(
-                    IDUtils.getInstance().createFullCommandId(executeScenario.getFqsn(), flow.getRef()));
+        // FQCNであるか判断する
+        if (IDUtils.getInstance().isFullQueryCommandName(flow.getRef())) {
+            // FQCNでなければ構築する
+            fqcn = IDUtils.getInstance().createFullCommandId(executeScenario.getFqsn(), fqcn);
         }
+
+        // コマンド参照
+        Command command = context.getOriginal().getCommands().get(fqcn);
 
         if (command == null) {
             log.error("not found command: {}", flow.getRef());
@@ -71,6 +72,7 @@ public class CommandExecuteFlowRunner
         ExecuteCommand executeCommand = new ExecuteCommand();
         executeFlow.getCommands().add(executeCommand);
         executeCommand.setCommand(command);
+        executeCommand.setFqcn(fqcn);
 
         // シナリオ実行開始時間を設定
         executeCommand.setStart(LocalDateTime.now());
@@ -130,19 +132,12 @@ public class CommandExecuteFlowRunner
 
         } catch (Throwable t) {
 
-            log.debug("error occurred...", t);
+            log.debug("Error Occurred...", t);
 
             // 発生したエラーを設定
             executeCommand.setError(t);
 
-            try (StringWriter sw = new StringWriter();
-                 PrintWriter pw = new PrintWriter(sw);) {
-                t.printStackTrace(pw);
-                pw.flush();
-                executeCommand.setStackTrace(sw.toString());
-            } catch (IOException e) {
-                throw new SystemException(CoreMessages.CORE_ERR_0001, e);
-            }
+            executeCommand.setStackTrace(ErrorUtils.getInstance().getStacktrace(t));
 
             // プロセス失敗
             executeCommand.getCommandResult().setStatus(CommandStatus.FAIL);
