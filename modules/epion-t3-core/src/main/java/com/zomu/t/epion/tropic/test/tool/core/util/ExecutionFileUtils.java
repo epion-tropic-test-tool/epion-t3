@@ -30,6 +30,9 @@ public final class ExecutionFileUtils {
      */
     public static final String EVIDENCE_DIR_NAME = "evidence";
 
+    /**
+     * プライベートコンストラクタ.
+     */
     private ExecutionFileUtils() {
         // Do Nothing...
     }
@@ -143,8 +146,7 @@ public final class ExecutionFileUtils {
     public static Path getBelongScenarioDirectory(final Context context,
                                                   final ExecuteContext executeContext,
                                                   final String fullQueryCommandId) {
-
-        String scenarioId = IDUtils.getInstance().extractBelongScenarioId(fullQueryCommandId);
+        String scenarioId = IDUtils.getInstance().extractBelongScenarioIdFromFullCommandId(fullQueryCommandId);
         if (!StringUtils.isNotEmpty(scenarioId)) {
             Path scenarioPath = context.getOriginal().getScenarioPlacePaths().get(scenarioId);
             return scenarioPath;

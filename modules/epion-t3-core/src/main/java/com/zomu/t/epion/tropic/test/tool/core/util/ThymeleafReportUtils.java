@@ -31,13 +31,33 @@ public final class ThymeleafReportUtils {
      */
     public static final String TEMPLATE_ENCODING = "UTF-8";
 
+    /**
+     * シングルトンインスタンス.
+     */
+    private static final ThymeleafReportUtils instance = new ThymeleafReportUtils();
+
+    /**
+     * プライベートコンストラクタ.
+     */
+    private ThymeleafReportUtils() {
+        // Do Nothing...
+    }
+    
+    /**
+     * シングルトンインスタンスを取得.
+     *
+     * @return
+     */
+    public static ThymeleafReportUtils getInstance() {
+        return instance;
+    }
 
     /**
      * エンジン生成.
      *
      * @return テンプレートエンジン
      */
-    public static TemplateEngine createEngine() {
+    public TemplateEngine createEngine() {
         TemplateEngine templateEngine = new TemplateEngine();
         AbstractConfigurableTemplateResolver tr = new ClassLoaderTemplateResolver();
         tr.setCheckExistence(true);

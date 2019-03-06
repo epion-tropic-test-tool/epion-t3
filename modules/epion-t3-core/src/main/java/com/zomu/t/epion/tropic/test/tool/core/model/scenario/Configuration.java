@@ -20,11 +20,11 @@ public class Configuration implements Serializable {
     private static final long serialVersionUID = 1L;
 
     /**
-     * ConfigurationId.
+     * Configuration.
      */
     @NotEmpty
     @OriginalProcessField
-    private String configId;
+    private String configuration;
 
     @NotEmpty
     @OriginalProcessField

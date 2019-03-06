@@ -62,10 +62,10 @@ public final class CustomConfigurationHolder {
      */
     public void addCustomConfiguration(Configuration customConfiguration) {
         customConfigurations.put(customConfiguration.getId(), customConfiguration);
-        if (!customConfigurationTypes.containsKey(customConfiguration.getConfigId())) {
-            customConfigurationTypes.put(customConfiguration.getConfigId(), new ArrayList<>());
+        if (!customConfigurationTypes.containsKey(customConfiguration.getConfiguration())) {
+            customConfigurationTypes.put(customConfiguration.getConfiguration(), new ArrayList<>());
         }
-        customConfigurationTypes.get(customConfiguration.getConfigId()).add(customConfiguration);
+        customConfigurationTypes.get(customConfiguration.getConfiguration()).add(customConfiguration);
     }
 
     /**

@@ -190,7 +190,8 @@ public class ScenarioRunnerImpl implements ScenarioRunner<Context, ExecuteContex
                 flow,
                 executeContext.getProfileConstants(),
                 executeContext.getGlobalVariables(),
-                executeScenario.getScenarioVariables());
+                executeScenario.getScenarioVariables(),
+                null);
     }
 
 

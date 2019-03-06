@@ -175,7 +175,7 @@
         <appender-ref ref="STDOUT"/>
     </logger>
 
-    <root level="DEBUG">
+    <root level="TRACE">
         <appender-ref ref="STDOUT"/>
     </root>
 

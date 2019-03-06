@@ -11,6 +11,7 @@ import com.zomu.t.epion.tropic.test.tool.core.exception.bean.ScenarioParseError;
 import com.zomu.t.epion.tropic.test.tool.core.message.MessageManager;
 import com.zomu.t.epion.tropic.test.tool.core.message.impl.CoreMessages;
 import com.zomu.t.epion.tropic.test.tool.core.model.scenario.Command;
+import com.zomu.t.epion.tropic.test.tool.core.model.scenario.Configuration;
 import com.zomu.t.epion.tropic.test.tool.core.model.scenario.T3Base;
 import com.zomu.t.epion.tropic.test.tool.core.type.ScenarioPaseErrorType;
 import com.zomu.t.epion.tropic.test.tool.core.util.IDUtils;
@@ -127,7 +128,7 @@ public final class BaseOriginalHoldParser implements IndividualTargetParser<Cont
 
                 } catch (JsonParseException e) {
 
-                    log.debug("debug...", e);
+                    log.debug("Error Occurred...", e);
 
                     log.warn("file is not t3 format: {} -> ignore...", file);
                     errors.add(ScenarioParseError.builder().filePath(file).type(ScenarioPaseErrorType.PARSE_ERROR).message("").build());
@@ -135,7 +136,7 @@ public final class BaseOriginalHoldParser implements IndividualTargetParser<Cont
 
                 } catch (JsonMappingException e) {
 
-                    log.debug("debug...", e);
+                    log.debug("Error Occurred...", e);
 
                     if (CommandCanNotResolveException.class.isAssignableFrom(e.getCause().getClass())) {
                         CommandCanNotResolveException ccnre = CommandCanNotResolveException.class.cast(e.getCause());
@@ -170,6 +171,7 @@ public final class BaseOriginalHoldParser implements IndividualTargetParser<Cont
 
                     // t3BaseがfinalでないのでLambdaが利用できない・・・
                     // なんかやり方あるのかね・・・
+                    // コマンド読み込み
                     for (Command command : t3Base.getCommands()) {
 
                         // コマンド識別子を作成
@@ -187,6 +189,27 @@ public final class BaseOriginalHoldParser implements IndividualTargetParser<Cont
 
                     }
 
+                    // 設定情報読み込み
+                    for (Configuration configuration : t3Base.getConfigurations()) {
+
+                        // 設定識別子を作成
+                        String fullConfigurationId =
+                                IDUtils.getInstance().createFullConfigurationId(
+                                        t3Base.getInfo().getId(), configuration.getId());
+
+                        // 設定定義を追加
+                        context.getOriginal().getConfigurations().put(fullConfigurationId, configuration);
+
+                        // 設定識別子とシナリオIDを紐付ける
+                        context.getOriginal().getConfigurationScenarioRelations().put(
+                                fullConfigurationId, t3Base.getInfo().getId());
+
+                        // 設定識別子とPathを紐付ける
+                        context.getOriginal().getConfigurationPlacePaths().put(fullConfigurationId, file);
+
+                    }
+
+
                 }
 
                 return FileVisitResult.CONTINUE;
@@ -197,7 +220,7 @@ public final class BaseOriginalHoldParser implements IndividualTargetParser<Cont
             Files.walkFileTree(Paths.get(context.getOption().getRootPath()), visitor);
         } catch (IOException e) {
 
-            log.debug("error occurred...", e);
+            log.debug("Error Occurred...", e);
 
             throw new SystemException(e);
 

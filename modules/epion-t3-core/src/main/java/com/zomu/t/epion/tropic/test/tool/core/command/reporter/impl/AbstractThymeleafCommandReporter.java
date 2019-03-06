@@ -50,7 +50,7 @@ public abstract class AbstractThymeleafCommandReporter<
             ExecuteCommand executeCommand,
             Throwable t) {
 
-        TemplateEngine templateEngine = ThymeleafReportUtils.createEngine();
+        TemplateEngine templateEngine = ThymeleafReportUtils.getInstance().createEngine();
 
         org.thymeleaf.context.Context thymeleafContext = new org.thymeleaf.context.Context();
         Map<String, Object> variable = new HashMap<>();

@@ -15,10 +15,13 @@ import com.zomu.t.epion.tropic.test.tool.core.context.execute.ExecuteScenario;
 import com.zomu.t.epion.tropic.test.tool.core.exception.SystemException;
 import com.zomu.t.epion.tropic.test.tool.core.message.impl.CoreMessages;
 import com.zomu.t.epion.tropic.test.tool.core.model.scenario.Command;
+import com.zomu.t.epion.tropic.test.tool.core.model.scenario.Configuration;
 import com.zomu.t.epion.tropic.test.tool.core.type.CommandStatus;
 import com.zomu.t.epion.tropic.test.tool.core.type.FlowScopeVariables;
 import com.zomu.t.epion.tropic.test.tool.core.type.ReferenceVariableType;
 import com.zomu.t.epion.tropic.test.tool.core.type.ScenarioScopeVariables;
+import com.zomu.t.epion.tropic.test.tool.core.util.BindUtils;
+import com.zomu.t.epion.tropic.test.tool.core.util.IDUtils;
 import org.apache.commons.lang3.SerializationUtils;
 import org.slf4j.Logger;
 
@@ -393,5 +396,43 @@ public abstract class AbstractCommandRunner<COMMAND extends Command>
      */
     protected String getEvidenceBaseName() {
         return executeFlow.getFlowVariables().get(FlowScopeVariables.CURRENT_COMMAND.getName()).toString() + "_evidence";
+    }
+
+    /**
+     * 設定情報を参照.
+     *
+     * @param <C>
+     * @return 設定情報
+     */
+    protected <C extends Configuration> C referConfiguration(String configurationId) {
+
+        // 参照用の設定ID
+        String referConfigurationId = configurationId;
+
+        // 設定識別子かどうか判断
+        if (!IDUtils.getInstance().isFullQueryConfigurationId(configurationId)) {
+            // 設定識別子を作成（シナリオID＋設定ID）
+            // シナリオIDは現在実行しているシナリオから取得
+            referConfigurationId = IDUtils.getInstance().createFullConfigurationId(
+                    executeScenario.getInfo().getId(), referConfigurationId);
+        }
+        Configuration configuration =
+                context.getOriginal().getConfigurations().get(configurationId);
+        if (configuration == null) {
+            throw new SystemException(CoreMessages.CORE_ERR_0006, configurationId);
+        }
+
+        Configuration cloneConfiguration = SerializationUtils.clone(configuration);
+
+        // 変数バインド
+        BindUtils.getInstance().bind(
+                cloneConfiguration,
+                executeContext.getProfileConstants(),
+                executeContext.getGlobalVariables(),
+                executeScenario.getScenarioVariables(),
+                executeFlow.getFlowVariables()
+        );
+
+        return (C) cloneConfiguration;
     }
 }

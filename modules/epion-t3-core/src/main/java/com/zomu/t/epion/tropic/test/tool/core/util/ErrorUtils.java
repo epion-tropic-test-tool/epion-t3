@@ -6,6 +6,11 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
+/**
+ *
+ *
+ * @author takashno
+ */
 @Slf4j
 public final class ErrorUtils {
 

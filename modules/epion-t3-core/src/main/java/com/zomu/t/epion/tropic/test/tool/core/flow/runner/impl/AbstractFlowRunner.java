@@ -200,7 +200,8 @@ public abstract class AbstractFlowRunner<
                 flow,
                 executeContext.getProfileConstants(),
                 executeContext.getGlobalVariables(),
-                executeScenario.getScenarioVariables());
+                executeScenario.getScenarioVariables(),
+                executeFlow.getFlowVariables());
     }
 
 

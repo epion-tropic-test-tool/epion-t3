@@ -215,7 +215,8 @@ public class CommandExecuteFlowRunner
                 executeCommand.getCommand(),
                 profiles,
                 executeContext.getGlobalVariables(),
-                executeScenario.getScenarioVariables());
+                executeScenario.getScenarioVariables(),
+                executeFlow.getFlowVariables());
     }
 
     /**

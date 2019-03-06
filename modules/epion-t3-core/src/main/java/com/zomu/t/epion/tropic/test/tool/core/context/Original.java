@@ -72,6 +72,13 @@ public class Original {
     private final Map<String, String> commandScenarioRelations = new ConcurrentHashMap<>();
 
     /**
+     * 設定の識別子とシナリオの関係マップ
+     * キー：infoのid + '@' + 設定の要素のid値　= 設定識別子
+     * 値：infoのid
+     */
+    private final Map<String, String> configurationScenarioRelations = new ConcurrentHashMap<>();
+
+    /**
      * scenario配置ディレクトリマップ.
      * キー：infoのid
      * 値：Path
@@ -84,6 +91,13 @@ public class Original {
      * 値：Path
      */
     private final Map<String, Path> commandPlacePaths = new ConcurrentHashMap<>();
+
+    /**
+     * 設定配置ディレクトリマップ.
+     * キー：infoのid + '@' + 設定の要素のid値　= 設定識別子
+     * 値：Path
+     */
+    private final Map<String, Path> configurationPlacePaths = new ConcurrentHashMap<>();
 
     /**
      * プロファイル.

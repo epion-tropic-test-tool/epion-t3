@@ -63,7 +63,10 @@ public final class BindUtils {
      * @param globalVariables   グローバル変数
      * @param scenarioVariables シナリオ変数
      */
-    public void bind(Object target, Map<String, String> profiles, Map<String, Object> globalVariables, Map<String, Object> scenarioVariables) {
+    public void bind(Object target, Map<String, String> profiles,
+                     Map<String, Object> globalVariables,
+                     Map<String, Object> scenarioVariables,
+                     Map<String, Object> flowVariables) {
 
         // 対象のクラスを取得
         Class clazz = target.getClass();
@@ -78,7 +81,11 @@ public final class BindUtils {
                             PropertyDescriptor pd = new PropertyDescriptor(x.getName(), target.getClass());
                             Object value = pd.getReadMethod().invoke(target);
                             if (value != null) {
-                                value = bind(value.toString(), profiles, globalVariables, scenarioVariables);
+                                value = bind(value.toString(),
+                                        profiles,
+                                        globalVariables,
+                                        scenarioVariables,
+                                        flowVariables);
                                 pd.getWriteMethod().invoke(target, value.toString());
                             }
                         } catch (IntrospectionException | IllegalAccessException | InvocationTargetException e) {
@@ -94,7 +101,11 @@ public final class BindUtils {
                             PropertyDescriptor pd = new PropertyDescriptor(x.getName(), target.getClass());
                             Object value = pd.getReadMethod().invoke(target);
                             if (value != null) {
-                                bind(value, profiles, globalVariables, scenarioVariables);
+                                bind(value,
+                                        profiles,
+                                        globalVariables,
+                                        scenarioVariables,
+                                        flowVariables);
                             }
                         } catch (IntrospectionException | IllegalAccessException | InvocationTargetException e) {
                             log.debug("Ignore...", e);
@@ -120,7 +131,11 @@ public final class BindUtils {
      * @param scenarioVariables シナリオ変数
      * @return バインド後の文字列
      */
-    public String bind(String target, Map<String, String> profiles, Map<String, Object> globalVariables, Map<String, Object> scenarioVariables) {
+    public String bind(String target,
+                       Map<String, String> profiles,
+                       Map<String, Object> globalVariables,
+                       Map<String, Object> scenarioVariables,
+                       Map<String, Object> flowVariables) {
 
         if (StringUtils.isEmpty(target)) {
             return null;
@@ -208,6 +223,24 @@ public final class BindUtils {
                             replaceFlg = true;
                         } else {
                             replaceFlg = false;
+                        }
+                        break;
+                    case FLOW:
+                        if (flowVariables == null) {
+                            // Flowスコープ変数からのバインドが利用不可だった場合、その時点で警告扱い
+                            loopCount += 10;
+                        } else {
+                            // Flowスコープ変数からのバインド
+                            if (flowVariables.containsKey(m.group(2))) {
+                                log.trace("replace scenario target:{}, bind:{}",
+                                        m.group(0), flowVariables.get(m.group(2)).toString());
+                                target = target.replace(
+                                        m.group(0),
+                                        flowVariables.get(m.group(2)).toString());
+                                replaceFlg = true;
+                            } else {
+                                replaceFlg = false;
+                            }
                         }
                         break;
                     default:
