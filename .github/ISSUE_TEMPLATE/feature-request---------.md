@@ -7,9 +7,12 @@ assignees: ''
 
 ---
 
-**Feature Kind（機能種別）**
-Choice Feature Kind
-Command or AssertCommand or Flow or Other
+#### Feature Kind（機能種別）
+Choice Feature Kind（機能の種別を選んでください）
+- Command（単純な処理機能）
+- Evidence（エビデンスに関する機能）
+- Assertion（アサーションに関する機能）
+- Flow（Flow制御に関する機能）
 
-**Feature Summary （機能概要）**
-A clear and concise description of what the problem is. Ex. I'm always frustrated when [...]
+#### Feature Description （機能詳細）
+Please describe the Feature in detail.（機能について詳細に記載してください。）
