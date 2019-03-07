@@ -59,7 +59,7 @@ public class FtpPutRunner extends AbstractCommandRunner<FtpPut> {
         }
 
 
-        ftpClient.getStatus()
+        ftpClient.getStatus();
 
 
         return null;

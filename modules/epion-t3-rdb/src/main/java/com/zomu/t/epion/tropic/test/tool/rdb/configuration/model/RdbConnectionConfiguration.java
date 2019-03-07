@@ -1,5 +1,6 @@
 package com.zomu.t.epion.tropic.test.tool.rdb.configuration.model;
 
+import com.zomu.t.epion.tropic.test.tool.core.annotation.CustomConfigurationDefinition;
 import com.zomu.t.epion.tropic.test.tool.core.model.scenario.Configuration;
 import lombok.Getter;
 import lombok.Setter;
@@ -11,24 +12,37 @@ import lombok.Setter;
  */
 @Getter
 @Setter
+@CustomConfigurationDefinition(id = "RdbConnectionConfiguration")
 public class RdbConnectionConfiguration extends Configuration {
 
-    /** ドライバクラス名. */
+    /**
+     * ドライバクラス名.
+     */
     private String driverClassName;
 
-    /** JDBC接続URL. */
+    /**
+     * JDBC接続URL.
+     */
     private String url;
 
-    /** ユーザ名. */
+    /**
+     * ユーザ名.
+     */
     private String username;
 
-    /** パスワード. */
+    /**
+     * パスワード.
+     */
     private String password;
 
-    /** スキーマ. */
+    /**
+     * スキーマ.
+     */
     private String schema;
 
-    /** RDB種別. */
+    /**
+     * RDB種別.
+     */
     private String rdbKind;
 
 }

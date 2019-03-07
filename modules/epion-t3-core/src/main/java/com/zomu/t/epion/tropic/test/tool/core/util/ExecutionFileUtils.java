@@ -67,7 +67,10 @@ public final class ExecutionFileUtils {
     /**
      * @param context
      */
-    public static void createScenarioResultDirectory(final Context context, final ExecuteContext executeContext, final ExecuteScenario executeScenario) {
+    public static void createScenarioResultDirectory(
+            final Context context,
+            final ExecuteContext executeContext,
+            final ExecuteScenario executeScenario) {
 
         try {
             Path resultPath = Paths.get(
@@ -140,13 +143,13 @@ public final class ExecutionFileUtils {
      *
      * @param context
      * @param executeContext
-     * @param fullQueryCommandId
+     * @param fqcn
      * @return
      */
     public static Path getBelongScenarioDirectory(final Context context,
                                                   final ExecuteContext executeContext,
-                                                  final String fullQueryCommandId) {
-        String scenarioId = IDUtils.getInstance().extractBelongScenarioIdFromFullCommandId(fullQueryCommandId);
+                                                  final String fqcn) {
+        String scenarioId = IDUtils.getInstance().extractBelongScenarioIdFromFqcn(fqcn);
         if (!StringUtils.isNotEmpty(scenarioId)) {
             Path scenarioPath = context.getOriginal().getScenarioPlacePaths().get(scenarioId);
             return scenarioPath;

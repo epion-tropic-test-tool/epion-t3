@@ -2,20 +2,14 @@ package com.zomu.t.epion.tropic.test.tool.rdb.command.model;
 
 import com.zomu.t.epion.tropic.test.tool.core.annotation.CommandDefinition;
 import com.zomu.t.epion.tropic.test.tool.core.model.scenario.Command;
-import com.zomu.t.epion.tropic.test.tool.rdb.command.runner.ExecuteRdbQueryRunner;
-import lombok.Getter;
-import lombok.Setter;
+import com.zomu.t.epion.tropic.test.tool.rdb.command.runner.ImportRdbDataRunner;
 import org.apache.bval.constraints.NotEmpty;
 
 /**
- * RDBに対するクエリーを実行するコマンド処理.
- *
  * @author takashno
  */
-@Getter
-@Setter
-@CommandDefinition(id = "ExecuteRdbQuery", runner = ExecuteRdbQueryRunner.class)
-public class ExecuteRdbQuery extends Command {
+@CommandDefinition(id = "ImportRdbData", runner = ImportRdbDataRunner.class)
+public class ImportRdbData extends Command {
 
     /**
      * RDB接続設定参照.
@@ -23,4 +17,9 @@ public class ExecuteRdbQuery extends Command {
     @NotEmpty
     private String rdbConnectConfigRef;
 
+    /**
+     * データセット種別.
+     */
+    @NotEmpty
+    private String dataSetType = "excel";
 }
