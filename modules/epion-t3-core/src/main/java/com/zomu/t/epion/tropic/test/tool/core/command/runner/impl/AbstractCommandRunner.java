@@ -157,6 +157,15 @@ public abstract class AbstractCommandRunner<COMMAND extends Command>
     }
 
     /**
+     * プロファイル定数を取得.
+     *
+     * @return プロファイル定数マップ
+     */
+    protected Map<String, String> getProfileConstants() {
+        return executeContext.getProfileConstants();
+    }
+
+    /**
      * グローバル変数マップを取得.
      *
      * @return グローバル変数マップ
@@ -452,4 +461,38 @@ public abstract class AbstractCommandRunner<COMMAND extends Command>
 
         return (C) cloneConfiguration;
     }
+
+    /**
+     * バインド.
+     *
+     * @param target
+     * @return
+     */
+    protected String bind(String target) {
+        // 変数バインド
+        return BindUtils.getInstance().bind(
+                target,
+                executeContext.getProfileConstants(),
+                executeContext.getGlobalVariables(),
+                executeScenario.getScenarioVariables(),
+                executeFlow.getFlowVariables());
+    }
+
+    /**
+     * バインド.
+     *
+     * @param target
+     * @return
+     */
+    protected void bind(Object target) {
+        // 変数バインド
+        BindUtils.getInstance().bind(
+                target,
+                executeContext.getProfileConstants(),
+                executeContext.getGlobalVariables(),
+                executeScenario.getScenarioVariables(),
+                executeFlow.getFlowVariables());
+    }
+
+
 }
