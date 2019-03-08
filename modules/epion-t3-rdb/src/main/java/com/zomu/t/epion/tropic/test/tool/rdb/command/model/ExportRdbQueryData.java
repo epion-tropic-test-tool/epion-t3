@@ -16,8 +16,8 @@ import java.util.List;
  */
 @Getter
 @Setter
-@CommandDefinition(id = "ExportRdbData", runner = ImportRdbDataRunner.class)
-public class ExportRdbData extends Command {
+@CommandDefinition(id = "ExportRdbQueryData", runner = ImportRdbDataRunner.class)
+public class ExportRdbQueryData extends Command {
 
     /**
      * RDB接続設定参照.
@@ -32,8 +32,8 @@ public class ExportRdbData extends Command {
     private String dataSetType = "excel";
 
     /**
-     * テーブル指定.
+     * クエリー.
      */
-    private List<String> tables;
+    private String query;
 
 }

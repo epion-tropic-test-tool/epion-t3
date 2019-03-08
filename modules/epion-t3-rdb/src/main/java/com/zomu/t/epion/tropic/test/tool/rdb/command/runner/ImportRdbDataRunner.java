@@ -8,21 +8,32 @@ import com.zomu.t.epion.tropic.test.tool.rdb.configuration.model.RdbConnectionCo
 import com.zomu.t.epion.tropic.test.tool.rdb.message.RdbMessages;
 import com.zomu.t.epion.tropic.test.tool.rdb.type.DataSetType;
 import com.zomu.t.epion.tropic.test.tool.rdb.type.OperationType;
+import com.zomu.t.epion.tropic.test.tool.rdb.util.RdbAccessUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.dbunit.dataset.CompositeDataSet;
+import org.dbunit.DatabaseUnitException;
+import org.dbunit.database.DatabaseDataSourceConnection;
+import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.dataset.IDataSet;
 import org.dbunit.dataset.ReplacementDataSet;
 import org.dbunit.dataset.excel.XlsDataSet;
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
 import org.slf4j.Logger;
 
-import javax.swing.text.html.parser.Entity;
+import javax.sql.DataSource;
 import java.io.FileInputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.sql.SQLException;
 import java.util.Map;
 
+/**
+ * RDBに対してデータセットをインポート実行処理.
+ *
+ * @author takashno
+ */
+@Slf4j
 public class ImportRdbDataRunner extends AbstractCommandRunner<ImportRdbData> {
 
     @Override
@@ -120,23 +131,39 @@ public class ImportRdbDataRunner extends AbstractCommandRunner<ImportRdbData> {
                 OperationType.valueOfByValue(command.getOperation().toLowerCase());
 
         switch (operationType) {
-
             case INSERT:
-                break;
-
             case CLEAN_INSERT:
-                break;
-
             case UPDATE:
-                break;
-
             case REFRESH:
-                break;
+                IDatabaseConnection conn = null;
+                try {
+                    // データソースを取得
+                    DataSource dataSource = RdbAccessUtils.getInstance().getDataSource(rdbConnectionConfiguration);
+                    if (StringUtils.isEmpty(rdbConnectionConfiguration.getSchema())) {
+                        conn = new DatabaseDataSourceConnection(dataSource);
+                    } else {
+                        conn = new DatabaseDataSourceConnection(dataSource, rdbConnectionConfiguration.getSchema());
+                    }
+                    // オペレーション実行
+                    operationType.getOperation().execute(conn, iDataSet);
 
+                } catch (SQLException | DatabaseUnitException e) {
+                    log.debug("Error Occurred...", e);
+                    throw new SystemException(e, RdbMessages.RDB_ERR_0010);
+                } finally {
+                    if (conn != null) {
+                        try {
+                            conn.close();
+                        } catch (SQLException e) {
+                            // Ignore
+                            log.trace("Error Occurred... -> Ignore", e);
+                        }
+                    }
+                }
+                break;
             default:
                 // データインポートとは関係のないオペレーションのためエラー
-                break;
-
+                throw new SystemException(RdbMessages.RDB_ERR_0009, operationType.getValue());
         }
 
         return CommandResult.getSuccess();

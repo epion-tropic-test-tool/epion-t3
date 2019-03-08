@@ -1,7 +1,9 @@
 package com.zomu.t.epion.tropic.test.tool.rdb.type;
 
+import com.sun.corba.se.impl.orb.DataCollectorBase;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import org.dbunit.operation.DatabaseOperation;
 
 import java.util.Arrays;
 
@@ -9,26 +11,31 @@ import java.util.Arrays;
 @AllArgsConstructor
 public enum OperationType {
 
-    INSERT("insert"),
+    INSERT("insert", DatabaseOperation.INSERT),
 
-    CLEAN_INSERT("clean_insert"),
+    CLEAN_INSERT("clean_insert", DatabaseOperation.CLEAN_INSERT),
 
-    DELETE("delete"),
+    DELETE("delete", DatabaseOperation.DELETE),
 
-    DELETE_ALL("delete_all"),
+    DELETE_ALL("delete_all", DatabaseOperation.DELETE_ALL),
 
-    UPDATE("update"),
+    UPDATE("update", DatabaseOperation.UPDATE),
 
-    TRUNCATE_TABLE("truncate_table"),
+    TRUNCATE_TABLE("truncate_table", DatabaseOperation.TRUNCATE_TABLE),
 
-    REFRESH("refresh"),
+    REFRESH("refresh", DatabaseOperation.REFRESH),
 
-    NONE("none");
+    NONE("none", DatabaseOperation.NONE);
 
     /**
      * 値.
      */
     private String value;
+
+    /**
+     * オペレーション.
+     */
+    private DatabaseOperation operation;
 
     /**
      * 値から列挙子を取得.
