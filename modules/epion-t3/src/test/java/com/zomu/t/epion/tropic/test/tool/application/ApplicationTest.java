@@ -20,7 +20,7 @@ public class ApplicationTest {
                 "-m", "test",
                 "-p", "develop",
                 "-t", "scenarios-todos-refer-001",
-                "-s", "C:\\Users\\takashno\\IdeaProjects\\epion-t3\\modules\\epion-t3-scenario"
+                "-s", "/Users/takashimanozomu/work/30_pgworkspaces/intellij/epion-t3/modules/epion-t3-scenario"
         });
     }
 

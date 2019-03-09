@@ -7,4 +7,4 @@ info:
 flows:
   - id : flow-001
     type : CommandExecute
-    ref : parts-todos-call@todos-refer-001
+    ref : parts-todos-create-call@todos-create-001

@@ -55,7 +55,7 @@ public class CommandExecuteFlowRunner
         String fqcn = flow.getRef();
 
         // FQCNであるか判断する
-        if (IDUtils.getInstance().isFullQueryCommandName(flow.getRef())) {
+        if (!IDUtils.getInstance().isFullQueryCommandName(flow.getRef())) {
             // FQCNでなければ構築する
             fqcn = IDUtils.getInstance().createFullCommandId(executeScenario.getFqsn(), fqcn);
         }

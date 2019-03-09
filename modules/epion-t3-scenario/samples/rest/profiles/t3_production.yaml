@@ -1,11 +1,11 @@
 t3: '1.0'
 info:
-    id: profile-production
-    version: 1.0.0
-    summary: Summary
-    description: Description
+  id: profile-production
+  version: 1.0.0
+  summary: 本番環境（Production）のプロファイル値定義
+  description: 本番環境（Production）のプロファイル値定義
 profiles:
-  production :
-    prop1 : 1
-    prop2 : 2
-    prop3 : 3
+  develop :
+    schema : http
+    host : localhost
+    port : 8080

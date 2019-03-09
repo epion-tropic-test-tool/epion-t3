@@ -7,5 +7,5 @@ info:
 profiles:
   develop :
     schema : http
-    host : localhsot
+    host : localhost
     port : 8080
