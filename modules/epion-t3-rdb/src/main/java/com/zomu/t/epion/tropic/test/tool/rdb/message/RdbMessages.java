@@ -17,7 +17,8 @@ public enum RdbMessages implements Messages {
     RDB_ERR_0007("com.zomu.t.epion.t3.rdb.err.0007"),
     RDB_ERR_0008("com.zomu.t.epion.t3.rdb.err.0008"),
     RDB_ERR_0009("com.zomu.t.epion.t3.rdb.err.0009"),
-    RDB_ERR_0010("com.zomu.t.epion.t3.rdb.err.0010"),;
+    RDB_ERR_0010("com.zomu.t.epion.t3.rdb.err.0010"),
+    RDB_ERR_0011("com.zomu.t.epion.t3.rdb.err.0011"),;
 
 
     private String messageCode;

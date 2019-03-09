@@ -34,6 +34,6 @@ public class ExportRdbData extends Command {
     /**
      * テーブル指定.
      */
-    private List<String> tables;
+    private List<TargetTable> targets;
 
 }
