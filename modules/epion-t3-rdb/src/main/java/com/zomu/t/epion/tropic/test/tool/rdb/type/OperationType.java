@@ -1,6 +1,5 @@
 package com.zomu.t.epion.tropic.test.tool.rdb.type;
 
-import com.sun.corba.se.impl.orb.DataCollectorBase;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.dbunit.operation.DatabaseOperation;
