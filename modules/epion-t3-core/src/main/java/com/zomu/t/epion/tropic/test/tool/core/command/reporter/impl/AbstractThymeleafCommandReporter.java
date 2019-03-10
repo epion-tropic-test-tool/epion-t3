@@ -16,6 +16,7 @@ import org.thymeleaf.TemplateEngine;
 
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -78,8 +79,14 @@ public abstract class AbstractThymeleafCommandReporter<
             // 変数設定
             thymeleafContext.setVariables(variable);
 
+            // コマンドレポートパスを取得
+            Path commandHtmlReportPath = ExecutionFileUtils.getCommandHtmlReportPath(executeScenario, executeCommand);
+
+            // 親ディレクトリを作成
+            Files.createDirectories(commandHtmlReportPath.getParent());
+
             // HTML変換＆出力
-            Files.write(ExecutionFileUtils.getCommandHtmlReportPath(executeScenario, executeCommand),
+            Files.write(commandHtmlReportPath,
                     templateEngine.process(templatePath(),
                             thymeleafContext).getBytes(ThymeleafReportUtils.TEMPLATE_ENCODING));
 
@@ -88,8 +95,10 @@ public abstract class AbstractThymeleafCommandReporter<
             log.debug("Error Occurred...", e);
 
             throw new SystemException(CoreMessages.CORE_ERR_1003);
+        } catch (Exception e) {
+            // TODO 暫定・・・
+            log.error("ee",e);
         }
-
     }
 
 }

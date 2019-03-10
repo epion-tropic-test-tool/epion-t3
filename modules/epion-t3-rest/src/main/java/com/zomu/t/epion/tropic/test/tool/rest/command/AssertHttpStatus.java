@@ -13,6 +13,8 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-@CommandDefinition(id = "AssertHttpStatus", runner = AssertHttpStatusRunner.class, assertCommand = true)
+@CommandDefinition(id = "AssertHttpStatus",
+        runner = AssertHttpStatusRunner.class,
+        assertCommand = true)
 public class AssertHttpStatus extends Command {
 }

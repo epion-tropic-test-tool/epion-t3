@@ -122,7 +122,9 @@ public final class ExecutionFileUtils {
                                             final String extention) {
         return Paths.get(scenario.getResultPath().toString()
                 + File.separator
-                + String.format("command_%s%.%s", executeCommand.getExecuteId().toString(), extention));
+                + "details"
+                + File.separator
+                + String.format("command_%s.%s", executeCommand.getExecuteId().toString(), extention));
     }
 
     /**
