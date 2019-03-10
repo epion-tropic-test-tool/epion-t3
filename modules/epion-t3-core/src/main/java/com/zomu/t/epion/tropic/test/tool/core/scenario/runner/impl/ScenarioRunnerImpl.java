@@ -268,17 +268,11 @@ public class ScenarioRunnerImpl implements ScenarioRunner<Context, ExecuteContex
      * @param scenario
      */
     protected void outputStartScenarioLog(Context context, ExecuteScenario scenario) {
-        StringBuilder sb = new StringBuilder();
-        sb.append("\n######################################################################################\n");
-        sb.append("Start Scenario.\n");
-        sb.append("Scenario ID         : ");
-        sb.append(scenario.getInfo().getId());
-        sb.append("\n");
-        sb.append("Execute Scenario ID : ");
-        sb.append(scenario.getExecuteScenarioId());
-        sb.append("\n");
-        sb.append("######################################################################################");
-        log.info(sb.toString());
+        log.info("######################################################################################");
+        log.info("Start Scenario.");
+        log.info("Scenario ID         : {}", scenario.getInfo().getId());
+        log.info("Execute Scenario ID : {}", scenario.getExecuteScenarioId());
+        log.info("######################################################################################");
     }
 
     /**
@@ -288,22 +282,24 @@ public class ScenarioRunnerImpl implements ScenarioRunner<Context, ExecuteContex
      * @param scenario
      */
     protected void outputEndScenarioLog(Context context, ExecuteScenario scenario) {
-        StringBuilder sb = new StringBuilder();
-        sb.append("\n######################################################################################\n");
-        sb.append("End Scenario.\n");
-        sb.append("Scenario ID         : ");
-        sb.append(scenario.getInfo().getId());
-        sb.append("\n");
-        sb.append("Execute Scenario ID : ");
-        sb.append(scenario.getExecuteScenarioId());
-        sb.append("\n");
-        sb.append("######################################################################################");
         if (scenario.getStatus() == ScenarioExecuteStatus.SUCCESS) {
-            log.info(sb.toString());
+            log.info("######################################################################################");
+            log.info("End Scenario.");
+            log.info("Scenario ID         : {}", scenario.getInfo().getId());
+            log.info("Execute Scenario ID : {}", scenario.getExecuteScenarioId());
+            log.info("######################################################################################");
         } else if (scenario.getStatus() == ScenarioExecuteStatus.FAIL) {
-            log.error(sb.toString());
+            log.error("######################################################################################");
+            log.error("End Scenario.");
+            log.error("Scenario ID         : {}", scenario.getInfo().getId());
+            log.error("Execute Scenario ID : {}", scenario.getExecuteScenarioId());
+            log.error("######################################################################################");
         } else {
-            log.warn(sb.toString());
+            log.warn("######################################################################################");
+            log.warn("End Scenario.");
+            log.warn("Scenario ID         : {}", scenario.getInfo().getId());
+            log.warn("Execute Scenario ID : {}", scenario.getExecuteScenarioId());
+            log.warn("######################################################################################");
         }
 
     }

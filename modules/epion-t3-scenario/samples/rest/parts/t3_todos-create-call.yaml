@@ -11,6 +11,9 @@ commands:
     command: "ExecuteRestApi"
     request:
       method: post
+      headers:
+        "Content-Type" : "application/json"
+        "Accept" : "application/json"
       targetUrl: ${schema}://${host}:${port}/todos
       body: |
         {

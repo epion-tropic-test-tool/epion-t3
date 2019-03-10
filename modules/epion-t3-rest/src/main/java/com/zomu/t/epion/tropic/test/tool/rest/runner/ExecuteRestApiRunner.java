@@ -89,9 +89,13 @@ public class ExecuteRestApiRunner extends AbstractCommandRunner<ExecuteRestApi> 
         Response response = client.newCall(request).execute();
 
         // 結果オブジェクトを作成
-        com.zomu.t.epion.tropic.test.tool.rest.bean.Response result = new com.zomu.t.epion.tropic.test.tool.rest.bean.Response();
+        com.zomu.t.epion.tropic.test.tool.rest.bean.Response result =
+                new com.zomu.t.epion.tropic.test.tool.rest.bean.Response();
+        // ステータスコード
         result.setStatusCode(response.code());
+        // レスポンスヘッダ
         result.setHeaders(response.headers().toMultimap());
+        // 受信時間
         result.setReceivedResponseAtMillis(response.receivedResponseAtMillis());
         result.setSentRequestAtMillis(response.sentRequestAtMillis());
 
@@ -104,6 +108,8 @@ public class ExecuteRestApiRunner extends AbstractCommandRunner<ExecuteRestApi> 
 
         // エビデンス登録
         registrationObjectEvidence(result);
+
+
 
         return CommandResult.getSuccess();
     }

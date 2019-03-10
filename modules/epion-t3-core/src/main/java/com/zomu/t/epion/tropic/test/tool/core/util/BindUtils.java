@@ -9,9 +9,9 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.beans.IntrospectionException;
 import java.beans.PropertyDescriptor;
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
-import java.util.Arrays;
-import java.util.Map;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -73,44 +73,122 @@ public final class BindUtils {
 
         while (true) {
 
-            Arrays.stream(clazz.getDeclaredFields())
-                    // Stringのみ
-                    .filter(x -> String.class.isAssignableFrom(x.getType()))
-                    .forEach(x -> {
-                        try {
-                            PropertyDescriptor pd = new PropertyDescriptor(x.getName(), target.getClass());
-                            Object value = pd.getReadMethod().invoke(target);
-                            if (value != null) {
-                                value = bind(value.toString(),
-                                        profiles,
-                                        globalVariables,
-                                        scenarioVariables,
-                                        flowVariables);
-                                pd.getWriteMethod().invoke(target, value.toString());
-                            }
-                        } catch (IntrospectionException | IllegalAccessException | InvocationTargetException e) {
-                            log.debug("Ignore...", e);
-                        }
-                    });
+//            Arrays.stream(clazz.getDeclaredFields())
+//                    // Stringのみ
+//                    .filter(x -> String.class.isAssignableFrom(x.getType()))
+//                    .forEach(x -> {
+//                        try {
+//                            PropertyDescriptor pd = new PropertyDescriptor(x.getName(), target.getClass());
+//                            Object value = pd.getReadMethod().invoke(target);
+//                            if (value != null) {
+//                                value = bind(value.toString(),
+//                                        profiles,
+//                                        globalVariables,
+//                                        scenarioVariables,
+//                                        flowVariables);
+//                                pd.getWriteMethod().invoke(target, value.toString());
+//                            }
+//                        } catch (IntrospectionException | IllegalAccessException | InvocationTargetException e) {
+//                            log.debug("Ignore...", e);
+//                        }
+//                    });
 
-            Arrays.stream(clazz.getDeclaredFields())
-                    // String以外
-                    .filter(x -> !String.class.isAssignableFrom(x.getType()) && !x.getName().equals("serialVersionUID"))
-                    .forEach(x -> {
-                        try {
-                            PropertyDescriptor pd = new PropertyDescriptor(x.getName(), target.getClass());
-                            Object value = pd.getReadMethod().invoke(target);
-                            if (value != null) {
-                                bind(value,
-                                        profiles,
-                                        globalVariables,
-                                        scenarioVariables,
-                                        flowVariables);
+            // String以外
+            for (Field f : clazz.getDeclaredFields()) {
+
+                if (f.getName().equals("serialVersionUID")) {
+                    continue;
+                }
+
+                Class<?> fieldClass = f.getType();
+
+                try {
+
+                    PropertyDescriptor pd = new PropertyDescriptor(f.getName(), target.getClass());
+                    Object value = pd.getReadMethod().invoke(target);
+                    if (value != null) {
+
+                        if (String.class.isAssignableFrom(fieldClass)) {
+                            value = bind(value.toString(),
+                                    profiles,
+                                    globalVariables,
+                                    scenarioVariables,
+                                    flowVariables);
+                            pd.getWriteMethod().invoke(target, value.toString());
+
+                        } else if (fieldClass.isArray()) {
+                            Object[] array = (Object[]) value;
+                            for (Object o : array) {
+                                bind(o, profiles, globalVariables, scenarioVariables, flowVariables);
                             }
-                        } catch (IntrospectionException | IllegalAccessException | InvocationTargetException e) {
-                            log.debug("Ignore...", e);
+                        } else if (Map.class.isAssignableFrom(fieldClass)) {
+                            Map<?, ?> checkMap = Map.class.cast(value);
+                            Map.Entry<?, ?> checkEntry = checkMap.entrySet().iterator().next();
+                            if (String.class.isAssignableFrom(checkEntry.getKey().getClass())) {
+                                // KeyはStringで固定制約をツールとして設ける
+                                Map<String, ?> map = Map.class.cast(value);
+                                for (Map.Entry entry : map.entrySet()) {
+                                    Object entryValue = entry.getValue();
+                                    if (String.class.isAssignableFrom(entryValue.getClass())) {
+                                        String entryValueString = String.class.cast(entryValue);
+                                        String bindedEntryValueStrig =
+                                                bind(entryValueString, profiles, globalVariables, scenarioVariables, flowVariables);
+                                        Map<String, String> map2 = (Map<String, String>) map;
+                                        map2.put(entry.getKey().toString(), bindedEntryValueStrig);
+                                    } else {
+                                        bind(entry.getValue(), profiles, globalVariables, scenarioVariables, flowVariables);
+                                    }
+                                }
+                            } else {
+                                throw new SystemException(CoreMessages.CORE_ERR_0013, clazz.getName());
+                            }
+                        } else if (List.class.isAssignableFrom(fieldClass)) {
+                            List<?> list = List.class.cast(value);
+                            list.getClass().getTypeParameters();
+                            List<String> bindedStringList = new ArrayList<>();
+                            for (Object element : list) {
+                                if (String.class.isAssignableFrom(element.getClass())) {
+                                    String elementString = String.class.cast(element);
+                                    elementString = bind(elementString, profiles, globalVariables, scenarioVariables, flowVariables);
+                                    bindedStringList.add(elementString);
+                                } else {
+                                    bind(element, profiles, globalVariables, scenarioVariables, flowVariables);
+                                }
+                            }
+                            if (!bindedStringList.isEmpty()) {
+                                list.clear();
+                                List<String> stringList = (List<String>) list;
+                                stringList.addAll(bindedStringList);
+                            }
+                        } else {
+                            bind(value, profiles, globalVariables, scenarioVariables, flowVariables);
                         }
-                    });
+                    }
+
+                } catch (IntrospectionException | IllegalAccessException | InvocationTargetException e) {
+                    log.debug("Ignore...", e);
+                }
+
+            }
+
+//            Arrays.stream(clazz.getDeclaredFields())
+//                    // String以外
+//                    .filter(x -> !String.class.isAssignableFrom(x.getType()) && !x.getName().equals("serialVersionUID"))
+//                    .forEach(x -> {
+//                        try {
+//                            PropertyDescriptor pd = new PropertyDescriptor(x.getName(), target.getClass());
+//                            Object value = pd.getReadMethod().invoke(target);
+//                            if (value != null) {
+//                                bind(value,
+//                                        profiles,
+//                                        globalVariables,
+//                                        scenarioVariables,
+//                                        flowVariables);
+//                            }
+//                        } catch (IntrospectionException | IllegalAccessException | InvocationTargetException e) {
+//                            log.debug("Ignore...", e);
+//                        }
+//                    });
 
             if (clazz.getSuperclass() != null) {
                 // 親クラスが存在すれば、ループ処理.

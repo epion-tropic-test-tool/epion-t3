@@ -278,21 +278,12 @@ public class CommandExecuteFlowRunner
             final ExecuteScenario executeScenario,
             final ExecuteFlow executeFlow,
             final ExecuteCommand executeCommand) {
-
-        StringBuilder sb = new StringBuilder();
-        sb.append("\n--------------------------------------------------------------------------------------\n");
-        sb.append("<<Start Command>>\n");
-        sb.append("Scenario ID         : ");
-        sb.append(executeScenario.getInfo().getId());
-        sb.append("\n");
-        sb.append("Command  ID         : ");
-        sb.append(executeCommand.getCommand().getId());
-        sb.append("\n");
-        sb.append("Execute Command ID  : ");
-        sb.append(executeCommand.getExecuteId());
-        sb.append("\n");
+        log.info("--------------------------------------------------------------------------------------");
+        log.info("<<Start Command>>");
+        log.info("Scenario ID         : {}", executeScenario.getInfo().getId());
+        log.info("Command  ID         : {}", executeCommand.getCommand().getId());
+        log.info("Execute Command ID  : {}", executeCommand.getExecuteId());
         //sb.append("--------------------------------------------------------------------------------------");
-        log.info(sb.toString());
     }
 
     /**
@@ -308,29 +299,30 @@ public class CommandExecuteFlowRunner
             final ExecuteScenario executeScenario,
             final ExecuteFlow executeFlow,
             final ExecuteCommand executeCommand) {
-
-        StringBuilder sb = new StringBuilder();
-        //sb.append("\n--------------------------------------------------------------------------------------\n");
-        sb.append("\n<<End Command>>\n");
-        sb.append("Scenario ID         : ");
-        sb.append(executeScenario.getInfo().getId());
-        sb.append("\n");
-        sb.append("Command ID          : ");
-        sb.append(executeCommand.getCommand().getId());
-        sb.append("\n");
-        sb.append("Execute Command ID  : ");
-        sb.append(executeCommand.getExecuteId());
-        sb.append("\n");
-        sb.append("Process Status      : ");
-        sb.append(executeCommand.getCommandResult().getStatus().name());
-        sb.append("\n");
-        sb.append("--------------------------------------------------------------------------------------");
         if (executeCommand.getCommandResult().getStatus() == CommandStatus.SUCCESS) {
-            log.info(sb.toString());
+            //sb.append("\n--------------------------------------------------------------------------------------\n");
+            log.info("<<End Command>>");
+            log.info("Scenario ID         : {}", executeScenario.getInfo().getId());
+            log.info("Command ID          : {}", executeCommand.getCommand().getId());
+            log.info("Execute Command ID  : {}", executeCommand.getExecuteId());
+            log.info("Process Status      : {}", executeCommand.getCommandResult().getStatus().name());
+            log.info("--------------------------------------------------------------------------------------");
         } else if (executeCommand.getCommandResult().getStatus() == CommandStatus.FAIL) {
-            log.error(sb.toString());
+            //sb.append("\n--------------------------------------------------------------------------------------\n");
+            log.error("<<End Command>>");
+            log.error("Scenario ID         : {}", executeScenario.getInfo().getId());
+            log.error("Command ID          : {}", executeCommand.getCommand().getId());
+            log.error("Execute Command ID  : {}", executeCommand.getExecuteId());
+            log.error("Process Status      : {}", executeCommand.getCommandResult().getStatus().name());
+            log.error("--------------------------------------------------------------------------------------");
         } else {
-            log.warn(sb.toString());
+            //sb.append("\n--------------------------------------------------------------------------------------\n");
+            log.warn("<<End Command>>");
+            log.warn("Scenario ID         : {}", executeScenario.getInfo().getId());
+            log.warn("Command ID          : {}", executeCommand.getCommand().getId());
+            log.warn("Execute Command ID  : {}", executeCommand.getExecuteId());
+            log.warn("Process Status      : {}", executeCommand.getCommandResult().getStatus().name());
+            log.warn("--------------------------------------------------------------------------------------");
         }
 
     }
