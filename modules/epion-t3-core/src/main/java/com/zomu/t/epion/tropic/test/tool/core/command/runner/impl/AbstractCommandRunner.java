@@ -6,8 +6,6 @@ import com.zomu.t.epion.tropic.test.tool.core.command.reporter.impl.NoneCommandR
 import com.zomu.t.epion.tropic.test.tool.core.command.runner.CommandRunner;
 import com.zomu.t.epion.tropic.test.tool.core.context.Context;
 import com.zomu.t.epion.tropic.test.tool.core.context.EvidenceInfo;
-import com.zomu.t.epion.tropic.test.tool.core.context.FileEvidenceInfo;
-import com.zomu.t.epion.tropic.test.tool.core.context.ObjectEvidenceInfo;
 import com.zomu.t.epion.tropic.test.tool.core.context.execute.ExecuteCommand;
 import com.zomu.t.epion.tropic.test.tool.core.context.execute.ExecuteContext;
 import com.zomu.t.epion.tropic.test.tool.core.context.execute.ExecuteFlow;
@@ -17,10 +15,10 @@ import com.zomu.t.epion.tropic.test.tool.core.message.impl.CoreMessages;
 import com.zomu.t.epion.tropic.test.tool.core.model.scenario.Command;
 import com.zomu.t.epion.tropic.test.tool.core.model.scenario.Configuration;
 import com.zomu.t.epion.tropic.test.tool.core.type.CommandStatus;
-import com.zomu.t.epion.tropic.test.tool.core.type.FlowScopeVariables;
 import com.zomu.t.epion.tropic.test.tool.core.type.ReferenceVariableType;
 import com.zomu.t.epion.tropic.test.tool.core.type.ScenarioScopeVariables;
 import com.zomu.t.epion.tropic.test.tool.core.util.BindUtils;
+import com.zomu.t.epion.tropic.test.tool.core.util.EvidenceUtils;
 import com.zomu.t.epion.tropic.test.tool.core.util.IDUtils;
 import org.apache.commons.lang3.SerializationUtils;
 import org.slf4j.Logger;
@@ -28,7 +26,6 @@ import org.slf4j.Logger;
 import java.io.Serializable;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.LinkedList;
 import java.util.Map;
 import java.util.regex.Matcher;
 
@@ -115,12 +112,9 @@ public abstract class AbstractCommandRunner<COMMAND extends Command>
         } catch (Throwable t) {
 
             logger.debug("Error Occurred...", t);
-
             error = t;
-
             result = new CommandResult();
-            result.setStatus(CommandStatus.FAIL);
-
+            result.setStatus(CommandStatus.ERROR);
             throw t;
 
         } finally {
@@ -321,110 +315,61 @@ public abstract class AbstractCommandRunner<COMMAND extends Command>
     }
 
     /**
+     * 【移譲メソッド】
      * ファイルエビデンスを登録する.
      *
-     * @param evidence
+     * @param evidence エビデンスパス
      */
     protected void registrationFileEvidence(
             Path evidence) {
-        FileEvidenceInfo evidenceInfo = new FileEvidenceInfo();
-        evidenceInfo.setFqsn(executeScenario.getScenarioVariables().get(ScenarioScopeVariables.CURRENT_SCENARIO.getName()).toString());
-        evidenceInfo.setFqpn(executeFlow.getFlowVariables().get(FlowScopeVariables.CURRENT_COMMAND.getName()).toString());
-        evidenceInfo.setName(getEvidenceBaseName());
-        evidenceInfo.setExecuteProcessId(executeFlow.getFlowVariables().get(FlowScopeVariables.CURRENT_COMMAND_EXECUTE_ID.getName()).toString());
-        evidenceInfo.setPath(evidence);
-        String evidenceId = getEvidenceBaseName();
-        executeScenario.getEvidences().put(getEvidenceBaseName(), evidenceInfo);
-        if (executeScenario.getFlowId2EvidenceId().containsKey(executeFlow.getFlow().getId())) {
-            executeScenario.getFlowId2EvidenceId().get(executeFlow.getFlow().getId()).add(evidenceId);
-        } else {
-            executeScenario.getFlowId2EvidenceId().put(executeFlow.getFlow().getId(), new LinkedList<>());
-            executeScenario.getFlowId2EvidenceId().get(executeFlow.getFlow().getId()).add(evidenceId);
-        }
+        EvidenceUtils.getInstance().registrationFileEvidence(
+                executeScenario, executeFlow, evidence);
     }
 
     /**
+     * 【移譲メソッド】
      * FlowIDからファイルエビデンスのPathを参照.
      *
      * @param flowId
      * @return
      */
     protected Path referFileEvidence(String flowId) {
-        if (executeScenario.getFlowId2EvidenceId().containsKey(flowId)) {
-            String evidenceId = executeScenario.getFlowId2EvidenceId().get(flowId).getLast();
-            EvidenceInfo evidenceInfo = executeScenario.getEvidences().get(evidenceId);
-            if (evidenceInfo != null
-                    && ObjectEvidenceInfo.class.isAssignableFrom(evidenceInfo.getClass())) {
-                FileEvidenceInfo objectEvidenceInfo = FileEvidenceInfo.class.cast(evidenceInfo);
-                return objectEvidenceInfo.getPath();
-            } else {
-                throw new SystemException(CoreMessages.CORE_ERR_0007, flowId);
-            }
-        } else {
-            throw new SystemException(CoreMessages.CORE_ERR_0007, flowId);
-        }
+        return EvidenceUtils.getInstance().referFileEvidence(executeScenario, flowId);
     }
 
     /**
+     * 【移譲メソッド】
      * オブジェクトエビデンスを登録する.
      *
      * @param evidence オブジェクトエビデンス
      */
     protected void registrationObjectEvidence(
             Object evidence) {
-        ObjectEvidenceInfo evidenceInfo = new ObjectEvidenceInfo();
-        // Full Query Scenario Name として現在実行シナリオ名を設定
-        evidenceInfo.setFqsn(executeScenario.getScenarioVariables().get(
-                ScenarioScopeVariables.CURRENT_SCENARIO.getName()).toString());
-        // Full Query Process Name として現在実行プロセス名を設定
-        evidenceInfo.setFqpn(executeFlow.getFlowVariables().get(
-                FlowScopeVariables.CURRENT_COMMAND.getName()).toString());
-        evidenceInfo.setName(getEvidenceBaseName());
-        evidenceInfo.setExecuteProcessId(executeFlow.getFlowVariables().get(
-                FlowScopeVariables.CURRENT_COMMAND_EXECUTE_ID.getName()).toString());
-        evidenceInfo.setObject(evidence);
-        String evidenceId = getEvidenceBaseName();
-        executeScenario.getEvidences().put(evidenceId, evidenceInfo);
-        if (executeScenario.getFlowId2EvidenceId().containsKey(executeFlow.getFlow().getId())) {
-            executeScenario.getFlowId2EvidenceId().get(executeFlow.getFlow().getId()).add(evidenceId);
-        } else {
-            executeScenario.getFlowId2EvidenceId().put(executeFlow.getFlow().getId(), new LinkedList<>());
-            executeScenario.getFlowId2EvidenceId().get(executeFlow.getFlow().getId()).add(evidenceId);
-        }
+        EvidenceUtils.getInstance().registrationObjectEvidence(
+                executeContext, executeScenario, executeFlow, evidence);
     }
 
     /**
+     * 【移譲メソッド】
      * FlowIDからオブジェクトエビデンスを参照.
      * このオブジェクトはクローンであるためエビデンス原本ではない.
      *
-     * @param flowId
-     * @param <O>
-     * @return
+     * @param flowId FlowID
+     * @param <O>    オブジェクト
+     * @return オブジェクトエビデンス
      */
     protected <O extends Serializable> O referObjectEvidence(String flowId) {
-        if (executeScenario.getFlowId2EvidenceId().containsKey(flowId)) {
-            String evidenceId = executeScenario.getFlowId2EvidenceId().get(flowId).getLast();
-            EvidenceInfo evidenceInfo = executeScenario.getEvidences().get(evidenceId);
-            if (evidenceInfo != null
-                    && ObjectEvidenceInfo.class.isAssignableFrom(evidenceInfo.getClass())) {
-                ObjectEvidenceInfo objectEvidenceInfo = ObjectEvidenceInfo.class.cast(evidenceInfo);
-                O object = (O) objectEvidenceInfo.getObject();
-                return SerializationUtils.clone(object);
-            } else {
-                throw new SystemException(CoreMessages.CORE_ERR_0008, flowId);
-            }
-        } else {
-            throw new SystemException(CoreMessages.CORE_ERR_0008, flowId);
-        }
+        return EvidenceUtils.getInstance().referObjectEvidence(
+                executeContext, executeScenario, flowId);
     }
 
     /**
      * エビデンス名を取得する.
      *
-     * @return
+     * @return エビデンス基底名
      */
     protected String getEvidenceBaseName() {
-        return executeFlow.getFlowVariables().get(FlowScopeVariables.CURRENT_COMMAND.getName()).toString() + "_evidence";
+        return EvidenceUtils.getInstance().getEvidenceBaseName(executeFlow);
     }
 
     /**

@@ -46,10 +46,14 @@ public class ExecuteCommand extends ExecuteElement {
      */
     private Map<String, Object> extensionProcessFields;
 
-
     /**
      * プロセスログリスト.
      */
     private List<CommandLog> commandLogs;
+
+    /**
+     * カスタムレポートパス.
+     */
+    private String customReportRelativePath;
 
 }

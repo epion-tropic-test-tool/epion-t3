@@ -149,7 +149,7 @@ public class ScenarioRunnerImpl implements ScenarioRunner<Context, ExecuteContex
             executeScenario.setError(t);
 
             // シナリオ失敗
-            executeScenario.setStatus(ScenarioExecuteStatus.FAIL);
+            executeScenario.setStatus(ScenarioExecuteStatus.ERROR);
 
         } finally {
 
@@ -288,7 +288,7 @@ public class ScenarioRunnerImpl implements ScenarioRunner<Context, ExecuteContex
             log.info("Scenario ID         : {}", scenario.getInfo().getId());
             log.info("Execute Scenario ID : {}", scenario.getExecuteScenarioId());
             log.info("######################################################################################");
-        } else if (scenario.getStatus() == ScenarioExecuteStatus.FAIL) {
+        } else if (scenario.getStatus() == ScenarioExecuteStatus.ERROR) {
             log.error("######################################################################################");
             log.error("End Scenario.");
             log.error("Scenario ID         : {}", scenario.getInfo().getId());

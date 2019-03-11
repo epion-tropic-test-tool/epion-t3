@@ -10,7 +10,6 @@ import com.zomu.t.epion.tropic.test.tool.core.model.scenario.Command;
 import java.util.Map;
 
 /**
- *
  * @param <COMMAND>
  * @param <EXECUTE_CONTEXT>
  * @param <EXECUTE_SCENARIO>
@@ -33,7 +32,12 @@ public interface ThymeleafCommandReporter<COMMAND extends Command,
     /**
      * @param variable
      */
-    void setVariables(Map<String, Object> variable);
+    void setVariables(Map<String, Object> variable,
+                      COMMAND command,
+                      EXECUTE_CONTEXT executeContext,
+                      EXECUTE_SCENARIO executeScenario,
+                      EXECUTE_FLOW executeFlow,
+                      EXECUTE_COMMAND executeCommand);
 
 }
 

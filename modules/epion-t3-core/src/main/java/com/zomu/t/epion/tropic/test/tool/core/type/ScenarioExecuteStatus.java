@@ -20,7 +20,7 @@ public enum ScenarioExecuteStatus {
 
     SUCCESS("table-success"),
 
-    FAIL("table-danger");
+    ERROR("table-danger");
 
     private String cssClass;
 

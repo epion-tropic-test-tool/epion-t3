@@ -188,15 +188,14 @@
                 </tr>
                 </thead>
                 <tbody>
-                <th:block th:each="evidenceInfo,stat : ${executeScenario.evidences}">
-                    <tr th:if="${evidenceInfo.getClass().getName() == 'com.zomu.t.epion.tropic.test.tool.core.context.FileEvidenceInfo'}">
-                        <td scope="row" th:text="${evidenceInfo.value.name}">key1</td>
+                <th:block th:each="entry,stat : ${executeScenario.evidences}">
+                    <tr th:if="${entry.value.getClass().getName() == 'com.zomu.t.epion.tropic.test.tool.core.context.FileEvidenceInfo'}">
+                        <td scope="row" th:text="${entry.value.name}">key1</td>
                         <td scope="col">
-                            <a href="#execution-id"
-                               th:href="${#strings.concat('#',evidenceInfo.value.executeProcessId)}"
-                               th:text="${evidenceInfo.value.fqpn}">command-0001</a>
+                            <a th:href="${#strings.concat('#',entry.value.executeFlowId)}"
+                               th:text="${entry.value.fqpn}">command-0001</a>
                         </td>
-                        <td th:text="${evidenceInfo.value.path}">value1</td>
+                        <td><a th:href="${entry.value.relativePath}" th:text="${entry.value.relativePath}">value1</a></td>
                     </tr>
                 </th:block>
                 </tbody>
@@ -242,14 +241,6 @@
                                 <th class="bg-dark" style="color:white">Flow Type</th>
                                 <td colspan="3" th:text="${#strings.concat(executeFlow.flow.id, ' / ', executeFlow.flow.type)}">Flow</td>
                             </tr>
-                            <!--
-                            <tr>
-                                <th class="bg-dark" style="color:white">Execution&nbsp;ID</th>
-                                <td th:text="${executeFlow.executeId}" colspan="3">
-                                    fef4d139-a550-490a-8365-9fd26ce3f871
-                                </td>
-                            </tr>
-                            -->
                             <tr>
                                 <th class="bg-dark" style="color:white">Time</th>
                                 <td th:text="${#strings.concat(dateTimeUtils.formatTimeNormal(executeFlow.start), ' ~ ', dateTimeUtils.formatTimeNormal(executeFlow.end), ' (', dateTimeUtils.getMillis(executeFlow.start, executeFlow.end), ' ms)')}" colspan="3">12:12:12.111</td>
@@ -371,6 +362,13 @@
                                             </td>
                                         </tr>
                                     </th:block>
+                                    <th:block th:if="${executeCommand.customReportRelativePath}">
+                                        <tr>
+                                            <td colspan="4">
+                                                <a href="#" th:href="${executeCommand.customReportRelativePath}" style="font-weight:bold">&gt;&gt;&gt;&nbsp;Custom&nbsp;Report&nbsp;&lt;&lt;&lt;</a>
+                                            </td>
+                                        </tr>
+                                    </th:block>
                                 </th:block>
                             </th:block>
                             </tbody>
@@ -378,109 +376,6 @@
                         <br/>
                     </div>
                 </div>
-                <!--
-                <th:block th:if="${!executeFlow.commands.isEmpty}">
-                    <th:block th:each="executeCommand,stat : ${executeFlow.commands}">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <table class="table table-sm table-bordered" id="executionCommandId"
-                                       th:id="${executeCommand.executeId}">
-                                    <tbody>
-                                    <tr>
-                                        <th class="bg-dark" style="color:white">Type</th>
-                                        <td colspan="3">Command</td>
-                                    </tr>
-                                    <tr>
-                                        <th class="bg-dark" style="color:white">ID</th>
-                                        <td th:text="${executeCommand.command.id}" colspan="3">command-0001</td>
-                                    </tr>
-                                    <tr>
-                                        <th class="bg-dark" style="color:white">Execution&nbsp;ID</th>
-                                        <td th:text="${executeCommand.executeId}" colspan="3">
-                                            fef4d139-a550-490a-8365-9fd26ce3f871
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <th class="bg-dark" style="color:white">Command</th>
-                                        <td th:text="${executeCommand.command.command}" colspan="3">FileCopy</td>
-                                    </tr>
-                                    <tr>
-                                        <th class="bg-dark" style="color:white">Summary</th>
-                                        <td th:text="${executeCommand.command.summary}" colspan="3">Sample Scenario
-                                            001
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <th class="bg-dark" style="color:white">Description</th>
-                                        <td th:text="${executeCommand.command.description}" colspan="3">This is a
-                                            typical example scenario of the
-                                            tool.
-                                        </td>
-                                    </tr>
-                                    <th:block th:if="${executeCommand.command.target != null}">
-                                        <tr>
-                                            <th class="bg-dark" style="color:white">Target</th>
-                                            <td th:text="${executeCommand.command.target}" colspan="3">Target...</td>
-                                        </tr>
-                                    </th:block>
-                                    <th:block th:if="${executeCommand.command.value != null}">
-                                        <tr>
-                                            <th class="bg-dark" style="color:white">Value</th>
-                                            <td th:text="${executeCommand.command.value}" colspan="3">Value...</td>
-                                        </tr>
-                                    </th:block>
-                                    <tr th:each="extensionProcessField,stat : ${executeCommand.extensionProcessFields}">
-                                        <th class="bg-secondary" style="color:white"
-                                            th:text="${#strings.concat('* ',extensionProcessField.key)}">ExtensionKey
-                                        </th>
-                                        <td th:text="${extensionProcessField.value}" colspan="3">ExtensionValue</td>
-                                    </tr>
-                                    <tr>
-                                        <th class="bg-dark" style="color:white">Start</th>
-                                        <td th:text="${dateTimeUtils.formatTimeNormal(executeCommand.start)}">
-                                            12:12:12.111
-                                        </td>
-                                        <th class="bg-dark" style="color:white">End</th>
-                                        <td th:text="${dateTimeUtils.formatTimeNormal(executeCommand.end)}">
-                                            12:12:12.222
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <th class="bg-dark" style="color:white">Status</th>
-                                        <td class="table-success" th:text="${executeCommand.commandResult.status}"
-                                            th:class="${executeCommand.commandResult.status.getCssClass()}">SUCCESS
-                                        </td>
-                                        <th class="bg-dark" style="color:white">Duration&nbsp;(ms)</th>
-                                        <td th:text="${dateTimeUtils.getMillis(executeCommand.start, executeCommand.end)}">
-                                            111
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <th class="bg-dark" style="color:white">Log</th>
-                                        <td colspan="3" style="background:#eee;">
-                                            <th:block th:each="commandLog : ${executeCommand.commandLogs}">
-                                                <span th:text="${#strings.concat(dateTimeUtils.formatNormal(commandLog.dateTime),' [',commandLog.level,'] ',commandLog.message)}"/><br/>
-                                            </th:block>
-                                        </td>
-                                    </tr>
-                                    <th:block th:if="${executeCommand.error != null}">
-                                        <tr>
-                                            <th class="bg-dark" style="color:white">Error</th>
-                                            <td colspan="3" style="background:#eee;">
-                                        <pre th:text="${executeCommand.stackTrace}">
-                                            stacktrace
-                                        </pre>
-                                            </td>
-                                        </tr>
-                                    </th:block>
-                                    </tbody>
-                                </table>
-                                <br/>
-                            </div>
-                        </div>
-                    </th:block>
-                </th:block>
-                -->
             </th:block>
         </div>
     </section>

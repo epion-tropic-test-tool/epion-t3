@@ -7,3 +7,4 @@ customs:
     core: "com.zomu.t.epion.tropic.test.tool.core"
     basic: "com.zomu.t.epion.tropic.test.tool.basic"
     rest: "com.zomu.t.epion.tropic.test.tool.rest"
+    rdb: "com.zomu.t.epion.tropic.test.tool.rdb"

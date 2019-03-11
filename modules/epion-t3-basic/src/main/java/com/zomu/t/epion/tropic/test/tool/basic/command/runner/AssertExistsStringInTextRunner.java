@@ -57,7 +57,7 @@ public class AssertExistsStringInTextRunner extends AbstractCommandRunner<Assert
             }
 
             // TODO：どう扱う？
-            commandResult.setStatus(CommandStatus.FAIL);
+            commandResult.setStatus(CommandStatus.ERROR);
 
         } catch (IOException e) {
             throw new RuntimeException(e);

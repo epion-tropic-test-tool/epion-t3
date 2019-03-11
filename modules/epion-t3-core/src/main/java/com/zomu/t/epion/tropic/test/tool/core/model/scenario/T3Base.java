@@ -57,7 +57,7 @@ public class T3Base implements Serializable {
      * 設定.
      */
     // MEMO:visible属性を「true」にしないとパースした際に値が設定されないらしい
-    @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.EXISTING_PROPERTY, property = "configId", visible = true)
+    @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.EXISTING_PROPERTY, property = "configuration", visible = true)
     @JsonTypeIdResolver(CustomConfigurationTypeIdResolver.class)
     @Valid
     private List<Configuration> configurations = new ArrayList<>();

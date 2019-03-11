@@ -2,8 +2,8 @@ t3: '1.0'
 info:
   id: "scenarios-todos-refer-001"
   version: 1.0.0
-  summary: REST-APIのTODOの試験シナリオ001
-  description: REST-APIのTODOの試験シナリオ001
+  summary: "REST-APIのTODOの試験シナリオ001"
+  description: "REST-APIのTODOの試験シナリオ001"
 flows:
   - id: "flow-001"
     type: "CommandExecute"
@@ -11,10 +11,13 @@ flows:
   - id: "flow-002"
     type: "CommandExecute"
     ref: "scenarios-todos-refer-001@todos-assert-001"
+  - id: "flow-003"
+    type: "CommandExecute"
+    ref: "parts-tododb-dataset@tododb-export-001"
 commands:
   - id: "todos-assert-001"
     summary: "HTTPステータスコードのアサート."
     description: "HTTPステータスコードのアサート."
     command: "AssertHttpStatus"
     target: "flow-001"
-    value: 200
+    value: 201

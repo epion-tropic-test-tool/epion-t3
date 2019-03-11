@@ -103,7 +103,7 @@ public class ApplicationRunnerImpl implements ApplicationRunner<Context> {
 
             error = t;
 
-            executeContext.setStatus(ScenarioExecuteStatus.FAIL);
+            executeContext.setStatus(ScenarioExecuteStatus.ERROR);
 
             // 例外ハンドリング
             handleGlobalException(context, t);

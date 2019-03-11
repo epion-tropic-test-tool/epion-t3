@@ -20,7 +20,7 @@ public class EvidenceInfo implements Serializable {
      * エビデンスID.
      * 内部的に割り振っているのみ
      */
-    private UUID executeScenarioId = UUID.randomUUID();
+    private UUID evidenceId = UUID.randomUUID();
 
     /**
      * 完全シナリオ名称.
@@ -35,10 +35,10 @@ public class EvidenceInfo implements Serializable {
     private String fqpn;
 
     /**
-     * プロセスの実行ID.
+     * Flowの実行ID.
      * レポートのアンカーリンクのために必要.
      */
-    private String executeProcessId;
+    private String executeFlowId;
 
     /**
      * エビデンス名.

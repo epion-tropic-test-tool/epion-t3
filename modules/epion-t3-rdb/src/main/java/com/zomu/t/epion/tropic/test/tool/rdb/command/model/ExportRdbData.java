@@ -2,6 +2,7 @@ package com.zomu.t.epion.tropic.test.tool.rdb.command.model;
 
 import com.zomu.t.epion.tropic.test.tool.core.annotation.CommandDefinition;
 import com.zomu.t.epion.tropic.test.tool.core.model.scenario.Command;
+import com.zomu.t.epion.tropic.test.tool.rdb.command.runner.ExportRdbDataRunner;
 import com.zomu.t.epion.tropic.test.tool.rdb.command.runner.ImportRdbDataRunner;
 import lombok.Getter;
 import lombok.Setter;
@@ -16,7 +17,7 @@ import java.util.List;
  */
 @Getter
 @Setter
-@CommandDefinition(id = "ExportRdbData", runner = ImportRdbDataRunner.class)
+@CommandDefinition(id = "ExportRdbData", runner = ExportRdbDataRunner.class)
 public class ExportRdbData extends Command {
 
     /**

@@ -9,3 +9,7 @@ profiles:
     schema : http
     host : localhost
     port : 8080
+    dbport: 3306
+    dbschema: tododb
+    dbuser: user
+    dbpassword: password

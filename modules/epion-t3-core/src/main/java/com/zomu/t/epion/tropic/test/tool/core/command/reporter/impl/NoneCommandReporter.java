@@ -1,27 +1,26 @@
 package com.zomu.t.epion.tropic.test.tool.core.command.reporter.impl;
 
+import com.zomu.t.epion.tropic.test.tool.core.command.model.NoneCommand;
+import com.zomu.t.epion.tropic.test.tool.core.context.execute.ExecuteCommand;
+import com.zomu.t.epion.tropic.test.tool.core.context.execute.ExecuteContext;
+import com.zomu.t.epion.tropic.test.tool.core.context.execute.ExecuteFlow;
+import com.zomu.t.epion.tropic.test.tool.core.context.execute.ExecuteScenario;
+
 import java.util.Map;
 
-/**
- * 何も行わないデフォルトのレポート出力処理クラス.
- *
- * @author takashno
- */
-public class NoneCommandReporter extends AbstractThymeleafCommandReporter {
-
-    /**
-     * {@inheritDoc}
-     */
+public class NoneCommandReporter
+        extends AbstractThymeleafCommandReporter<NoneCommand> {
     @Override
     public String templatePath() {
         return null;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public void setVariables(Map variable) {
-        // Do Nothings...
+    public void setVariables(Map<String, Object> variable,
+                             NoneCommand command,
+                             ExecuteContext executeContext,
+                             ExecuteScenario executeScenario,
+                             ExecuteFlow executeFlow,
+                             ExecuteCommand executeCommand) {
     }
 }

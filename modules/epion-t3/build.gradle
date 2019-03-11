@@ -8,15 +8,14 @@ dependencies {
     compile project(':modules:epion-t3-selenium')
     //compile project(':modules:epion-t3-random')
     compile project(':modules:epion-t3-rest')
+    compile project(':modules:epion-t3-rdb')
 
 }
-
 
 jar {
     manifest {
         attributes "Main-Class": "com.zomu.t.epion.tropic.test.tool.application.Application"
     }
-
     from {
         configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
     }

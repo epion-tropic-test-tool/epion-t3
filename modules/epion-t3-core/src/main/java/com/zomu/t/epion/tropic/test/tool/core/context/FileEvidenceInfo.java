@@ -14,4 +14,10 @@ public class FileEvidenceInfo extends EvidenceInfo {
      */
     private Path path;
 
+    /**
+     * 【レポート用】
+     * シナリオディレクトリからの相対パス.
+     */
+    private String relativePath;
+
 }

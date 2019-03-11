@@ -86,6 +86,7 @@ public class ExportRdbDataRunner extends AbstractCommandRunner<ExportRdbData> {
                         FlatXmlWriter writer = new FlatXmlWriter(os);
                         writer.write(iDataSet);
                     }
+                    registrationFileEvidence(flatXmlPath);
                     break;
                 case EXCEL:
                     Path xlsxPath = getEvidencePath("xlsx");
@@ -93,12 +94,12 @@ public class ExportRdbDataRunner extends AbstractCommandRunner<ExportRdbData> {
                         XlsxDataSetWriter writer = new XlsxDataSetWriter();
                         writer.write(iDataSet, os);
                     }
+                    registrationFileEvidence(xlsxPath);
                     break;
                 default:
                     // ありえない
                     break;
             }
-
         } catch (SQLException | DatabaseUnitException e) {
             log.debug("Error Occurred...", e);
             throw new SystemException(e, RdbMessages.RDB_ERR_0011);

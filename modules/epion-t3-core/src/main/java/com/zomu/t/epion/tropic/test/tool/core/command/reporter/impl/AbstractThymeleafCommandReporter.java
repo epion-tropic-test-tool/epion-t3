@@ -71,7 +71,12 @@ public abstract class AbstractThymeleafCommandReporter<
             variable.put("hasError", t != null);
 
             // カスタム実装での変数設定
-            setVariables(variable);
+            setVariables(variable,
+                    command,
+                    executeContext,
+                    executeScenario,
+                    executeFlow,
+                    executeCommand);
 
             // DateTimeUtilsを利用できるように設定
             variable.put("dateTimeUtils", DateTimeUtils.getInstance());
@@ -90,14 +95,22 @@ public abstract class AbstractThymeleafCommandReporter<
                     templateEngine.process(templatePath(),
                             thymeleafContext).getBytes(ThymeleafReportUtils.TEMPLATE_ENCODING));
 
+            // カスタムレポート出力相対パス
+            executeCommand.setCustomReportRelativePath("." +
+                    commandHtmlReportPath.toString()
+                            .replace(executeScenario.getResultPath().toString(), "")
+                            .replaceAll("\\\\", "/"));
+
+            System.out.println(executeCommand.getCustomReportRelativePath());
+
         } catch (IOException e) {
 
             log.debug("Error Occurred...", e);
-
             throw new SystemException(CoreMessages.CORE_ERR_1003);
+
         } catch (Exception e) {
             // TODO 暫定・・・
-            log.error("ee",e);
+            log.error("ee", e);
         }
     }
 

@@ -7,6 +7,7 @@ import com.zomu.t.epion.tropic.test.tool.core.context.execute.ExecuteCommand;
 import com.zomu.t.epion.tropic.test.tool.core.context.execute.ExecuteContext;
 import com.zomu.t.epion.tropic.test.tool.core.context.execute.ExecuteFlow;
 import com.zomu.t.epion.tropic.test.tool.core.context.execute.ExecuteScenario;
+import net.bytebuddy.implementation.bytecode.Throw;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
@@ -98,7 +99,7 @@ public class CommandRunnerInvocationHandler<COMMAND_RUNNER extends CommandRunner
                     executeCommand
             ));
 
-        } catch (Exception e) {
+        } catch (Throwable e) {
 
             // コマンド後処理リスナーを実行
             CommandListenerFactory.getInstance().getErrorListener().forEach(x -> x.afterCommand(
@@ -109,6 +110,8 @@ public class CommandRunnerInvocationHandler<COMMAND_RUNNER extends CommandRunner
                     executeCommand,
                     e
             ));
+
+            throw e;
 
         }
 

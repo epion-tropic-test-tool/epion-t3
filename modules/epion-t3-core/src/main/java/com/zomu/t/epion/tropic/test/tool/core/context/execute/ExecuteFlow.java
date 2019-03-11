@@ -53,7 +53,7 @@ public class ExecuteFlow extends ExecuteElement {
 
 
     public boolean hasCommandError() {
-        return commands.stream().anyMatch(x -> x.getCommandResult().getStatus() == CommandStatus.FAIL);
+        return commands.stream().anyMatch(x -> x.getCommandResult().getStatus() == CommandStatus.ERROR);
     }
 
 }

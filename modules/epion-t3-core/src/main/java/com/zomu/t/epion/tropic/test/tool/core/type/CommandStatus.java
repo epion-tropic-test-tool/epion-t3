@@ -18,7 +18,7 @@ public enum CommandStatus {
 
     SUCCESS("table-success"),
 
-    FAIL("table-danger");
+    ERROR("table-danger");
 
     private String cssClass;
 
