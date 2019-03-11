@@ -1,11 +1,11 @@
 t3: '1.0'
 info:
-  id: parts-tododb-dataset
+  id: parts-rdb-sample
   version: 1.0.0
   summary: TODODBへのDataSetアクセスを行う
   description: このシナリオファイルは、サンプルとしてTODODBへのDataSetアクセスを行うサンプルです。
 commands:
-  - id: tododb-export-001
+  - id: rdb-sample-001
     summary: TODO DBのTODOテーブルのエクスポート.
     description: TODO DBのTODOテーブルのエクスポート.
     command: "ExportRdbData"
@@ -13,3 +13,9 @@ commands:
     targets:
      - table: "todo"
        query: "select * from todo"
+  - id: rdb-sample-002
+    summary: "Script実行サンプル."
+    description: "Script実行サンプル."
+    command: "ExecuteRdbScript"
+    rdbConnectConfigRef: "parts-tododb-dataset@tododb-connection-config"
+    value: "data/sample-script.sql"

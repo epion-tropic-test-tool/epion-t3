@@ -122,7 +122,8 @@ public abstract class AbstractCommandRunner<COMMAND extends Command>
             // コマンド結果を設定
             executeCommand.setCommandResult(result);
 
-            if (!context.getOption().getNoreport()) {
+            // 正常終了時にのみカスタムレポートを許可する
+            if (error == null && !context.getOption().getNoreport()) {
 
                 Class reporterClazz = executeCommand.getCommandInfo().getReporter();
 
@@ -235,6 +236,38 @@ public abstract class AbstractCommandRunner<COMMAND extends Command>
             }
         }
         return null;
+    }
+
+    /**
+     *
+     * @param target
+     * @param value
+     */
+    protected void setVariable(final String target, final Object value) {
+        Matcher m = EXTRACT_PATTERN.matcher(target);
+        if (m.find()) {
+            ReferenceVariableType referenceVariableType = ReferenceVariableType.valueOfByName(m.group(1));
+            if (referenceVariableType != null) {
+                switch (referenceVariableType) {
+                    case FIX:
+                        // Ignore
+                        break;
+                    case GLOBAL:
+                        getGlobalScopeVariables().put(m.group(2), value);
+                        break;
+                    case SCENARIO:
+                        getScenarioScopeVariables().put(m.group(2), value);
+                        break;
+                    case FLOW:
+                        getFlowScopeVariables().put(m.group(2), value);
+                        break;
+                    default:
+                        throw new SystemException(CoreMessages.CORE_ERR_0005, m.group(1));
+                }
+            } else {
+                throw new SystemException(CoreMessages.CORE_ERR_0005, m.group(1));
+            }
+        }
     }
 
     /**
@@ -364,6 +397,7 @@ public abstract class AbstractCommandRunner<COMMAND extends Command>
     }
 
     /**
+     * 【移譲メソッド】
      * エビデンス名を取得する.
      *
      * @return エビデンス基底名
@@ -411,6 +445,7 @@ public abstract class AbstractCommandRunner<COMMAND extends Command>
     }
 
     /**
+     * 【移譲メソッド】
      * バインド.
      *
      * @param target
@@ -427,6 +462,7 @@ public abstract class AbstractCommandRunner<COMMAND extends Command>
     }
 
     /**
+     * 【移譲メソッド】
      * バインド.
      *
      * @param target

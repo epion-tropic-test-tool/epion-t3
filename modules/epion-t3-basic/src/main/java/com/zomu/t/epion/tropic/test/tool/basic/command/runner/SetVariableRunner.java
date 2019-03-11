@@ -1,6 +1,7 @@
 package com.zomu.t.epion.tropic.test.tool.basic.command.runner;
 
 import com.zomu.t.epion.tropic.test.tool.basic.command.model.SetVariable;
+import com.zomu.t.epion.tropic.test.tool.basic.messages.BasicMessages;
 import com.zomu.t.epion.tropic.test.tool.core.command.model.CommandResult;
 import com.zomu.t.epion.tropic.test.tool.core.command.runner.CommandRunner;
 import com.zomu.t.epion.tropic.test.tool.core.command.runner.impl.AbstractCommandRunner;
@@ -25,7 +26,7 @@ public class SetVariableRunner extends AbstractCommandRunner<SetVariable> {
             final Logger logger) throws Exception {
 
         if (StringUtils.isEmpty(command.getTarget())) {
-            // TODO:Error
+            throw new SystemException(BasicMessages.BASIC_ERR_9005);
         }
 
         Matcher m = EXTRACT_PATTERN.matcher(command.getTarget());
