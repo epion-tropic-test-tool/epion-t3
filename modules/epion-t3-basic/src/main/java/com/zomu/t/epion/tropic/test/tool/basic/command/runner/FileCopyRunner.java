@@ -27,18 +27,10 @@ public class FileCopyRunner extends AbstractCommandRunner<FileCopy> {
     @Override
     public CommandResult execute(final FileCopy process,
                                  final Logger logger) throws Exception {
-
-        logger.info("start FileCopy");
-
         Path from = Paths.get(process.getFrom());
         try (OutputStream os = new FileOutputStream(process.getTo())) {
             Files.copy(from, os);
-        } finally {
-            logger.info("end FileCopy");
         }
-
-//        throw new RuntimeException("擬似エラー");
-
         return CommandResult.getSuccess();
     }
 
