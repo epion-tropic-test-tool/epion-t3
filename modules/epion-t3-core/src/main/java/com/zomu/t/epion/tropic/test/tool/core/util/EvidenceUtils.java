@@ -14,7 +14,9 @@ import org.apache.commons.lang3.SerializationUtils;
 
 import java.io.Serializable;
 import java.nio.file.Path;
+import java.util.Base64;
 import java.util.LinkedList;
+import java.util.UUID;
 
 public final class EvidenceUtils {
 
@@ -86,10 +88,10 @@ public final class EvidenceUtils {
         // Full Query Process Name として現在実行プロセス名を設定
         evidenceInfo.setFqpn(executeFlow.getFlowVariables().get(
                 FlowScopeVariables.CURRENT_COMMAND.getName()).toString());
-        evidenceInfo.setName(getEvidenceBaseName(executeFlow));
+        evidenceInfo.setName(getEvidenceBaseName(executeFlow, FlowScopeVariables.CURRENT_COMMAND.getName()).toString());
         evidenceInfo.setExecuteFlowId(executeFlow.getExecuteId().toString());
         evidenceInfo.setObject(evidence);
-        String evidenceId = getEvidenceBaseName(executeFlow);
+        String evidenceId = getEvidenceBaseName(executeFlow, FlowScopeVariables.CURRENT_COMMAND.getName()).toString();
         executeScenario.getEvidences().put(evidenceId, evidenceInfo);
         if (executeScenario.getFlowId2EvidenceId().containsKey(executeFlow.getFlow().getId())) {
             executeScenario.getFlowId2EvidenceId().get(executeFlow.getFlow().getId()).add(evidenceId);
@@ -103,8 +105,8 @@ public final class EvidenceUtils {
      * @param executeFlow
      * @return
      */
-    public String getEvidenceBaseName(ExecuteFlow executeFlow) {
-        return executeFlow.getFlowVariables().get(FlowScopeVariables.CURRENT_COMMAND.getName()).toString() + "_evidence";
+    public String getEvidenceBaseName(ExecuteFlow executeFlow, String baseName) {
+        return executeFlow.getFlowVariables().get(FlowScopeVariables.CURRENT_COMMAND_EXECUTE_ID.getName()) + "_" + baseName;
     }
 
     /**
@@ -144,15 +146,15 @@ public final class EvidenceUtils {
         FileEvidenceInfo evidenceInfo = new FileEvidenceInfo();
         evidenceInfo.setFqsn(executeScenario.getScenarioVariables().get(ScenarioScopeVariables.CURRENT_SCENARIO.getName()).toString());
         evidenceInfo.setFqpn(executeFlow.getFlowVariables().get(FlowScopeVariables.CURRENT_COMMAND.getName()).toString());
-        evidenceInfo.setName(getEvidenceBaseName(executeFlow));
+        evidenceInfo.setName(evidence.getFileName().toString());
         evidenceInfo.setExecuteFlowId(executeFlow.getExecuteId().toString());
         evidenceInfo.setPath(evidence);
         evidenceInfo.setRelativePath("." +
                 evidence.toString()
                         .replace(executeScenario.getResultPath().toString(), "")
                         .replaceAll("\\\\", "/"));
-        String evidenceId = getEvidenceBaseName(executeFlow);
-        executeScenario.getEvidences().put(getEvidenceBaseName(executeFlow), evidenceInfo);
+        String evidenceId = getEvidenceBaseName(executeFlow, evidence.getFileName().toString());
+        executeScenario.getEvidences().put(getEvidenceBaseName(executeFlow, evidence.getFileName().toString()), evidenceInfo);
         if (executeScenario.getFlowId2EvidenceId().containsKey(executeFlow.getFlow().getId())) {
             executeScenario.getFlowId2EvidenceId().get(executeFlow.getFlow().getId()).add(evidenceId);
         } else {

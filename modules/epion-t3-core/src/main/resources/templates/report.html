@@ -39,6 +39,12 @@
                     <th class="bg-dark" style="color:white">Status</th>
                     <td class="table-success" th:text="${executeContext.status}" th:class="${executeContext.status.getCssClass()}">SUCCESS</td>
                 </tr>
+                <!--
+                <tr>
+                    <th class="bg-dark" style="color:white">Time</th>
+                    <td th:text="${#strings.concat(dateTimeUtils.formatTimeNormal(executeContext.start), ' ~ ', dateTimeUtils.formatTimeNormal(executeContext.end), ' (', dateTimeUtils.getMillis(executeContext.start, executeContext.end), ' ms)')}"></td>
+                </tr>
+                -->
                 <tr>
                     <th class="bg-dark" style="color:white">Start</th>
                     <td th:text="${dateTimeUtils.formatNormal(executeContext.start)}">2018/09/01 12:12:12</td>
@@ -76,39 +82,59 @@
                 <tr>
                     <th scope="col">Scenario&nbsp;ID</th>
                     <th scope="col">Status</th>
+                    <th scope="col">Summary</th>
+                    <th scope="col">Time</th>
+                    <!--
                     <th scope="col">Start</th>
                     <th scope="col">End</th>
                     <th scope="col">Duration&nbsp;(ms)</th>
+                    -->
                 </tr>
                 </thead>
                 <tbody>
                 <tr th:each="scenario,stat : ${executeContext.scenarios}">
                     <th scope="row"><a th:href="${#strings.concat('./',scenario.resultPath.getFileName(),'/','scenario_report.html')}" th:text="${scenario.info.id}">scenario-id</a></th>
                     <td class="table-success" th:text="${scenario.status}" th:class="${scenario.status.getCssClass()}">SUCCESS</td>
+                    <td th:text="${scenario.info.summary}">Summary</td>
+                    <td th:text="${#strings.concat(dateTimeUtils.formatTimeNormal(scenario.start), ' ~ ', dateTimeUtils.formatTimeNormal(scenario.end), ' (', dateTimeUtils.getMillis(scenario.start, scenario.end), ' ms)')}"></td>
+                    <!--
                     <td th:text="${dateTimeUtils.formatNormal(scenario.start)}">2018/09/01 12:12:12</td>
                     <td th:text="${dateTimeUtils.formatNormal(scenario.end)}">2018/09/01 12:12:12</td>
                     <td th:text="${dateTimeUtils.getMillis(scenario.start,scenario.end)}">2018/09/01 12:12:12</td>
+                    -->
                 </tr>
                 <tr th:remove="all">
                     <th scope="row">fef4d139-a550-490a-8365-9fd26ce3f871</th>
                     <td class="table-danger">ERROR</td>
+                    <td>Summary</td>
+                    <td>21:27:42.611 ~ 21:27:48.800 (6189 ms)</td>
+                    <!--
                     <td>2018/09/01 12:12:12</td>
                     <td>2018/09/01 12:12:12</td>
                     <td>2018/09/01 12:12:12</td>
+                    -->
                 </tr>
                 <tr th:remove="all">
                     <th scope="row">fef4d139-a550-490a-8365-9fd26ce3f871</th>
                     <td class="table-warning">WARN</td>
+                    <td>Summary</td>
+                    <td>21:27:42.611 ~ 21:27:48.800 (6189 ms)</td>
+                    <!--
                     <td>2018/09/01 12:12:12</td>
                     <td>2018/09/01 12:12:12</td>
                     <td>2018/09/01 12:12:12</td>
+                    -->
                 </tr>
                 <tr th:remove="all">
                     <th scope="row"><a href="">fef4d139-a550-490a-8365-9fd26ce3f871</a></th>
                     <td class="table-success">SUCCESS</td>
+                    <td>Summary</td>
+                    <td>21:27:42.611 ~ 21:27:48.800 (6189 ms)</td>
+                    <!--
                     <td>2018/09/01 12:12:12</td>
                     <td>2018/09/01 12:12:12</td>
                     <td>2018/09/01 12:12:12</td>
+                    -->
                 </tr>
                 </tbody>
             </table>

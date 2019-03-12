@@ -1,4 +1,4 @@
-package com.zomu.t.epion.tropic.test.tool.ssh.bean;
+package com.zomu.t.epion.tropic.test.tool.ssh.configuration.model;
 
 import com.zomu.t.epion.tropic.test.tool.core.annotation.CustomConfigurationDefinition;
 import com.zomu.t.epion.tropic.test.tool.core.model.scenario.Configuration;
@@ -15,8 +15,8 @@ import javax.validation.constraints.NotNull;
  */
 @Getter
 @Setter
-@CustomConfigurationDefinition(id = "sshConnectInfo")
-public class SshConnectInfo extends Configuration {
+@CustomConfigurationDefinition(id = "SshConnectionConfiguration")
+public class SshConnectionConfiguration extends Configuration {
 
     @NotEmpty
     private String host;

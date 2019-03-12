@@ -341,10 +341,10 @@ public abstract class AbstractCommandRunner<COMMAND extends Command>
      * @return エビデンスの格納パス
      */
     protected Path getEvidencePath(
-            String fileExtension) {
+            String baseName) {
         return Paths.get(
                 getEvidenceDirectoryPath().toString(),
-                getEvidenceBaseName() + "." + fileExtension);
+                getEvidenceBaseName(baseName));
     }
 
     /**
@@ -402,8 +402,8 @@ public abstract class AbstractCommandRunner<COMMAND extends Command>
      *
      * @return エビデンス基底名
      */
-    protected String getEvidenceBaseName() {
-        return EvidenceUtils.getInstance().getEvidenceBaseName(executeFlow);
+    protected String getEvidenceBaseName(String baseName) {
+        return EvidenceUtils.getInstance().getEvidenceBaseName(executeFlow, baseName);
     }
 
     /**
