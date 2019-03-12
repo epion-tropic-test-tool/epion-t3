@@ -81,7 +81,7 @@ public class ExportRdbDataRunner extends AbstractCommandRunner<ExportRdbData> {
                     //break;
                     throw new SystemException(RdbMessages.RDB_ERR_0008);
                 case XML:
-                    Path flatXmlPath = getEvidencePath("xml");
+                    Path flatXmlPath = getEvidencePath("export.xml");
                     try (OutputStream os = new FileOutputStream(flatXmlPath.toFile())) {
                         FlatXmlWriter writer = new FlatXmlWriter(os);
                         writer.write(iDataSet);
@@ -89,7 +89,7 @@ public class ExportRdbDataRunner extends AbstractCommandRunner<ExportRdbData> {
                     registrationFileEvidence(flatXmlPath);
                     break;
                 case EXCEL:
-                    Path xlsxPath = getEvidencePath("xlsx");
+                    Path xlsxPath = getEvidencePath("export.xlsx");
                     try (OutputStream os = new FileOutputStream(xlsxPath.toFile())) {
                         XlsxDataSetWriter writer = new XlsxDataSetWriter();
                         writer.write(iDataSet, os);

@@ -4,6 +4,11 @@ import com.zomu.t.epion.tropic.test.tool.core.message.Messages;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+/**
+ * RDB関連のメッセージ定義.
+ *
+ * @author takashno
+ */
 @Getter
 @AllArgsConstructor
 public enum RdbMessages implements Messages {
@@ -20,6 +25,8 @@ public enum RdbMessages implements Messages {
     RDB_ERR_0010("com.zomu.t.epion.t3.rdb.err.0010"),
     RDB_ERR_0011("com.zomu.t.epion.t3.rdb.err.0011"),;
 
-
+    /**
+     * メッセージコード.
+     */
     private String messageCode;
 }
