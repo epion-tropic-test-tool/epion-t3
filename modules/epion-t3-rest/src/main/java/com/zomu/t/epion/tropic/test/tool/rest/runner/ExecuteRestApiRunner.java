@@ -15,6 +15,11 @@ import org.slf4j.Logger;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * REST-API実行処理.
+ *
+ * @author takashno
+ */
 public class ExecuteRestApiRunner extends AbstractCommandRunner<ExecuteRestApi> {
 
     /**
@@ -24,7 +29,6 @@ public class ExecuteRestApiRunner extends AbstractCommandRunner<ExecuteRestApi> 
     public CommandResult execute(
             final ExecuteRestApi command,
             Logger logger) throws Exception {
-
 
         // メソッド解決
         HttpMethodType httpMethodType =
@@ -95,20 +99,26 @@ public class ExecuteRestApiRunner extends AbstractCommandRunner<ExecuteRestApi> 
         result.setStatusCode(response.code());
         // レスポンスヘッダ
         result.setHeaders(response.headers().toMultimap());
+        // レスポンスボディ
+        if (response.body() != null) {
+            result.setBody(response.body().string());
+        }
+
         // 受信時間
         result.setReceivedResponseAtMillis(response.receivedResponseAtMillis());
         result.setSentRequestAtMillis(response.sentRequestAtMillis());
 
+        // ログ出力
         logger.info("StatusCode:{}", response.code());
         logger.info("Headers:");
         for (Map.Entry<String, List<String>> entry : response.headers().toMultimap().entrySet()) {
             logger.info(entry.getKey().toString() + ":" + entry.getValue().toString());
         }
-        logger.info("Body:{}", response.body().string());
+        logger.info("Body:{}", result.getBody());
+
 
         // エビデンス登録
         registrationObjectEvidence(result);
-
 
 
         return CommandResult.getSuccess();
