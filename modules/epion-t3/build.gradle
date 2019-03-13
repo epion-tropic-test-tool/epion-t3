@@ -10,6 +10,9 @@ dependencies {
     compile project(':modules:epion-t3-rest')
     compile project(':modules:epion-t3-rdb')
 
+    // Custom Commands
+    // ...Add Here
+
 }
 
 jar {

@@ -24,11 +24,4 @@ public class ScpGet extends Command {
     @NotEmpty
     private String remoteFile;
 
-    /**
-     * ローカルファイル.
-     */
-    @NotEmpty
-    private String localFile;
-
-
 }
