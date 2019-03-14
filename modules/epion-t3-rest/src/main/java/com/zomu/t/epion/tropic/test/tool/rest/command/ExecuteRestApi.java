@@ -12,6 +12,7 @@ import lombok.Setter;
 import org.apache.bval.constraints.NotEmpty;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
@@ -28,5 +29,17 @@ public class ExecuteRestApi extends Command {
     @NotNull
     @Valid
     private Request request;
+
+    /**
+     * 接続タイムアウト.
+     * Valiableのバインドを利用したい場合があるんではなかろうか？と思い文字列としている.
+     */
+    private String connectTimeout = "3000";
+
+    /**
+     * 読み込みタイムアウト.
+     * Valiableのバインドを利用したい場合があるんではなかろうか？と思い文字列としている.
+     */
+    private String readTimeout = "3000";
 
 }

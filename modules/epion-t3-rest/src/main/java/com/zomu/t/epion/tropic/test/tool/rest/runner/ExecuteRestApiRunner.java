@@ -4,16 +4,20 @@ import com.zomu.t.epion.tropic.test.tool.core.command.model.CommandResult;
 import com.zomu.t.epion.tropic.test.tool.core.command.runner.impl.AbstractCommandRunner;
 import com.zomu.t.epion.tropic.test.tool.core.context.EvidenceInfo;
 import com.zomu.t.epion.tropic.test.tool.core.command.runner.CommandRunner;
+import com.zomu.t.epion.tropic.test.tool.core.exception.SystemException;
 import com.zomu.t.epion.tropic.test.tool.core.model.scenario.Command;
 import com.zomu.t.epion.tropic.test.tool.rest.bean.Header;
 import com.zomu.t.epion.tropic.test.tool.rest.command.ExecuteRestApi;
+import com.zomu.t.epion.tropic.test.tool.rest.message.RestMessages;
 import com.zomu.t.epion.tropic.test.tool.rest.type.HttpMethodType;
 import okhttp3.*;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.http.protocol.HTTP;
 import org.slf4j.Logger;
 
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 /**
  * REST-API実行処理.
@@ -30,12 +34,29 @@ public class ExecuteRestApiRunner extends AbstractCommandRunner<ExecuteRestApi> 
             final ExecuteRestApi command,
             Logger logger) throws Exception {
 
+        // タイムアウト系の値チェック
+        if (StringUtils.isEmpty(command.getConnectTimeout())) {
+            throw new SystemException(RestMessages.REST_ERR_9012);
+        }
+        if (!StringUtils.isNumeric(command.getConnectTimeout())) {
+            throw new SystemException(RestMessages.REST_ERR_9013, command.getConnectTimeout());
+        }
+        if (StringUtils.isEmpty(command.getReadTimeout())) {
+            throw new SystemException(RestMessages.REST_ERR_9013);
+        }
+        if (!StringUtils.isNumeric(command.getReadTimeout())) {
+            throw new SystemException(RestMessages.REST_ERR_9014, command.getReadTimeout());
+        }
+
         // メソッド解決
         HttpMethodType httpMethodType =
                 HttpMethodType.valueOfByValue(command.getRequest().getMethod().toLowerCase());
 
         // クライアント作成
-        OkHttpClient client = new OkHttpClient();
+        OkHttpClient client = new OkHttpClient.Builder()
+                .connectTimeout(Long.valueOf(command.getConnectTimeout()), TimeUnit.MILLISECONDS)
+                .readTimeout(Long.valueOf(command.getReadTimeout()), TimeUnit.MILLISECONDS)
+                .build();
 
         // ヘッダ作成 & MIMEの解決
         Headers headers = null;
