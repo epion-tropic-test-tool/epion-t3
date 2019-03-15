@@ -18,14 +18,17 @@ import com.zomu.t.epion.tropic.test.tool.core.type.CommandStatus;
 import com.zomu.t.epion.tropic.test.tool.core.type.ReferenceVariableType;
 import com.zomu.t.epion.tropic.test.tool.core.type.ScenarioScopeVariables;
 import com.zomu.t.epion.tropic.test.tool.core.util.BindUtils;
+import com.zomu.t.epion.tropic.test.tool.core.util.DateTimeUtils;
 import com.zomu.t.epion.tropic.test.tool.core.util.EvidenceUtils;
 import com.zomu.t.epion.tropic.test.tool.core.util.IDUtils;
 import org.apache.commons.lang3.SerializationUtils;
 import org.slf4j.Logger;
+import org.thymeleaf.util.DateUtils;
 
 import java.io.Serializable;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Date;
 import java.util.Map;
 import java.util.regex.Matcher;
 
@@ -239,7 +242,6 @@ public abstract class AbstractCommandRunner<COMMAND extends Command>
     }
 
     /**
-     *
      * @param target
      * @param value
      */
@@ -478,5 +480,12 @@ public abstract class AbstractCommandRunner<COMMAND extends Command>
                 executeFlow.getFlowVariables());
     }
 
+    protected Date referFlowStartDate(String flowId) {
+        return DateTimeUtils.getInstance().referFlowStartDate(executeScenario, flowId);
+    }
+
+    protected Date referFlowEndDate(String flowId) {
+        return DateTimeUtils.getInstance().referFlowEndDate(executeScenario, flowId);
+    }
 
 }

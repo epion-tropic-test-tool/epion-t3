@@ -3,8 +3,8 @@ package com.zomu.t.epion.tropic.test.tool.core.type;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-@AllArgsConstructor
 @Getter
+@AllArgsConstructor
 public enum ScenarioScopeVariables {
 
     CURRENT_SCENARIO("currentScenario"),

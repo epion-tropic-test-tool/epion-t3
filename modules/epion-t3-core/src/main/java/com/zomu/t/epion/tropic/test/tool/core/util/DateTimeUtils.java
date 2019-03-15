@@ -1,8 +1,14 @@
 package com.zomu.t.epion.tropic.test.tool.core.util;
 
+import com.zomu.t.epion.tropic.test.tool.core.context.execute.ExecuteScenario;
+import com.zomu.t.epion.tropic.test.tool.core.exception.SystemException;
+import com.zomu.t.epion.tropic.test.tool.core.message.impl.CoreMessages;
+
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.time.temporal.Temporal;
+import java.util.Date;
+import java.util.List;
 
 /**
  * 日付時間関連のユーティリティ.
@@ -53,6 +59,36 @@ public final class DateTimeUtils {
             return null;
         }
         return HHMMSS_NORMAL.format(target);
+    }
+
+    public Date referFlowStartDate(ExecuteScenario executeScenario, String flowId) {
+        String startTimeKey = flowId + ExecuteScenario.FLOW_START_VARIABLE_SUFFIX;
+        if (executeScenario.getScenarioVariables().containsKey(startTimeKey)) {
+            Object startDateListObj = executeScenario.getScenarioVariables().get(startTimeKey);
+            if (startDateListObj != null && List.class.isAssignableFrom(startDateListObj.getClass())) {
+                List<Date> startDateList = List.class.cast(startDateListObj);
+                return startDateList.get(startDateList.size() - 1);
+            } else {
+                throw new SystemException(CoreMessages.CORE_ERR_0014, flowId);
+            }
+        } else {
+            throw new SystemException(CoreMessages.CORE_ERR_0014, flowId);
+        }
+    }
+
+    public Date referFlowEndDate(ExecuteScenario executeScenario, String flowId) {
+        String startTimeKey = flowId + ExecuteScenario.FLOW_START_VARIABLE_SUFFIX;
+        if (executeScenario.getScenarioVariables().containsKey(startTimeKey)) {
+            Object startDateListObj = executeScenario.getScenarioVariables().get(startTimeKey);
+            if (startDateListObj != null && List.class.isAssignableFrom(startDateListObj.getClass())) {
+                List<Date> startDateList = List.class.cast(startDateListObj);
+                return startDateList.get(startDateList.size() - 1);
+            } else {
+                throw new SystemException(CoreMessages.CORE_ERR_0015, flowId);
+            }
+        } else {
+            throw new SystemException(CoreMessages.CORE_ERR_0015, flowId);
+        }
     }
 
 
