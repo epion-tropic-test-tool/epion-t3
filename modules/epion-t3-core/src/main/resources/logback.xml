@@ -171,11 +171,11 @@
         <appender-ref ref="STDOUT"/>
     </logger>
 
-    <logger name="com.zomu.t.t3" level="DEBUG" additivity="false">
+    <logger name="com.zomu.t.t3" level="${loggerLevel:-INFO}" additivity="false">
         <appender-ref ref="STDOUT"/>
     </logger>
 
-    <root level="INFO">
+    <root level="${loggerLevel:-INFO}">
         <appender-ref ref="STDOUT"/>
     </root>
 
