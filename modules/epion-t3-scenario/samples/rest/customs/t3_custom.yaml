@@ -8,3 +8,5 @@ customs:
     basic: "com.zomu.t.epion.tropic.test.tool.basic"
     rest: "com.zomu.t.epion.tropic.test.tool.rest"
     rdb: "com.zomu.t.epion.tropic.test.tool.rdb"
+    log: "com.zomu.t.epion.tropic.test.tool.log"
+    ssh: "com.zomu.t.epion.tropic.test.tool.ssh"

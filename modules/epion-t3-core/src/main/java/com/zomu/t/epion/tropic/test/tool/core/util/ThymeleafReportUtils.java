@@ -42,7 +42,7 @@ public final class ThymeleafReportUtils {
     private ThymeleafReportUtils() {
         // Do Nothing...
     }
-    
+
     /**
      * シングルトンインスタンスを取得.
      *
@@ -77,6 +77,13 @@ public final class ThymeleafReportUtils {
 
         // DateTimeUtilsを利用できるように設定
         variable.put("dateTimeUtils", DateTimeUtils.getInstance());
+        // YamlUtilsを利用できるように設定
+        variable.put("yamlUtils", YamlUtils.getInstance());
+        // JsonUtilsを利用できるように設定
+        variable.put("jsonUtils", JsonUtils.getInstance());
+        // StringUtilsを利用できるように設定
+        variable.put("stringUtils", StringUtils.getInstance());
 
     }
+
 }

@@ -9,6 +9,8 @@ dependencies {
     //compile project(':modules:epion-t3-random')
     compile project(':modules:epion-t3-rest')
     compile project(':modules:epion-t3-rdb')
+    compile project(':modules:epion-t3-log')
+    compile project(':modules:epion-t3-ssh')
 
     // Custom Commands
     // ...Add Here

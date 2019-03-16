@@ -39,7 +39,7 @@
             <table class="table table-sm table-bordered">
                 <tbody>
                 <tr>
-                    <th class="bg-dark" style="color:white">Method</th>
+                    <th class="bg-dark" style="width:300px;color:white">Method</th>
                     <td th:text="${request.method}">GET</td>
                 </tr>
                 <tr>
@@ -49,7 +49,7 @@
                 <tr>
                     <th class="bg-dark" style="color:white">Body</th>
                     <td>
-                        <code th:text="${request.body}">
+                        <code th:utext="${stringUtils.prettyHtml(jsonUtils.rePretty(request.body))}">
                             {
                             "key" : "value"
                             }
@@ -70,7 +70,7 @@
             <table class="table table-sm table-bordered">
                 <tbody>
                 <tr>
-                    <th class="bg-dark" style="color:white">Status&nbsp;Code</th>
+                    <th class="bg-dark" style="width:300px;color:white">Status&nbsp;Code</th>
                     <td th:text="${response.statusCode}">200</td>
                 </tr>
                 <tr>
@@ -88,7 +88,7 @@
                 <tr>
                     <th class="bg-dark" style="color:white">Body</th>
                     <td>
-                        <code th:text="${response.body}">
+                        <code th:utext="${stringUtils.prettyHtml(jsonUtils.rePretty(response.body))}">
                             {
                             "key" : "value"
                             }

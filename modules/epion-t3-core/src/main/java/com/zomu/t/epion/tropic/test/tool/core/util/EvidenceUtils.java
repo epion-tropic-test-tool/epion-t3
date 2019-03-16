@@ -123,7 +123,7 @@ public final class EvidenceUtils {
             String evidenceId = executeScenario.getFlowId2EvidenceId().get(flowId).getLast();
             EvidenceInfo evidenceInfo = executeScenario.getEvidences().get(evidenceId);
             if (evidenceInfo != null
-                    && ObjectEvidenceInfo.class.isAssignableFrom(evidenceInfo.getClass())) {
+                    && FileEvidenceInfo.class.isAssignableFrom(evidenceInfo.getClass())) {
                 FileEvidenceInfo objectEvidenceInfo = FileEvidenceInfo.class.cast(evidenceInfo);
                 return objectEvidenceInfo.getPath();
             } else {

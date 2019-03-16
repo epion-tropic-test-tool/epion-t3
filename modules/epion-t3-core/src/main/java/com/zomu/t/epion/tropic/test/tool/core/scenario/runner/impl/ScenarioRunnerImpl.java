@@ -130,15 +130,20 @@ public class ScenarioRunnerImpl implements ScenarioRunner<Context, ExecuteContex
                         LoggerFactory.getLogger("FlowLog"));
 
                 ExecuteFlow executeFlow = executeScenario.getFlows().get(executeScenario.getFlows().size() - 1);
+
                 if (FlowStatus.ERROR == executeFlow.getStatus()) {
                     log.error("Error Occurred...");
-                    throw new SystemException("Error Occurred...");
+                    // シナリオ失敗
+                    executeScenario.setStatus(ScenarioExecuteStatus.ERROR);
+                    break;
                 }
 
             }
 
             // プロセス成功
-            executeScenario.setStatus(ScenarioExecuteStatus.SUCCESS);
+            if (executeScenario.getStatus() != ScenarioExecuteStatus.ERROR) {
+                executeScenario.setStatus(ScenarioExecuteStatus.SUCCESS);
+            }
 
         } catch (Throwable t) {
 

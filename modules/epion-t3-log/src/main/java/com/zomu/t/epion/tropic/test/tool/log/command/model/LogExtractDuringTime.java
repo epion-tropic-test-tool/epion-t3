@@ -16,6 +16,9 @@ import org.apache.bval.constraints.NotEmpty;
 public class LogExtractDuringTime extends Command {
 
     @NotEmpty
+    private String targetFlow;
+
+    @NotEmpty
     private String extractPattern;
 
     private int group = 1;
@@ -32,6 +35,9 @@ public class LogExtractDuringTime extends Command {
      */
     private String roundBufferTimeUnit = "seconds";
 
+    /**
+     * ファイルエンコーディング.
+     */
     private String encoding = "UTF-8";
 
 }

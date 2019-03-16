@@ -13,6 +13,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -56,10 +58,10 @@ public class LogExtractDuringTimeRunner extends AbstractCommandRunner<LogExtract
         List<String> extractedLines = new ArrayList<>();
 
         // Flow開始日時
-        Date startDate = referFlowStartDate(command.getTarget());
+        LocalDateTime startDate = referFlowStartDate(command.getTargetFlow());
 
         // Flow終了日時
-        Date endDate = referFlowEndDate(command.getTarget());
+        LocalDateTime endDate = referFlowEndDate(command.getTargetFlow());
 
         boolean logFindAnyFlg = false;
 
@@ -69,12 +71,15 @@ public class LogExtractDuringTimeRunner extends AbstractCommandRunner<LogExtract
 
             if (m.find()) {
 
+                logger.debug("Find extract log pattern.");
+
                 // 日付を抽出
                 String extractDateString = m.group(command.getGroup());
 
-                try {
+//                try {
 
-                    Date extractDate = sdf.parse(extractDateString);
+                    //Date extractDate = sdf.parse(extractDateString);
+                    LocalDateTime extractDate = LocalDateTime.parse(extractDateString, DateTimeFormatter.ofPattern(command.getDatePattern()));
 
                     if (startDate.compareTo(extractDate) == 0 || endDate.compareTo(extractDate) == 0) {
                         // 開始もしくは終了と等しい
@@ -88,11 +93,14 @@ public class LogExtractDuringTimeRunner extends AbstractCommandRunner<LogExtract
                         logFindAnyFlg = false;
                     }
 
-                } catch (ParseException e) {
-                    throw new SystemException(LogMessages.LOG_ERR_9004, extractDateString, command.getDatePattern());
-                }
+//                } catch (ParseException e) {
+//                    throw new SystemException(LogMessages.LOG_ERR_9004, extractDateString, command.getDatePattern());
+//                }
 
             } else {
+
+                logger.debug("no match extract log pattern.");
+
                 if (logFindAnyFlg) {
                     // 一度ログ解析を始めた後、
                     // 日付パターンと合致しない場合は、スタックトレース等の複数行のログとみなし抽出対象に含める

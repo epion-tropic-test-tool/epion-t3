@@ -28,6 +28,7 @@ import org.thymeleaf.util.DateUtils;
 import java.io.Serializable;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -480,11 +481,11 @@ public abstract class AbstractCommandRunner<COMMAND extends Command>
                 executeFlow.getFlowVariables());
     }
 
-    protected Date referFlowStartDate(String flowId) {
+    protected LocalDateTime referFlowStartDate(String flowId) {
         return DateTimeUtils.getInstance().referFlowStartDate(executeScenario, flowId);
     }
 
-    protected Date referFlowEndDate(String flowId) {
+    protected LocalDateTime referFlowEndDate(String flowId) {
         return DateTimeUtils.getInstance().referFlowEndDate(executeScenario, flowId);
     }
 
