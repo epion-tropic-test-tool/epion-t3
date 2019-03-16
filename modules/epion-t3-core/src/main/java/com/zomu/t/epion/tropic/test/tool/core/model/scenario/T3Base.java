@@ -34,6 +34,12 @@ public class T3Base implements Serializable {
     private Information info;
 
     /**
+     * シナリオ.
+     */
+    @Valid
+    private List<Scenario> scenarios = new ArrayList<>();
+
+    /**
      * フロー.
      * コマンドおよび制御フローをどの順序で利用するかを定義するもの.
      */

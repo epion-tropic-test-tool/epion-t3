@@ -30,30 +30,45 @@ public class AssertExistsStringInTextRunner extends AbstractCommandRunner<Assert
             Logger logger) throws Exception {
 
         AssertCommandResult commandResult = new AssertCommandResult();
+        commandResult.setExpected("指定テキストファイルに、指定した文字列が含まれている");
 
         Path targetFile = referFileEvidence(command.getTarget());
 
-        Pattern p = Pattern.compile(command.getValue());
+
+        Pattern p = null;
+        if (command.getRegexp()) {
+            p = Pattern.compile(command.getValue());
+        }
+
         boolean existsFlg = false;
         List<String> lineList = null;
         try {
             lineList = FileUtils.readLines(targetFile.toFile(), command.getEncoding());
             for (String line : lineList) {
-                Matcher m = p.matcher(line);
-                if (m.find()) {
-                    existsFlg = true;
-                    break;
+                if (p != null) {
+                    Matcher m = p.matcher(line);
+                    if (m.find()) {
+                        existsFlg = true;
+                        break;
+                    }
+                } else {
+                    if (line.contains(command.getValue())) {
+                        existsFlg = true;
+                        break;
+                    }
                 }
             }
 
             if (!existsFlg) {
                 commandResult.setMessage(MessageManager.getInstance().getMessage(
                         BasicMessages.BASIC_ERR_9002, command.getValue()));
-                commandResult.setAssertStatus(AssertStatus.ERROR);
+                commandResult.setAssertStatus(AssertStatus.NG);
+                commandResult.setActual("指定テキストファイルに、指定した文字列が含まれていない");
             } else {
                 commandResult.setMessage(MessageManager.getInstance().getMessage(
                         BasicMessages.BASIC_INF_0001, command.getValue()));
-                commandResult.setAssertStatus(AssertStatus.SUCCESS);
+                commandResult.setAssertStatus(AssertStatus.OK);
+                commandResult.setActual("指定テキストファイルに、指定した文字列が含まれている");
             }
 
             // TODO：どう扱う？

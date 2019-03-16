@@ -37,10 +37,10 @@ public class AssertHttpStatusRunner extends AbstractCommandRunner<AssertHttpStat
         commandResult.setActual(response.getStatusCode());
 
         if (response.getStatusCode() == statusCode) {
-            commandResult.setAssertStatus(AssertStatus.SUCCESS);
+            commandResult.setAssertStatus(AssertStatus.OK);
             commandResult.setMessage(MessageManager.getInstance().getMessage(RestMessages.REST_INFO_1001));
         } else {
-            commandResult.setAssertStatus(AssertStatus.ERROR);
+            commandResult.setAssertStatus(AssertStatus.NG);
             commandResult.setMessage(MessageManager.getInstance().getMessage(RestMessages.REST_ERR_9003));
         }
 

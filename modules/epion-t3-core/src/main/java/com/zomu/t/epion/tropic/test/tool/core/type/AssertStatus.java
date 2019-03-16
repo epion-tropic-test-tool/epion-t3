@@ -11,9 +11,9 @@ public enum AssertStatus {
 
     RUNNING("table-info"),
 
-    SUCCESS("table-success"),
+    OK("table-success"),
 
-    ERROR("table-danger"),
+    NG("table-danger"),
 
     WARN("table-danger");
 

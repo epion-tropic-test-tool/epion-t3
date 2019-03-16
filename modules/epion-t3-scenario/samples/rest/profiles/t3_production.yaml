@@ -5,7 +5,7 @@ info:
   summary: 本番環境（Production）のプロファイル値定義
   description: 本番環境（Production）のプロファイル値定義
 profiles:
-  develop :
+  production :
     schema : http
-    host : localhost
+    host : test
     port : 8080

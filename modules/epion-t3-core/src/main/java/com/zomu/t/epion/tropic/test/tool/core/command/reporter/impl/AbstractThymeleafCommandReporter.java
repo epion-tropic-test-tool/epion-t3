@@ -101,8 +101,6 @@ public abstract class AbstractThymeleafCommandReporter<
                             .replace(executeScenario.getResultPath().toString(), "")
                             .replaceAll("\\\\", "/"));
 
-            System.out.println(executeCommand.getCustomReportRelativePath());
-
         } catch (IOException e) {
 
             log.debug("Error Occurred...", e);

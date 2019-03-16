@@ -5,7 +5,7 @@ info:
   summary: 開発環境（Integration）のプロファイル値定義
   description: 開発環境（Integration）のプロファイル値定義
 profiles:
-  develop :
+  integration :
     schema : http
-    host : localhost
+    host : test
     port : 8080

@@ -22,6 +22,8 @@ public enum FlowStatus {
 
     ERROR("table-danger"),
 
+    ASSERT_ERROR("table-danger"),
+
     WARN("table-danger");
 
     private String cssClass;

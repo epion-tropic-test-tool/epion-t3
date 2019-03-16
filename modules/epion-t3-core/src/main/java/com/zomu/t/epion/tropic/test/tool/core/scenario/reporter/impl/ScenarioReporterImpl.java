@@ -181,6 +181,9 @@ public final class ScenarioReporterImpl implements ThymeleafScenarioReporter<Exe
                 case SUCCESS:
                     activity.append("<<SUCCESS>>");
                     break;
+                case ASSERT_ERROR:
+                    activity.append("<<ASSERT_ERROR>>");
+                    break;
                 case ERROR:
                     activity.append("<<ERROR>>");
                     break;

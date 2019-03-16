@@ -5,12 +5,14 @@ import com.zomu.t.epion.tropic.test.tool.core.application.reporter.impl.Applicat
 import com.zomu.t.epion.tropic.test.tool.core.application.runner.ApplicationRunner;
 import com.zomu.t.epion.tropic.test.tool.core.context.Context;
 import com.zomu.t.epion.tropic.test.tool.core.context.execute.ExecuteContext;
+import com.zomu.t.epion.tropic.test.tool.core.context.execute.ExecuteScenario;
 import com.zomu.t.epion.tropic.test.tool.core.exception.handler.BaseExceptionHandler;
 import com.zomu.t.epion.tropic.test.tool.core.message.MessageManager;
 import com.zomu.t.epion.tropic.test.tool.core.message.impl.CoreMessages;
 import com.zomu.t.epion.tropic.test.tool.core.scenario.parser.impl.BaseScenarioParser;
 import com.zomu.t.epion.tropic.test.tool.core.scenario.runner.ScenarioRunner;
 import com.zomu.t.epion.tropic.test.tool.core.scenario.runner.impl.ScenarioRunnerImpl;
+import com.zomu.t.epion.tropic.test.tool.core.type.ApplicationExecuteStatus;
 import com.zomu.t.epion.tropic.test.tool.core.type.Args;
 import com.zomu.t.epion.tropic.test.tool.core.type.ExitCode;
 import com.zomu.t.epion.tropic.test.tool.core.type.ScenarioExecuteStatus;
@@ -95,15 +97,27 @@ public class ApplicationRunnerImpl implements ApplicationRunner<Context> {
             ScenarioRunner scenarioRunner = new ScenarioRunnerImpl();
             scenarioRunner.execute(context, executeContext);
 
-            // 正常終了
-            executeContext.setStatus(ScenarioExecuteStatus.SUCCESS);
-            executeContext.setExitCode(ExitCode.NORMAL);
+            // 終了判定
+            executeContext.setStatus(ApplicationExecuteStatus.SUCCESS);
+            // 全シナリオを走査
+            for (ExecuteScenario executeScenario : executeContext.getScenarios()) {
+                if (executeScenario.getStatus() == ScenarioExecuteStatus.ERROR) {
+                    // エラーが１つでも存在すればエラーとする
+                    executeContext.setStatus(ApplicationExecuteStatus.ERROR);
+                    break;
+                } else if (executeScenario.getStatus() == ScenarioExecuteStatus.ASSERT_ERROR) {
+                    // アサートエラーが存在すればアサートエラーを設定
+                    executeContext.setStatus(ApplicationExecuteStatus.ASSERT_ERROR);
+                }
+            }
+
+            executeContext.setExitCode(executeContext.getStatus().getExitCode());
 
         } catch (Throwable t) {
 
             error = t;
 
-            executeContext.setStatus(ScenarioExecuteStatus.ERROR);
+            executeContext.setStatus(ApplicationExecuteStatus.ERROR);
 
             // 例外ハンドリング
             handleGlobalException(context, t);

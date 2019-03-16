@@ -1,6 +1,7 @@
 package com.zomu.t.epion.tropic.test.tool.core.flow.runner.impl;
 
 import com.zomu.t.epion.tropic.test.tool.core.context.Context;
+import com.zomu.t.epion.tropic.test.tool.core.context.execute.ExecuteCommand;
 import com.zomu.t.epion.tropic.test.tool.core.context.execute.ExecuteContext;
 import com.zomu.t.epion.tropic.test.tool.core.context.execute.ExecuteFlow;
 import com.zomu.t.epion.tropic.test.tool.core.context.execute.ExecuteScenario;
@@ -104,11 +105,21 @@ public abstract class AbstractFlowRunner<
 
 
             if (executeFlow.hasCommandError()) {
-                // プロセス失敗
+                // コマンド失敗
                 executeFlow.setStatus(FlowStatus.ERROR);
             } else {
+
                 // プロセス成功
                 executeFlow.setStatus(FlowStatus.SUCCESS);
+
+                for (ExecuteCommand executeCommand : executeFlow.getCommands()) {
+                    if (executeCommand.hasAssertError()) {
+                        // コマンド失敗
+                        executeFlow.setStatus(FlowStatus.ASSERT_ERROR);
+                        break;
+                    }
+                }
+
             }
 
         } catch (Throwable t) {

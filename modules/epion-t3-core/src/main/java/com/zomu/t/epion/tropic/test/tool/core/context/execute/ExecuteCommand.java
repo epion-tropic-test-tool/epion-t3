@@ -1,8 +1,10 @@
 package com.zomu.t.epion.tropic.test.tool.core.context.execute;
 
+import com.zomu.t.epion.tropic.test.tool.core.command.model.AssertCommandResult;
 import com.zomu.t.epion.tropic.test.tool.core.command.model.CommandResult;
 import com.zomu.t.epion.tropic.test.tool.core.context.CommandInfo;
 import com.zomu.t.epion.tropic.test.tool.core.holder.CommandLog;
+import com.zomu.t.epion.tropic.test.tool.core.type.AssertStatus;
 import com.zomu.t.epion.tropic.test.tool.core.type.CommandStatus;
 import com.zomu.t.epion.tropic.test.tool.core.model.scenario.Command;
 import lombok.Getter;
@@ -55,5 +57,22 @@ public class ExecuteCommand extends ExecuteElement {
      * カスタムレポートパス.
      */
     private String customReportRelativePath;
+
+
+    public boolean isAssertCommand() {
+        return commandInfo.getAssertCommand();
+    }
+
+    public boolean hasAssertError() {
+        if (isAssertCommand()) {
+            if (commandResult != null && AssertCommandResult.class.isAssignableFrom(commandResult.getClass())) {
+                return ((AssertCommandResult) commandResult).getAssertStatus() == AssertStatus.NG;
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
 
 }

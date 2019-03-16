@@ -5,7 +5,7 @@ info:
   summary: ステージング環境（Staging）のプロファイル値定義
   description: ステージング環境（Staging）のプロファイル値定義
 profiles:
-  develop :
+  staging :
     schema : http
-    host : localhost
+    host : test
     port : 8080

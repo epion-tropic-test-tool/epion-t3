@@ -231,7 +231,7 @@
                                th:id="${executeFlow.executeId}">
                             <tbody>
                             <tr>
-                                <th class="bg-dark" style="width:300px;color:white">Flow Type</th>
+                                <th class="bg-dark" style="width:200px;color:white">Flow Type</th>
                                 <td colspan="3" th:text="${#strings.concat(executeFlow.flow.id, ' / ', executeFlow.flow.type)}">Flow</td>
                             </tr>
                             <th:block th:if="${!executeFlow.commands.isEmpty}">
@@ -279,7 +279,7 @@
                                             001
                                         </td>
                                     </tr>
-                                    <th:block th:if="${!executeFlow.flowLogs.isEmpty()}">
+                                    <th:block th:if="${executeFlow.flowLogs != null && !executeFlow.flowLogs.isEmpty()}">
                                     <tr>
                                         <th class="bg-dark" style="color:white">Flow&nbsp;Log</th>
                                         <td colspan="3" style="background:#eee;">
@@ -299,7 +299,7 @@
                                             </td>
                                         </tr>
                                     </th:block>
-                                    <th:block th:if="${!executeCommand.commandLogs.isEmpty()}">
+                                    <th:block th:if="${executeCommand.commandLogs != null && !executeCommand.commandLogs.isEmpty()}">
                                     <tr>
                                         <th class="bg-dark" style="color:white">Command&nbsp;Log</th>
                                         <td colspan="3" style="background:#eee;">

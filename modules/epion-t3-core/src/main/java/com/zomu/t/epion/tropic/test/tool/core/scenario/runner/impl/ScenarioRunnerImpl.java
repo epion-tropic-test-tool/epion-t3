@@ -131,18 +131,23 @@ public class ScenarioRunnerImpl implements ScenarioRunner<Context, ExecuteContex
 
                 ExecuteFlow executeFlow = executeScenario.getFlows().get(executeScenario.getFlows().size() - 1);
 
-                if (FlowStatus.ERROR == executeFlow.getStatus()) {
-                    log.error("Error Occurred...");
-                    // シナリオ失敗
+                // 終了判定
+                if (executeScenario.getStatus() == ScenarioExecuteStatus.WAIT
+                        || executeScenario.getStatus() == ScenarioExecuteStatus.RUNNING) {
+                    executeScenario.setStatus(ScenarioExecuteStatus.SUCCESS);
+                }
+                if (executeFlow.getStatus() == FlowStatus.ERROR) {
+                    log.debug("Error Occurred...");
+                    // シナリオエラー
                     executeScenario.setStatus(ScenarioExecuteStatus.ERROR);
                     break;
+                } else if (executeFlow.getStatus() == FlowStatus.ASSERT_ERROR) {
+                    log.debug("Assert Error Occurred...");
+                    // シナリオアサートエラー
+                    executeScenario.setStatus(ScenarioExecuteStatus.ASSERT_ERROR);
+                    // アサートエラーの場合は、次のコマンドも実施する
                 }
 
-            }
-
-            // プロセス成功
-            if (executeScenario.getStatus() != ScenarioExecuteStatus.ERROR) {
-                executeScenario.setStatus(ScenarioExecuteStatus.SUCCESS);
             }
 
         } catch (Throwable t) {
@@ -290,12 +295,21 @@ public class ScenarioRunnerImpl implements ScenarioRunner<Context, ExecuteContex
         if (scenario.getStatus() == ScenarioExecuteStatus.SUCCESS) {
             log.info("######################################################################################");
             log.info("End Scenario.");
+            log.info("Status              : Success");
             log.info("Scenario ID         : {}", scenario.getInfo().getId());
             log.info("Execute Scenario ID : {}", scenario.getExecuteScenarioId());
             log.info("######################################################################################");
         } else if (scenario.getStatus() == ScenarioExecuteStatus.ERROR) {
             log.error("######################################################################################");
             log.error("End Scenario.");
+            log.error("Status              : Error");
+            log.error("Scenario ID         : {}", scenario.getInfo().getId());
+            log.error("Execute Scenario ID : {}", scenario.getExecuteScenarioId());
+            log.error("######################################################################################");
+        } else if (scenario.getStatus() == ScenarioExecuteStatus.ASSERT_ERROR) {
+            log.error("######################################################################################");
+            log.error("End Scenario.");
+            log.error("Status              : Assert Error");
             log.error("Scenario ID         : {}", scenario.getInfo().getId());
             log.error("Execute Scenario ID : {}", scenario.getExecuteScenarioId());
             log.error("######################################################################################");

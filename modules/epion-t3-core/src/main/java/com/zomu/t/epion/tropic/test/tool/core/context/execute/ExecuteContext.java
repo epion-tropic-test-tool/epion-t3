@@ -1,5 +1,6 @@
 package com.zomu.t.epion.tropic.test.tool.core.context.execute;
 
+import com.zomu.t.epion.tropic.test.tool.core.type.ApplicationExecuteStatus;
 import com.zomu.t.epion.tropic.test.tool.core.type.ScenarioExecuteStatus;
 import com.zomu.t.epion.tropic.test.tool.core.type.ExitCode;
 import lombok.Getter;
@@ -32,7 +33,7 @@ public class ExecuteContext implements Serializable {
     /**
      * ステータス.
      */
-    private ScenarioExecuteStatus status = ScenarioExecuteStatus.WAIT;
+    private ApplicationExecuteStatus status = ApplicationExecuteStatus.WAIT;
 
     /**
      * 開始日時.
@@ -72,6 +73,6 @@ public class ExecuteContext implements Serializable {
     /**
      * 終了コード.
      */
-    private ExitCode exitCode = ExitCode.UNASSIGNED;
+    private ExitCode exitCode = status.getExitCode();
 
 }
