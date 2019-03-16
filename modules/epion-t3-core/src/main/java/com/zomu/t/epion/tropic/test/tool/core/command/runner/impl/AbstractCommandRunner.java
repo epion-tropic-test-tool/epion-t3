@@ -273,6 +273,34 @@ public abstract class AbstractCommandRunner<COMMAND extends Command>
         }
     }
 
+    protected void removeVariable(final String target) {
+        Matcher m = EXTRACT_PATTERN.matcher(target);
+        if (m.find()) {
+            ReferenceVariableType referenceVariableType =
+                    ReferenceVariableType.valueOfByName(m.group(1));
+            if (referenceVariableType != null) {
+                switch (referenceVariableType) {
+                    case FIX:
+                        // Ignore
+                        break;
+                    case GLOBAL:
+                        getGlobalScopeVariables().remove(m.group(2));
+                        break;
+                    case SCENARIO:
+                        getScenarioScopeVariables().remove(m.group(2));
+                        break;
+                    case FLOW:
+                        getFlowScopeVariables().remove(m.group(2));
+                        break;
+                    default:
+                        throw new SystemException(CoreMessages.CORE_ERR_0005, m.group(1));
+                }
+            } else {
+                throw new SystemException(CoreMessages.CORE_ERR_0005, m.group(1));
+            }
+        }
+    }
+
     /**
      * 実行中のコマンドが属するシナリオ格納ディレクトリを取得する.
      * コマンドに定義されているファイル等を参照する場合には、このメソッドで解決したパスからの相対パスを利用する.

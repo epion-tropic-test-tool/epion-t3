@@ -31,36 +31,14 @@ public class RemoveVariableRunner extends AbstractCommandRunner<RemoveVariable> 
             final RemoveVariable command,
             final Logger logger) throws Exception {
 
+        // 対象必須
         if (StringUtils.isEmpty(command.getTarget())) {
             throw new SystemException(BasicMessages.BASIC_ERR_9005);
         }
 
-        Matcher m = EXTRACT_PATTERN.matcher(command.getTarget());
+        // 削除
+        removeVariable(command.getTarget());
 
-        if (m.find()) {
-            ReferenceVariableType referenceVariableType =
-                    ReferenceVariableType.valueOfByName(m.group(1));
-            if (referenceVariableType != null) {
-                switch (referenceVariableType) {
-                    case FIX:
-                        // Ignore
-                        break;
-                    case GLOBAL:
-                        getGlobalScopeVariables().remove(m.group(2));
-                        break;
-                    case SCENARIO:
-                        getScenarioScopeVariables().remove(m.group(2));
-                        break;
-                    case FLOW:
-                        getFlowScopeVariables().remove(m.group(2));
-                        break;
-                    default:
-                        throw new SystemException(CoreMessages.CORE_ERR_0005, m.group(1));
-                }
-            } else {
-                throw new SystemException(CoreMessages.CORE_ERR_0005, m.group(1));
-            }
-        }
         return CommandResult.getSuccess();
     }
 }
