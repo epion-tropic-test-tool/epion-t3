@@ -1,6 +1,7 @@
 package com.zomu.t.epion.tropic.test.tool.core.context.execute;
 
 import com.zomu.t.epion.tropic.test.tool.core.context.EvidenceInfo;
+import com.zomu.t.epion.tropic.test.tool.core.context.Option;
 import com.zomu.t.epion.tropic.test.tool.core.type.ScenarioExecuteStatus;
 import com.zomu.t.epion.tropic.test.tool.core.model.scenario.Information;
 import lombok.Getter;
@@ -43,6 +44,11 @@ public class ExecuteScenario implements Serializable {
     private UUID executeScenarioId = UUID.randomUUID();
 
     /**
+     * オプション.
+     */
+    private Option option;
+
+    /**
      * シナリオ情報.
      */
     private Information info;
@@ -82,6 +88,11 @@ public class ExecuteScenario implements Serializable {
      * 実行Flowリスト.
      */
     private List<ExecuteFlow> flows = new ArrayList<>();
+    
+    /**
+     * プロファイル定数.
+     */
+    private final Map<String, String> profileConstants = new ConcurrentHashMap<>();
 
     /**
      * シナリオスコープ変数.

@@ -209,7 +209,7 @@ public abstract class AbstractFlowRunner<
 
         BindUtils.getInstance().bind(
                 flow,
-                executeContext.getProfileConstants(),
+                executeScenario.getProfileConstants(),
                 executeContext.getGlobalVariables(),
                 executeScenario.getScenarioVariables(),
                 executeFlow.getFlowVariables());

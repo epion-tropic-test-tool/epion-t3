@@ -1,29 +1,34 @@
 package com.zomu.t.epion.tropic.test.tool.core.scenario.runner.impl;
 
 import com.zomu.t.epion.tropic.test.tool.core.context.Context;
+import com.zomu.t.epion.tropic.test.tool.core.context.Option;
 import com.zomu.t.epion.tropic.test.tool.core.context.execute.ExecuteContext;
 import com.zomu.t.epion.tropic.test.tool.core.context.execute.ExecuteFlow;
 import com.zomu.t.epion.tropic.test.tool.core.context.execute.ExecuteScenario;
 import com.zomu.t.epion.tropic.test.tool.core.exception.ScenarioNotFoundException;
-import com.zomu.t.epion.tropic.test.tool.core.exception.SystemException;
-import com.zomu.t.epion.tropic.test.tool.core.scenario.reporter.impl.ScenarioReporterImpl;
-import com.zomu.t.epion.tropic.test.tool.core.flow.resolver.impl.FlowRunnerResolverImpl;
-import com.zomu.t.epion.tropic.test.tool.core.scenario.runner.ScenarioRunner;
 import com.zomu.t.epion.tropic.test.tool.core.flow.model.FlowResult;
+import com.zomu.t.epion.tropic.test.tool.core.flow.resolver.impl.FlowRunnerResolverImpl;
 import com.zomu.t.epion.tropic.test.tool.core.flow.runner.FlowRunner;
+import com.zomu.t.epion.tropic.test.tool.core.message.MessageManager;
+import com.zomu.t.epion.tropic.test.tool.core.message.impl.CoreMessages;
 import com.zomu.t.epion.tropic.test.tool.core.model.scenario.Flow;
+import com.zomu.t.epion.tropic.test.tool.core.model.scenario.Scenario;
 import com.zomu.t.epion.tropic.test.tool.core.model.scenario.T3Base;
+import com.zomu.t.epion.tropic.test.tool.core.scenario.reporter.impl.ScenarioReporterImpl;
+import com.zomu.t.epion.tropic.test.tool.core.scenario.runner.ScenarioRunner;
 import com.zomu.t.epion.tropic.test.tool.core.type.FlowStatus;
 import com.zomu.t.epion.tropic.test.tool.core.type.ScenarioExecuteStatus;
 import com.zomu.t.epion.tropic.test.tool.core.type.ScenarioScopeVariables;
 import com.zomu.t.epion.tropic.test.tool.core.util.BindUtils;
 import com.zomu.t.epion.tropic.test.tool.core.util.ExecutionFileUtils;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.SerializationUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.LoggerFactory;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.Arrays;
 
 /**
  * シナリオ実行処理.
@@ -42,13 +47,68 @@ public class ScenarioRunnerImpl implements ScenarioRunner<Context, ExecuteContex
     public void execute(final Context context, final ExecuteContext executeContext) {
 
         // 実行シナリオの選択
-        T3Base scenario = context.getOriginal().getOriginals().get(context.getOption().getTarget());
+        T3Base t3 = context.getOriginal().getOriginals().get(context.getOption().getTarget());
 
-        if (scenario == null) {
+        if (t3 == null) {
             throw new ScenarioNotFoundException(context.getOption().getTarget());
         }
 
+        if (t3.getScenarios().isEmpty()) {
+            // 単シナリオ起動
+            Scenario scenarioRef = new Scenario();
+            scenarioRef.setRef(context.getOption().getTarget());
+            scenarioRef.setProfile(context.getOption().getProfile());
+            scenarioRef.setMode(context.getOption().getMode());
+            scenarioRef.setNoreport(context.getOption().getNoreport());
+            scenarioRef.setMode(context.getOption().getMode());
+            executeScenario(context, executeContext, scenarioRef);
+        } else {
+            // 複数シナリオ起動
+            for (Scenario scenarioRef : t3.getScenarios()) {
+                executeScenario(context, executeContext, scenarioRef);
+            }
+        }
+
+    }
+
+    /**
+     * シナリオ実行.
+     *
+     * @param context
+     * @param executeContext
+     * @param scenarioRef
+     */
+    private void executeScenario(Context context, ExecuteContext executeContext, Scenario scenarioRef) {
+
+        T3Base scenario = context.getOriginal().getOriginals().get(scenarioRef.getRef());
+
+        if (scenario == null) {
+            throw new ScenarioNotFoundException(scenarioRef.getRef());
+        }
+
+        // オプション解決
+        Option option = SerializationUtils.clone(context.getOption());
+        // プロファイルのオーバーライド
+        if (StringUtils.isNotEmpty(scenarioRef.getProfile())
+                && StringUtils.isNotEmpty(option.getProfile())
+                && !option.getProfile().contains(scenarioRef.getProfile())) {
+            option.setProfile(option.getProfile() + "," + scenarioRef.getProfile());
+        }
+        // モードのオーバーライド
+        if (StringUtils.isNotEmpty(scenarioRef.getMode())) {
+            option.setMode(scenarioRef.getMode());
+        }
+        // レポート出力有無のオーバーライド
+        if (scenarioRef.getNoreport() != null) {
+            option.setNoreport(scenarioRef.getNoreport());
+        }
+        // デバッグ指定のオーバーライド
+        if (scenarioRef.getDebug() != null) {
+            option.setDebug(scenarioRef.getDebug());
+        }
+
         ExecuteScenario executeScenario = new ExecuteScenario();
+        executeScenario.setOption(option);
         executeScenario.setInfo(scenario.getInfo());
         executeScenario.setFqsn(scenario.getInfo().getId());
         executeContext.getScenarios().add(executeScenario);
@@ -63,6 +123,9 @@ public class ScenarioRunnerImpl implements ScenarioRunner<Context, ExecuteContex
 
             // シナリオ開始ログ出力
             outputStartScenarioLog(context, executeScenario);
+
+            // プロファイルの解決
+            setProfiles(context, executeScenario);
 
             // 結果ディレクトリの作成
             ExecutionFileUtils.createScenarioResultDirectory(context, executeContext, executeScenario);
@@ -176,9 +239,35 @@ public class ScenarioRunnerImpl implements ScenarioRunner<Context, ExecuteContex
             outputEndScenarioLog(context, executeScenario);
 
             // レポート出力
-            if (!context.getOption().getNoreport()) {
+            if (!executeScenario.getOption().getNoreport()) {
                 report(context, executeContext, executeScenario, error);
             }
+        }
+
+    }
+
+    /**
+     * 実行時に指定されたプロファイルを元に、実行コンテキストに設定する.
+     *
+     * @param context         コンテキスト
+     * @param executeScenario 実行コンテキスト
+     */
+    private void setProfiles(final Context context, final ExecuteScenario executeScenario) {
+
+        if (StringUtils.isNotEmpty(executeScenario.getOption().getProfile())) {
+            // プロファイルを抽出
+            Arrays.stream(executeScenario.getOption().getProfile().split(","))
+                    .forEach(x -> {
+                        if (context.getOriginal().getProfiles().containsKey(x)) {
+                            executeScenario.getProfileConstants().putAll(context.getOriginal().getProfiles().get(x));
+                        } else {
+                            // 起動時に指定されたプロファイルが、
+                            // シナリオの中に存在しないため実質有効ではないことをWARNログにて通知
+                            log.warn(
+                                    MessageManager.getInstance().getMessage(
+                                            CoreMessages.CORE_WRN_0002, context.getOption().getProfile()));
+                        }
+                    });
         }
 
     }
@@ -198,7 +287,7 @@ public class ScenarioRunnerImpl implements ScenarioRunner<Context, ExecuteContex
 
         BindUtils.getInstance().bind(
                 flow,
-                executeContext.getProfileConstants(),
+                executeScenario.getProfileConstants(),
                 executeContext.getGlobalVariables(),
                 executeScenario.getScenarioVariables(),
                 null);

@@ -85,9 +85,9 @@ public final class EvidenceUtils {
         // Full Query Scenario Name として現在実行シナリオ名を設定
         evidenceInfo.setFqsn(executeScenario.getScenarioVariables().get(
                 ScenarioScopeVariables.CURRENT_SCENARIO.getName()).toString());
-        // Full Query Process Name として現在実行プロセス名を設定
-        evidenceInfo.setFqpn(executeFlow.getFlowVariables().get(
-                FlowScopeVariables.CURRENT_COMMAND.getName()).toString());
+        // Full Query Flow Name として現在実行Flow名を設定
+        evidenceInfo.setFqfn(executeFlow.getFlowVariables().get(
+                FlowScopeVariables.CURRENT_FLOW.getName()).toString());
         evidenceInfo.setName(getEvidenceBaseName(executeFlow, FlowScopeVariables.CURRENT_COMMAND.getName()).toString());
         evidenceInfo.setExecuteFlowId(executeFlow.getExecuteId().toString());
         evidenceInfo.setObject(evidence);
@@ -145,7 +145,7 @@ public final class EvidenceUtils {
             Path evidence) {
         FileEvidenceInfo evidenceInfo = new FileEvidenceInfo();
         evidenceInfo.setFqsn(executeScenario.getScenarioVariables().get(ScenarioScopeVariables.CURRENT_SCENARIO.getName()).toString());
-        evidenceInfo.setFqpn(executeFlow.getFlowVariables().get(FlowScopeVariables.CURRENT_COMMAND.getName()).toString());
+        evidenceInfo.setFqfn(executeFlow.getFlowVariables().get(FlowScopeVariables.CURRENT_FLOW.getName()).toString());
         evidenceInfo.setName(evidence.getFileName().toString());
         evidenceInfo.setExecuteFlowId(executeFlow.getExecuteId().toString());
         evidenceInfo.setPath(evidence);

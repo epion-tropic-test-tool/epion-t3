@@ -90,9 +90,6 @@ public class ApplicationRunnerImpl implements ApplicationRunner<Context> {
             // シナリオの解析（パース処理）
             BaseScenarioParser.getInstance().parse(context);
 
-            // プロファイルの抽出
-            setProfiles(context, executeContext);
-
             // 実行
             ScenarioRunner scenarioRunner = new ScenarioRunnerImpl();
             scenarioRunner.execute(context, executeContext);
@@ -161,10 +158,12 @@ public class ApplicationRunnerImpl implements ApplicationRunner<Context> {
      * @param commandLine
      */
     private void setOptions(final Context context, final CommandLine commandLine) {
+        String version = commandLine.getOptionValue(Args.VERSION.getShortName());
         String rootPath = commandLine.getOptionValue(Args.ROOT_PATH.getShortName());
         String target = commandLine.getOptionValue(Args.SCENARIO.getShortName());
 
         // 必須パラメータの取得
+        context.getOption().setVersion(version);
         context.getOption().setRootPath(rootPath);
         context.getOption().setTarget(target);
 
@@ -177,32 +176,21 @@ public class ApplicationRunnerImpl implements ApplicationRunner<Context> {
         if (commandLine.hasOption(Args.RESULT_ROOT_PATH.getShortName())) {
             context.getOption().setResultRootPath(commandLine.getOptionValue(Args.RESULT_ROOT_PATH.getShortName()));
         }
-    }
 
-    /**
-     * 実行時に指定されたプロファイルを元に、実行コンテキストに設定する.
-     *
-     * @param context        コンテキスト
-     * @param executeContext 実行コンテキスト
-     */
-    private void setProfiles(final Context context, final ExecuteContext executeContext) {
-
-        if (StringUtils.isNotEmpty(context.getOption().getProfile())) {
-            // プロファイルを抽出
-            Arrays.stream(context.getOption().getProfile().split(","))
-                    .forEach(x -> {
-                        if (context.getOriginal().getProfiles().containsKey(x)) {
-                            executeContext.getProfileConstants().putAll(context.getOriginal().getProfiles().get(x));
-                        } else {
-                            // 起動時に指定されたプロファイルが、
-                            // シナリオの中に存在しないため実質有効ではないことをWARNログにて通知
-                            log.warn(
-                                    MessageManager.getInstance().getMessage(
-                                            CoreMessages.CORE_WRN_0002, context.getOption().getProfile()));
-                        }
-                    });
+        // モードの取得
+        if (commandLine.hasOption(Args.MODE.getShortName())) {
+            context.getOption().setMode(commandLine.getOptionValue(Args.MODE.getShortName()));
         }
 
+        // レポート出力無の設定
+        if (commandLine.hasOption(Args.NOREPORT.getShortName())) {
+            context.getOption().setNoreport(true);
+        }
+
+        // デバッグの設定
+        if (commandLine.hasOption(Args.DEBUG.getShortName())) {
+            context.getOption().setDebug(true);
+        }
     }
 
     /**

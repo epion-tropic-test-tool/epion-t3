@@ -28,9 +28,33 @@
     <!-- Execute Scenario Information. -->
     <section class="row">
         <div class="col-md-12">
-            <h2>Execute Information</h2>
+            <h2>Execute&nbsp;Information</h2>
             <table class="table table-sm table-bordered">
                 <tbody>
+                <tr>
+                    <th class="bg-dark" style="width:200px;color:white">Version</th>
+                    <td th:text="${context.option.version}">v1.0</td>
+                </tr>
+                <tr>
+                    <th class="bg-dark" style="color:white">Scenario&nbsp;ID</th>
+                    <td th:text="${context.option.target}">sample-scenario-001</td>
+                </tr>
+                <tr>
+                    <th class="bg-dark" style="color:white">Mode</th>
+                    <td th:text="${context.option.mode}">test</td>
+                </tr>
+                <tr>
+                    <th class="bg-dark" style="color:white">Profile</th>
+                    <td th:text="${context.option.profile}">develop</td>
+                </tr>
+                <tr>
+                    <th class="bg-dark" style="color:white">Debug</th>
+                    <td th:text="${context.option.debug}">false</td>
+                </tr>
+                <tr>
+                    <th class="bg-dark" style="color:white">NoReport</th>
+                    <td th:text="${context.option.noreport}">false</td>
+                </tr>
                 <tr>
                     <th class="bg-dark" style="color:white">Execution&nbsp;ID</th>
                     <td th:text="${executeContext.executeContextId}">sample-scenario-001</td>

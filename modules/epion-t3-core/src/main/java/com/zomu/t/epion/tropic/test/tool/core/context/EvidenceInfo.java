@@ -29,10 +29,10 @@ public class EvidenceInfo implements Serializable {
     private String fqsn;
 
     /**
-     * 完全プロセス名称.
-     * Full Query Process Name.
+     * 完全Flow名称.
+     * Full Query Flow Name.
      */
-    private String fqpn;
+    private String fqfn;
 
     /**
      * Flowの実行ID.

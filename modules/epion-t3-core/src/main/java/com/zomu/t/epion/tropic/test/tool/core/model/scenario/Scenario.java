@@ -1,7 +1,12 @@
 package com.zomu.t.epion.tropic.test.tool.core.model.scenario;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import java.io.Serializable;
 
+@Getter
+@Setter
 public class Scenario implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -24,12 +29,12 @@ public class Scenario implements Serializable {
     /**
      * レポート出力しない
      */
-    private String noreport;
+    private Boolean noreport;
 
     /**
      * デバッグ指定
      */
-    private String debug;
+    private Boolean debug;
 
 
 }

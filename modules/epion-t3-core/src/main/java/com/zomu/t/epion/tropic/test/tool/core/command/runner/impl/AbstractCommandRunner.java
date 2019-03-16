@@ -127,7 +127,7 @@ public abstract class AbstractCommandRunner<COMMAND extends Command>
             executeCommand.setCommandResult(result);
 
             // 正常終了時にのみカスタムレポートを許可する
-            if (error == null && !context.getOption().getNoreport()) {
+            if (error == null && !executeScenario.getOption().getNoreport()) {
 
                 Class reporterClazz = executeCommand.getCommandInfo().getReporter();
 
@@ -161,7 +161,7 @@ public abstract class AbstractCommandRunner<COMMAND extends Command>
      * @return プロファイル定数マップ
      */
     protected Map<String, String> getProfileConstants() {
-        return executeContext.getProfileConstants();
+        return executeScenario.getProfileConstants();
     }
 
     /**
@@ -438,7 +438,7 @@ public abstract class AbstractCommandRunner<COMMAND extends Command>
         // 変数バインド
         BindUtils.getInstance().bind(
                 cloneConfiguration,
-                executeContext.getProfileConstants(),
+                executeScenario.getProfileConstants(),
                 executeContext.getGlobalVariables(),
                 executeScenario.getScenarioVariables(),
                 executeFlow.getFlowVariables()
@@ -458,7 +458,7 @@ public abstract class AbstractCommandRunner<COMMAND extends Command>
         // 変数バインド
         return BindUtils.getInstance().bind(
                 target,
-                executeContext.getProfileConstants(),
+                executeScenario.getProfileConstants(),
                 executeContext.getGlobalVariables(),
                 executeScenario.getScenarioVariables(),
                 executeFlow.getFlowVariables());
@@ -475,7 +475,7 @@ public abstract class AbstractCommandRunner<COMMAND extends Command>
         // 変数バインド
         BindUtils.getInstance().bind(
                 target,
-                executeContext.getProfileConstants(),
+                executeScenario.getProfileConstants(),
                 executeContext.getGlobalVariables(),
                 executeScenario.getScenarioVariables(),
                 executeFlow.getFlowVariables());

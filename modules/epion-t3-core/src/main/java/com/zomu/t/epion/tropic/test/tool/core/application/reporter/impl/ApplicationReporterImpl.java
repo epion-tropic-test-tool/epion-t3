@@ -62,6 +62,7 @@ public class ApplicationReporterImpl implements ThymeleafApplicationReporter<Exe
         ThymeleafReportUtils.setUtility(variable);
 
         try {
+            variable.put("context", context);
             variable.put("executeContext", executeContext);
 
             // 変数設定

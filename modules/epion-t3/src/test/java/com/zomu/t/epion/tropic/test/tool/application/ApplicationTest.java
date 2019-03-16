@@ -19,7 +19,7 @@ public class ApplicationTest {
                 "-v", "v1.0",
                 "-m", "test",
                 "-p", "develop",
-                "-t", "scenarios-rest-sample",
+                "-t", "scenarios-suite-sample",
                 "-s", "/Users/takashimanozomu/work/30_pgworkspaces/intellij/epion-t3/modules/epion-t3-scenario/samples/rest"
         });
     }
