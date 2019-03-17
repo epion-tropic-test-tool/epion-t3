@@ -2,8 +2,8 @@ package com.zomu.t.epion.tropic.test.tool.rdb.command.model;
 
 import com.zomu.t.epion.tropic.test.tool.core.annotation.CommandDefinition;
 import com.zomu.t.epion.tropic.test.tool.core.model.scenario.Command;
+import com.zomu.t.epion.tropic.test.tool.rdb.bean.TargetTable;
 import com.zomu.t.epion.tropic.test.tool.rdb.command.runner.ExportRdbDataRunner;
-import com.zomu.t.epion.tropic.test.tool.rdb.command.runner.ImportRdbDataRunner;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.bval.constraints.NotEmpty;
@@ -35,6 +35,6 @@ public class ExportRdbData extends Command {
     /**
      * テーブル指定.
      */
-    private List<TargetTable> targets;
+    private List<TargetTable> tables;
 
 }

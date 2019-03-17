@@ -20,7 +20,9 @@ public class AssertCommandResult extends CommandResult {
     private AssertStatus assertStatus = AssertStatus.WAIT;
 
     public static AssertCommandResult getSuccess() {
-        return (AssertCommandResult) CommandResult.getSuccess();
+        AssertCommandResult result = new AssertCommandResult();
+        result.setAssertStatus(AssertStatus.OK);
+        return result;
     }
 
 }

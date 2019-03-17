@@ -3,8 +3,8 @@ package com.zomu.t.epion.tropic.test.tool.rdb.command.runner;
 import com.zomu.t.epion.tropic.test.tool.core.command.model.CommandResult;
 import com.zomu.t.epion.tropic.test.tool.core.command.runner.impl.AbstractCommandRunner;
 import com.zomu.t.epion.tropic.test.tool.core.exception.SystemException;
-import com.zomu.t.epion.tropic.test.tool.rdb.command.model.ExportRdbData;
 import com.zomu.t.epion.tropic.test.tool.rdb.bean.TargetTable;
+import com.zomu.t.epion.tropic.test.tool.rdb.command.model.ExportRdbData;
 import com.zomu.t.epion.tropic.test.tool.rdb.configuration.model.RdbConnectionConfiguration;
 import com.zomu.t.epion.tropic.test.tool.rdb.message.RdbMessages;
 import com.zomu.t.epion.tropic.test.tool.rdb.type.DataSetType;
@@ -32,7 +32,7 @@ import java.sql.SQLException;
  * @author takashno
  */
 @Slf4j
-public class ExportRdbDataRunner extends AbstractCommandRunner<ExportRdbData> {
+public class AssertRdbDataRunner extends AbstractCommandRunner<ExportRdbData> {
 
     /**
      * {@inheritDoc}

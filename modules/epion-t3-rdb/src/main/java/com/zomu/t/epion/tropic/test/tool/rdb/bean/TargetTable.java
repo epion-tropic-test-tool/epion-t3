@@ -1,4 +1,4 @@
-package com.zomu.t.epion.tropic.test.tool.rdb.command.model;
+package com.zomu.t.epion.tropic.test.tool.rdb.bean;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -14,4 +14,6 @@ public class TargetTable implements Serializable {
     private String table;
 
     private String query;
+
+
 }

@@ -32,6 +32,11 @@ public class ExecuteRdbQueryRunner extends AbstractCommandRunner<ExecuteRdbQuery
     @Override
     public CommandResult execute(ExecuteRdbQuery command, Logger logger) throws Exception {
 
+        // 接続先は必須
+        if (StringUtils.isEmpty(command.getRdbConnectConfigRef())) {
+            throw new SystemException(RdbMessages.RDB_ERR_0002);
+        }
+
         // 接続先設定を参照
         RdbConnectionConfiguration rdbConnectionConfiguration =
                 referConfiguration(command.getRdbConnectConfigRef());

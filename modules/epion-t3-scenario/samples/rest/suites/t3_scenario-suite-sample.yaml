@@ -6,4 +6,4 @@ info:
   description: "シナリオSuiteサンプル"
 scenarios:
   - ref: "scenarios-rest-sample"
-  - ref: "scenarios-rest-sample"
+#  - ref: "scenarios-rest-sample"
