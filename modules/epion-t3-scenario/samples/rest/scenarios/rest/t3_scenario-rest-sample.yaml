@@ -37,6 +37,10 @@ flows:
     summary: "DBクリア"
     type: "CommandExecute"
     ref: "parts-rdb-sample@rdb-sample-003"
+  - id: "flow-009"
+    summary: "JSON解析"
+    type: "CommandExecute"
+    ref: "rest-sample-command-005"
 commands:
   - id: "rest-sample-assert-001"
     summary: "HTTPステータスコードのアサート."
@@ -65,3 +69,8 @@ commands:
     target: "flow-004"
     value: "TodosController#create finished\\. [0-9]+ milisec\\."
     regexp: true
+  - id: "rest-sample-command-005"
+    command: "StoreJsonElement"
+    target: "flow-001"
+    value: "scenario.hoge"
+    jsonPath: "$.id"

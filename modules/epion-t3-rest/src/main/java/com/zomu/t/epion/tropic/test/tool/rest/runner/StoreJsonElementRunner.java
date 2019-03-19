@@ -51,7 +51,7 @@ public class StoreJsonElementRunner extends AbstractCommandRunner<StoreJsonEleme
         }
 
         // オブジェクトエビデンスがツール機能が有するレスポンスオブジェクトでない場合はエラー
-        if (Response.class.isAssignableFrom(objectEvidence.getClass())) {
+        if (!Response.class.isAssignableFrom(objectEvidence.getClass())) {
             throw new SystemException(RestMessages.REST_ERR_9007, command.getTarget());
         }
 
@@ -65,7 +65,7 @@ public class StoreJsonElementRunner extends AbstractCommandRunner<StoreJsonEleme
         try {
             // ドキュメント解析
             DocumentContext documentContext = JsonPath.parse(response.getBody());
-            Object value = documentContext.read(command.getValue());
+            Object value = documentContext.read(command.getJsonPath());
 
             if (JSONArray.class.isAssignableFrom(value.getClass())) {
                 throw new SystemException(RestMessages.REST_ERR_9011, command.getValue());
