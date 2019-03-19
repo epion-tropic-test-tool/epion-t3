@@ -11,6 +11,7 @@ import org.dbunit.database.DatabaseConfig;
 import org.dbunit.database.DatabaseDataSourceConnection;
 import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.ext.mysql.MySqlDataTypeFactory;
+import org.dbunit.ext.mysql.MySqlMetadataHandler;
 import org.dbunit.ext.oracle.OracleDataTypeFactory;
 import org.dbunit.ext.postgresql.PostgresqlDataTypeFactory;
 
@@ -99,6 +100,8 @@ public final class RdbAccessUtils {
                         DatabaseConfig configMysql = conn.getConfig();
                         configMysql.setProperty(DatabaseConfig.PROPERTY_DATATYPE_FACTORY,
                                 new MySqlDataTypeFactory());
+                        configMysql.setProperty(DatabaseConfig.PROPERTY_METADATA_HANDLER,
+                                new MySqlMetadataHandler());
                         break;
                     case POSTGRESQL:
                         if (StringUtils.isNotEmpty(schema)) {

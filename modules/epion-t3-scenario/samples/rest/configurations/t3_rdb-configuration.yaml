@@ -14,3 +14,4 @@ configurations:
     username: "${dbuser}"
     password: "${dbpassword}"
     schema: "${dbschema}"
+    rdbKind: "mysql"

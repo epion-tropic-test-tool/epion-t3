@@ -57,7 +57,7 @@ commands:
     description: "ログに特定文字列が存在するかアサート."
     command: "AssertExistsStringInText"
     target: "flow-004"
-    value: "TodosController#create stared!"
+    value: "TodosController#create stared."
   - id: "rest-sample-assert-004"
     summary: "ログに特定文字列が存在するかアサート."
     description: "ログに特定文字列が存在するかアサート."
