@@ -57,13 +57,8 @@ public class ExportRdbDataRunner extends AbstractCommandRunner<ExportRdbData> {
 
         IDatabaseConnection conn = null;
         try {
-            // データソースを取得
-            DataSource dataSource = RdbAccessUtils.getInstance().getDataSource(rdbConnectionConfiguration);
-            if (StringUtils.isEmpty(rdbConnectionConfiguration.getSchema())) {
-                conn = new DatabaseDataSourceConnection(dataSource);
-            } else {
-                conn = new DatabaseDataSourceConnection(dataSource, rdbConnectionConfiguration.getSchema());
-            }
+            // コネクションを取得
+            conn = RdbAccessUtils.getInstance().getDatabaseConnection(rdbConnectionConfiguration);
 
             // クエリーデータセットを作成
             iDataSet = new QueryDataSet(conn);
@@ -100,7 +95,7 @@ public class ExportRdbDataRunner extends AbstractCommandRunner<ExportRdbData> {
                     // ありえない
                     break;
             }
-        } catch (SQLException | DatabaseUnitException e) {
+        } catch (DatabaseUnitException e) {
             log.debug("Error Occurred...", e);
             throw new SystemException(e, RdbMessages.RDB_ERR_0011);
         } finally {

@@ -137,13 +137,9 @@ public class ImportRdbDataRunner extends AbstractCommandRunner<ImportRdbData> {
             case REFRESH:
                 IDatabaseConnection conn = null;
                 try {
-                    // データソースを取得
-                    DataSource dataSource = RdbAccessUtils.getInstance().getDataSource(rdbConnectionConfiguration);
-                    if (StringUtils.isEmpty(rdbConnectionConfiguration.getSchema())) {
-                        conn = new DatabaseDataSourceConnection(dataSource);
-                    } else {
-                        conn = new DatabaseDataSourceConnection(dataSource, rdbConnectionConfiguration.getSchema());
-                    }
+                    // コネクションを取得
+                    conn = RdbAccessUtils.getInstance().getDatabaseConnection(rdbConnectionConfiguration);
+
                     // オペレーション実行
                     operationType.getOperation().execute(conn, iDataSet);
 
