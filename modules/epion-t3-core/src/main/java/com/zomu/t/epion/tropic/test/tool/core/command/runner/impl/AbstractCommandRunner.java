@@ -17,11 +17,9 @@ import com.zomu.t.epion.tropic.test.tool.core.model.scenario.Configuration;
 import com.zomu.t.epion.tropic.test.tool.core.type.CommandStatus;
 import com.zomu.t.epion.tropic.test.tool.core.type.ReferenceVariableType;
 import com.zomu.t.epion.tropic.test.tool.core.type.ScenarioScopeVariables;
-import com.zomu.t.epion.tropic.test.tool.core.util.BindUtils;
-import com.zomu.t.epion.tropic.test.tool.core.util.DateTimeUtils;
-import com.zomu.t.epion.tropic.test.tool.core.util.EvidenceUtils;
-import com.zomu.t.epion.tropic.test.tool.core.util.IDUtils;
+import com.zomu.t.epion.tropic.test.tool.core.util.*;
 import org.apache.commons.lang3.SerializationUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.thymeleaf.util.DateUtils;
 
@@ -306,10 +304,14 @@ public abstract class AbstractCommandRunner<COMMAND extends Command>
      * 実行中のコマンドが属するシナリオ格納ディレクトリを取得する.
      * コマンドに定義されているファイル等を参照する場合には、このメソッドで解決したパスからの相対パスを利用する.
      *
-     * @return
+     * @return シナリオ配置パス
      */
     protected String getCommandBelongScenarioDirectory() {
+        // シナリオ識別子はシステムで投入する値のため、存在しないことは不正
         String belongScenarioId = IDUtils.getInstance().extractBelongScenarioIdFromFqcn(executeCommand.getFqcn());
+        if (StringUtils.isEmpty(belongScenarioId)) {
+            throw new SystemException(CoreMessages.CORE_ERR_0018, executeCommand.getFqcn());
+        }
         if (context.getOriginal().getScenarioPlacePaths().containsKey(belongScenarioId)) {
             Path belongScenarioPath = context.getOriginal().getScenarioPlacePaths().get(belongScenarioId);
             if (Files.notExists(belongScenarioPath)) {
@@ -335,55 +337,78 @@ public abstract class AbstractCommandRunner<COMMAND extends Command>
     /**
      * シナリオ格納ディレクトリを取得する.
      *
-     * @return
+     * @return シナリオ格納ディレクトリパス（文字列）
      */
     protected String getScenarioDirectory() {
-        return executeScenario.getScenarioVariables()
-                .get(ScenarioScopeVariables.SCENARIO_DIR.getName()).toString();
+        Object scenarioDirectory = executeScenario.getScenarioVariables()
+                .get(ScenarioScopeVariables.SCENARIO_DIR.getName());
+        if (scenarioDirectory == null) {
+            throw new SystemException(CoreMessages.CORE_ERR_0019, executeScenario.getFqsn());
+        }
+        return scenarioDirectory.toString();
     }
 
     /**
      * シナリオ格納ディレクトリを取得する.
      *
-     * @return
+     * @return シナリオ格納ディレクトリパス
      */
     protected Path getScenarioDirectoryPath() {
-        return Path.class.cast(executeScenario.getScenarioVariables()
-                .get(ScenarioScopeVariables.SCENARIO_DIR.getName()));
+        Object scenarioDirectory = executeScenario.getScenarioVariables()
+                .get(ScenarioScopeVariables.SCENARIO_DIR.getName());
+        if (scenarioDirectory == null) {
+            throw new SystemException(CoreMessages.CORE_ERR_0019, executeScenario.getFqsn());
+        }
+        return Path.class.cast(scenarioDirectory);
     }
 
     /**
      * エビデンス格納ディレクトリを取得する.
      *
-     * @return
+     * @return エビデンス格納ディレクトリ
      */
     protected String getEvidenceDirectory() {
-        return executeScenario.getScenarioVariables()
-                .get(ScenarioScopeVariables.EVIDENCE_DIR.getName()).toString();
+        Object evidenceDirectory = executeScenario.getScenarioVariables()
+                .get(ScenarioScopeVariables.EVIDENCE_DIR.getName());
+        if (evidenceDirectory == null) {
+            throw new SystemException(CoreMessages.CORE_ERR_0020, executeScenario.getFqsn());
+        }
+        Path evidenceDirectoryPath = Path.class.cast(evidenceDirectory);
+        if (Files.notExists(evidenceDirectoryPath)) {
+            throw new SystemException(CoreMessages.CORE_ERR_0021, evidenceDirectoryPath.toString());
+        }
+        return evidenceDirectoryPath.toString();
     }
 
     /**
      * エビデンス格納ディレクトリを取得する.
      *
-     * @return
+     * @return エビデンス格納ディレクトリ
      */
     protected Path getEvidenceDirectoryPath() {
-        return Path.class.cast(executeScenario.getScenarioVariables()
-                .get(ScenarioScopeVariables.EVIDENCE_DIR.getName()));
+        Object evidenceDirectory = executeScenario.getScenarioVariables()
+                .get(ScenarioScopeVariables.EVIDENCE_DIR.getName());
+        if (evidenceDirectory == null) {
+            throw new SystemException(CoreMessages.CORE_ERR_0020, executeScenario.getFqsn());
+        }
+        Path evidenceDirectoryPath = Path.class.cast(evidenceDirectory);
+        if (Files.notExists(evidenceDirectoryPath)) {
+            throw new SystemException(CoreMessages.CORE_ERR_0021, evidenceDirectoryPath.toString());
+        }
+        return evidenceDirectoryPath;
     }
 
     /**
      * エビデンスのパスを取得する.
-     * ファイルの拡張子を指定することで、Runnerが保存すべきエビデンスの場所を取得するために利用する.
      * 基本的に、エビデンスの保存を行うパスについては、本メソッドで取得したパスを利用すること.
      *
-     * @param fileExtension ファイルの拡張子
+     * @param baseName ファイル名
      * @return エビデンスの格納パス
      */
     protected Path getEvidencePath(
             String baseName) {
         return Paths.get(
-                getEvidenceDirectoryPath().toString(),
+                getEvidenceDirectory(),
                 getEvidenceBaseName(baseName));
     }
 
