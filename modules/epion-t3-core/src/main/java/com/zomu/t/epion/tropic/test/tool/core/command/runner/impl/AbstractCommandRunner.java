@@ -26,6 +26,7 @@ import org.slf4j.Logger;
 import org.thymeleaf.util.DateUtils;
 
 import java.io.Serializable;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
@@ -309,7 +310,15 @@ public abstract class AbstractCommandRunner<COMMAND extends Command>
      */
     protected String getCommandBelongScenarioDirectory() {
         String belongScenarioId = IDUtils.getInstance().extractBelongScenarioIdFromFqcn(executeCommand.getFqcn());
-        return context.getOriginal().getScenarioPlacePaths().get(belongScenarioId).toString();
+        if (context.getOriginal().getScenarioPlacePaths().containsKey(belongScenarioId)) {
+            Path belongScenarioPath = context.getOriginal().getScenarioPlacePaths().get(belongScenarioId);
+            if (Files.notExists(belongScenarioPath)) {
+                throw new SystemException(CoreMessages.CORE_ERR_0017, belongScenarioId.toString());
+            }
+            return belongScenarioPath.toString();
+        } else {
+            throw new SystemException(CoreMessages.CORE_ERR_0016, belongScenarioId);
+        }
     }
 
     /**
