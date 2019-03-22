@@ -2,6 +2,10 @@ dependencies {
 
     compile project(':modules:epion-t3-core')
 
+    // Selenium
+    compile group: 'org.seleniumhq.selenium', name: 'selenium-java', version: '3.14.0'
+    compile group: 'com.codeborne', name: 'phantomjsdriver', version: '1.4.3'
+    compile group: 'ru.yandex.qatools.ashot', name: 'ashot', version: '1.5.2'
 
 }
 

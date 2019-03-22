@@ -44,11 +44,6 @@ allprojects {
         compile group: 'org.thymeleaf', name: 'thymeleaf', version: '3.0.9.RELEASE'
         compile group: 'org.thymeleaf.extras', name: 'thymeleaf-extras-java8time', version: '3.0.1.RELEASE'
 
-        // Selenium
-        compile group: 'org.seleniumhq.selenium', name: 'selenium-java', version: '3.11.0'
-        compile group: 'com.codeborne', name: 'phantomjsdriver', version: '1.4.3'
-        compile group: 'ru.yandex.qatools.ashot', name: 'ashot', version: '1.5.2'
-
         // JSON Path
         compile group: 'com.jayway.jsonpath', name: 'json-path', version: '2.4.0'
 

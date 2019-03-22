@@ -174,6 +174,8 @@ public final class BaseOriginalHoldParser implements IndividualTargetParser<Cont
                     // コマンド読み込み
                     for (Command command : t3Base.getCommands()) {
 
+                        Set<ConstraintViolation<Command>> result = validator.validate(command);
+
                         // コマンド識別子を作成
                         String fullCommandId = IDUtils.getInstance().createFullCommandId(t3Base.getInfo().getId(), command.getId());
 

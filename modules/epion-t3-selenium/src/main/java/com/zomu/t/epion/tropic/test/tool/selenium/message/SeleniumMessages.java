@@ -8,11 +8,16 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum SeleniumMessages implements Messages {
 
-    SELENIUM_ERR_9001("com.zomu.t.t3.epion.selenium.err.9001"),
+    SELENIUM_ERR_9001("com.zomu.t.epion.t3.selenium.err.9001"),
+    SELENIUM_ERR_9004("com.zomu.t.epion.t3.selenium.err.9004"),
+    SELENIUM_ERR_9005("com.zomu.t.epion.t3.selenium.err.9005"),
+    SELENIUM_ERR_9006("com.zomu.t.epion.t3.selenium.err.9006"),
+    SELENIUM_ERR_9007("com.zomu.t.epion.t3.selenium.err.9007"),
+    SELENIUM_ERR_9008("com.zomu.t.epion.t3.selenium.err.9008"),
 
-    SELENIUM_ERR_9004("com.zomu.t.t3.epion.selenium.err.9004"),
-
-    SELENIUM_ERR_9005("com.zomu.t.t3.epion.selenium.err.9005");
+    /* 警告 */
+    SELENIUM_WRN_2001("com.zomu.t.epion.t3.selenium.wrn.2001"),
+    ;
 
     private String messageCode;
 

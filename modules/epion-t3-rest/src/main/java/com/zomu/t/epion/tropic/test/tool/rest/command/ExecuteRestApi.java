@@ -42,4 +42,9 @@ public class ExecuteRestApi extends Command {
      */
     private String readTimeout = "3000";
 
+    /**
+     * ボディのエンコーディング指定.
+     */
+    private String bodyEncoding;
+
 }

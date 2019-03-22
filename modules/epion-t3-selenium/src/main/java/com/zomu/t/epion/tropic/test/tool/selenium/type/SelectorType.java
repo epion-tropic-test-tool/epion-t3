@@ -11,14 +11,12 @@ import java.util.Arrays;
 public enum SelectorType {
 
     ID("id", By.ById.class),
-
     CLASS_NAME("className", By.ByClassName.class),
-
     CSS_SELECTOR("cssSelector", By.ByCssSelector.class),
-
     LINK_TEXT("linkText", By.ByLinkText.class),
-
-    NAME("name", By.ByName.class),;
+    NAME("name", By.ByName.class),
+    XPATH("xpath", By.ByName.class),
+    ;
 
     private String value;
 

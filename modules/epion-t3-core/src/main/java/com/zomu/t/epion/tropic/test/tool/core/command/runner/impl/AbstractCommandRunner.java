@@ -17,18 +17,19 @@ import com.zomu.t.epion.tropic.test.tool.core.model.scenario.Configuration;
 import com.zomu.t.epion.tropic.test.tool.core.type.CommandStatus;
 import com.zomu.t.epion.tropic.test.tool.core.type.ReferenceVariableType;
 import com.zomu.t.epion.tropic.test.tool.core.type.ScenarioScopeVariables;
-import com.zomu.t.epion.tropic.test.tool.core.util.*;
+import com.zomu.t.epion.tropic.test.tool.core.util.BindUtils;
+import com.zomu.t.epion.tropic.test.tool.core.util.DateTimeUtils;
+import com.zomu.t.epion.tropic.test.tool.core.util.EvidenceUtils;
+import com.zomu.t.epion.tropic.test.tool.core.util.IDUtils;
 import org.apache.commons.lang3.SerializationUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
-import org.thymeleaf.util.DateUtils;
 
 import java.io.Serializable;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.Map;
 import java.util.regex.Matcher;
 
@@ -205,7 +206,7 @@ public abstract class AbstractCommandRunner<COMMAND extends Command>
      * @param referenceVariable 参照変数
      * @return 解決した値
      */
-    protected Object resolveVariables(
+    protected <V> V resolveVariables(
             final String referenceVariable) {
 
         // 正規表現からスコープと変数名に分割して解析する
@@ -216,24 +217,34 @@ public abstract class AbstractCommandRunner<COMMAND extends Command>
             // 変数参照スコープを解決
             ReferenceVariableType referenceVariableType = ReferenceVariableType.valueOfByName(m.group(1));
 
+            Object referObject = null;
+
             if (referenceVariableType != null) {
                 switch (referenceVariableType) {
                     case FIX:
                         // 固定値の場合はそのまま返却
-                        return m.group(2);
+                        referObject = m.group(2);
+                        break;
                     case GLOBAL:
                         // グローバル変数から解決
-                        return executeContext.getGlobalVariables().get(m.group(2));
+                        referObject = executeContext.getGlobalVariables().get(m.group(2));
+                        break;
                     case SCENARIO:
                         // シナリオ変数から解決
-                        return executeScenario.getScenarioVariables().get(m.group(2));
+                        referObject = executeScenario.getScenarioVariables().get(m.group(2));
+                        break;
                     case FLOW:
                         // Flow変数から解決
-                        return executeFlow.getFlowVariables().get(m.group(2));
+                        referObject = executeFlow.getFlowVariables().get(m.group(2));
+                        break;
                     default:
                         // 変数解決できない場合は、エラー
-                        throw new SystemException(CoreMessages.CORE_ERR_0005, m.group(1));
+                       throw new SystemException(CoreMessages.CORE_ERR_0005, m.group(1));
                 }
+                if (referObject == null) {
+                    return null;
+                }
+                return (V) referObject;
             } else {
                 throw new SystemException(CoreMessages.CORE_ERR_0005, m.group(1));
             }

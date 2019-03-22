@@ -2,17 +2,12 @@ package com.zomu.t.epion.tropic.test.tool.rest.runner;
 
 import com.zomu.t.epion.tropic.test.tool.core.command.model.CommandResult;
 import com.zomu.t.epion.tropic.test.tool.core.command.runner.impl.AbstractCommandRunner;
-import com.zomu.t.epion.tropic.test.tool.core.context.EvidenceInfo;
-import com.zomu.t.epion.tropic.test.tool.core.command.runner.CommandRunner;
 import com.zomu.t.epion.tropic.test.tool.core.exception.SystemException;
-import com.zomu.t.epion.tropic.test.tool.core.model.scenario.Command;
-import com.zomu.t.epion.tropic.test.tool.rest.bean.Header;
 import com.zomu.t.epion.tropic.test.tool.rest.command.ExecuteRestApi;
 import com.zomu.t.epion.tropic.test.tool.rest.message.RestMessages;
 import com.zomu.t.epion.tropic.test.tool.rest.type.HttpMethodType;
 import okhttp3.*;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.http.protocol.HTTP;
 import org.slf4j.Logger;
 
 import java.util.List;

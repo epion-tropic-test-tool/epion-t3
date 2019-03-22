@@ -14,10 +14,7 @@ public class StartLocalWebDriver extends Command {
 
     @NotEmpty
     private String browser;
-
-    @NotEmpty
-    private String variableName;
-
+    
     private Integer height;
 
     private Integer width;

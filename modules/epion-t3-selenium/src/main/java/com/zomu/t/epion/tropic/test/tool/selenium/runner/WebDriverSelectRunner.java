@@ -2,30 +2,39 @@ package com.zomu.t.epion.tropic.test.tool.selenium.runner;
 
 import com.zomu.t.epion.tropic.test.tool.core.command.model.CommandResult;
 import com.zomu.t.epion.tropic.test.tool.core.command.runner.impl.AbstractCommandRunner;
-import com.zomu.t.epion.tropic.test.tool.core.context.EvidenceInfo;
-import com.zomu.t.epion.tropic.test.tool.core.command.runner.CommandRunner;
-import com.zomu.t.epion.tropic.test.tool.selenium.command.WebDriverClick;
+import com.zomu.t.epion.tropic.test.tool.core.exception.SystemException;
+import com.zomu.t.epion.tropic.test.tool.core.message.MessageManager;
+import com.zomu.t.epion.tropic.test.tool.selenium.command.WebDriverClickElement;
+import com.zomu.t.epion.tropic.test.tool.selenium.message.SeleniumMessages;
 import com.zomu.t.epion.tropic.test.tool.selenium.util.WebElementUtils;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 import org.slf4j.Logger;
 
-import java.util.Map;
-
-public class WebDriverSelectRunner extends AbstractCommandRunner<WebDriverClick> {
+public class WebDriverSelectRunner extends AbstractCommandRunner<WebDriverClickElement> {
     @Override
     public CommandResult execute(
-            final WebDriverClick process,
+            final WebDriverClickElement command,
             final Logger logger) throws Exception {
-        WebDriver driver = WebDriver.class.cast(getGlobalScopeVariables().get(process.getRefWebDriver()));
-        WebElement element =
-                WebElementUtils.getInstance().findWebElement(driver, process.getSelector(), process.getTarget());
-        if (element.isEnabled()) {
-            Select select = new Select(element);
-            select.selectByVisibleText(process.getValue());
 
+        // WebDriverを取得
+        WebDriver driver = resolveVariables(command.getRefWebDriver());
+        // WebDriverが解決できない場合はエラー
+        if (driver == null) {
+            throw new SystemException(SeleniumMessages.SELENIUM_ERR_9007, command.getRefWebDriver());
         }
+
+        WebElement element =
+                WebElementUtils.getInstance().findWebElement(driver, command.getSelector(), command.getTarget());
+
+        Select select = new Select(element);
+
+        if (!element.isDisplayed()) {
+            logger.warn(MessageManager.getInstance().getMessage(SeleniumMessages.SELENIUM_WRN_2001));
+        }
+        select.selectByVisibleText(command.getValue());
+
         return CommandResult.getSuccess();
     }
 }
