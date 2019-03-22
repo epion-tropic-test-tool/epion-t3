@@ -4,7 +4,7 @@ import com.zomu.t.epion.tropic.test.tool.core.command.model.CommandResult;
 import com.zomu.t.epion.tropic.test.tool.core.command.runner.impl.AbstractCommandRunner;
 import com.zomu.t.epion.tropic.test.tool.core.exception.SystemException;
 import com.zomu.t.epion.tropic.test.tool.core.type.ReferenceVariableType;
-import com.zomu.t.epion.tropic.test.tool.selenium.command.StartLocalWebDriver;
+import com.zomu.t.epion.tropic.test.tool.selenium.command.StartLocalWD;
 import com.zomu.t.epion.tropic.test.tool.selenium.message.SeleniumMessages;
 import com.zomu.t.epion.tropic.test.tool.selenium.type.BrowserType;
 import org.apache.commons.lang3.StringUtils;
@@ -25,7 +25,7 @@ import java.util.Map;
  *
  * @author takashno
  */
-public class StartLocalWebDriverRunner extends AbstractCommandRunner<StartLocalWebDriver> {
+public class StartLocalWDRunner extends AbstractCommandRunner<StartLocalWD> {
 
     private static final String WEBDRIVER_PREFIX = "WEBDRIVER_";
 
@@ -34,7 +34,7 @@ public class StartLocalWebDriverRunner extends AbstractCommandRunner<StartLocalW
      */
     @Override
     public CommandResult execute(
-            StartLocalWebDriver command,
+            StartLocalWD command,
             Logger logger) throws Exception {
 
         BrowserType browserType = BrowserType.valueOfByValue(command.getBrowser());

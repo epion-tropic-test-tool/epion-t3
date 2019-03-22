@@ -2,24 +2,19 @@ package com.zomu.t.epion.tropic.test.tool.selenium.command;
 
 import com.zomu.t.epion.tropic.test.tool.core.annotation.CommandDefinition;
 import com.zomu.t.epion.tropic.test.tool.core.model.scenario.Command;
-import com.zomu.t.epion.tropic.test.tool.selenium.runner.WebDriverClickElementRunner;
+import com.zomu.t.epion.tropic.test.tool.selenium.runner.WDSendKeysSpaceRunner;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.bval.constraints.NotEmpty;
 
-import javax.validation.constraints.NotNull;
-
 @Getter
 @Setter
-@CommandDefinition(id = "WebDriverClickElements", runner = WebDriverClickElementRunner.class)
-public class WebDriverClickElements extends Command {
+@CommandDefinition(id = "WDSendKeysSpace", runner = WDSendKeysSpaceRunner.class)
+public class WDSendKeysSpace extends Command {
 
     @NotEmpty
     private String refWebDriver;
 
     @NotEmpty
     private String selector;
-
-    @NotNull
-    private Integer index;
 }

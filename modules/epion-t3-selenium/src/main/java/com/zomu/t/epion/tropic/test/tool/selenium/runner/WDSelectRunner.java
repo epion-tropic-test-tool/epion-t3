@@ -4,20 +4,19 @@ import com.zomu.t.epion.tropic.test.tool.core.command.model.CommandResult;
 import com.zomu.t.epion.tropic.test.tool.core.command.runner.impl.AbstractCommandRunner;
 import com.zomu.t.epion.tropic.test.tool.core.exception.SystemException;
 import com.zomu.t.epion.tropic.test.tool.core.message.MessageManager;
-import com.zomu.t.epion.tropic.test.tool.selenium.command.WebDriverClickElement;
+import com.zomu.t.epion.tropic.test.tool.selenium.command.WDClickElement;
 import com.zomu.t.epion.tropic.test.tool.selenium.message.SeleniumMessages;
 import com.zomu.t.epion.tropic.test.tool.selenium.util.WebElementUtils;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.Select;
 import org.slf4j.Logger;
 
-public class WebDriverClickElementRunner extends AbstractCommandRunner<WebDriverClickElement> {
-
-    /**
-     * {@inheritDoc}
-     */
+public class WDSelectRunner extends AbstractCommandRunner<WDClickElement> {
     @Override
-    public CommandResult execute(WebDriverClickElement command, Logger logger) throws Exception {
+    public CommandResult execute(
+            final WDClickElement command,
+            final Logger logger) throws Exception {
 
         // WebDriverを取得
         WebDriver driver = resolveVariables(command.getRefWebDriver());
@@ -29,16 +28,12 @@ public class WebDriverClickElementRunner extends AbstractCommandRunner<WebDriver
         WebElement element =
                 WebElementUtils.getInstance().findWebElement(driver, command.getSelector(), command.getTarget());
 
-        if (element == null) {
-            throw new SystemException(SeleniumMessages.SELENIUM_ERR_9008);
-        }
+        Select select = new Select(element);
 
-        if (element.isEnabled()) {
-            element.click();
-        } else {
+        if (!element.isDisplayed()) {
             logger.warn(MessageManager.getInstance().getMessage(SeleniumMessages.SELENIUM_WRN_2001));
-            element.click();
         }
+        select.selectByVisibleText(command.getValue());
 
         return CommandResult.getSuccess();
     }
