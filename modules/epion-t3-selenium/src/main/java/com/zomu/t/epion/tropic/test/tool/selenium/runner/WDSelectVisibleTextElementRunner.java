@@ -13,21 +13,17 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 import org.slf4j.Logger;
 
-public class WDSelectVisibleTextElementRunner extends AbstractCommandRunner<WDSelectVisibleTextElement> {
+public class WDSelectVisibleTextElementRunner extends AbstractWDCommandRunner<WDSelectVisibleTextElement> {
     @Override
     public CommandResult execute(
             final WDSelectVisibleTextElement command,
             final Logger logger) throws Exception {
 
         // WebDriverを取得
-        WebDriver driver = resolveVariables(command.getRefWebDriver());
-        // WebDriverが解決できない場合はエラー
-        if (driver == null) {
-            throw new SystemException(SeleniumMessages.SELENIUM_ERR_9007, command.getRefWebDriver());
-        }
+        WebDriver driver = getWebDriver(command);
 
-        WebElement element =
-                WebElementUtils.getInstance().findWebElement(driver, command.getSelector(), command.getTarget());
+        // 対象のWebElementを取得
+        WebElement element = findWebElement(driver, command);
 
         Select select = new Select(element);
 

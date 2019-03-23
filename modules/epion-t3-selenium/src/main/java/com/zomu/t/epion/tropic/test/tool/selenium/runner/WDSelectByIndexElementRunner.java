@@ -13,30 +13,25 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 import org.slf4j.Logger;
 
-public class WDSelectByIndexElementRunner extends AbstractCommandRunner<WDSelectByIndexElement> {
+public class WDSelectByIndexElementRunner extends AbstractWDCommandRunner<WDSelectByIndexElement> {
     @Override
     public CommandResult execute(
             final WDSelectByIndexElement command,
             final Logger logger) throws Exception {
 
         // WebDriverを取得
-        WebDriver driver = resolveVariables(command.getRefWebDriver());
+        WebDriver driver = getWebDriver(command);
 
-        // WebDriverが解決できない場合はエラー
-        if (driver == null) {
-            throw new SystemException(SeleniumMessages.SELENIUM_ERR_9007, command.getRefWebDriver());
-        }
-
+        // 対象のWebElementを取得
         WebElement element =
-                WebElementUtils.getInstance().findWebElement(
-                        driver, command.getSelector(), command.getTarget());
+                findWebElement(driver, command);
 
         Select select = new Select(element);
 
         if (!element.isDisplayed()) {
             logger.warn(MessageManager.getInstance().getMessage(SeleniumMessages.SELENIUM_WRN_2001));
         }
-        
+
         if (command.getIndex() == null) {
             throw new SystemException(SeleniumMessages.SELENIUM_ERR_9010);
         }

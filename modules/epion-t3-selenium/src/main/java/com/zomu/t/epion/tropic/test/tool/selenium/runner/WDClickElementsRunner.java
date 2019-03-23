@@ -15,7 +15,7 @@ import org.slf4j.Logger;
 import java.util.List;
 
 @Slf4j
-public class WDClickElementsRunner extends AbstractCommandRunner<WDClickElements> {
+public class WDClickElementsRunner extends AbstractWDCommandRunner<WDClickElements> {
 
     /**
      * {@inheritDoc}
@@ -24,29 +24,19 @@ public class WDClickElementsRunner extends AbstractCommandRunner<WDClickElements
     public CommandResult execute(WDClickElements command, Logger logger) throws Exception {
 
         // WebDriverを取得
-        WebDriver driver = resolveVariables(command.getRefWebDriver());
-        // WebDriverが解決できない場合はエラー
-        if (driver == null) {
-            throw new SystemException(SeleniumMessages.SELENIUM_ERR_9007, command.getRefWebDriver());
-        }
+        WebDriver driver = getWebDriver(command);
+
+        // 対象のWebElementsを取得
+        List<WebElement> elements = findWebElements(driver, command);
 
         int targetIndex = command.getElementIndex() == null ? 0 : command.getElementIndex();
 
-        List<WebElement> elements =
-                WebElementUtils.getInstance().findWebElements(driver, command.getSelector(), command.getTarget());
-
-        if (elements == null || elements.isEmpty()) {
-            throw new SystemException(SeleniumMessages.SELENIUM_ERR_9008);
-        }
-
         WebElement element = elements.get(targetIndex);
 
-        if (element.isEnabled()) {
-            element.click();
-        } else {
+        if (element.isDisplayed()) {
             logger.warn(MessageManager.getInstance().getMessage(SeleniumMessages.SELENIUM_WRN_2001));
-            element.click();
         }
+        element.click();
 
         return CommandResult.getSuccess();
     }

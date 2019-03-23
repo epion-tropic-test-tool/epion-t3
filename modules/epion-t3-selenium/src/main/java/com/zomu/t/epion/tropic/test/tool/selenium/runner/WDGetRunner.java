@@ -8,7 +8,7 @@ import com.zomu.t.epion.tropic.test.tool.selenium.message.SeleniumMessages;
 import org.openqa.selenium.WebDriver;
 import org.slf4j.Logger;
 
-public class WDGetRunner extends AbstractCommandRunner<WDGet> {
+public class WDGetRunner extends AbstractWDCommandRunner<WDGet> {
     @Override
     public CommandResult execute(WDGet command, Logger logger) throws Exception {
         // WebDriverを取得

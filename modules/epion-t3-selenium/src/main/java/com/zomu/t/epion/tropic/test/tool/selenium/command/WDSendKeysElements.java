@@ -10,13 +10,6 @@ import org.apache.bval.constraints.NotEmpty;
 @Getter
 @Setter
 @CommandDefinition(id = "WDSendKeysElements", runner = WDSendKeysElementsRunner.class)
-public class WDSendKeysElements extends Command {
-
-    @NotEmpty
-    private String refWebDriver;
-
-    @NotEmpty
-    private String selector;
-
+public class WDSendKeysElements extends WDCommand {
     private Integer elementIndex;
 }

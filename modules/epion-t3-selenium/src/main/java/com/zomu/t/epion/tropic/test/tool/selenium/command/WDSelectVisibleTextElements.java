@@ -10,13 +10,6 @@ import org.apache.bval.constraints.NotEmpty;
 @Getter
 @Setter
 @CommandDefinition(id = "WDSelectVisibleTextElements", runner = WDSelectVisibleTextElementRunner.class)
-public class WDSelectVisibleTextElements extends Command {
-
-    @NotEmpty
-    private String refWebDriver;
-
-    @NotEmpty
-    private String selector;
-
+public class WDSelectVisibleTextElements extends WDCommand {
     private Integer elementIndex;
 }

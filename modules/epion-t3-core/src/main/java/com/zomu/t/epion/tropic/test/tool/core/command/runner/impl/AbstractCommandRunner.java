@@ -209,6 +209,10 @@ public abstract class AbstractCommandRunner<COMMAND extends Command>
     protected <V> V resolveVariables(
             final String referenceVariable) {
 
+        if (StringUtils.isEmpty(referenceVariable)) {
+            throw new SystemException(CoreMessages.CORE_ERR_0022);
+        }
+
         // 正規表現からスコープと変数名に分割して解析する
         Matcher m = EXTRACT_PATTERN.matcher(referenceVariable);
 
@@ -239,7 +243,7 @@ public abstract class AbstractCommandRunner<COMMAND extends Command>
                         break;
                     default:
                         // 変数解決できない場合は、エラー
-                       throw new SystemException(CoreMessages.CORE_ERR_0005, m.group(1));
+                        throw new SystemException(CoreMessages.CORE_ERR_0005, m.group(1));
                 }
                 if (referObject == null) {
                     return null;

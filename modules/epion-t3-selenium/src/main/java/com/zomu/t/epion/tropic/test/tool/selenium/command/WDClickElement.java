@@ -10,11 +10,5 @@ import org.apache.bval.constraints.NotEmpty;
 @Getter
 @Setter
 @CommandDefinition(id = "WDClickElement", runner = WDClickElementRunner.class)
-public class WDClickElement extends Command {
-
-    @NotEmpty
-    private String refWebDriver;
-
-    @NotEmpty
-    private String selector;
+public class WDClickElement extends WDCommand {
 }

@@ -16,27 +16,19 @@ import org.slf4j.Logger;
 
 import java.util.List;
 
-public class WDSelectVisibleTextElementsRunner extends AbstractCommandRunner<WDSelectVisibleTextElements> {
+public class WDSelectVisibleTextElementsRunner extends AbstractWDCommandRunner<WDSelectVisibleTextElements> {
     @Override
     public CommandResult execute(
             final WDSelectVisibleTextElements command,
             final Logger logger) throws Exception {
 
         // WebDriverを取得
-        WebDriver driver = resolveVariables(command.getRefWebDriver());
-        // WebDriverが解決できない場合はエラー
-        if (driver == null) {
-            throw new SystemException(SeleniumMessages.SELENIUM_ERR_9007, command.getRefWebDriver());
-        }
+        WebDriver driver = getWebDriver(command);
+
+        // 対象のWebElementsを取得
+        List<WebElement> elements = findWebElements(driver, command);
 
         int targetIndex = command.getElementIndex() == null ? 0 : command.getElementIndex();
-
-        List<WebElement> elements =
-                WebElementUtils.getInstance().findWebElements(driver, command.getSelector(), command.getTarget());
-
-        if (elements == null || elements.isEmpty()) {
-            throw new SystemException(SeleniumMessages.SELENIUM_ERR_9008);
-        }
 
         WebElement element = elements.get(targetIndex);
 

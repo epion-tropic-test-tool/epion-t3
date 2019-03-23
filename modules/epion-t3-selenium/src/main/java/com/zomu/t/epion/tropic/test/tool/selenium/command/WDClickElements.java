@@ -12,13 +12,6 @@ import javax.validation.constraints.NotNull;
 @Getter
 @Setter
 @CommandDefinition(id = "WDClickElements", runner = WDClickElementsRunner.class)
-public class WDClickElements extends Command {
-
-    @NotEmpty
-    private String refWebDriver;
-
-    @NotEmpty
-    private String selector;
-
+public class WDClickElements extends WDCommand {
     private Integer elementIndex;
 }

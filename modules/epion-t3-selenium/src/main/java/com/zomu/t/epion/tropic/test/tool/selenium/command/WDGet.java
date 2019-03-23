@@ -9,7 +9,5 @@ import lombok.Setter;
 @Getter
 @Setter
 @CommandDefinition(id = "WDGet", runner = WDGetRunner.class)
-public class WDGet extends Command {
-
-    private String refWebDriver;
+public class WDGet extends WDCommand {
 }

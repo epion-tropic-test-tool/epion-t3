@@ -1,23 +1,25 @@
 package com.zomu.t.epion.tropic.test.tool.selenium.runner;
 
 import com.zomu.t.epion.tropic.test.tool.core.command.model.CommandResult;
-import com.zomu.t.epion.tropic.test.tool.core.command.runner.impl.AbstractCommandRunner;
-import com.zomu.t.epion.tropic.test.tool.core.exception.SystemException;
 import com.zomu.t.epion.tropic.test.tool.core.message.MessageManager;
-import com.zomu.t.epion.tropic.test.tool.selenium.command.WDSelectByIndexElement;
-import com.zomu.t.epion.tropic.test.tool.selenium.command.WDSelectByValueElement;
+import com.zomu.t.epion.tropic.test.tool.selenium.command.WDSendKeysSpaceElement;
 import com.zomu.t.epion.tropic.test.tool.selenium.message.SeleniumMessages;
-import com.zomu.t.epion.tropic.test.tool.selenium.util.WebElementUtils;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.Select;
 import org.slf4j.Logger;
 
-public class WDSelectByValueElementRunner extends AbstractWDCommandRunner<WDSelectByValueElement> {
+/**
+ * Selenium-WebDriver
+ * スペースキーを指定された場所に入力する.
+ *
+ * @author takashno
+ */
+public class WDSendKeysSpaceElementRunner extends AbstractWDCommandRunner<WDSendKeysSpaceElement> {
     @Override
     public CommandResult execute(
-            final WDSelectByValueElement command,
-            final Logger logger) throws Exception {
+            WDSendKeysSpaceElement command,
+            Logger logger) throws Exception {
 
         // WebDriverを取得
         WebDriver driver = getWebDriver(command);
@@ -26,14 +28,11 @@ public class WDSelectByValueElementRunner extends AbstractWDCommandRunner<WDSele
         WebElement element =
                 findWebElement(driver, command);
 
-        Select select = new Select(element);
-
         if (!element.isDisplayed()) {
             logger.warn(MessageManager.getInstance().getMessage(SeleniumMessages.SELENIUM_WRN_2001));
         }
 
-        select.selectByValue(command.getValue());
-
+        element.sendKeys(Keys.SPACE);
         return CommandResult.getSuccess();
     }
 }

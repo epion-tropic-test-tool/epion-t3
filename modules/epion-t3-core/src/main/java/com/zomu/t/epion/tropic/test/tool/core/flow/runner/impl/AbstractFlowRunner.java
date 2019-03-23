@@ -327,7 +327,7 @@ public abstract class AbstractFlowRunner<
      */
     protected void outputStartFlowLog(Context context, ExecuteScenario executeScenario, ExecuteFlow executeFlow) {
         //log.info("--------------------------------------------------------------------------------------");
-        log.info("■ Start Flow    ■ Scenario ID : {}, Execute Flow ID : {}", executeScenario.getInfo().getId(), executeFlow.getExecuteId());
+        log.info("■ Start Flow    ■ Scenario ID : {}, Flow ID : {}", executeScenario.getInfo().getId(), executeFlow.getFlow().getId());
         //log.info("Scenario ID         : {}", executeScenario.getInfo().getId());
         //log.info("Execute Flow ID  : {}", executeFlow.getExecuteId());
         //log.info("--------------------------------------------------------------------------------------");
@@ -343,21 +343,21 @@ public abstract class AbstractFlowRunner<
     protected void outputEndFlowLog(Context context, ExecuteScenario executeScenario, ExecuteFlow executeFlow) {
         if (executeFlow.getStatus() == FlowStatus.SUCCESS) {
             // log.error("--------------------------------------------------------------------------------------");
-            log.info("■ End Flow      ■ Scenario ID : {}, Execute Flow ID : {}, Flow Status : {}", executeScenario.getInfo().getId(), executeFlow.getExecuteId(), executeFlow.getStatus().name());
+            log.info("■ End Flow      ■ Scenario ID : {}, Flow ID : {}, Flow Status : {}", executeScenario.getInfo().getId(), executeFlow.getFlow().getId(), executeFlow.getStatus().name());
             // log.info("Scenario ID         : {}", executeScenario.getInfo().getId());
             // log.info("Execute Flow ID  : {}", executeFlow.getExecuteId());
             // log.info("Flow Status      : {}", executeFlow.getStatus().name());
             // log.info("--------------------------------------------------------------------------------------");
         } else if (executeFlow.getStatus() == FlowStatus.ERROR) {
             // log.error("--------------------------------------------------------------------------------------");
-            log.error("■ End Flow      ■ Scenario ID : {}, Execute Flow ID : {}, Flow Status : {}", executeScenario.getInfo().getId(), executeFlow.getExecuteId(), executeFlow.getStatus().name());
+            log.error("■ End Flow      ■ Scenario ID : {}, Flow ID : {}, Flow Status : {}", executeScenario.getInfo().getId(), executeFlow.getFlow().getId(), executeFlow.getStatus().name());
             // log.error("Scenario ID         : {}", executeScenario.getInfo().getId());
             // log.error("Execute Flow ID  : {}", executeFlow.getExecuteId());
             // log.error("Flow Status      : {}", executeFlow.getStatus().name());
             // log.error("--------------------------------------------------------------------------------------");
         } else {
             // log.warn("--------------------------------------------------------------------------------------");
-            log.warn("■ End Flow      ■ Scenario ID : {}, Execute Flow ID : {}, Flow Status : {}", executeScenario.getInfo().getId(), executeFlow.getExecuteId(), executeFlow.getStatus().name());
+            log.warn("■ End Flow      ■ Scenario ID : {}, Flow ID : {}, Flow Status : {}", executeScenario.getInfo().getId(), executeFlow.getFlow().getId(), executeFlow.getStatus().name());
             // log.warn("Scenario ID         : {}", executeScenario.getInfo().getId());
             // log.warn("Execute Flow ID  : {}", executeFlow.getExecuteId());
             // log.warn("Flow Status      : {}", executeFlow.getStatus().name());

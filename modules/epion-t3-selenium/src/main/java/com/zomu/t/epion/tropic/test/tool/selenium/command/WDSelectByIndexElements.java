@@ -13,13 +13,7 @@ import org.apache.bval.constraints.NotEmpty;
 @Getter
 @Setter
 @CommandDefinition(id = "WDSelectByIndexElements", runner = WDSelectByIndexElementsRunner.class)
-public class WDSelectByIndexElements extends Command {
-
-    @NotEmpty
-    private String refWebDriver;
-
-    @NotEmpty
-    private String selector;
+public class WDSelectByIndexElements extends WDCommand {
 
     private Integer index;
 
