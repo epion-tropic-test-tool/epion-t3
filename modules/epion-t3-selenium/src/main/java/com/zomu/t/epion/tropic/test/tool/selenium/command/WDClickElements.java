@@ -21,5 +21,5 @@ public class WDClickElements extends Command {
     private String selector;
 
     @NotNull
-    private Integer index;
+    private Integer elementIndex;
 }

@@ -30,7 +30,7 @@ public class WDClickElementsRunner extends AbstractCommandRunner<WDClickElements
             throw new SystemException(SeleniumMessages.SELENIUM_ERR_9007, command.getRefWebDriver());
         }
 
-        int targetIndex = command.getIndex() == null ? 0 : command.getIndex();
+        int targetIndex = command.getElementIndex() == null ? 0 : command.getElementIndex();
 
         List<WebElement> elements =
                 WebElementUtils.getInstance().findWebElements(driver, command.getSelector(), command.getTarget());

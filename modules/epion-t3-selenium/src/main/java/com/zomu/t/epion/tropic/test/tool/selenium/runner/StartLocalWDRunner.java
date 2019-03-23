@@ -16,6 +16,9 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.slf4j.Logger;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.text.DecimalFormat;
 import java.util.Map;
 
@@ -46,21 +49,29 @@ public class StartLocalWDRunner extends AbstractCommandRunner<StartLocalWD> {
         WebDriver.Options options = null;
         WebDriver driver = null;
 
+        // Driverの配置パスを解決
+        Path driverPath = Paths.get(getCommandBelongScenarioDirectory(), command.getDriverPath());
+
+        // Driverの配置パスが存在しなかった場合はエラー
+        if (Files.notExists(driverPath)) {
+            throw new SystemException(SeleniumMessages.SELENIUM_ERR_9009, driverPath.toString());
+        }
+
         switch (browserType) {
             case CHROME:
                 System.setProperty("webdriver.chrome.driver",
-                        command.getDriverPath());
+                        driverPath.toString());
                 ChromeOptions chromeOptions = new ChromeOptions();
                 driver = new ChromeDriver(chromeOptions);
                 break;
             case FIREFOX:
                 System.setProperty("webdriver.gecko.driver",
-                        command.getDriverPath());
+                        driverPath.toString());
                 driver = new FirefoxDriver();
                 break;
             case IE:
                 System.setProperty("webdriver.ie.driver",
-                        command.getDriverPath());
+                        driverPath.toString());
                 driver = new InternetExplorerDriver();
                 break;
             case PHANTOMJS:

@@ -18,5 +18,5 @@ public class WDSendKeysElements extends Command {
     @NotEmpty
     private String selector;
 
-    private Integer index;
+    private Integer elementIndex;
 }

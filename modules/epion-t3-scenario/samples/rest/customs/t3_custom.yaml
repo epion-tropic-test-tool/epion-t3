@@ -10,3 +10,4 @@ customs:
     rdb: "com.zomu.t.epion.tropic.test.tool.rdb"
     log: "com.zomu.t.epion.tropic.test.tool.log"
     ssh: "com.zomu.t.epion.tropic.test.tool.ssh"
+    selenium: "com.zomu.t.epion.tropic.test.tool.selenium"

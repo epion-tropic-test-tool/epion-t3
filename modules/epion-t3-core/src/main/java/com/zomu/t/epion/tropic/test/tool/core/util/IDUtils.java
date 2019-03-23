@@ -32,12 +32,12 @@ public final class IDUtils {
     /**
      * FullコマンドIDパターン.
      */
-    private static final Pattern FULL_COMMAND_ID_PATTERN = Pattern.compile("([^.]+)@([^.]+)");
+    private static final Pattern FULL_COMMAND_ID_PATTERN = Pattern.compile("([^@]+)@([^@]+)");
 
     /**
      * Full設定IDパターン.
      */
-    private static final Pattern FULL_CONFIGURATION_ID_PATTERN = Pattern.compile("([^.]+)@([^.]+)");
+    private static final Pattern FULL_CONFIGURATION_ID_PATTERN = Pattern.compile("([^@]+)@([^@]+)");
 
     /**
      * プライベートコンストラクタ
@@ -84,7 +84,7 @@ public final class IDUtils {
      * @return シナリオID
      */
     public String extractBelongScenarioIdFromFqcn(String fullQueryCommandId) {
-        if (!StringUtils.isNotEmpty(fullQueryCommandId)) {
+        if (StringUtils.isNotEmpty(fullQueryCommandId)) {
             Matcher m = FULL_COMMAND_ID_PATTERN.matcher(fullQueryCommandId);
             if (m.find()) {
                 return m.group(1);

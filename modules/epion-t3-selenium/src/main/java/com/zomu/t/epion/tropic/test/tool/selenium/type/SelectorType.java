@@ -15,7 +15,7 @@ public enum SelectorType {
     CSS_SELECTOR("cssSelector", By.ByCssSelector.class),
     LINK_TEXT("linkText", By.ByLinkText.class),
     NAME("name", By.ByName.class),
-    XPATH("xpath", By.ByName.class),
+    XPATH("xpath", By.ByXPath.class),
     ;
 
     private String value;
