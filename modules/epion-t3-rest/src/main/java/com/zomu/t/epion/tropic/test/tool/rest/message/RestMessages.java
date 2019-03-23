@@ -28,6 +28,7 @@ public enum RestMessages implements Messages {
     REST_ERR_9015("com.zomu.t.epion.t3.rest.err.9015"),
     REST_ERR_9016("com.zomu.t.epion.t3.rest.err.9016"),
     REST_ERR_9017("com.zomu.t.epion.t3.rest.err.9017"),
+    REST_ERR_9018("com.zomu.t.epion.t3.rest.err.9018"),
     REST_INFO_1001("com.zomu.t.epion.t3.rest.info.1001"),
     REST_INFO_1002("com.zomu.t.epion.t3.rest.info.1002"),;
 

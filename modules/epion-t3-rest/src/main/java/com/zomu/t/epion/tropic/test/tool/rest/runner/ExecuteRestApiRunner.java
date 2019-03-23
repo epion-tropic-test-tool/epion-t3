@@ -10,6 +10,8 @@ import okhttp3.*;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 
+import java.io.UnsupportedEncodingException;
+import java.nio.charset.Charset;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -91,15 +93,15 @@ public class ExecuteRestApiRunner extends AbstractCommandRunner<ExecuteRestApi> 
                 break;
             case PUT:
                 request = requestBuilder
-                        .put(RequestBody.create(mimeType, command.getRequest().getBody())).build();
+                        .put(RequestBody.create(mimeType, getEncodedBody(command))).build();
                 break;
             case POST:
                 request = requestBuilder
-                        .post(RequestBody.create(mimeType, command.getRequest().getBody())).build();
+                        .post(RequestBody.create(mimeType, getEncodedBody(command))).build();
                 break;
             case PATCH:
                 request = requestBuilder
-                        .patch(RequestBody.create(mimeType, command.getRequest().getBody())).build();
+                        .patch(RequestBody.create(mimeType, getEncodedBody(command))).build();
                 break;
             default:
 
@@ -138,5 +140,31 @@ public class ExecuteRestApiRunner extends AbstractCommandRunner<ExecuteRestApi> 
 
 
         return CommandResult.getSuccess();
+    }
+
+    /**
+     * リクエストボディをエンコーディングして返却.
+     * 不要な場合は、そのまま返却.
+     *
+     * @param command
+     * @return
+     */
+    private String getEncodedBody(ExecuteRestApi command) {
+        String body = null;
+        try {
+            if (StringUtils.isNotEmpty(command.getBodyEncoding())) {
+                if (Charset.isSupported(command.getBodyEncoding())) {
+                    body = new String(command.getRequest().getBody().getBytes(Charset.forName("UTF-8")),
+                            command.getBodyEncoding());
+                } else {
+                    throw new SystemException(RestMessages.REST_ERR_9018, command.getBodyEncoding());
+                }
+            } else {
+                body = command.getRequest().getBody();
+            }
+        } catch (UnsupportedEncodingException e) {
+            throw new SystemException(RestMessages.REST_ERR_9018, command.getBodyEncoding());
+        }
+        return body;
     }
 }
