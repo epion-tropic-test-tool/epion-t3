@@ -9,7 +9,7 @@ import org.apache.bval.constraints.NotEmpty;
 
 @Getter
 @Setter
-@CommandDefinition(id = "WDSelectElements", runner = WDSelectVisibleTextElementRunner.class)
+@CommandDefinition(id = "WDSelectVisibleTextElements", runner = WDSelectVisibleTextElementRunner.class)
 public class WDSelectVisibleTextElements extends Command {
 
     @NotEmpty

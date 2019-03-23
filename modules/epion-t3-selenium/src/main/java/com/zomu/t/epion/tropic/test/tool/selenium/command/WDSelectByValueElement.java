@@ -7,14 +7,18 @@ import lombok.Getter;
 import lombok.Setter;
 import org.apache.bval.constraints.NotEmpty;
 
+/**
+ * @author takashno
+ */
 @Getter
 @Setter
-@CommandDefinition(id = "WDSelectVisibleTextElement", runner = WDSelectVisibleTextElementRunner.class)
-public class WDSelectVisibleTextElement extends Command {
+@CommandDefinition(id = "WDSelectByValueElement", runner = WDSelectVisibleTextElementRunner.class)
+public class WDSelectByValueElement extends Command {
 
     @NotEmpty
     private String refWebDriver;
 
     @NotEmpty
     private String selector;
+    
 }
