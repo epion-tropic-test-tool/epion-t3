@@ -17,7 +17,7 @@ public class CreateUUIDStringRunner extends AbstractCommandRunner<CreateUUIDStri
     @Override
     public CommandResult execute(CreateUUIDString command, Logger logger) throws Exception {
         if (StringUtils.isEmpty(command.getTarget())) {
-            throw new SystemException(BasicMessages.BASIC_ERR_9003);
+            throw new SystemException(BasicMessages.BASIC_ERR_9005);
         }
         UUID uuid = UUID.randomUUID();
         setVariable(command.getTarget(), uuid.toString());
