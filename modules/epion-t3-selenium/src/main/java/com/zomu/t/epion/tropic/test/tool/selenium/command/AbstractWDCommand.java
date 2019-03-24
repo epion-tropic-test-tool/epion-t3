@@ -7,7 +7,7 @@ import org.apache.bval.constraints.NotEmpty;
 
 @Getter
 @Setter
-public abstract class WDCommand extends Command {
+public abstract class AbstractWDCommand extends Command {
 
     @NotEmpty
     private String refWebDriver;

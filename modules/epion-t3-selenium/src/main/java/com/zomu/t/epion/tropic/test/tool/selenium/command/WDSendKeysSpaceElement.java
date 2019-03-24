@@ -8,5 +8,5 @@ import lombok.Setter;
 @Getter
 @Setter
 @CommandDefinition(id = "WDSendKeysSpaceElement", runner = WDSendKeysSpaceElementRunner.class)
-public class WDSendKeysSpaceElement extends WDCommand {
+public class WDSendKeysSpaceElement extends AbstractWDCommand {
 }

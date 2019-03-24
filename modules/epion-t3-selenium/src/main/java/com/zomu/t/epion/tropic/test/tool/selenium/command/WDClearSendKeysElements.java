@@ -8,6 +8,6 @@ import lombok.Setter;
 @Getter
 @Setter
 @CommandDefinition(id = "WDClearSendKeysElements", runner = WDClearSendKeysElementsRunner.class)
-public class WDClearSendKeysElements extends WDCommand {
+public class WDClearSendKeysElements extends AbstractWDCommand {
     private Integer elementIndex;
 }

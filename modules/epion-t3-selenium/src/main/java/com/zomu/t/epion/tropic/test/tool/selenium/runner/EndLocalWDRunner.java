@@ -17,12 +17,17 @@ public class EndLocalWDRunner extends AbstractCommandRunner<EndLocalWD> {
 
         // WebDriverを取得
         WebDriver driver = resolveVariables(command.getRefWebDriver());
+
         // WebDriverが解決できない場合はエラー
         if (driver == null) {
             throw new SystemException(SeleniumMessages.SELENIUM_ERR_9007, command.getRefWebDriver());
         }
+
         driver.close();
         driver.quit();
+
+        removeVariable(command.getRefWebDriver());
+
         return CommandResult.getSuccess();
     }
 }

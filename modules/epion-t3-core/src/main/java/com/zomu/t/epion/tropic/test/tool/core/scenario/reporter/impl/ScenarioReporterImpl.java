@@ -126,7 +126,7 @@ public final class ScenarioReporterImpl implements ThymeleafScenarioReporter<Exe
             }
 
             // 変数の設定
-            variable.put("activity", generateSvg(executeScenario));
+            // variable.put("activity", generateSvg(executeScenario));
             variable.put("executeContext", executeContext);
             variable.put("executeScenario", executeScenario);
             variable.put("error", t);

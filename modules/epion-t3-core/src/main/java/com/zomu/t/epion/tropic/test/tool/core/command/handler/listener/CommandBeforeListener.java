@@ -23,9 +23,9 @@ public interface CommandBeforeListener {
      * @param executeCommand
      */
     void beforeCommand(CommandRunner commandRunner,
-                      ExecuteContext executeContext,
-                      ExecuteScenario executeScenario,
-                      ExecuteFlow executeFlow,
-                      ExecuteCommand executeCommand);
+                       ExecuteContext executeContext,
+                       ExecuteScenario executeScenario,
+                       ExecuteFlow executeFlow,
+                       ExecuteCommand executeCommand);
 
 }

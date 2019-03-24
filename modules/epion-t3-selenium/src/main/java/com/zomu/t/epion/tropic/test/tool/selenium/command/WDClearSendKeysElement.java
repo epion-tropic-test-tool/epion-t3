@@ -5,8 +5,11 @@ import com.zomu.t.epion.tropic.test.tool.selenium.runner.WDClearSendKeysElementR
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ *
+ */
 @Getter
 @Setter
 @CommandDefinition(id = "WDClearSendKeysElement", runner = WDClearSendKeysElementRunner.class)
-public class WDClearSendKeysElement extends WDCommand {
+public class WDClearSendKeysElement extends AbstractWDCommand {
 }
