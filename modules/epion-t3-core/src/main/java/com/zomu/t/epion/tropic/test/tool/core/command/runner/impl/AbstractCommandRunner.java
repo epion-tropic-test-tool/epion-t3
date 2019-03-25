@@ -118,6 +118,7 @@ public abstract class AbstractCommandRunner<COMMAND extends Command>
             logger.debug("Error Occurred...", t);
             error = t;
             result = new CommandResult();
+            result.setMessage(t.getMessage());
             result.setStatus(CommandStatus.ERROR);
             throw t;
 

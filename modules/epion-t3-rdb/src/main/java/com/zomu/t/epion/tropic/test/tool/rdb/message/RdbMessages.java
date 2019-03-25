@@ -28,6 +28,9 @@ public enum RdbMessages implements Messages {
     RDB_ERR_0013("com.zomu.t.epion.t3.rdb.err.0013"),
     RDB_ERR_0014("com.zomu.t.epion.t3.rdb.err.0014"),
     RDB_ERR_0015("com.zomu.t.epion.t3.rdb.err.0015"),
+    RDB_ERR_0016("com.zomu.t.epion.t3.rdb.err.0016"),
+    RDB_ERR_0017("com.zomu.t.epion.t3.rdb.err.0017"),
+    RDB_ERR_0018("com.zomu.t.epion.t3.rdb.err.0018"),
     ;
 
     /**
