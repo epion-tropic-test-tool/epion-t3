@@ -49,11 +49,16 @@
                 <tr>
                     <th class="bg-dark" style="color:white">Body</th>
                     <td>
-                        <code th:utext="${stringUtils.prettyHtml(jsonUtils.rePretty(request.body))}">
-                            {
-                            "key" : "value"
-                            }
-                        </code>
+                        <th:block th:if="${request.body}">
+                            <code th:utext="${stringUtils.prettyHtml(jsonUtils.rePretty(request.body))}">
+                                {
+                                "key" : "value"
+                                }
+                            </code>
+                        </th:block>
+                        <th:block th:if="${request.body==null}">
+                            Request Body is Nothing
+                        </th:block>
                     </td>
                 </tr>
                 </tbody>
@@ -86,11 +91,16 @@
                 <tr>
                     <th class="bg-dark" style="color:white">Body</th>
                     <td>
-                        <code th:utext="${stringUtils.prettyHtml(jsonUtils.rePretty(response.body))}">
-                            {
-                            "key" : "value"
-                            }
-                        </code>
+                        <th:block th:if="${response.body}">
+                            <code th:utext="${stringUtils.prettyHtml(jsonUtils.rePretty(response.body))}">
+                                {
+                                "key" : "value"
+                                }
+                            </code>
+                        </th:block>
+                        <th:block th:if="${response.body==null}">
+                            Response Body is Nothing
+                        </th:block>
                     </td>
                 </tr>
                 </tbody>
