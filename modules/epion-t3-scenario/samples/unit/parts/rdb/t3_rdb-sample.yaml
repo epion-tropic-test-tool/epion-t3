@@ -10,6 +10,7 @@ commands:
     description: TODO DBのTODOテーブルのエクスポート.
     command: "ExportRdbData"
     rdbConnectConfigRef: "parts-tododb-dataset@tododb-connection-config"
+    dataSetType: "xml"
     tables:
      - table: "todo"
        query: "select * from todo"
@@ -25,3 +26,4 @@ commands:
     command: "ExecuteRdbQuery"
     rdbConnectConfigRef: "parts-tododb-dataset@tododb-connection-config"
     value: "delete from todo"
+

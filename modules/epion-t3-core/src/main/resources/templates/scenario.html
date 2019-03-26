@@ -321,16 +321,20 @@
                                                 th:class="${executeCommand.commandResult.assertStatus.getCssClass()}">SUCCESS
                                             </td>
                                         </tr>
+                                        <th:block th:if="${executeCommand.commandResult.expected}">
                                         <tr>
                                             <th style="background:#725b71;color:white">Expected</th>
                                             <td th:text="${executeCommand.commandResult.expected}" colspan="3">hoge
                                             </td>
                                         </tr>
+                                        </th:block>
+                                        <th:block th:if="${executeCommand.commandResult.actual}">
                                         <tr>
                                             <th style="background:#725b71;color:white">Actual</th>
                                             <td th:text="${executeCommand.commandResult.actual}" colspan="3">hoge
                                             </td>
                                         </tr>
+                                        </th:block>
                                     </th:block>
                                     <tr>
                                         <th class="bg-dark" style="color:white">Command</th>

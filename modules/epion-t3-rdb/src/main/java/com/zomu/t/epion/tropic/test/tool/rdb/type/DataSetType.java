@@ -19,6 +19,8 @@ public enum DataSetType {
 
     XML("xml"),
 
+    FLAT_XML("flatXml"),
+
     EXCEL("excel");
 
     /**

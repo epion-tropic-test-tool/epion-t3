@@ -138,14 +138,15 @@ public final class BaseOriginalHoldParser implements IndividualTargetParser<Cont
 
                     log.debug("Error Occurred...", e);
 
-                    if (CommandCanNotResolveException.class.isAssignableFrom(e.getCause().getClass())) {
+                    if (e.getCause() != null && CommandCanNotResolveException.class.isAssignableFrom(e.getCause().getClass())) {
                         CommandCanNotResolveException ccnre = CommandCanNotResolveException.class.cast(e.getCause());
                         log.warn("command not found : {}", ccnre.getCommandId());
                         errors.add(ScenarioParseError.builder().filePath(file).type(ScenarioPaseErrorType.COMMAND_ERROR)
                                 .message(MessageManager.getInstance().getMessage(CoreMessages.CORE_ERR_0006, file, ccnre.getCommandId())).build());
                     } else {
+                        log.error("Error Occurred...", e);
                         log.warn("file is not t3 format: {} -> ignore...", file);
-                        errors.add(ScenarioParseError.builder().filePath(file).type(ScenarioPaseErrorType.PARSE_ERROR).message("").build());
+                        errors.add(ScenarioParseError.builder().filePath(file).type(ScenarioPaseErrorType.PARSE_ERROR).build());
                     }
                     return FileVisitResult.CONTINUE;
                 }

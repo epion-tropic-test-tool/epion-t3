@@ -1,5 +1,6 @@
 package com.zomu.t.epion.tropic.test.tool.core.command.reporter;
 
+import com.zomu.t.epion.tropic.test.tool.core.command.model.CommandResult;
 import com.zomu.t.epion.tropic.test.tool.core.context.Context;
 import com.zomu.t.epion.tropic.test.tool.core.context.execute.ExecuteCommand;
 import com.zomu.t.epion.tropic.test.tool.core.context.execute.ExecuteContext;
@@ -11,6 +12,7 @@ import com.zomu.t.epion.tropic.test.tool.core.model.scenario.Command;
  * コマンドレポート出力処理インタフェース.
  *
  * @param <COMMAND>
+ * @param <COMMAND_RESULT>
  * @param <EXECUTE_CONTEXT>
  * @param <EXECUTE_SCENARIO>
  * @param <EXECUTE_FLOW>
@@ -19,6 +21,7 @@ import com.zomu.t.epion.tropic.test.tool.core.model.scenario.Command;
  */
 public interface CommandReporter<
         COMMAND extends Command,
+        COMMAND_RESULT extends CommandResult,
         EXECUTE_CONTEXT extends ExecuteContext,
         EXECUTE_SCENARIO extends ExecuteScenario,
         EXECUTE_FLOW extends ExecuteFlow,
@@ -26,6 +29,7 @@ public interface CommandReporter<
 
 
     void report(COMMAND command,
+                COMMAND_RESULT result,
                 Context context,
                 ExecuteContext executeContext,
                 ExecuteScenario executeScenario,

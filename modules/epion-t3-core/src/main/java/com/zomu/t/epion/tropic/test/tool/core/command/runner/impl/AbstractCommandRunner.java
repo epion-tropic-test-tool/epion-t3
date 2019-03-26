@@ -139,6 +139,7 @@ public abstract class AbstractCommandRunner<COMMAND extends Command>
                     // レポート出力
                     reporter.report(
                             command,
+                            result,
                             context,
                             executeContext,
                             executeScenario,

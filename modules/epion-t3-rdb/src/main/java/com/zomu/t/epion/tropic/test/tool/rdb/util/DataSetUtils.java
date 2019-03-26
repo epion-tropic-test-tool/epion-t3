@@ -3,13 +3,16 @@ package com.zomu.t.epion.tropic.test.tool.rdb.util;
 import com.zomu.t.epion.tropic.test.tool.core.exception.SystemException;
 import com.zomu.t.epion.tropic.test.tool.rdb.message.RdbMessages;
 import com.zomu.t.epion.tropic.test.tool.rdb.type.DataSetType;
+import com.zomu.t.epion.tropic.test.tool.rdb.writer.XlsxDataSetWriter;
 import org.dbunit.dataset.DataSetException;
 import org.dbunit.dataset.IDataSet;
 import org.dbunit.dataset.excel.XlsDataSet;
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
+import org.dbunit.dataset.xml.FlatXmlWriter;
+import org.dbunit.dataset.xml.XmlDataSet;
+import org.dbunit.dataset.xml.XmlDataSetWriter;
 
-import java.io.FileInputStream;
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.Path;
 
 public final class DataSetUtils {
@@ -60,7 +63,11 @@ public final class DataSetUtils {
                     //break;
                     throw new SystemException(RdbMessages.RDB_ERR_0008);
                 case XML:
+                    iDataSet = new XmlDataSet(fis);
+                    break;
+                case FLAT_XML:
                     FlatXmlDataSetBuilder builder = new FlatXmlDataSetBuilder();
+                    builder.setDtdMetadata(true);
                     builder.setColumnSensing(true);
                     iDataSet = builder.build(fis);
                     break;

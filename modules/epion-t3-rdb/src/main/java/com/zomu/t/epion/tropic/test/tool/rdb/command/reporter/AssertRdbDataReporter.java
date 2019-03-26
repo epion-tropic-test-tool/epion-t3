@@ -1,28 +1,31 @@
-package com.zomu.t.epion.tropic.test.tool.core.command.reporter.impl;
+package com.zomu.t.epion.tropic.test.tool.rdb.command.reporter;
 
-import com.zomu.t.epion.tropic.test.tool.core.command.model.CommandResult;
-import com.zomu.t.epion.tropic.test.tool.core.command.model.NoneCommand;
+import com.zomu.t.epion.tropic.test.tool.core.command.reporter.impl.AbstractThymeleafCommandReporter;
 import com.zomu.t.epion.tropic.test.tool.core.context.execute.ExecuteCommand;
 import com.zomu.t.epion.tropic.test.tool.core.context.execute.ExecuteContext;
 import com.zomu.t.epion.tropic.test.tool.core.context.execute.ExecuteFlow;
 import com.zomu.t.epion.tropic.test.tool.core.context.execute.ExecuteScenario;
+import com.zomu.t.epion.tropic.test.tool.rdb.bean.AssertRdbDataResult;
+import com.zomu.t.epion.tropic.test.tool.rdb.command.model.AssertRdbData;
 
 import java.util.Map;
 
-public class NoneCommandReporter
-        extends AbstractThymeleafCommandReporter<NoneCommand, CommandResult> {
+public class AssertRdbDataReporter
+        extends AbstractThymeleafCommandReporter<AssertRdbData, AssertRdbDataResult> {
     @Override
     public String templatePath() {
-        return null;
+        return "assert-rdb-data-report";
     }
 
     @Override
     public void setVariables(Map<String, Object> variable,
-                             NoneCommand command,
-                             CommandResult commandResult,
+                             AssertRdbData command,
+                             AssertRdbDataResult commandResult,
                              ExecuteContext executeContext,
                              ExecuteScenario executeScenario,
                              ExecuteFlow executeFlow,
                              ExecuteCommand executeCommand) {
+
+        variable.put("tables", commandResult.getTables());
     }
 }

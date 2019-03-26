@@ -1,8 +1,10 @@
 package com.zomu.t.epion.tropic.test.tool.rdb.command.model;
 
+import com.zomu.t.epion.tropic.test.tool.core.annotation.CommandDefinition;
 import com.zomu.t.epion.tropic.test.tool.core.model.scenario.Command;
 import com.zomu.t.epion.tropic.test.tool.rdb.bean.AssertTargetTable;
-import com.zomu.t.epion.tropic.test.tool.rdb.bean.TargetTable;
+import com.zomu.t.epion.tropic.test.tool.rdb.command.reporter.AssertRdbDataReporter;
+import com.zomu.t.epion.tropic.test.tool.rdb.command.runner.AssertRdbDataRunner;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.bval.constraints.NotEmpty;
@@ -11,6 +13,10 @@ import java.util.List;
 
 @Getter
 @Setter
+@CommandDefinition(id = "AssertRdbData",
+        runner = AssertRdbDataRunner.class,
+        assertCommand = true,
+        reporter = AssertRdbDataReporter.class)
 public class AssertRdbData extends Command {
 
     /**

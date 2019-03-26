@@ -18,10 +18,13 @@ import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.database.QueryDataSet;
 import org.dbunit.dataset.IDataSet;
 import org.dbunit.dataset.xml.FlatXmlWriter;
+import org.dbunit.dataset.xml.XmlDataSet;
+import org.dbunit.dataset.xml.XmlDataSetWriter;
 import org.slf4j.Logger;
 
 import javax.sql.DataSource;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.OutputStream;
 import java.nio.file.Path;
 import java.sql.SQLException;
@@ -76,8 +79,17 @@ public class ExportRdbDataRunner extends AbstractCommandRunner<ExportRdbData> {
                     //break;
                     throw new SystemException(RdbMessages.RDB_ERR_0008);
                 case XML:
+                    Path xmlPath = getEvidencePath("export.xml");
+                    try (FileWriter fileWriter = new FileWriter(xmlPath.toFile());) {
+                        XmlDataSetWriter writer2 = new XmlDataSetWriter(fileWriter);
+                        writer2.setPrettyPrint(true);
+                        writer2.write(iDataSet);
+                    }
+                    registrationFileEvidence(xmlPath);
+                    break;
+                case FLAT_XML:
                     Path flatXmlPath = getEvidencePath("export.xml");
-                    try (OutputStream os = new FileOutputStream(flatXmlPath.toFile())) {
+                    try (OutputStream os = new FileOutputStream(flatXmlPath.toFile());) {
                         FlatXmlWriter writer = new FlatXmlWriter(os);
                         writer.write(iDataSet);
                     }

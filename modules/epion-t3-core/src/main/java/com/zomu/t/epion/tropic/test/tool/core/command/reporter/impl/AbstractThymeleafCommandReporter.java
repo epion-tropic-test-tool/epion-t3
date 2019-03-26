@@ -1,5 +1,6 @@
 package com.zomu.t.epion.tropic.test.tool.core.command.reporter.impl;
 
+import com.zomu.t.epion.tropic.test.tool.core.command.model.CommandResult;
 import com.zomu.t.epion.tropic.test.tool.core.context.Context;
 import com.zomu.t.epion.tropic.test.tool.core.context.execute.ExecuteCommand;
 import com.zomu.t.epion.tropic.test.tool.core.context.execute.ExecuteContext;
@@ -28,7 +29,10 @@ import java.util.Map;
  */
 @Slf4j
 public abstract class AbstractThymeleafCommandReporter<
-        COMMAND extends Command> implements ThymeleafCommandReporter<COMMAND, ExecuteContext, ExecuteScenario, ExecuteFlow, ExecuteCommand> {
+        COMMAND extends Command,
+        COMMAND_RESULT extends CommandResult>
+        implements ThymeleafCommandReporter<
+        COMMAND, COMMAND_RESULT, ExecuteContext, ExecuteScenario, ExecuteFlow, ExecuteCommand> {
 
     /**
      * コマンドレポートを出力.
@@ -44,6 +48,7 @@ public abstract class AbstractThymeleafCommandReporter<
     @Override
     public void report(
             COMMAND command,
+            COMMAND_RESULT commandResult,
             Context context,
             ExecuteContext executeContext,
             ExecuteScenario executeScenario,
@@ -73,6 +78,7 @@ public abstract class AbstractThymeleafCommandReporter<
             // カスタム実装での変数設定
             setVariables(variable,
                     command,
+                    commandResult,
                     executeContext,
                     executeScenario,
                     executeFlow,
