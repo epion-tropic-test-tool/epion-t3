@@ -151,19 +151,16 @@ public class ExecuteRestApiRunner extends AbstractCommandRunner<ExecuteRestApi> 
      */
     private String getEncodedBody(ExecuteRestApi command) {
         String body = null;
-        try {
-            if (StringUtils.isNotEmpty(command.getBodyEncoding())) {
-                if (Charset.isSupported(command.getBodyEncoding())) {
-                    body = new String(command.getRequest().getBody().getBytes(Charset.forName("UTF-8")),
-                            command.getBodyEncoding());
-                } else {
-                    throw new SystemException(RestMessages.REST_ERR_9018, command.getBodyEncoding());
-                }
+        if (StringUtils.isNotEmpty(command.getBodyEncoding())) {
+            if (Charset.isSupported(command.getBodyEncoding())) {
+                Charset targetCharset = Charset.forName(command.getBodyEncoding());
+                body = new String(command.getRequest().getBody().getBytes(targetCharset),
+                        targetCharset);
             } else {
-                body = command.getRequest().getBody();
+                throw new SystemException(RestMessages.REST_ERR_9018, command.getBodyEncoding());
             }
-        } catch (UnsupportedEncodingException e) {
-            throw new SystemException(RestMessages.REST_ERR_9018, command.getBodyEncoding());
+        } else {
+            body = command.getRequest().getBody();
         }
         return body;
     }
