@@ -37,7 +37,7 @@ public class AssertResultRow implements Serializable {
      */
     private Integer okColumnCount = 0;
 
-    public void addOkRowCount() {
+    public void addOkColumnCount() {
         okColumnCount++;
     }
 
@@ -46,7 +46,7 @@ public class AssertResultRow implements Serializable {
      */
     private Integer ngColumnCount = 0;
 
-    public void addNgRowCount() {
+    public void addNgColumnCount() {
         ngColumnCount++;
     }
 

@@ -208,14 +208,14 @@ public class AssertRdbDataRunner extends AbstractCommandRunner<AssertRdbData> {
                         if (dataType.compare(expectedValue, actualValue) == 0) {
                             // OK
                             assertColumn.setStatus(AssertStatus.OK);
-                            assertResultRow.addOkRowCount();
+                            assertResultRow.addOkColumnCount();
                             log.debug("[OK] table:{}, column:{}, expected:{}, actual:{}",
                                     assertTargetTable.getTable(), column, expectedValue, actualValue);
                         } else {
                             // NG
                             assertColumn.setStatus(AssertStatus.NG);
-                            assertResultRow.addNgRowCount();
                             if (!assertTargetTable.getIgnoreColumns().contains(column.getColumnName())) {
+                                assertResultRow.addNgColumnCount();
                                 result.setAssertStatus(AssertStatus.NG);
                             }
                             log.debug("!NG! table:{}, column:{}, expected:{}, actual:{}",
