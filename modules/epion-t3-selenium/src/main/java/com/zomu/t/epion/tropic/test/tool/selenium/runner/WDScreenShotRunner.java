@@ -9,6 +9,7 @@ import org.openqa.selenium.WebDriver;
 import org.slf4j.Logger;
 import ru.yandex.qatools.ashot.AShot;
 import ru.yandex.qatools.ashot.Screenshot;
+import ru.yandex.qatools.ashot.shooting.ShootingStrategies;
 
 import javax.imageio.ImageIO;
 import java.nio.file.Path;
@@ -27,7 +28,9 @@ public class WDScreenShotRunner extends AbstractCommandRunner<WDScreenShot> {
         if (driver == null) {
             throw new SystemException(SeleniumMessages.SELENIUM_ERR_9007, command.getRefWebDriver());
         }
-        Screenshot screenshot = new AShot().takeScreenshot(driver);
+        Screenshot screenshot = new AShot()
+                .shootingStrategy(ShootingStrategies.viewportPasting(3000))
+                .takeScreenshot(driver);
         Path evidence = getEvidencePath("ScreenShot.PNG");
         // 保管したイメージを任意の場所に書き出す(1行)
         ImageIO.write(
