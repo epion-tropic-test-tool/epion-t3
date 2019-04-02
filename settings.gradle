@@ -26,3 +26,5 @@ include 'modules:epion-t3-rdb'
 include 'modules:epion-t3-ftp'
 include 'modules:epion-t3-log'
 include 'modules:epion-t3'
+include 'modules:epion-t3-scenario-template'
+

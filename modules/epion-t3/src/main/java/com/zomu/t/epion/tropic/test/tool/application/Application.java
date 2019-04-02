@@ -3,13 +3,16 @@ package com.zomu.t.epion.tropic.test.tool.application;
 import com.google.common.reflect.ClassPath;
 import com.zomu.t.epion.tropic.test.tool.core.annotation.ApplicationVersion;
 import com.zomu.t.epion.tropic.test.tool.core.application.runner.ApplicationRunner;
+import com.zomu.t.epion.tropic.test.tool.core.initialize.InitializeEpion;
 import com.zomu.t.epion.tropic.test.tool.core.message.impl.CoreMessages;
 import com.zomu.t.epion.tropic.test.tool.core.message.MessageManager;
 import com.zomu.t.epion.tropic.test.tool.core.type.Args;
+import com.zomu.t.epion.tropic.test.tool.core.type.InitializeArgs;
 import com.zomu.t.epion.tropic.test.tool.core.type.ExitCode;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.cli.*;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.ArrayUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -17,6 +20,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.nio.charset.Charset;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -32,12 +36,22 @@ public class Application {
 
     private static final Options OPTIONS = new Options();
 
+    private static final Options INITIALIZE_OPTIONS = new Options();
+
     static {
         Arrays.stream(Args.values()).forEach(x -> {
             if (x.isRequired()) {
                 OPTIONS.addRequiredOption(x.getShortName(), x.getLongName(), x.isHasArg(), x.getDescription());
             } else {
                 OPTIONS.addOption(x.getShortName(), x.getLongName(), x.isHasArg(), x.getDescription());
+            }
+        });
+
+        Arrays.stream(InitializeArgs.values()).forEach(x -> {
+            if (x.isRequired()) {
+                INITIALIZE_OPTIONS.addRequiredOption(x.getShortName(), x.getLongName(), x.isHasArg(), x.getDescription());
+            } else {
+                INITIALIZE_OPTIONS.addOption(x.getShortName(), x.getLongName(), x.isHasArg(), x.getDescription());
             }
         });
     }
@@ -57,11 +71,25 @@ public class Application {
         CommandLineParser parser = new DefaultParser();
         CommandLine cmd = null;
 
+        // 初期化オプションがあれば初期化処理を呼び出す
+        if (ArrayUtils.contains(args, "-i")
+                || ArrayUtils.contains(args, "--init")) {
+            try {
+                cmd = parser.parse(INITIALIZE_OPTIONS, args, true);
+            } catch (ParseException e) {
+                log.error("Error Occurred...", e);
+                System.exit(ExitCode.ERROR.getExitCode());
+            }
+            InitializeEpion ie = new InitializeEpion(cmd.getOptionValue(InitializeArgs.OUTPUT_ROOT_PATH.getShortName()));
+            ie.execute();
+            System.exit(ExitCode.NORMAL.getExitCode());
+        }
+
         try {
             // この判定は、versionのみ取得できればよいため緩く解析する
             cmd = parser.parse(OPTIONS, args, true);
         } catch (ParseException e) {
-            log.error("args error...", e);
+            log.error("Error Occurred...", e);
             System.exit(ExitCode.ERROR.getExitCode());
         }
 
