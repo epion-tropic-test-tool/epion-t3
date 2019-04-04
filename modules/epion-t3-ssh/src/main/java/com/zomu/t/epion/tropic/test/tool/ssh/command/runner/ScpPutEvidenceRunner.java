@@ -3,7 +3,8 @@ package com.zomu.t.epion.tropic.test.tool.ssh.command.runner;
 import com.zomu.t.epion.tropic.test.tool.core.command.model.CommandResult;
 import com.zomu.t.epion.tropic.test.tool.core.command.runner.impl.AbstractCommandRunner;
 import com.zomu.t.epion.tropic.test.tool.core.exception.SystemException;
-import com.zomu.t.epion.tropic.test.tool.ssh.command.model.ScpGet;
+import com.zomu.t.epion.tropic.test.tool.ssh.command.model.ScpPut;
+import com.zomu.t.epion.tropic.test.tool.ssh.command.model.ScpPutEvidence;
 import com.zomu.t.epion.tropic.test.tool.ssh.configuration.model.SshConnectionConfiguration;
 import com.zomu.t.epion.tropic.test.tool.ssh.messages.SshMessages;
 import com.zomu.t.epion.tropic.test.tool.ssh.util.ScpUtils;
@@ -14,32 +15,29 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 /**
- * SCPによる転送処理.
+ * エビデンス専用のSCPによる転送処理.
  *
  * @author takashno
  */
-public class ScpGetRunner extends AbstractCommandRunner<ScpGet> {
+public class ScpPutEvidenceRunner extends AbstractCommandRunner<ScpPutEvidence> {
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public CommandResult execute(
-            final ScpGet command,
-            final Logger logger) throws Exception {
+    public CommandResult execute(final ScpPutEvidence command, final Logger logger) throws Exception {
 
         // 接続先情報を取得
         SshConnectionConfiguration sshConnectionConfiguration =
                 referConfiguration(command.getSshConnectConfigRef());
 
-        // 転送するローカルファイルを解決
-        Path localFilePath = getEvidencePath(Paths.get(command.getRemoteFile()).getFileName().toString());
+        // ファイル読み込み
+        Path evidenceFile = referFileEvidence(command.getTarget());
 
         try {
-            ScpUtils.getInstance().get(sshConnectionConfiguration, command.getRemoteFile(), localFilePath.toString());
-            registrationFileEvidence(localFilePath);
+            ScpUtils.getInstance().put(sshConnectionConfiguration, command.getRemoteDir(), evidenceFile.toString());
         } catch (IOException e) {
-            throw new SystemException(e, SshMessages.SSH_ERR_0002);
+            throw new SystemException(e, SshMessages.SSH_ERR_0001);
         }
 
         return CommandResult.getSuccess();
