@@ -18,18 +18,56 @@ import javax.validation.constraints.NotNull;
 @CustomConfigurationDefinition(id = "SshConnectionConfiguration")
 public class SshConnectionConfiguration extends Configuration {
 
+    /**
+     * DefaultSerialVersionUID.
+     */
+    private static final long serialVersionUID = 1L;
+
+    /**
+     * ホスト.
+     */
     @NotEmpty
     private String host;
 
+    /**
+     * 接続ポート.
+     */
     @NotNull
     private Integer port;
 
+    /**
+     * ユーザ.
+     */
     private String user;
 
+    /**
+     * パスワード.
+     */
     private String password;
 
+    /**
+     * 公開鍵ファイルパス.
+     */
     private String pemFilePath;
 
+    /**
+     * アルゴリズム.
+     */
+    private String algorithm;
+
+    /**
+     * パスフレーズ.
+     */
+    private String passPhrase;
+
+    /**
+     * 認証タイプ.
+     */
     @NotEmpty
     private String authType;
+
+    /**
+     * 改行コード.
+     */
+    private String lineSeparator;
 }
