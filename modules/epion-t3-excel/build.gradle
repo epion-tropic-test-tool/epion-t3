@@ -1,0 +1,19 @@
+dependencies {
+
+    compile project(':modules:epion-t3-core')
+
+    // POI
+    compile group: 'org.apache.poi', name: 'poi', version: '4.0.1'
+    compile group: 'org.apache.poi', name: 'poi-ooxml', version: '4.0.1'
+    compile group: 'org.apache.poi', name: 'poi-ooxml-schemas', version: '4.0.1'
+    compile group: 'org.apache.poi', name: 'poi-scratchpad', version: '4.0.1'
+
+}
+
+
+
+
+
+
+
+
