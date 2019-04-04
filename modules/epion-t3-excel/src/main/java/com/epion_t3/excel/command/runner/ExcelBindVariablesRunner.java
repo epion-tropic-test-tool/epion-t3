@@ -13,22 +13,30 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Iterator;
 
+/**
+ *
+ */
 @Slf4j
 public class ExcelBindVariablesRunner extends AbstractCommandRunner<ExcelBindVariables> {
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CommandResult execute(ExcelBindVariables command, Logger logger) throws Exception {
 
-        // 対象のExcelファイルを解決
+        // 対象のExcelファイルパス
         Path targetFilePath = Paths.get(getCommandBelongScenarioDirectory(), command.getTarget()).normalize();
 
-        try (Workbook wb = WorkbookFactory.create(targetFilePath.toFile());) {
-            Iterator<Sheet> sheetIte = wb.sheetIterator();
+        // 保存先のファイルパス
+        Path saveFilePath = getEvidencePath("BindVariables_" + targetFilePath.getFileName().toString());
 
+        try (Workbook wb = WorkbookFactory.create(targetFilePath.toFile());) {
+            // 全シート、全セルを走査し、文字列セルに対してバインド実施後の文字列を設定
+            Iterator<Sheet> sheetIte = wb.sheetIterator();
             while (sheetIte.hasNext()) {
                 Sheet sheet = sheetIte.next();
                 log.debug("Read Sheet. Name : {}", sheet.getSheetName());
-
                 Iterator<Row> rowIte = sheet.rowIterator();
                 while (rowIte.hasNext()) {
                     Row row = rowIte.next();
@@ -36,12 +44,10 @@ public class ExcelBindVariablesRunner extends AbstractCommandRunner<ExcelBindVar
                     while (cellIte.hasNext()) {
                         Cell cell = cellIte.next();
                         if (cell != null) {
-
                             switch (cell.getCellType()) {
                                 case STRING:
                                     String value = cell.getStringCellValue();
-                                    value = value + "1";
-                                    cell.setCellValue(value);
+                                    cell.setCellValue(bind(value));
                                     break;
                                 default:
                                     break;
@@ -51,11 +57,15 @@ public class ExcelBindVariablesRunner extends AbstractCommandRunner<ExcelBindVar
                 }
             }
 
-            try (OutputStream fileOut = new FileOutputStream(targetFilePath.toFile())) {
+            // 書き込み
+            try (OutputStream fileOut = new FileOutputStream(saveFilePath.toFile())) {
                 wb.write(fileOut);
             }
+
+            // エビデンスとして保存
+            registrationFileEvidence(saveFilePath);
         }
-        return null;
+        return CommandResult.getSuccess();
     }
 
 }
