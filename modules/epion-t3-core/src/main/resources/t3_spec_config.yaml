@@ -1,7 +1,7 @@
 t3: 1.0
 info:
   name: core
-  package: com.epion_t3.core
+  customPackage: com.epion_t3.core
   summary:
     - lang: ja_JP
     - content: |
@@ -25,15 +25,22 @@ commands:
       - lang: en_US
         contents: |
         Core Functions.
+    testItem:
+      - lang: ja_JP
+        content: |
+        試験項目書を作成するときの文章。
+      - lang: en_US
+        contents: |
+        Document for Test Item.
     functions:
       - order: 1
-        contents:
+        summary:
           - lang: ja_JP
             content: aaaa
           - lang: en_US
             contents: bbb
       - order: 2
-        contents:
+        summary:
           - lang: ja_JP
             content: aaaa
           - lang: en_US
@@ -51,4 +58,3 @@ commands:
             - lang: en_US
               contents: |
               Core Functions.
-
