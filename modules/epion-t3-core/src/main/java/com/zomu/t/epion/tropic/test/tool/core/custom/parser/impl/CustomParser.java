@@ -8,19 +8,24 @@ import com.zomu.t.epion.tropic.test.tool.core.annotation.FlowDefinition;
 import com.zomu.t.epion.tropic.test.tool.core.command.handler.listener.CommandAfterListener;
 import com.zomu.t.epion.tropic.test.tool.core.command.handler.listener.CommandBeforeListener;
 import com.zomu.t.epion.tropic.test.tool.core.command.handler.listener.CommandErrorListener;
-import com.zomu.t.epion.tropic.test.tool.core.context.*;
+import com.zomu.t.epion.tropic.test.tool.core.context.CommandInfo;
+import com.zomu.t.epion.tropic.test.tool.core.context.Context;
+import com.zomu.t.epion.tropic.test.tool.core.context.CustomConfigurationInfo;
+import com.zomu.t.epion.tropic.test.tool.core.context.FlowInfo;
+import com.zomu.t.epion.tropic.test.tool.core.custom.parser.IndividualTargetParser;
+import com.zomu.t.epion.tropic.test.tool.core.exception.ScenarioParseException;
 import com.zomu.t.epion.tropic.test.tool.core.exception.SystemException;
 import com.zomu.t.epion.tropic.test.tool.core.exception.bean.ScenarioParseError;
-import com.zomu.t.epion.tropic.test.tool.core.custom.parser.IndividualTargetParser;
 import com.zomu.t.epion.tropic.test.tool.core.holder.CommandListenerHolder;
 import com.zomu.t.epion.tropic.test.tool.core.holder.CustomConfigurationHolder;
+import com.zomu.t.epion.tropic.test.tool.core.holder.CustomPackageHolder;
+import com.zomu.t.epion.tropic.test.tool.core.message.MessageManager;
+import com.zomu.t.epion.tropic.test.tool.core.message.impl.CoreMessages;
+import com.zomu.t.epion.tropic.test.tool.core.model.scenario.Command;
 import com.zomu.t.epion.tropic.test.tool.core.model.scenario.Configuration;
 import com.zomu.t.epion.tropic.test.tool.core.model.scenario.Flow;
-import com.zomu.t.epion.tropic.test.tool.core.type.ScenarioPaseErrorType;
-import com.zomu.t.epion.tropic.test.tool.core.model.scenario.Command;
-import com.zomu.t.epion.tropic.test.tool.core.exception.ScenarioParseException;
-import com.zomu.t.epion.tropic.test.tool.core.holder.CustomPackageHolder;
 import com.zomu.t.epion.tropic.test.tool.core.model.scenario.T3Base;
+import com.zomu.t.epion.tropic.test.tool.core.type.ScenarioPaseErrorType;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
@@ -36,12 +41,12 @@ import java.util.stream.Collectors;
  * @author takashno
  */
 @Slf4j
-public final class BaseCustomParser implements IndividualTargetParser {
+public final class CustomParser implements IndividualTargetParser {
 
     /**
      * シングルトンインスタンス.
      */
-    private static final BaseCustomParser instance = new BaseCustomParser();
+    private static final CustomParser instance = new CustomParser();
 
     /**
      * カスタム機能定義のファイルパターン（正規表現）.
@@ -49,9 +54,14 @@ public final class BaseCustomParser implements IndividualTargetParser {
     public static final String CUSTOM_FILENAME_REGEXP_PATTERN = "t3_.*[\\-]?custom.yaml";
 
     /**
+     * カスタム機能の設計定義のファイル名パターン（文字列フォーマット）.
+     */
+    public static final String CUSTOM_SPEC_FILENAME_PATTERN = "et3_%s_spec_config.yaml";
+
+    /**
      * プライベートコンストラクタ.
      */
-    private BaseCustomParser() {
+    private CustomParser() {
         // Do Nothing...
     }
 
@@ -60,7 +70,7 @@ public final class BaseCustomParser implements IndividualTargetParser {
      *
      * @return
      */
-    public static BaseCustomParser getInstance() {
+    public static CustomParser getInstance() {
         return instance;
     }
 
@@ -95,7 +105,7 @@ public final class BaseCustomParser implements IndividualTargetParser {
     /**
      * カスタム機能定義を見つける.
      *
-     * @param context
+     * @param context         コンテキスト
      * @param fileNamePattern
      */
     private void findCustom(final Context context, final String fileNamePattern) {
@@ -105,8 +115,15 @@ public final class BaseCustomParser implements IndividualTargetParser {
             Files.find(Paths.get(context.getOption().getRootPath()),
                     Integer.MAX_VALUE, (p, attr) -> p.toFile().getName().matches(fileNamePattern)).forEach(x -> {
                 try {
-                    context.getOriginal().getCustom().getPackages()
-                            .putAll(context.getObjectMapper().readValue(x.toFile(), T3Base.class).getCustoms().getPackages());
+                    T3Base custom = context.getObjectMapper().readValue(x.toFile(), T3Base.class);
+                    if (custom.getCustoms() != null) {
+                        custom.getCustoms().getPackages().forEach((k, v) -> {
+                            CustomPackageHolder.getInstance().addCustomPackage(k, v);
+                        });
+                    } else {
+                        // カスタム機能定義が未指定の場合は、WARNで警告をしておく.
+                        log.warn(MessageManager.getInstance().getMessage(CoreMessages.CORE_WRN_0003));
+                    }
                 } catch (IOException e) {
                     throw new ScenarioParseException(
                             ScenarioParseError.builder().filePath(x).type(ScenarioPaseErrorType.PARSE_ERROR)
@@ -128,15 +145,20 @@ public final class BaseCustomParser implements IndividualTargetParser {
 
         ClassLoader loader = Thread.currentThread().getContextClassLoader();
 
-        // カスタムコマンド
-        context.getOriginal().getCustom().getPackages().forEach(
-                (k, v) -> CustomPackageHolder.getInstance().addCustomPackage(k, v));
+        Map<String, String> customPackages = CustomPackageHolder.getInstance().getCustomPackages();
 
         // カスタム機能のパッケージを走査
-        for (Map.Entry<String, String> entry : context.getOriginal().getCustom().getPackages().entrySet()) {
-
+        for (Map.Entry<String, String> entry : customPackages.entrySet()) {
 
             log.debug("start parse custom function packages -> {}:{}", entry.getKey(), entry.getValue());
+
+            // カスタム機能の設計データを読み込み
+//            String specFileName = String.format(CUSTOM_SPEC_FILENAME_PATTERN, entry.getKey());
+//            try (InputStream is = loader.getResourceAsStream(specFileName)) {
+//                ET3Spec et3Spec = context.getObjectMapper().readValue(is, ET3Spec.class);
+//            } catch (IOException e) {
+//                throw new SystemException(e, CoreMessages.CORE_ERR_0024, entry.getKey(), entry.getValue());
+//            }
 
             // カスタム機能の指定パッケージ配下の全てのクラスを取得
             Set<Class<?>> allClasses = null;
@@ -146,7 +168,7 @@ public final class BaseCustomParser implements IndividualTargetParser {
                         .map(info -> info.load())
                         .collect(Collectors.toSet());
             } catch (IOException e) {
-                throw new SystemException(e);
+                throw new SystemException(e, CoreMessages.CORE_ERR_0025);
             }
 
             // カスタムコマンドを解析
@@ -161,10 +183,7 @@ public final class BaseCustomParser implements IndividualTargetParser {
                                 .reporter(command.reporter()).build();
                         CustomPackageHolder.getInstance().addCustomCommandInfo(
                                 command.id(), commandInfo);
-                        // TODO:シナリオを動かすときに使うが、果たして重複保持が必要か？
-                        context.getCustomCommands().put(command.id(), commandInfo);
                     });
-
 
             // カスタムFlowを解析
             allClasses.stream()
@@ -176,8 +195,6 @@ public final class BaseCustomParser implements IndividualTargetParser {
                         FlowInfo flowInfo = FlowInfo.builder().id(flow.id()).model(x).runner(flow.runner()).build();
                         CustomPackageHolder.getInstance().addCustomFlowInfo(
                                 flow.id(), flowInfo);
-                        // TODO:シナリオを動かすときに使うが、果たして重複保持が必要か？
-                        context.getCustomFlows().put(flow.id(), flowInfo);
                     });
 
             // カスタム設定を解析
@@ -190,8 +207,6 @@ public final class BaseCustomParser implements IndividualTargetParser {
                         CustomConfigurationInfo customConfigurationInfo =
                                 CustomConfigurationInfo.builder().id(configuration.id()).model(x).build();
                         CustomConfigurationHolder.getInstance().addCustomConfigurationInfo(customConfigurationInfo);
-                        // :いるっけ・・・？経緯を忘れすぎてよくわからん・・・
-                        context.getCustomConfigurations().put(configuration.id(), customConfigurationInfo);
                     });
 
             // カスタムコマンドリスナーを解析

@@ -36,13 +36,16 @@ public enum CoreMessages implements Messages {
     CORE_ERR_0021("com.zomu.t.epion.t3.core.err.0021"),
     CORE_ERR_0022("com.zomu.t.epion.t3.core.err.0022"),
     CORE_ERR_0023("com.zomu.t.epion.t3.core.err.0023"),
+    CORE_ERR_0024("com.epion_t3.core.err.0024"),
+    CORE_ERR_0025("com.epion_t3.core.err.0025"),
     CORE_ERR_1001("com.zomu.t.epion.t3.core.err.1001"),
     CORE_ERR_1002("com.zomu.t.epion.t3.core.err.1002"),
     CORE_ERR_1003("com.zomu.t.epion.t3.core.err.1003"),
     CORE_ERR_1004("com.zomu.t.epion.t3.core.err.1004"),
     CORE_ERR_1005("com.zomu.t.epion.t3.core.err.1005"),
     CORE_WRN_0001("com.zomu.t.epion.t3.core.wrn.0001"),
-    CORE_WRN_0002("com.zomu.t.epion.t3.core.wrn.0002"),;
+    CORE_WRN_0002("com.zomu.t.epion.t3.core.wrn.0002"),
+    CORE_WRN_0003("com.epion_t3.core.wrn.0003"),;
 
     /**
      * メッセージコード.

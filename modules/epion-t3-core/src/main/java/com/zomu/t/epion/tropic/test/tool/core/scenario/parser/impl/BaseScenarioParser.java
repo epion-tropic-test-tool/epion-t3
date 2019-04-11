@@ -2,7 +2,7 @@ package com.zomu.t.epion.tropic.test.tool.core.scenario.parser.impl;
 
 import com.zomu.t.epion.tropic.test.tool.core.context.Context;
 import com.zomu.t.epion.tropic.test.tool.core.exception.SystemException;
-import com.zomu.t.epion.tropic.test.tool.core.custom.parser.impl.BaseCustomParser;
+import com.zomu.t.epion.tropic.test.tool.core.custom.parser.impl.CustomParser;
 import com.zomu.t.epion.tropic.test.tool.core.custom.parser.impl.BaseOriginalHoldParser;
 import com.zomu.t.epion.tropic.test.tool.core.message.impl.CoreMessages;
 import com.zomu.t.epion.tropic.test.tool.core.scenario.parser.ScenarioParser;
@@ -49,7 +49,7 @@ public final class BaseScenarioParser implements ScenarioParser<Context> {
         }
 
         // カスタム定義の解析
-        BaseCustomParser.getInstance().parse(context);
+        CustomParser.getInstance().parse(context);
 
         // オリジナルの解析
         // 全シナリオファイルをここで一度解析する

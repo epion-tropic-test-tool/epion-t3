@@ -3,6 +3,7 @@ package com.zomu.t.epion.tropic.test.tool.core.holder;
 import com.zomu.t.epion.tropic.test.tool.core.context.CommandInfo;
 import com.zomu.t.epion.tropic.test.tool.core.context.FlowInfo;
 
+import java.util.Collections;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -20,6 +21,8 @@ public final class CustomPackageHolder {
 
     /**
      * カスタムパッケージ.
+     * Key：カスタム名
+     * Value：カスタムパッケージ
      */
     private static final Map<String, String> customPackages = new ConcurrentHashMap<>();
 
@@ -69,6 +72,15 @@ public final class CustomPackageHolder {
      */
     public String getCustomPackage(String customName) {
         return customPackages.get(customName);
+    }
+
+    /**
+     * カスタムパッケージマップを取得する.
+     *
+     * @return 変更不可Map
+     */
+    public Map<String, String> getCustomPackages() {
+        return Collections.unmodifiableMap(customPackages);
     }
 
     // -----------------------------------------------------------------------------------------------------------

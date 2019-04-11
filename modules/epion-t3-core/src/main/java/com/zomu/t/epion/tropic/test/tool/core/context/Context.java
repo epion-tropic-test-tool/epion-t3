@@ -29,15 +29,6 @@ public class Context implements Serializable {
     @Getter
     private final Original original = new Original();
 
-    @Getter
-    private final Map<String, CommandInfo> customCommands = new ConcurrentHashMap<>();
-
-    @Getter
-    private final Map<String, FlowInfo> customFlows = new ConcurrentHashMap<>();
-
-    @Getter
-    private final Map<String, CustomConfigurationInfo> customConfigurations = new ConcurrentHashMap<>();
-
     /**
      * 実行引数オプション.
      */
