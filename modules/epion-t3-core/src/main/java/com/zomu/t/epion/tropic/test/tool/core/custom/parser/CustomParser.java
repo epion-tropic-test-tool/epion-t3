@@ -1,0 +1,327 @@
+package com.zomu.t.epion.tropic.test.tool.core.custom.parser;
+
+import com.google.common.reflect.ClassPath;
+import com.zomu.t.epion.tropic.test.tool.core.annotation.CommandDefinition;
+import com.zomu.t.epion.tropic.test.tool.core.annotation.CommandListener;
+import com.zomu.t.epion.tropic.test.tool.core.annotation.CustomConfigurationDefinition;
+import com.zomu.t.epion.tropic.test.tool.core.annotation.FlowDefinition;
+import com.zomu.t.epion.tropic.test.tool.core.command.handler.listener.CommandAfterListener;
+import com.zomu.t.epion.tropic.test.tool.core.command.handler.listener.CommandBeforeListener;
+import com.zomu.t.epion.tropic.test.tool.core.command.handler.listener.CommandErrorListener;
+import com.zomu.t.epion.tropic.test.tool.core.context.*;
+import com.zomu.t.epion.tropic.test.tool.core.common.parser.IndividualTargetParser;
+import com.zomu.t.epion.tropic.test.tool.core.exception.ScenarioParseException;
+import com.zomu.t.epion.tropic.test.tool.core.exception.SystemException;
+import com.zomu.t.epion.tropic.test.tool.core.exception.bean.ScenarioParseError;
+import com.zomu.t.epion.tropic.test.tool.core.holder.CommandListenerHolder;
+import com.zomu.t.epion.tropic.test.tool.core.holder.CustomConfigurationHolder;
+import com.zomu.t.epion.tropic.test.tool.core.holder.CustomPackageHolder;
+import com.zomu.t.epion.tropic.test.tool.core.message.MessageManager;
+import com.zomu.t.epion.tropic.test.tool.core.message.impl.CoreMessages;
+import com.zomu.t.epion.tropic.test.tool.core.model.scenario.Command;
+import com.zomu.t.epion.tropic.test.tool.core.model.scenario.Configuration;
+import com.zomu.t.epion.tropic.test.tool.core.model.scenario.Flow;
+import com.zomu.t.epion.tropic.test.tool.core.model.scenario.T3Base;
+import com.zomu.t.epion.tropic.test.tool.core.model.spec.ET3Spec;
+import com.zomu.t.epion.tropic.test.tool.core.common.type.ScenarioPaseErrorType;
+import lombok.extern.slf4j.Slf4j;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.Comparator;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+/**
+ * カスタム機能の定義を解析するクラス.
+ *
+ * @author takashno
+ */
+@Slf4j
+public final class CustomParser implements IndividualTargetParser {
+
+    /**
+     * シングルトンインスタンス.
+     */
+    private static final CustomParser instance = new CustomParser();
+
+    /**
+     * カスタム機能定義のファイルパターン（正規表現）.
+     */
+    public static final String CUSTOM_FILENAME_REGEXP_PATTERN = "et3_.*[\\-]?custom.yaml";
+
+    /**
+     * カスタム機能の設計定義のファイル名パターン（文字列フォーマット）.
+     */
+    public static final String CUSTOM_SPEC_FILENAME_PATTERN = "et3_%s_spec_config.yaml";
+
+    /**
+     * プライベートコンストラクタ.
+     */
+    private CustomParser() {
+        // Do Nothing...
+    }
+
+    /**
+     * インスタンスを取得する.
+     *
+     * @return
+     */
+    public static CustomParser getInstance() {
+        return instance;
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @param context
+     */
+    @Override
+    public void parse(Context context) {
+        parse(context, CUSTOM_FILENAME_REGEXP_PATTERN);
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @param context
+     * @param fileNamePattern
+     */
+    @Override
+    public void parse(final Context context, String fileNamePattern) {
+
+        Context baseContext = Context.class.cast(context);
+
+        // 読み込み対象のカスタム機能の一覧を取得する
+        findCustom(baseContext, fileNamePattern);
+
+        // カスタム設計を解析する
+        parseCustomSpec(baseContext);
+
+        // カスタム機能を解析する
+        parseCustom(baseContext);
+
+    }
+
+    /**
+     * カスタム機能定義を見つける.
+     *
+     * @param context         コンテキスト
+     * @param fileNamePattern
+     */
+    private void findCustom(final Context context, final String fileNamePattern) {
+
+        try {
+            // 再帰的にカスタム定義ファイルを見つける
+            Files.find(Paths.get(context.getOption().getRootPath()),
+                    Integer.MAX_VALUE, (p, attr) -> p.toFile().getName().matches(fileNamePattern)).forEach(x -> {
+                try {
+                    T3Base custom = context.getObjectMapper().readValue(x.toFile(), T3Base.class);
+                    if (custom.getCustoms() != null) {
+                        custom.getCustoms().getPackages().forEach((k, v) -> {
+                            CustomPackageHolder.getInstance().addCustomPackage(k, v);
+                        });
+                    } else {
+                        // カスタム機能定義が未指定の場合は、WARNで警告をしておく.
+                        log.warn(MessageManager.getInstance().getMessage(CoreMessages.CORE_WRN_0003));
+                    }
+                } catch (IOException e) {
+                    throw new ScenarioParseException(
+                            ScenarioParseError.builder().filePath(x).type(ScenarioPaseErrorType.PARSE_ERROR)
+                                    .message("Custom Package Config Parse Error Occurred.").build());
+                }
+            });
+        } catch (IOException e) {
+            throw new SystemException(e);
+        }
+
+    }
+
+
+    /**
+     * カスタム機能設計の解析.
+     *
+     * @param context
+     */
+    private void parseCustomSpec(Context context) {
+
+        ClassLoader loader = Thread.currentThread().getContextClassLoader();
+
+        Map<String, String> customPackages = CustomPackageHolder.getInstance().getCustomPackages();
+
+        // カスタム機能のパッケージを走査
+        for (Map.Entry<String, String> entry : customPackages.entrySet()) {
+
+            log.debug("start parse custom package spec -> {}:{}", entry.getKey(), entry.getValue());
+
+            // カスタム機能の設計データを読み込み
+            String specFileName = String.format(CUSTOM_SPEC_FILENAME_PATTERN, entry.getKey());
+            try (InputStream is = loader.getResourceAsStream(specFileName)) {
+                ET3Spec et3Spec = context.getObjectMapper().readValue(is, ET3Spec.class);
+
+
+                // カスタム設計情報の読み込み
+                CustomSpecInfo customSpecInfo = new CustomSpecInfo();
+                CustomPackageHolder.getInstance().addCustomSpecInfo(entry.getKey(), customSpecInfo);
+
+                // カスタム名
+                customSpecInfo.setName(entry.getKey());
+
+                // カスタムパッケージ
+                customSpecInfo.setCustomPackage(entry.getValue());
+
+                // 概要
+                et3Spec.getInfo().getSummary().stream()
+                        .forEach(x -> customSpecInfo.putSummary(x.getLang(), x.getContents()));
+
+                // 詳細
+                et3Spec.getInfo().getDescription().stream()
+                        .forEach(x -> customSpecInfo.putDescription(x.getLang(), x.getContents()));
+
+                // カスタムコマンド設定
+                et3Spec.getCommands().stream().forEach(
+                        x -> {
+                            // コマンド設計を作成
+                            CommandSpecInfo commandSpecInfo = new CommandSpecInfo();
+                            commandSpecInfo.setId(x.getId());
+
+                            // 機能をLocale毎に分けて設定
+                            x.getSummary().stream().forEach(y -> commandSpecInfo.addFunction(y.getLang(), y.getContents()));
+
+                            // 試験項目をorderでソートしたのち、Locale毎に分けて設定
+                            x.getTestItem().stream().sorted(Comparator.comparing(ti -> ti.getOrder()))
+                                    .forEach(ti -> ti.getSummary()
+                                            .forEach(c -> commandSpecInfo.addTestItem(c.getLang(), c.getContents())));
+
+                            // コマンド構成を設定
+                            x.getStructure().stream().sorted(Comparator.comparing(s -> s.getOrder()))
+                                    .forEach(s -> {
+                                        CommandSpecStructure commandSpecStructure = new CommandSpecStructure();
+                                        commandSpecStructure.setName(s.getName());
+                                        commandSpecStructure.setPattern(s.getPattern());
+                                        commandSpecStructure.setType(s.getType());
+                                        s.getSummary().stream()
+                                                .forEach(sm -> commandSpecStructure.putSummary(sm.getLang(), sm.getContents()));
+                                    });
+
+                            // コマンド追加
+                            customSpecInfo.addCommandSpecInfo(commandSpecInfo);
+                        }
+                );
+
+                // メッセージ設定
+                et3Spec.getMessages().stream().forEach(
+                        x -> {
+                            x.getMessage().forEach(y ->
+                                    customSpecInfo.addMessage(y.getLang(), x.getId(), y.getContents()));
+                        });
+
+
+            } catch (IOException e) {
+                //throw new SystemException(e, CoreMessages.CORE_ERR_0024, entry.getKey(), entry.getValue());
+            }
+
+        }
+
+    }
+
+    /**
+     * カスタムコマンド解析.
+     *
+     * @param context コンテキスト
+     */
+    private void parseCustom(Context context) {
+
+        ClassLoader loader = Thread.currentThread().getContextClassLoader();
+
+        Map<String, String> customPackages = CustomPackageHolder.getInstance().getCustomPackages();
+
+        // カスタム機能のパッケージを走査
+        for (Map.Entry<String, String> entry : customPackages.entrySet()) {
+
+            log.debug("start parse custom package function -> {}:{}", entry.getKey(), entry.getValue());
+
+            // カスタム機能の設計データを読み込み
+            String specFileName = String.format(CUSTOM_SPEC_FILENAME_PATTERN, entry.getKey());
+            try (InputStream is = loader.getResourceAsStream(specFileName)) {
+                ET3Spec et3Spec = context.getObjectMapper().readValue(is, ET3Spec.class);
+            } catch (IOException e) {
+                //throw new SystemException(e, CoreMessages.CORE_ERR_0024, entry.getKey(), entry.getValue());
+            }
+
+            // カスタム機能の指定パッケージ配下の全てのクラスを取得
+            Set<Class<?>> allClasses = null;
+            try {
+                allClasses = ClassPath.from(loader)
+                        .getTopLevelClassesRecursive(entry.getValue()).stream()
+                        .map(info -> info.load())
+                        .collect(Collectors.toSet());
+            } catch (IOException e) {
+                throw new SystemException(e, CoreMessages.CORE_ERR_0025);
+            }
+
+            // カスタムコマンドを解析
+            allClasses.stream()
+                    .filter(x -> x.getDeclaredAnnotation(CommandDefinition.class) != null)
+                    .filter(x -> Command.class.isAssignableFrom(x))
+                    .forEach(x -> {
+                        CommandDefinition command = x.getDeclaredAnnotation(CommandDefinition.class);
+                        CommandInfo commandInfo = CommandInfo.builder().id(command.id()).model(x)
+                                .assertCommand(command.assertCommand())
+                                .runner(command.runner())
+                                .reporter(command.reporter()).build();
+                        CustomPackageHolder.getInstance().addCustomCommandInfo(
+                                command.id(), commandInfo);
+                    });
+
+            // カスタムFlowを解析
+            allClasses.stream()
+                    .filter(x -> x.getDeclaredAnnotation(FlowDefinition.class) != null)
+                    .filter(x -> Flow.class.isAssignableFrom(x))
+                    .forEach(x -> {
+                        FlowDefinition flow =
+                                x.getDeclaredAnnotation(FlowDefinition.class);
+                        FlowInfo flowInfo = FlowInfo.builder().id(flow.id()).model(x).runner(flow.runner()).build();
+                        CustomPackageHolder.getInstance().addCustomFlowInfo(
+                                flow.id(), flowInfo);
+                    });
+
+            // カスタム設定を解析
+            allClasses.stream()
+                    .filter(x -> x.getDeclaredAnnotation(CustomConfigurationDefinition.class) != null)
+                    .filter(x -> Configuration.class.isAssignableFrom(x))
+                    .forEach(x -> {
+                        CustomConfigurationDefinition configuration =
+                                x.getDeclaredAnnotation(CustomConfigurationDefinition.class);
+                        CustomConfigurationInfo customConfigurationInfo =
+                                CustomConfigurationInfo.builder().id(configuration.id()).model(x).build();
+                        CustomConfigurationHolder.getInstance().addCustomConfigurationInfo(customConfigurationInfo);
+                    });
+
+            // カスタムコマンドリスナーを解析
+            allClasses.stream()
+                    .filter(x -> x.getDeclaredAnnotation(CommandListener.class) != null)
+                    .forEach(x -> {
+                        if (CommandBeforeListener.class.isAssignableFrom(x)) {
+                            CommandListenerHolder.getInstance()
+                                    .addCommandBeforeListener((Class<CommandBeforeListener>) x);
+                        } else if (CommandAfterListener.class.isAssignableFrom(x)) {
+                            CommandListenerHolder.getInstance()
+                                    .addCommandAfterListener((Class<CommandAfterListener>) x);
+                        } else if (CommandErrorListener.class.isAssignableFrom(x)) {
+                            CommandListenerHolder.getInstance()
+                                    .addCommandErrorListener((Class<CommandErrorListener>) x);
+                        }
+                    });
+
+            // >>他機能のカスタムがあれば随時追加<<
+
+            log.debug("end parse custom function packages -> {}:{}", entry.getKey(), entry.getValue());
+        }
+
+    }
+
+}

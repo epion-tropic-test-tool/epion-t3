@@ -6,9 +6,9 @@ import com.zomu.t.epion.tropic.test.tool.core.application.runner.ApplicationRunn
 import com.zomu.t.epion.tropic.test.tool.core.initialize.InitializeEpion;
 import com.zomu.t.epion.tropic.test.tool.core.message.impl.CoreMessages;
 import com.zomu.t.epion.tropic.test.tool.core.message.MessageManager;
-import com.zomu.t.epion.tropic.test.tool.core.type.Args;
-import com.zomu.t.epion.tropic.test.tool.core.type.InitializeArgs;
-import com.zomu.t.epion.tropic.test.tool.core.type.ExitCode;
+import com.zomu.t.epion.tropic.test.tool.core.common.type.Args;
+import com.zomu.t.epion.tropic.test.tool.core.common.type.InitializeArgs;
+import com.zomu.t.epion.tropic.test.tool.core.common.type.ExitCode;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.cli.*;
 import org.apache.commons.io.IOUtils;
@@ -20,7 +20,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.nio.charset.Charset;
 import java.util.Arrays;
-import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 

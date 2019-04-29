@@ -5,6 +5,7 @@ import lombok.Setter;
 import org.apache.bval.constraints.NotEmpty;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -20,6 +21,12 @@ public class Command implements Serializable {
     private List<Content> summary;
 
     @NotEmpty
-    private List<Content> testItem;
+    private List<TestItem> testItem = new ArrayList<>();
+
+    @NotEmpty
+    private List<Function> function = new ArrayList<>();
+
+    @NotEmpty
+    private List<Structure> structure = new ArrayList<>();
 
 }

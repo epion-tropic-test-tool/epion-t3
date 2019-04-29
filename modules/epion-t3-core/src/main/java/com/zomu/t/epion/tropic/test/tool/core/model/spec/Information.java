@@ -23,8 +23,14 @@ public class Information implements Serializable {
 
     private String customPackage;
 
+    /**
+     * 概要.
+     */
     private List<Content> summary;
 
+    /**
+     * 詳細.
+     */
     private List<Content> description;
 
 }

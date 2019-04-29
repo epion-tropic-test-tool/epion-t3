@@ -25,7 +25,7 @@ import com.zomu.t.epion.tropic.test.tool.core.command.model.CommandResult;
 import com.zomu.t.epion.tropic.test.tool.core.command.runner.impl.AbstractCommandRunner;
 import com.zomu.t.epion.tropic.test.tool.core.exception.SystemException;
 import com.zomu.t.epion.tropic.test.tool.core.message.MessageManager;
-import com.zomu.t.epion.tropic.test.tool.core.type.AssertStatus;
+import com.zomu.t.epion.tropic.test.tool.core.common.type.AssertStatus;
 import com.zomu.t.epion.tropic.test.tool.rest.bean.AssertResultResponseBodyJson;
 import com.zomu.t.epion.tropic.test.tool.rest.bean.JsonDiff;
 import com.zomu.t.epion.tropic.test.tool.rest.bean.Response;

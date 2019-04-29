@@ -4,11 +4,11 @@ info:
   customPackage: com.epion_t3.core
   summary:
     - lang: ja_JP
-    - content: |
-    コア機能
+      content: |
+      コア機能
     - lang: en_US
-    - contents: |
-    Core Functions.
+      contents: |
+      Core Functions.
   description:
     - lang: ja_JP
       contents: |
@@ -26,13 +26,14 @@ commands:
         contents: |
         Core Functions.
     testItem:
-      - lang: ja_JP
+      - order: 1
+        lang: ja_JP
         content: |
         試験項目書を作成するときの文章。
       - lang: en_US
         contents: |
         Document for Test Item.
-    functions:
+    function:
       - order: 1
         summary:
           - lang: ja_JP
@@ -46,15 +47,23 @@ commands:
           - lang: en_US
             contents: bbb
     structure:
-      elements:
-        - name: id
-          required: true
-          pattern: 'regexp'
-          type: (string|number|boolean|array|object)
-          summary:
-            - lang: ja_JP
-              content: |
-              コア機能
-            - lang: en_US
-              contents: |
-              Core Functions.
+      - name: id
+        required: true
+        pattern: 'regexp'
+        type: (string|number|boolean|array|object)
+        summary:
+          - lang: ja_JP
+            content: |
+            コア機能
+          - lang: en_US
+            contents: |
+            Core Functions.
+messages:
+  - id: com.epion_t3.core.err.0001
+    message:
+      - lang: ja_JP
+        content: |
+          メッセージ
+      - lang: en_US
+        content: |
+          Message.

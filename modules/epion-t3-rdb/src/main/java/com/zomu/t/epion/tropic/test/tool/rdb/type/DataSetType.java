@@ -1,6 +1,5 @@
 package com.zomu.t.epion.tropic.test.tool.rdb.type;
 
-import com.zomu.t.epion.tropic.test.tool.core.type.FlowType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 

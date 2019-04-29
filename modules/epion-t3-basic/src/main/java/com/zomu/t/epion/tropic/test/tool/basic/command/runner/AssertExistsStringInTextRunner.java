@@ -1,25 +1,19 @@
 package com.zomu.t.epion.tropic.test.tool.basic.command.runner;
 
 import com.zomu.t.epion.tropic.test.tool.basic.command.model.AssertExistsStringInText;
-import com.zomu.t.epion.tropic.test.tool.basic.command.model.StringConcat;
 import com.zomu.t.epion.tropic.test.tool.basic.messages.BasicMessages;
 import com.zomu.t.epion.tropic.test.tool.core.command.model.AssertCommandResult;
 import com.zomu.t.epion.tropic.test.tool.core.command.model.CommandResult;
-import com.zomu.t.epion.tropic.test.tool.core.command.runner.CommandRunner;
 import com.zomu.t.epion.tropic.test.tool.core.command.runner.impl.AbstractCommandRunner;
-import com.zomu.t.epion.tropic.test.tool.core.context.EvidenceInfo;
 import com.zomu.t.epion.tropic.test.tool.core.exception.SystemException;
 import com.zomu.t.epion.tropic.test.tool.core.message.MessageManager;
-import com.zomu.t.epion.tropic.test.tool.core.message.MessageResolver;
-import com.zomu.t.epion.tropic.test.tool.core.type.AssertStatus;
-import com.zomu.t.epion.tropic.test.tool.core.type.CommandStatus;
+import com.zomu.t.epion.tropic.test.tool.core.common.type.AssertStatus;
 import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.List;
-import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 

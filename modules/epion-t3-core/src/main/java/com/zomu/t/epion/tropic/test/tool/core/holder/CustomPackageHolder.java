@@ -1,6 +1,7 @@
 package com.zomu.t.epion.tropic.test.tool.core.holder;
 
 import com.zomu.t.epion.tropic.test.tool.core.context.CommandInfo;
+import com.zomu.t.epion.tropic.test.tool.core.context.CustomSpecInfo;
 import com.zomu.t.epion.tropic.test.tool.core.context.FlowInfo;
 
 import java.util.Collections;
@@ -24,17 +25,27 @@ public final class CustomPackageHolder {
      * Key：カスタム名
      * Value：カスタムパッケージ
      */
-    private static final Map<String, String> customPackages = new ConcurrentHashMap<>();
+    private final Map<String, String> customPackages = new ConcurrentHashMap<>();
 
     /**
      * カスタムコマンド.
      */
-    private static final Map<String, CommandInfo> customCommands = new ConcurrentHashMap<>();
+    private final Map<String, CommandInfo> customCommands = new ConcurrentHashMap<>();
 
     /**
      * カスタムFlow.
      */
-    private static final Map<String, FlowInfo> customFlows = new ConcurrentHashMap<>();
+    private final Map<String, FlowInfo> customFlows = new ConcurrentHashMap<>();
+
+    /**
+     * カスタム設計情報.
+     * Key: カスタム名
+     * Value: カスタム設計情報
+     */
+    private final Map<String, CustomSpecInfo> customSpecInfos = new ConcurrentHashMap<>();
+
+
+
 
     /**
      * プライベートコンストラクタ.
@@ -114,5 +125,17 @@ public final class CustomPackageHolder {
     public FlowInfo getCustomFlowInfo(String flowId) {
         return customFlows.get(flowId);
     }
+
+    // -----------------------------------------------------------------------------------------------------------
+
+    public void addCustomSpecInfo(String customName, CustomSpecInfo customSpecInfo) {
+        customSpecInfos.put(customName, customSpecInfo);
+    }
+
+    public CustomSpecInfo getCustomSpecInfo(String customName) {
+        return customSpecInfos.get(customName);
+    }
+
+    // -----------------------------------------------------------------------------------------------------------
 
 }

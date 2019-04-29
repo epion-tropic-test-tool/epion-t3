@@ -1,6 +1,6 @@
 package com.zomu.t.epion.tropic.test.tool.core.context;
 
-import com.zomu.t.epion.tropic.test.tool.core.type.ScenarioManageFileSystem;
+import com.zomu.t.epion.tropic.test.tool.core.common.type.ScenarioManageFileSystem;
 import lombok.Getter;
 import lombok.Setter;
 

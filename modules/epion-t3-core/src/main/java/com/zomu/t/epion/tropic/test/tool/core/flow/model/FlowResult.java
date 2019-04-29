@@ -1,6 +1,6 @@
 package com.zomu.t.epion.tropic.test.tool.core.flow.model;
 
-import com.zomu.t.epion.tropic.test.tool.core.type.FlowResultStatus;
+import com.zomu.t.epion.tropic.test.tool.core.common.type.FlowResultStatus;
 import lombok.Getter;
 import lombok.Setter;
 

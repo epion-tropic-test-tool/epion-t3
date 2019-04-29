@@ -9,6 +9,9 @@ import lombok.Setter;
 
 import java.io.Serializable;
 
+/**
+ * @auther takashno
+ */
 @Getter
 @Setter
 @Builder

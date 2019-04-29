@@ -8,7 +8,7 @@ import com.zomu.t.epion.tropic.test.tool.core.exception.SystemException;
 import com.zomu.t.epion.tropic.test.tool.core.flow.model.BranchFlow;
 import com.zomu.t.epion.tropic.test.tool.core.flow.model.FlowResult;
 import com.zomu.t.epion.tropic.test.tool.core.message.impl.CoreMessages;
-import com.zomu.t.epion.tropic.test.tool.core.type.FlowResultStatus;
+import com.zomu.t.epion.tropic.test.tool.core.common.type.FlowResultStatus;
 import org.slf4j.Logger;
 
 import javax.script.ScriptEngine;

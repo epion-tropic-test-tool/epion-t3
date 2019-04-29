@@ -1,7 +1,6 @@
 package com.zomu.t.epion.tropic.test.tool.selenium.util;
 
 import com.zomu.t.epion.tropic.test.tool.core.exception.SystemException;
-import com.zomu.t.epion.tropic.test.tool.core.util.DateTimeUtils;
 import com.zomu.t.epion.tropic.test.tool.selenium.message.SeleniumMessages;
 import com.zomu.t.epion.tropic.test.tool.selenium.type.SelectorType;
 import org.openqa.selenium.By;

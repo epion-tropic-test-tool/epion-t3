@@ -18,12 +18,25 @@ public class ET3Spec implements Serializable {
      */
     private String et3 = "1.0";
 
+    /**
+     * カスタム機能情報.
+     */
     @NotNull
     private Information info;
 
+    /**
+     * コマンド.
+     */
     @NotEmpty
     @Valid
     private List<Command> commands;
+
+    /**
+     * メッセージ定義.
+     */
+    @NotEmpty
+    @Valid
+    private List<Message> messages;
 
 
 }

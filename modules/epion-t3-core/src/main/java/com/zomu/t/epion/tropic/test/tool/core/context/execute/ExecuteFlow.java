@@ -2,8 +2,8 @@ package com.zomu.t.epion.tropic.test.tool.core.context.execute;
 
 import com.zomu.t.epion.tropic.test.tool.core.holder.FlowLog;
 import com.zomu.t.epion.tropic.test.tool.core.model.scenario.Flow;
-import com.zomu.t.epion.tropic.test.tool.core.type.CommandStatus;
-import com.zomu.t.epion.tropic.test.tool.core.type.FlowStatus;
+import com.zomu.t.epion.tropic.test.tool.core.common.type.CommandStatus;
+import com.zomu.t.epion.tropic.test.tool.core.common.type.FlowStatus;
 import lombok.Getter;
 import lombok.Setter;
 

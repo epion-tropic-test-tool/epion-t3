@@ -5,15 +5,12 @@ import com.zomu.t.epion.tropic.test.tool.core.command.model.CommandResult;
 import com.zomu.t.epion.tropic.test.tool.core.command.runner.impl.AbstractCommandRunner;
 import com.zomu.t.epion.tropic.test.tool.core.exception.SystemException;
 import com.zomu.t.epion.tropic.test.tool.core.message.MessageManager;
-import com.zomu.t.epion.tropic.test.tool.core.type.AssertStatus;
+import com.zomu.t.epion.tropic.test.tool.core.common.type.AssertStatus;
 import com.zomu.t.epion.tropic.test.tool.rest.bean.Response;
 import com.zomu.t.epion.tropic.test.tool.rest.command.AssertHttpStatus;
 import com.zomu.t.epion.tropic.test.tool.rest.message.RestMessages;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.math.NumberUtils;
 import org.slf4j.Logger;
-
-import java.nio.file.Path;
 
 public class AssertHttpStatusRunner extends AbstractCommandRunner<AssertHttpStatus> {
 

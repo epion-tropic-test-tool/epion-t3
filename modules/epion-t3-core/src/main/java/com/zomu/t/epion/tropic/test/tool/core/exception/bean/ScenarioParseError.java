@@ -1,6 +1,6 @@
 package com.zomu.t.epion.tropic.test.tool.core.exception.bean;
 
-import com.zomu.t.epion.tropic.test.tool.core.type.ScenarioPaseErrorType;
+import com.zomu.t.epion.tropic.test.tool.core.common.type.ScenarioPaseErrorType;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NonNull;

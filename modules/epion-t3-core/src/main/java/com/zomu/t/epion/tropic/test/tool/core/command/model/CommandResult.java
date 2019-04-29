@@ -1,10 +1,8 @@
 package com.zomu.t.epion.tropic.test.tool.core.command.model;
 
 import com.zomu.t.epion.tropic.test.tool.core.flow.model.FlowResult;
-import com.zomu.t.epion.tropic.test.tool.core.type.CommandStatus;
-import lombok.Builder;
+import com.zomu.t.epion.tropic.test.tool.core.common.type.CommandStatus;
 import lombok.Getter;
-import lombok.NonNull;
 import lombok.Setter;
 
 import java.io.Serializable;

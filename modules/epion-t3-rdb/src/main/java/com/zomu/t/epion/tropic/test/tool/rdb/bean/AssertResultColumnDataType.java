@@ -1,6 +1,6 @@
 package com.zomu.t.epion.tropic.test.tool.rdb.bean;
 
-import com.zomu.t.epion.tropic.test.tool.core.type.AssertStatus;
+import com.zomu.t.epion.tropic.test.tool.core.common.type.AssertStatus;
 import lombok.Getter;
 import lombok.Setter;
 import org.dbunit.dataset.datatype.DataType;

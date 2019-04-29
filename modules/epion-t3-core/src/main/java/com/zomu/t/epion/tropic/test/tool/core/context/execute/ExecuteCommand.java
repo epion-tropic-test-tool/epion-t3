@@ -4,8 +4,7 @@ import com.zomu.t.epion.tropic.test.tool.core.command.model.AssertCommandResult;
 import com.zomu.t.epion.tropic.test.tool.core.command.model.CommandResult;
 import com.zomu.t.epion.tropic.test.tool.core.context.CommandInfo;
 import com.zomu.t.epion.tropic.test.tool.core.holder.CommandLog;
-import com.zomu.t.epion.tropic.test.tool.core.type.AssertStatus;
-import com.zomu.t.epion.tropic.test.tool.core.type.CommandStatus;
+import com.zomu.t.epion.tropic.test.tool.core.common.type.AssertStatus;
 import com.zomu.t.epion.tropic.test.tool.core.model.scenario.Command;
 import lombok.Getter;
 import lombok.Setter;
@@ -59,14 +58,26 @@ public class ExecuteCommand extends ExecuteElement {
     private String customReportRelativePath;
 
 
+    /**
+     * アサート系コマンドか判定する.
+     *
+     * @return
+     */
     public boolean isAssertCommand() {
         return commandInfo.getAssertCommand();
     }
 
+    /**
+     * アサートエラーが含まれるか判定する.
+     *
+     * @return
+     */
     public boolean hasAssertError() {
         if (isAssertCommand()) {
-            if (commandResult != null && AssertCommandResult.class.isAssignableFrom(commandResult.getClass())) {
-                return ((AssertCommandResult) commandResult).getAssertStatus() == AssertStatus.NG;
+            if (commandResult != null
+                    && AssertCommandResult.class.isAssignableFrom(commandResult.getClass())) {
+                return ((AssertCommandResult) commandResult).getAssertStatus()
+                        == AssertStatus.NG;
             } else {
                 return false;
             }

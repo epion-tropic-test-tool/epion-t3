@@ -3,7 +3,7 @@ package com.zomu.t.epion.tropic.test.tool.rdb.command.runner;
 import com.zomu.t.epion.tropic.test.tool.core.command.model.CommandResult;
 import com.zomu.t.epion.tropic.test.tool.core.command.runner.impl.AbstractCommandRunner;
 import com.zomu.t.epion.tropic.test.tool.core.exception.SystemException;
-import com.zomu.t.epion.tropic.test.tool.core.type.AssertStatus;
+import com.zomu.t.epion.tropic.test.tool.core.common.type.AssertStatus;
 import com.zomu.t.epion.tropic.test.tool.rdb.bean.*;
 import com.zomu.t.epion.tropic.test.tool.rdb.command.model.AssertRdbData;
 import com.zomu.t.epion.tropic.test.tool.rdb.message.RdbMessages;
@@ -22,11 +22,8 @@ import org.slf4j.Logger;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  * RDBに対してデータセットをインポート実行処理.

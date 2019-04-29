@@ -3,7 +3,7 @@ package com.zomu.t.epion.tropic.test.tool.selenium.runner;
 import com.zomu.t.epion.tropic.test.tool.core.command.model.CommandResult;
 import com.zomu.t.epion.tropic.test.tool.core.command.runner.impl.AbstractCommandRunner;
 import com.zomu.t.epion.tropic.test.tool.core.exception.SystemException;
-import com.zomu.t.epion.tropic.test.tool.core.type.ReferenceVariableType;
+import com.zomu.t.epion.tropic.test.tool.core.common.type.ReferenceVariableType;
 import com.zomu.t.epion.tropic.test.tool.selenium.command.StartLocalWD;
 import com.zomu.t.epion.tropic.test.tool.selenium.message.SeleniumMessages;
 import com.zomu.t.epion.tropic.test.tool.selenium.type.BrowserType;

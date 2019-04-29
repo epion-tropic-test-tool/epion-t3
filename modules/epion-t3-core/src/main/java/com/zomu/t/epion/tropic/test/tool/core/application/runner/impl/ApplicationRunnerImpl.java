@@ -7,19 +7,16 @@ import com.zomu.t.epion.tropic.test.tool.core.context.Context;
 import com.zomu.t.epion.tropic.test.tool.core.context.execute.ExecuteContext;
 import com.zomu.t.epion.tropic.test.tool.core.context.execute.ExecuteScenario;
 import com.zomu.t.epion.tropic.test.tool.core.exception.handler.BaseExceptionHandler;
-import com.zomu.t.epion.tropic.test.tool.core.message.MessageManager;
-import com.zomu.t.epion.tropic.test.tool.core.message.impl.CoreMessages;
-import com.zomu.t.epion.tropic.test.tool.core.scenario.parser.impl.BaseScenarioParser;
+import com.zomu.t.epion.tropic.test.tool.core.scenario.parser.impl.ScenarioParserImpl;
 import com.zomu.t.epion.tropic.test.tool.core.scenario.runner.ScenarioRunner;
 import com.zomu.t.epion.tropic.test.tool.core.scenario.runner.impl.ScenarioRunnerImpl;
-import com.zomu.t.epion.tropic.test.tool.core.type.ApplicationExecuteStatus;
-import com.zomu.t.epion.tropic.test.tool.core.type.Args;
-import com.zomu.t.epion.tropic.test.tool.core.type.ExitCode;
-import com.zomu.t.epion.tropic.test.tool.core.type.ScenarioExecuteStatus;
-import com.zomu.t.epion.tropic.test.tool.core.util.ExecutionFileUtils;
+import com.zomu.t.epion.tropic.test.tool.core.common.type.ApplicationExecuteStatus;
+import com.zomu.t.epion.tropic.test.tool.core.common.type.Args;
+import com.zomu.t.epion.tropic.test.tool.core.common.type.ExitCode;
+import com.zomu.t.epion.tropic.test.tool.core.common.type.ScenarioExecuteStatus;
+import com.zomu.t.epion.tropic.test.tool.core.common.util.ExecutionFileUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.cli.*;
-import org.apache.commons.lang3.StringUtils;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -88,7 +85,7 @@ public class ApplicationRunnerImpl implements ApplicationRunner<Context> {
             createResultDirectory(context, executeContext);
 
             // シナリオの解析（パース処理）
-            BaseScenarioParser.getInstance().parse(context);
+            ScenarioParserImpl.getInstance().parse(context);
 
             // 実行
             ScenarioRunner scenarioRunner = new ScenarioRunnerImpl();

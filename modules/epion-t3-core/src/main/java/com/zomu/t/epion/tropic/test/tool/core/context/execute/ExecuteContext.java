@@ -1,8 +1,7 @@
 package com.zomu.t.epion.tropic.test.tool.core.context.execute;
 
-import com.zomu.t.epion.tropic.test.tool.core.type.ApplicationExecuteStatus;
-import com.zomu.t.epion.tropic.test.tool.core.type.ScenarioExecuteStatus;
-import com.zomu.t.epion.tropic.test.tool.core.type.ExitCode;
+import com.zomu.t.epion.tropic.test.tool.core.common.type.ApplicationExecuteStatus;
+import com.zomu.t.epion.tropic.test.tool.core.common.type.ExitCode;
 import lombok.Getter;
 import lombok.Setter;
 

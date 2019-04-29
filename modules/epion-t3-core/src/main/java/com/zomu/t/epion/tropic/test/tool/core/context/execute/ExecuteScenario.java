@@ -2,7 +2,7 @@ package com.zomu.t.epion.tropic.test.tool.core.context.execute;
 
 import com.zomu.t.epion.tropic.test.tool.core.context.EvidenceInfo;
 import com.zomu.t.epion.tropic.test.tool.core.context.Option;
-import com.zomu.t.epion.tropic.test.tool.core.type.ScenarioExecuteStatus;
+import com.zomu.t.epion.tropic.test.tool.core.common.type.ScenarioExecuteStatus;
 import com.zomu.t.epion.tropic.test.tool.core.model.scenario.Information;
 import lombok.Getter;
 import lombok.Setter;
