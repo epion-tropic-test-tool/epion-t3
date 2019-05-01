@@ -5,7 +5,7 @@ package com.zomu.t.epion.tropic.test.tool.core.exception;
  *
  * @author takashno
  */
-public class MessageNotFoundException extends RuntimeException {
+public class MessageNotFoundException extends SystemException {
 
     private String messageCode;
 

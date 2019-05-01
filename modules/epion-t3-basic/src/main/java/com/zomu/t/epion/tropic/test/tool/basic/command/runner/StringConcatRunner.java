@@ -1,16 +1,13 @@
 package com.zomu.t.epion.tropic.test.tool.basic.command.runner;
 
 import com.zomu.t.epion.tropic.test.tool.basic.command.model.StringConcat;
-import com.zomu.t.epion.tropic.test.tool.core.command.model.CommandResult;
-import com.zomu.t.epion.tropic.test.tool.core.command.runner.CommandRunner;
+import com.zomu.t.epion.tropic.test.tool.core.command.bean.CommandResult;
 import com.zomu.t.epion.tropic.test.tool.core.command.runner.impl.AbstractCommandRunner;
-import com.zomu.t.epion.tropic.test.tool.core.context.EvidenceInfo;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * コンソール入力コマンド実行クラス.

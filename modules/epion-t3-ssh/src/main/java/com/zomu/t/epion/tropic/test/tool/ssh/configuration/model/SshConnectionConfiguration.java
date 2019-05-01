@@ -1,7 +1,7 @@
 package com.zomu.t.epion.tropic.test.tool.ssh.configuration.model;
 
-import com.zomu.t.epion.tropic.test.tool.core.annotation.CustomConfigurationDefinition;
-import com.zomu.t.epion.tropic.test.tool.core.model.scenario.Configuration;
+import com.zomu.t.epion.tropic.test.tool.core.common.annotation.CustomConfigurationDefinition;
+import com.zomu.t.epion.tropic.test.tool.core.common.bean.scenario.Configuration;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.bval.constraints.NotEmpty;

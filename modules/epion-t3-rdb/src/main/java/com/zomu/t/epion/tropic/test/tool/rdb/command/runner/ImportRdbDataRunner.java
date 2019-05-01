@@ -1,6 +1,6 @@
 package com.zomu.t.epion.tropic.test.tool.rdb.command.runner;
 
-import com.zomu.t.epion.tropic.test.tool.core.command.model.CommandResult;
+import com.zomu.t.epion.tropic.test.tool.core.command.bean.CommandResult;
 import com.zomu.t.epion.tropic.test.tool.core.command.runner.impl.AbstractCommandRunner;
 import com.zomu.t.epion.tropic.test.tool.core.exception.SystemException;
 import com.zomu.t.epion.tropic.test.tool.rdb.command.model.ImportRdbData;
@@ -12,7 +12,6 @@ import com.zomu.t.epion.tropic.test.tool.rdb.util.RdbAccessUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.dbunit.DatabaseUnitException;
-import org.dbunit.database.DatabaseDataSourceConnection;
 import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.dataset.IDataSet;
 import org.dbunit.dataset.ReplacementDataSet;
@@ -20,7 +19,6 @@ import org.dbunit.dataset.excel.XlsDataSet;
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
 import org.slf4j.Logger;
 
-import javax.sql.DataSource;
 import java.io.FileInputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;

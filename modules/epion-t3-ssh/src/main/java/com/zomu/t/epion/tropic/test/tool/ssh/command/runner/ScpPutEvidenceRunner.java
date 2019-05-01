@@ -1,9 +1,8 @@
 package com.zomu.t.epion.tropic.test.tool.ssh.command.runner;
 
-import com.zomu.t.epion.tropic.test.tool.core.command.model.CommandResult;
+import com.zomu.t.epion.tropic.test.tool.core.command.bean.CommandResult;
 import com.zomu.t.epion.tropic.test.tool.core.command.runner.impl.AbstractCommandRunner;
 import com.zomu.t.epion.tropic.test.tool.core.exception.SystemException;
-import com.zomu.t.epion.tropic.test.tool.ssh.command.model.ScpPut;
 import com.zomu.t.epion.tropic.test.tool.ssh.command.model.ScpPutEvidence;
 import com.zomu.t.epion.tropic.test.tool.ssh.configuration.model.SshConnectionConfiguration;
 import com.zomu.t.epion.tropic.test.tool.ssh.messages.SshMessages;
@@ -12,7 +11,6 @@ import org.slf4j.Logger;
 
 import java.io.IOException;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 
 /**
  * エビデンス専用のSCPによる転送処理.

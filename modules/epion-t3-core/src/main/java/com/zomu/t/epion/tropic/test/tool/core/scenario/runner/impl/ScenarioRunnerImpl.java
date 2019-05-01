@@ -1,19 +1,21 @@
 package com.zomu.t.epion.tropic.test.tool.core.scenario.runner.impl;
 
-import com.zomu.t.epion.tropic.test.tool.core.context.Context;
-import com.zomu.t.epion.tropic.test.tool.core.context.Option;
-import com.zomu.t.epion.tropic.test.tool.core.context.execute.ExecuteContext;
-import com.zomu.t.epion.tropic.test.tool.core.context.execute.ExecuteFlow;
-import com.zomu.t.epion.tropic.test.tool.core.context.execute.ExecuteScenario;
+import com.zomu.t.epion.tropic.test.tool.core.common.context.Context;
+import com.zomu.t.epion.tropic.test.tool.core.common.bean.Option;
+import com.zomu.t.epion.tropic.test.tool.core.common.context.ExecuteContext;
+import com.zomu.t.epion.tropic.test.tool.core.common.bean.ExecuteFlow;
+import com.zomu.t.epion.tropic.test.tool.core.common.bean.ExecuteScenario;
+import com.zomu.t.epion.tropic.test.tool.core.common.type.StageType;
 import com.zomu.t.epion.tropic.test.tool.core.exception.ScenarioNotFoundException;
+import com.zomu.t.epion.tropic.test.tool.core.common.bean.ET3Notification;
 import com.zomu.t.epion.tropic.test.tool.core.flow.model.FlowResult;
 import com.zomu.t.epion.tropic.test.tool.core.flow.resolver.impl.FlowRunnerResolverImpl;
 import com.zomu.t.epion.tropic.test.tool.core.flow.runner.FlowRunner;
 import com.zomu.t.epion.tropic.test.tool.core.message.MessageManager;
 import com.zomu.t.epion.tropic.test.tool.core.message.impl.CoreMessages;
-import com.zomu.t.epion.tropic.test.tool.core.model.scenario.Flow;
-import com.zomu.t.epion.tropic.test.tool.core.model.scenario.Scenario;
-import com.zomu.t.epion.tropic.test.tool.core.model.scenario.T3Base;
+import com.zomu.t.epion.tropic.test.tool.core.common.bean.scenario.Flow;
+import com.zomu.t.epion.tropic.test.tool.core.common.bean.scenario.Scenario;
+import com.zomu.t.epion.tropic.test.tool.core.common.bean.scenario.ET3Base;
 import com.zomu.t.epion.tropic.test.tool.core.scenario.reporter.impl.ScenarioReporterImpl;
 import com.zomu.t.epion.tropic.test.tool.core.scenario.runner.ScenarioRunner;
 import com.zomu.t.epion.tropic.test.tool.core.common.type.FlowStatus;
@@ -46,8 +48,11 @@ public class ScenarioRunnerImpl implements ScenarioRunner<Context, ExecuteContex
     @Override
     public void execute(final Context context, final ExecuteContext executeContext) {
 
+        // シナリオ構築ステージ
+        executeContext.setStage(StageType.BUILD_SCENARIO);
+
         // 実行シナリオの選択
-        T3Base t3 = context.getOriginal().getOriginals().get(context.getOption().getTarget());
+        ET3Base t3 = context.getOriginal().getOriginals().get(context.getOption().getTarget());
 
         if (t3 == null) {
             throw new ScenarioNotFoundException(context.getOption().getTarget());
@@ -80,7 +85,10 @@ public class ScenarioRunnerImpl implements ScenarioRunner<Context, ExecuteContex
      */
     private void executeScenario(Context context, ExecuteContext executeContext, Scenario scenarioRef) {
 
-        T3Base scenario = context.getOriginal().getOriginals().get(scenarioRef.getRef());
+        // シナリオ実行ステージ
+        executeContext.setStage(StageType.RUN_SCENARIO);
+
+        ET3Base scenario = context.getOriginal().getOriginals().get(scenarioRef.getRef());
 
         if (scenario == null) {
             throw new ScenarioNotFoundException(scenarioRef.getRef());
@@ -214,12 +222,11 @@ public class ScenarioRunnerImpl implements ScenarioRunner<Context, ExecuteContex
             }
 
         } catch (Throwable t) {
-
             log.debug("Error Occurred...", t);
 
             // 発生したエラーを設定
-            error = t;
-            executeScenario.setError(t);
+            executeScenario.addNotification(
+                    ET3Notification.builder().stage(executeContext.getStage()).error(t).message(t.getMessage()).build());
 
             // シナリオ失敗
             executeScenario.setStatus(ScenarioExecuteStatus.ERROR);

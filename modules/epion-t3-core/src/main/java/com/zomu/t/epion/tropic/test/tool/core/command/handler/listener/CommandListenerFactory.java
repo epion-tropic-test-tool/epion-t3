@@ -1,6 +1,6 @@
 package com.zomu.t.epion.tropic.test.tool.core.command.handler.listener;
 
-import com.zomu.t.epion.tropic.test.tool.core.holder.CommandListenerHolder;
+import com.zomu.t.epion.tropic.test.tool.core.command.handler.listener.holder.CommandListenerHolder;
 
 import java.util.LinkedList;
 import java.util.List;

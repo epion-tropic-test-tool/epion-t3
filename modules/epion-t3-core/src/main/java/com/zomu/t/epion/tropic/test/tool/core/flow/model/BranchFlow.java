@@ -1,8 +1,8 @@
 package com.zomu.t.epion.tropic.test.tool.core.flow.model;
 
-import com.zomu.t.epion.tropic.test.tool.core.annotation.FlowDefinition;
+import com.zomu.t.epion.tropic.test.tool.core.common.annotation.FlowDefinition;
 import com.zomu.t.epion.tropic.test.tool.core.flow.runner.impl.BranchFlowRunner;
-import com.zomu.t.epion.tropic.test.tool.core.model.scenario.Flow;
+import com.zomu.t.epion.tropic.test.tool.core.common.bean.scenario.Flow;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.bval.constraints.NotEmpty;

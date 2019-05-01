@@ -1,11 +1,11 @@
 package com.zomu.t.epion.tropic.test.tool.core.flow.resolver.impl;
 
 import com.zomu.t.epion.tropic.test.tool.core.flow.resolver.FlowRunnerResolver;
-import com.zomu.t.epion.tropic.test.tool.core.context.FlowInfo;
+import com.zomu.t.epion.tropic.test.tool.core.common.bean.FlowInfo;
 import com.zomu.t.epion.tropic.test.tool.core.exception.FlowNotFoundException;
 import com.zomu.t.epion.tropic.test.tool.core.exception.SystemException;
 import com.zomu.t.epion.tropic.test.tool.core.flow.runner.FlowRunner;
-import com.zomu.t.epion.tropic.test.tool.core.holder.CustomPackageHolder;
+import com.zomu.t.epion.tropic.test.tool.core.custom.holder.CustomPackageHolder;
 import com.zomu.t.epion.tropic.test.tool.core.message.impl.CoreMessages;
 import org.apache.commons.lang3.StringUtils;
 

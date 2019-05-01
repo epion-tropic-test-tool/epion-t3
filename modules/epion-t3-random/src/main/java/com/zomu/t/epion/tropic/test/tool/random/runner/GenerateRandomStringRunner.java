@@ -1,6 +1,6 @@
 package com.zomu.t.epion.tropic.test.tool.random.runner;
 
-import com.zomu.t.epion.tropic.test.tool.core.context.EvidenceInfo;
+import com.zomu.t.epion.tropic.test.tool.core.common.context.EvidenceInfo;
 import com.zomu.t.epion.tropic.test.tool.core.command.runner.CommandRunner;
 import com.zomu.t.epion.tropic.test.tool.random.command.GenerateRandomString;
 import me.xdrop.jrand.JRand;

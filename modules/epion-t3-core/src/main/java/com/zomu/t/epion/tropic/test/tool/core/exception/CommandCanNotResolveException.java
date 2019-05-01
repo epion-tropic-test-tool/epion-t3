@@ -2,10 +2,8 @@ package com.zomu.t.epion.tropic.test.tool.core.exception;
 
 import lombok.Getter;
 
-import java.io.IOException;
-
 @Getter
-public class CommandCanNotResolveException extends IOException {
+public class CommandCanNotResolveException extends SystemException {
 
     private String commandId;
 

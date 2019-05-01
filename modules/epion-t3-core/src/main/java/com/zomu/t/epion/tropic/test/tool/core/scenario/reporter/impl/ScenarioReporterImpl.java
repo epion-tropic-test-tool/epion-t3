@@ -1,11 +1,12 @@
 package com.zomu.t.epion.tropic.test.tool.core.scenario.reporter.impl;
 
-import com.zomu.t.epion.tropic.test.tool.core.annotation.OriginalProcessField;
-import com.zomu.t.epion.tropic.test.tool.core.context.Context;
-import com.zomu.t.epion.tropic.test.tool.core.context.execute.ExecuteCommand;
-import com.zomu.t.epion.tropic.test.tool.core.context.execute.ExecuteContext;
-import com.zomu.t.epion.tropic.test.tool.core.context.execute.ExecuteFlow;
-import com.zomu.t.epion.tropic.test.tool.core.context.execute.ExecuteScenario;
+import com.zomu.t.epion.tropic.test.tool.core.common.annotation.OriginalProcessField;
+import com.zomu.t.epion.tropic.test.tool.core.common.context.Context;
+import com.zomu.t.epion.tropic.test.tool.core.common.bean.ExecuteCommand;
+import com.zomu.t.epion.tropic.test.tool.core.common.context.ExecuteContext;
+import com.zomu.t.epion.tropic.test.tool.core.common.bean.ExecuteFlow;
+import com.zomu.t.epion.tropic.test.tool.core.common.bean.ExecuteScenario;
+import com.zomu.t.epion.tropic.test.tool.core.common.type.StageType;
 import com.zomu.t.epion.tropic.test.tool.core.exception.SystemException;
 import com.zomu.t.epion.tropic.test.tool.core.message.impl.CoreMessages;
 import com.zomu.t.epion.tropic.test.tool.core.scenario.reporter.ThymeleafScenarioReporter;
@@ -48,7 +49,7 @@ public final class ScenarioReporterImpl implements ThymeleafScenarioReporter<Exe
     /**
      * インスタンスを取得する.
      *
-     * @return
+     * @return シングルトンインスタンス
      */
     public static ScenarioReporterImpl getInstance() {
         return instance;
@@ -88,6 +89,9 @@ public final class ScenarioReporterImpl implements ThymeleafScenarioReporter<Exe
             ExecuteContext executeContext,
             ExecuteScenario executeScenario,
             Throwable t) {
+
+        // シナリオレポート出力ステージ
+        executeContext.setStage(StageType.REPORT_SCENARIO);
 
         TemplateEngine templateEngine = ThymeleafReportUtils.getInstance().createEngine();
 

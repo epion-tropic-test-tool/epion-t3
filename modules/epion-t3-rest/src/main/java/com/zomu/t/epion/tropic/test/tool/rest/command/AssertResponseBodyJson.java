@@ -2,8 +2,8 @@ package com.zomu.t.epion.tropic.test.tool.rest.command;
 
 import java.util.List;
 
-import com.zomu.t.epion.tropic.test.tool.core.annotation.CommandDefinition;
-import com.zomu.t.epion.tropic.test.tool.core.model.scenario.Command;
+import com.zomu.t.epion.tropic.test.tool.core.common.annotation.CommandDefinition;
+import com.zomu.t.epion.tropic.test.tool.core.common.bean.scenario.Command;
 import com.zomu.t.epion.tropic.test.tool.rest.reporter.AssertResponseBodyJsonReporter;
 import com.zomu.t.epion.tropic.test.tool.rest.runner.AssertResponseBodyJsonRunner;
 

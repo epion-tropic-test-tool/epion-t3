@@ -1,17 +1,15 @@
 package com.zomu.t.epion.tropic.test.tool.core.flow.runner.impl;
 
-import com.zomu.t.epion.tropic.test.tool.core.context.Context;
-import com.zomu.t.epion.tropic.test.tool.core.context.execute.ExecuteCommand;
-import com.zomu.t.epion.tropic.test.tool.core.context.execute.ExecuteContext;
-import com.zomu.t.epion.tropic.test.tool.core.context.execute.ExecuteFlow;
-import com.zomu.t.epion.tropic.test.tool.core.context.execute.ExecuteScenario;
+import com.zomu.t.epion.tropic.test.tool.core.common.context.Context;
+import com.zomu.t.epion.tropic.test.tool.core.common.context.ExecuteContext;
+import com.zomu.t.epion.tropic.test.tool.core.common.bean.ExecuteFlow;
+import com.zomu.t.epion.tropic.test.tool.core.common.bean.ExecuteScenario;
 import com.zomu.t.epion.tropic.test.tool.core.exception.SystemException;
-import com.zomu.t.epion.tropic.test.tool.core.flow.model.CommandExecuteFlow;
 import com.zomu.t.epion.tropic.test.tool.core.flow.model.FlowResult;
 import com.zomu.t.epion.tropic.test.tool.core.flow.model.ReadTextFileIterateFlow;
 import com.zomu.t.epion.tropic.test.tool.core.flow.resolver.impl.FlowRunnerResolverImpl;
 import com.zomu.t.epion.tropic.test.tool.core.flow.runner.FlowRunner;
-import com.zomu.t.epion.tropic.test.tool.core.model.scenario.Flow;
+import com.zomu.t.epion.tropic.test.tool.core.common.bean.scenario.Flow;
 import org.slf4j.Logger;
 
 import java.io.IOException;

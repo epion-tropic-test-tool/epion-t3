@@ -8,7 +8,7 @@ import lombok.Getter;
  * @author takashno
  */
 @Getter
-public class CommandNotFoundException extends RuntimeException {
+public class CommandNotFoundException extends SystemException {
 
     private String commandId;
 

@@ -1,9 +1,8 @@
 package com.zomu.t.epion.tropic.test.tool.ftp.command.runner;
 
-import com.zomu.t.epion.tropic.test.tool.core.command.model.CommandResult;
+import com.zomu.t.epion.tropic.test.tool.core.command.bean.CommandResult;
 import com.zomu.t.epion.tropic.test.tool.core.command.runner.impl.AbstractCommandRunner;
 import com.zomu.t.epion.tropic.test.tool.core.exception.SystemException;
-import com.zomu.t.epion.tropic.test.tool.ftp.command.model.FtpGet;
 import com.zomu.t.epion.tropic.test.tool.ftp.command.model.FtpPut;
 import com.zomu.t.epion.tropic.test.tool.ftp.configuration.FtpConnectionConfiguration;
 import com.zomu.t.epion.tropic.test.tool.ftp.messages.FtpMessages;

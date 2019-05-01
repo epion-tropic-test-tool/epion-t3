@@ -1,6 +1,6 @@
 package com.zomu.t.epion.tropic.test.tool.rdb.command.runner;
 
-import com.zomu.t.epion.tropic.test.tool.core.command.model.CommandResult;
+import com.zomu.t.epion.tropic.test.tool.core.command.bean.CommandResult;
 import com.zomu.t.epion.tropic.test.tool.core.command.runner.impl.AbstractCommandRunner;
 import com.zomu.t.epion.tropic.test.tool.core.exception.SystemException;
 import com.zomu.t.epion.tropic.test.tool.rdb.command.model.ExportRdbData;
@@ -11,18 +11,14 @@ import com.zomu.t.epion.tropic.test.tool.rdb.type.DataSetType;
 import com.zomu.t.epion.tropic.test.tool.rdb.util.RdbAccessUtils;
 import com.zomu.t.epion.tropic.test.tool.rdb.writer.XlsxDataSetWriter;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 import org.dbunit.DatabaseUnitException;
-import org.dbunit.database.DatabaseDataSourceConnection;
 import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.database.QueryDataSet;
 import org.dbunit.dataset.IDataSet;
 import org.dbunit.dataset.xml.FlatXmlWriter;
-import org.dbunit.dataset.xml.XmlDataSet;
 import org.dbunit.dataset.xml.XmlDataSetWriter;
 import org.slf4j.Logger;
 
-import javax.sql.DataSource;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.OutputStream;

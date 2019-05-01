@@ -1,7 +1,7 @@
 package com.zomu.t.epion.tropic.test.tool.rest.command;
 
-import com.zomu.t.epion.tropic.test.tool.core.annotation.CommandDefinition;
-import com.zomu.t.epion.tropic.test.tool.core.model.scenario.Command;
+import com.zomu.t.epion.tropic.test.tool.core.common.annotation.CommandDefinition;
+import com.zomu.t.epion.tropic.test.tool.core.common.bean.scenario.Command;
 import com.zomu.t.epion.tropic.test.tool.rest.runner.StoreJsonElementRunner;
 import lombok.Getter;
 import lombok.Setter;

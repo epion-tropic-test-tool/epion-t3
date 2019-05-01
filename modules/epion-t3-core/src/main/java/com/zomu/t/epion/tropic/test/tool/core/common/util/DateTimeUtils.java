@@ -1,6 +1,6 @@
 package com.zomu.t.epion.tropic.test.tool.core.common.util;
 
-import com.zomu.t.epion.tropic.test.tool.core.context.execute.ExecuteScenario;
+import com.zomu.t.epion.tropic.test.tool.core.common.bean.ExecuteScenario;
 import com.zomu.t.epion.tropic.test.tool.core.exception.SystemException;
 import com.zomu.t.epion.tropic.test.tool.core.message.impl.CoreMessages;
 

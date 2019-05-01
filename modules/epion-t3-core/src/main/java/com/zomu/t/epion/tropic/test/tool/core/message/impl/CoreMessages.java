@@ -38,6 +38,19 @@ public enum CoreMessages implements Messages {
     CORE_ERR_0023("com.zomu.t.epion.t3.core.err.0023"),
     CORE_ERR_0024("com.epion_t3.core.err.0024"),
     CORE_ERR_0025("com.epion_t3.core.err.0025"),
+    CORE_ERR_0026("com.epion_t3.core.err.0026"),
+    CORE_ERR_0027("com.epion_t3.core.err.0027"),
+    CORE_ERR_0028("com.epion_t3.core.err.0028"),
+    CORE_ERR_0029("com.epion_t3.core.err.0029"),
+    CORE_ERR_0030("com.epion_t3.core.err.0030"),
+    CORE_ERR_0031("com.epion_t3.core.err.0031"),
+    CORE_ERR_0032("com.epion_t3.core.err.0032"),
+    CORE_ERR_0033("com.epion_t3.core.err.0033"),
+    CORE_ERR_0034("com.epion_t3.core.err.0034"),
+    CORE_ERR_0035("com.epion_t3.core.err.0035"),
+    CORE_ERR_0036("com.epion_t3.core.err.0036"),
+    CORE_ERR_0037("com.epion_t3.core.err.0037"),
+    CORE_ERR_0038("com.epion_t3.core.err.0038"),
     CORE_ERR_1001("com.zomu.t.epion.t3.core.err.1001"),
     CORE_ERR_1002("com.zomu.t.epion.t3.core.err.1002"),
     CORE_ERR_1003("com.zomu.t.epion.t3.core.err.1003"),
@@ -45,7 +58,8 @@ public enum CoreMessages implements Messages {
     CORE_ERR_1005("com.zomu.t.epion.t3.core.err.1005"),
     CORE_WRN_0001("com.zomu.t.epion.t3.core.wrn.0001"),
     CORE_WRN_0002("com.zomu.t.epion.t3.core.wrn.0002"),
-    CORE_WRN_0003("com.epion_t3.core.wrn.0003"),;
+    CORE_WRN_0003("com.epion_t3.core.wrn.0003"),
+    ;
 
     /**
      * メッセージコード.

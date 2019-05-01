@@ -1,8 +1,7 @@
 package com.zomu.t.epion.tropic.test.tool.ssh.command.model;
 
-import com.zomu.t.epion.tropic.test.tool.core.annotation.CommandDefinition;
-import com.zomu.t.epion.tropic.test.tool.core.model.scenario.Command;
-import com.zomu.t.epion.tropic.test.tool.ssh.configuration.model.SshConnectionConfiguration;
+import com.zomu.t.epion.tropic.test.tool.core.common.annotation.CommandDefinition;
+import com.zomu.t.epion.tropic.test.tool.core.common.bean.scenario.Command;
 import com.zomu.t.epion.tropic.test.tool.ssh.command.runner.ScpPutRunner;
 import lombok.Getter;
 import lombok.Setter;

@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import com.zomu.t.epion.tropic.test.tool.core.command.runner.CommandRunner;
-import com.zomu.t.epion.tropic.test.tool.core.context.EvidenceInfo;
+import com.zomu.t.epion.tropic.test.tool.core.common.context.EvidenceInfo;
 import com.zomu.t.epion.tropic.test.tool.core.exception.SystemException;
 import com.zomu.t.epion.tropic.test.tool.random.bean.JapaneseZipCodeData;
 import com.zomu.t.epion.tropic.test.tool.random.command.GenerateRandomJapaneseZipCode;

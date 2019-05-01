@@ -1,0 +1,13 @@
+t3: '1.0'
+# カスタム機能定義
+customs:
+  # カスタム機能の定義（名称と実装パッケージ）
+  # なお、クラスパスに実装パッケージを参照できるクラスもしくはJarが含まれていることが必須となる
+  packages:
+    core: "com.zomu.t.epion.tropic.test.tool.core"
+    basic: "com.zomu.t.epion.tropic.test.tool.basic"
+    # rest: "com.zomu.t.epion.tropic.test.tool.rest"
+    # rdb: "com.zomu.t.epion.tropic.test.tool.rdb"
+    # log: "com.zomu.t.epion.tropic.test.tool.log"
+    # ssh: "com.zomu.t.epion.tropic.test.tool.ssh"
+    selenium: "com.zomu.t.epion.tropic.test.tool.selenium"

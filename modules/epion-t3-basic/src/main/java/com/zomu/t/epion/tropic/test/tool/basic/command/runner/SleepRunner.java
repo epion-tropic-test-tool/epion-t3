@@ -2,15 +2,11 @@ package com.zomu.t.epion.tropic.test.tool.basic.command.runner;
 
 import com.zomu.t.epion.tropic.test.tool.basic.command.model.Sleep;
 import com.zomu.t.epion.tropic.test.tool.basic.messages.BasicMessages;
-import com.zomu.t.epion.tropic.test.tool.core.command.model.CommandResult;
-import com.zomu.t.epion.tropic.test.tool.core.command.runner.CommandRunner;
+import com.zomu.t.epion.tropic.test.tool.core.command.bean.CommandResult;
 import com.zomu.t.epion.tropic.test.tool.core.command.runner.impl.AbstractCommandRunner;
-import com.zomu.t.epion.tropic.test.tool.core.context.EvidenceInfo;
 import com.zomu.t.epion.tropic.test.tool.core.exception.SystemException;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
-
-import java.util.Map;
 
 /**
  * Sleepコマンド処理.

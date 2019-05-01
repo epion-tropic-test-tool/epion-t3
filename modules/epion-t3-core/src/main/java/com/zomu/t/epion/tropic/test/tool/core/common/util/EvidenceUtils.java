@@ -1,11 +1,11 @@
 package com.zomu.t.epion.tropic.test.tool.core.common.util;
 
-import com.zomu.t.epion.tropic.test.tool.core.context.EvidenceInfo;
-import com.zomu.t.epion.tropic.test.tool.core.context.FileEvidenceInfo;
-import com.zomu.t.epion.tropic.test.tool.core.context.ObjectEvidenceInfo;
-import com.zomu.t.epion.tropic.test.tool.core.context.execute.ExecuteContext;
-import com.zomu.t.epion.tropic.test.tool.core.context.execute.ExecuteFlow;
-import com.zomu.t.epion.tropic.test.tool.core.context.execute.ExecuteScenario;
+import com.zomu.t.epion.tropic.test.tool.core.common.bean.EvidenceInfo;
+import com.zomu.t.epion.tropic.test.tool.core.common.bean.FileEvidenceInfo;
+import com.zomu.t.epion.tropic.test.tool.core.common.bean.ObjectEvidenceInfo;
+import com.zomu.t.epion.tropic.test.tool.core.common.context.ExecuteContext;
+import com.zomu.t.epion.tropic.test.tool.core.common.bean.ExecuteFlow;
+import com.zomu.t.epion.tropic.test.tool.core.common.bean.ExecuteScenario;
 import com.zomu.t.epion.tropic.test.tool.core.exception.SystemException;
 import com.zomu.t.epion.tropic.test.tool.core.message.impl.CoreMessages;
 import com.zomu.t.epion.tropic.test.tool.core.common.type.FlowScopeVariables;

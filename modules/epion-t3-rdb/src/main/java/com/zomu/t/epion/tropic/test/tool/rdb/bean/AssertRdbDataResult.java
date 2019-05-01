@@ -1,6 +1,6 @@
 package com.zomu.t.epion.tropic.test.tool.rdb.bean;
 
-import com.zomu.t.epion.tropic.test.tool.core.command.model.AssertCommandResult;
+import com.zomu.t.epion.tropic.test.tool.core.command.bean.AssertCommandResult;
 import lombok.Getter;
 import lombok.Setter;
 

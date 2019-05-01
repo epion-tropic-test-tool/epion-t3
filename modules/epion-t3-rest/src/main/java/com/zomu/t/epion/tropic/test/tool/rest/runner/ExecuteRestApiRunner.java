@@ -1,6 +1,6 @@
 package com.zomu.t.epion.tropic.test.tool.rest.runner;
 
-import com.zomu.t.epion.tropic.test.tool.core.command.model.CommandResult;
+import com.zomu.t.epion.tropic.test.tool.core.command.bean.CommandResult;
 import com.zomu.t.epion.tropic.test.tool.core.command.runner.impl.AbstractCommandRunner;
 import com.zomu.t.epion.tropic.test.tool.core.exception.SystemException;
 import com.zomu.t.epion.tropic.test.tool.rest.command.ExecuteRestApi;
@@ -10,7 +10,6 @@ import okhttp3.*;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 
-import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
 import java.util.List;
 import java.util.Map;

@@ -1,9 +1,8 @@
 package com.zomu.t.epion.tropic.test.tool.selenium.runner;
 
-import com.zomu.t.epion.tropic.test.tool.core.command.model.CommandResult;
+import com.zomu.t.epion.tropic.test.tool.core.command.bean.CommandResult;
 import com.zomu.t.epion.tropic.test.tool.core.message.MessageManager;
 import com.zomu.t.epion.tropic.test.tool.selenium.command.WDClearSendKeysElements;
-import com.zomu.t.epion.tropic.test.tool.selenium.command.WDSendKeysElements;
 import com.zomu.t.epion.tropic.test.tool.selenium.message.SeleniumMessages;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;

@@ -1,8 +1,6 @@
 package com.zomu.t.epion.tropic.test.tool.core.application.reporter;
 
-import com.zomu.t.epion.tropic.test.tool.core.context.execute.ExecuteContext;
-import com.zomu.t.epion.tropic.test.tool.core.context.execute.ExecuteScenario;
-import com.zomu.t.epion.tropic.test.tool.core.scenario.reporter.ScenarioReporter;
+import com.zomu.t.epion.tropic.test.tool.core.common.context.ExecuteContext;
 
 import java.util.Map;
 

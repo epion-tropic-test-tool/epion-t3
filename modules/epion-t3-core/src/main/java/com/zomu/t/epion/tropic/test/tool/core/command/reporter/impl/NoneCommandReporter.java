@@ -1,11 +1,11 @@
 package com.zomu.t.epion.tropic.test.tool.core.command.reporter.impl;
 
-import com.zomu.t.epion.tropic.test.tool.core.command.model.CommandResult;
-import com.zomu.t.epion.tropic.test.tool.core.command.model.NoneCommand;
-import com.zomu.t.epion.tropic.test.tool.core.context.execute.ExecuteCommand;
-import com.zomu.t.epion.tropic.test.tool.core.context.execute.ExecuteContext;
-import com.zomu.t.epion.tropic.test.tool.core.context.execute.ExecuteFlow;
-import com.zomu.t.epion.tropic.test.tool.core.context.execute.ExecuteScenario;
+import com.zomu.t.epion.tropic.test.tool.core.command.bean.CommandResult;
+import com.zomu.t.epion.tropic.test.tool.core.command.bean.NoneCommand;
+import com.zomu.t.epion.tropic.test.tool.core.common.bean.ExecuteCommand;
+import com.zomu.t.epion.tropic.test.tool.core.common.context.ExecuteContext;
+import com.zomu.t.epion.tropic.test.tool.core.common.bean.ExecuteFlow;
+import com.zomu.t.epion.tropic.test.tool.core.common.bean.ExecuteScenario;
 
 import java.util.Map;
 

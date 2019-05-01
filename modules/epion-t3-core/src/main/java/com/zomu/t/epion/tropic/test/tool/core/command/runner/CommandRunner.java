@@ -1,11 +1,11 @@
 package com.zomu.t.epion.tropic.test.tool.core.command.runner;
 
-import com.zomu.t.epion.tropic.test.tool.core.command.model.CommandResult;
-import com.zomu.t.epion.tropic.test.tool.core.context.execute.ExecuteCommand;
-import com.zomu.t.epion.tropic.test.tool.core.context.execute.ExecuteContext;
-import com.zomu.t.epion.tropic.test.tool.core.context.execute.ExecuteFlow;
-import com.zomu.t.epion.tropic.test.tool.core.context.execute.ExecuteScenario;
-import com.zomu.t.epion.tropic.test.tool.core.model.scenario.Command;
+import com.zomu.t.epion.tropic.test.tool.core.command.bean.CommandResult;
+import com.zomu.t.epion.tropic.test.tool.core.common.bean.ExecuteCommand;
+import com.zomu.t.epion.tropic.test.tool.core.common.context.ExecuteContext;
+import com.zomu.t.epion.tropic.test.tool.core.common.bean.ExecuteFlow;
+import com.zomu.t.epion.tropic.test.tool.core.common.bean.ExecuteScenario;
+import com.zomu.t.epion.tropic.test.tool.core.common.bean.scenario.Command;
 import org.slf4j.Logger;
 
 import java.util.regex.Pattern;

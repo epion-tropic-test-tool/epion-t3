@@ -1,15 +1,15 @@
 package com.zomu.t.epion.tropic.test.tool.core.flow.runner.impl;
 
-import com.zomu.t.epion.tropic.test.tool.core.context.Context;
-import com.zomu.t.epion.tropic.test.tool.core.context.execute.ExecuteCommand;
-import com.zomu.t.epion.tropic.test.tool.core.context.execute.ExecuteContext;
-import com.zomu.t.epion.tropic.test.tool.core.context.execute.ExecuteFlow;
-import com.zomu.t.epion.tropic.test.tool.core.context.execute.ExecuteScenario;
+import com.zomu.t.epion.tropic.test.tool.core.common.context.Context;
+import com.zomu.t.epion.tropic.test.tool.core.common.bean.ExecuteCommand;
+import com.zomu.t.epion.tropic.test.tool.core.common.context.ExecuteContext;
+import com.zomu.t.epion.tropic.test.tool.core.common.bean.ExecuteFlow;
+import com.zomu.t.epion.tropic.test.tool.core.common.bean.ExecuteScenario;
 import com.zomu.t.epion.tropic.test.tool.core.flow.model.FlowResult;
 import com.zomu.t.epion.tropic.test.tool.core.flow.runner.FlowRunner;
-import com.zomu.t.epion.tropic.test.tool.core.holder.FlowLog;
-import com.zomu.t.epion.tropic.test.tool.core.holder.FlowLoggingHolder;
-import com.zomu.t.epion.tropic.test.tool.core.model.scenario.Flow;
+import com.zomu.t.epion.tropic.test.tool.core.flow.logging.bean.FlowLog;
+import com.zomu.t.epion.tropic.test.tool.core.flow.logging.holder.FlowLoggingHolder;
+import com.zomu.t.epion.tropic.test.tool.core.common.bean.scenario.Flow;
 import com.zomu.t.epion.tropic.test.tool.core.common.type.FlowScopeVariables;
 import com.zomu.t.epion.tropic.test.tool.core.common.type.FlowStatus;
 import com.zomu.t.epion.tropic.test.tool.core.common.util.BindUtils;

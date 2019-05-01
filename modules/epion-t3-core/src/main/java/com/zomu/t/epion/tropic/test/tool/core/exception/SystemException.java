@@ -10,6 +10,13 @@ import com.zomu.t.epion.tropic.test.tool.core.message.MessageManager;
  */
 public class SystemException extends RuntimeException {
 
+    /**
+     * デフォルトコンストラクタ.
+     */
+    public SystemException() {
+        // Default Constructor
+    }
+
     public SystemException(Throwable t, String messageCode) {
         super(MessageManager.getInstance().getMessage(messageCode), t);
     }
@@ -31,19 +38,19 @@ public class SystemException extends RuntimeException {
     }
 
     public SystemException(String messageCode) {
-        super(MessageManager.getInstance().getMessageWithCode(messageCode));
+        super(MessageManager.getInstance().getMessage(messageCode));
     }
 
     public SystemException(Messages messages) {
-        super(MessageManager.getInstance().getMessageWithCode(messages.getMessageCode()));
+        super(MessageManager.getInstance().getMessage(messages.getMessageCode()));
     }
 
     public SystemException(String messageCode, Object... objects) {
-        super(MessageManager.getInstance().getMessageWithCode(messageCode, objects));
+        super(MessageManager.getInstance().getMessage(messageCode, objects));
     }
 
     public SystemException(Messages messages, Object... objects) {
-        super(MessageManager.getInstance().getMessageWithCode(messages.getMessageCode(), objects));
+        super(MessageManager.getInstance().getMessage(messages.getMessageCode(), objects));
     }
 
 }

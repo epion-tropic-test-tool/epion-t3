@@ -5,10 +5,9 @@ import com.fasterxml.jackson.databind.DatabindContext;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.jsontype.TypeIdResolver;
 import com.fasterxml.jackson.databind.type.TypeFactory;
-import com.zomu.t.epion.tropic.test.tool.core.context.CommandInfo;
+import com.zomu.t.epion.tropic.test.tool.core.common.bean.CommandInfo;
 import com.zomu.t.epion.tropic.test.tool.core.exception.CommandCanNotResolveException;
-import com.zomu.t.epion.tropic.test.tool.core.exception.CommandNotFoundException;
-import com.zomu.t.epion.tropic.test.tool.core.holder.CustomPackageHolder;
+import com.zomu.t.epion.tropic.test.tool.core.custom.holder.CustomPackageHolder;
 
 import java.io.IOException;
 

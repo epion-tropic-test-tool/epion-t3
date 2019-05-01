@@ -1,10 +1,8 @@
 package com.zomu.t.epion.tropic.test.tool.rdb.command.runner;
 
-import com.zomu.t.epion.tropic.test.tool.core.command.model.CommandResult;
+import com.zomu.t.epion.tropic.test.tool.core.command.bean.CommandResult;
 import com.zomu.t.epion.tropic.test.tool.core.command.runner.impl.AbstractCommandRunner;
-import com.zomu.t.epion.tropic.test.tool.core.custom.configuration.resolver.CustomConfigurationTypeIdResolver;
 import com.zomu.t.epion.tropic.test.tool.core.exception.SystemException;
-import com.zomu.t.epion.tropic.test.tool.core.holder.CustomConfigurationHolder;
 import com.zomu.t.epion.tropic.test.tool.rdb.command.model.ExecuteRdbQuery;
 import com.zomu.t.epion.tropic.test.tool.rdb.configuration.model.RdbConnectionConfiguration;
 import com.zomu.t.epion.tropic.test.tool.rdb.message.RdbMessages;

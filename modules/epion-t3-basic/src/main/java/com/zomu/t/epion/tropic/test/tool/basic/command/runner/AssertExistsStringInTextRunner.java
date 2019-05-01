@@ -2,8 +2,8 @@ package com.zomu.t.epion.tropic.test.tool.basic.command.runner;
 
 import com.zomu.t.epion.tropic.test.tool.basic.command.model.AssertExistsStringInText;
 import com.zomu.t.epion.tropic.test.tool.basic.messages.BasicMessages;
-import com.zomu.t.epion.tropic.test.tool.core.command.model.AssertCommandResult;
-import com.zomu.t.epion.tropic.test.tool.core.command.model.CommandResult;
+import com.zomu.t.epion.tropic.test.tool.core.command.bean.AssertCommandResult;
+import com.zomu.t.epion.tropic.test.tool.core.command.bean.CommandResult;
 import com.zomu.t.epion.tropic.test.tool.core.command.runner.impl.AbstractCommandRunner;
 import com.zomu.t.epion.tropic.test.tool.core.exception.SystemException;
 import com.zomu.t.epion.tropic.test.tool.core.message.MessageManager;

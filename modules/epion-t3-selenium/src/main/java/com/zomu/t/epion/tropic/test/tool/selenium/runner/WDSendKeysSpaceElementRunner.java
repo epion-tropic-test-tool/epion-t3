@@ -1,6 +1,6 @@
 package com.zomu.t.epion.tropic.test.tool.selenium.runner;
 
-import com.zomu.t.epion.tropic.test.tool.core.command.model.CommandResult;
+import com.zomu.t.epion.tropic.test.tool.core.command.bean.CommandResult;
 import com.zomu.t.epion.tropic.test.tool.core.message.MessageManager;
 import com.zomu.t.epion.tropic.test.tool.selenium.command.WDSendKeysSpaceElement;
 import com.zomu.t.epion.tropic.test.tool.selenium.message.SeleniumMessages;

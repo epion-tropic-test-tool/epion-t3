@@ -1,7 +1,7 @@
 package com.zomu.t.epion.tropic.test.tool.core.flow.model;
 
 
-import com.zomu.t.epion.tropic.test.tool.core.annotation.FlowDefinition;
+import com.zomu.t.epion.tropic.test.tool.core.common.annotation.FlowDefinition;
 import com.zomu.t.epion.tropic.test.tool.core.flow.runner.impl.ReadFileIterateFlowRunner;
 import lombok.Getter;
 import lombok.Setter;

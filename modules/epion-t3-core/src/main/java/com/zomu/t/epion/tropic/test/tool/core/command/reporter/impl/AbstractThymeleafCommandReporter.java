@@ -1,14 +1,14 @@
 package com.zomu.t.epion.tropic.test.tool.core.command.reporter.impl;
 
-import com.zomu.t.epion.tropic.test.tool.core.command.model.CommandResult;
-import com.zomu.t.epion.tropic.test.tool.core.context.Context;
-import com.zomu.t.epion.tropic.test.tool.core.context.execute.ExecuteCommand;
-import com.zomu.t.epion.tropic.test.tool.core.context.execute.ExecuteContext;
-import com.zomu.t.epion.tropic.test.tool.core.context.execute.ExecuteFlow;
-import com.zomu.t.epion.tropic.test.tool.core.context.execute.ExecuteScenario;
+import com.zomu.t.epion.tropic.test.tool.core.command.bean.CommandResult;
+import com.zomu.t.epion.tropic.test.tool.core.common.context.Context;
+import com.zomu.t.epion.tropic.test.tool.core.common.bean.ExecuteCommand;
+import com.zomu.t.epion.tropic.test.tool.core.common.context.ExecuteContext;
+import com.zomu.t.epion.tropic.test.tool.core.common.bean.ExecuteFlow;
+import com.zomu.t.epion.tropic.test.tool.core.common.bean.ExecuteScenario;
 import com.zomu.t.epion.tropic.test.tool.core.exception.SystemException;
 import com.zomu.t.epion.tropic.test.tool.core.message.impl.CoreMessages;
-import com.zomu.t.epion.tropic.test.tool.core.model.scenario.Command;
+import com.zomu.t.epion.tropic.test.tool.core.common.bean.scenario.Command;
 import com.zomu.t.epion.tropic.test.tool.core.common.util.DateTimeUtils;
 import com.zomu.t.epion.tropic.test.tool.core.common.util.ExecutionFileUtils;
 import com.zomu.t.epion.tropic.test.tool.core.common.util.ThymeleafReportUtils;

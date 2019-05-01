@@ -1,8 +1,8 @@
 package com.epion_t3.excel.command.model;
 
 import com.epion_t3.excel.command.runner.ExcelBindVariablesRunner;
-import com.zomu.t.epion.tropic.test.tool.core.annotation.CommandDefinition;
-import com.zomu.t.epion.tropic.test.tool.core.model.scenario.Command;
+import com.zomu.t.epion.tropic.test.tool.core.common.annotation.CommandDefinition;
+import com.zomu.t.epion.tropic.test.tool.core.common.bean.scenario.Command;
 import lombok.Getter;
 import lombok.Setter;
 

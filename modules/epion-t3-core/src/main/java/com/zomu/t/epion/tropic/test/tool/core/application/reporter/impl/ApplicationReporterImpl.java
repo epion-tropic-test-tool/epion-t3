@@ -1,8 +1,9 @@
 package com.zomu.t.epion.tropic.test.tool.core.application.reporter.impl;
 
 import com.zomu.t.epion.tropic.test.tool.core.application.reporter.ThymeleafApplicationReporter;
-import com.zomu.t.epion.tropic.test.tool.core.context.Context;
-import com.zomu.t.epion.tropic.test.tool.core.context.execute.ExecuteContext;
+import com.zomu.t.epion.tropic.test.tool.core.common.context.Context;
+import com.zomu.t.epion.tropic.test.tool.core.common.context.ExecuteContext;
+import com.zomu.t.epion.tropic.test.tool.core.common.type.StageType;
 import com.zomu.t.epion.tropic.test.tool.core.exception.SystemException;
 import com.zomu.t.epion.tropic.test.tool.core.message.impl.CoreMessages;
 import com.zomu.t.epion.tropic.test.tool.core.common.util.ExecutionFileUtils;
@@ -32,7 +33,7 @@ public class ApplicationReporterImpl implements ThymeleafApplicationReporter<Exe
     /**
      * インスタンスを取得する.
      *
-     * @return
+     * @return シングルトンインスタンス
      */
     public static ApplicationReporterImpl getInstance() {
         return instance;
@@ -46,12 +47,16 @@ public class ApplicationReporterImpl implements ThymeleafApplicationReporter<Exe
     }
 
     /**
+     * レポート出力.
+     *
      * @param context        コンテキスト
      * @param executeContext 実行情報
-     * @param t              エラー
      */
     @Override
-    public void report(Context context, ExecuteContext executeContext, Throwable t) {
+    public void report(Context context, ExecuteContext executeContext) {
+
+        // レポート出力ステージ
+        executeContext.setStage(StageType.REPORT_ALL);
 
         TemplateEngine templateEngine = ThymeleafReportUtils.getInstance().createEngine();
 

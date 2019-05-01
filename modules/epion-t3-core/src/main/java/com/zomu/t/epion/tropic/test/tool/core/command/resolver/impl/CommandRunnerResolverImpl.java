@@ -2,16 +2,16 @@ package com.zomu.t.epion.tropic.test.tool.core.command.resolver.impl;
 
 import com.zomu.t.epion.tropic.test.tool.core.command.handler.CommandRunnerInvocationHandler;
 import com.zomu.t.epion.tropic.test.tool.core.command.resolver.CommandRunnerResolver;
-import com.zomu.t.epion.tropic.test.tool.core.context.Context;
-import com.zomu.t.epion.tropic.test.tool.core.context.execute.ExecuteContext;
-import com.zomu.t.epion.tropic.test.tool.core.context.execute.ExecuteCommand;
-import com.zomu.t.epion.tropic.test.tool.core.context.execute.ExecuteFlow;
-import com.zomu.t.epion.tropic.test.tool.core.context.execute.ExecuteScenario;
-import com.zomu.t.epion.tropic.test.tool.core.context.CommandInfo;
+import com.zomu.t.epion.tropic.test.tool.core.common.context.Context;
+import com.zomu.t.epion.tropic.test.tool.core.common.context.ExecuteContext;
+import com.zomu.t.epion.tropic.test.tool.core.common.bean.ExecuteCommand;
+import com.zomu.t.epion.tropic.test.tool.core.common.bean.ExecuteFlow;
+import com.zomu.t.epion.tropic.test.tool.core.common.bean.ExecuteScenario;
+import com.zomu.t.epion.tropic.test.tool.core.common.bean.CommandInfo;
 import com.zomu.t.epion.tropic.test.tool.core.exception.SystemException;
 import com.zomu.t.epion.tropic.test.tool.core.command.runner.CommandRunner;
 import com.zomu.t.epion.tropic.test.tool.core.exception.CommandNotFoundException;
-import com.zomu.t.epion.tropic.test.tool.core.holder.CustomPackageHolder;
+import com.zomu.t.epion.tropic.test.tool.core.custom.holder.CustomPackageHolder;
 import com.zomu.t.epion.tropic.test.tool.core.message.impl.CoreMessages;
 import org.apache.commons.lang3.StringUtils;
 

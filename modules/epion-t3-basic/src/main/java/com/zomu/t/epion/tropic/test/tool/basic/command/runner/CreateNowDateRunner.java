@@ -2,7 +2,7 @@ package com.zomu.t.epion.tropic.test.tool.basic.command.runner;
 
 import com.zomu.t.epion.tropic.test.tool.basic.command.model.CreateNowDate;
 import com.zomu.t.epion.tropic.test.tool.basic.messages.BasicMessages;
-import com.zomu.t.epion.tropic.test.tool.core.command.model.CommandResult;
+import com.zomu.t.epion.tropic.test.tool.core.command.bean.CommandResult;
 import com.zomu.t.epion.tropic.test.tool.core.command.runner.impl.AbstractCommandRunner;
 import com.zomu.t.epion.tropic.test.tool.core.exception.SystemException;
 import org.apache.commons.lang3.StringUtils;

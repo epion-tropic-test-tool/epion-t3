@@ -1,7 +1,7 @@
 package com.zomu.t.epion.tropic.test.tool.rdb.command.model;
 
-import com.zomu.t.epion.tropic.test.tool.core.annotation.CommandDefinition;
-import com.zomu.t.epion.tropic.test.tool.core.model.scenario.Command;
+import com.zomu.t.epion.tropic.test.tool.core.common.annotation.CommandDefinition;
+import com.zomu.t.epion.tropic.test.tool.core.common.bean.scenario.Command;
 import com.zomu.t.epion.tropic.test.tool.rdb.bean.AssertTargetTable;
 import com.zomu.t.epion.tropic.test.tool.rdb.command.reporter.AssertRdbDataReporter;
 import com.zomu.t.epion.tropic.test.tool.rdb.command.runner.AssertRdbDataRunner;
