@@ -17,15 +17,15 @@ import java.nio.file.Paths;
 public class FileCopyRunner extends AbstractCommandRunner<FileCopy> {
 
     /**
-     * @param process
+     * @param command
      * @param logger
      * @throws Exception
      */
     @Override
-    public CommandResult execute(final FileCopy process,
+    public CommandResult execute(final FileCopy command,
                                  final Logger logger) throws Exception {
-        Path from = Paths.get(process.getFrom());
-        try (OutputStream os = new FileOutputStream(process.getTo())) {
+        Path from = Paths.get(command.getFrom());
+        try (OutputStream os = new FileOutputStream(command.getTo())) {
             Files.copy(from, os);
         }
         return CommandResult.getSuccess();

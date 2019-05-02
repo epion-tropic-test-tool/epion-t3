@@ -1,0 +1,36 @@
+plugins {
+    id 'java'
+}
+
+configurations {
+    et3
+}
+
+dependencies {
+    // Core
+    et3 project(':modules:epion-t3-core')
+    // Customs
+    et3 project(':modules:epion-t3-basic')
+    et3 project(':modules:epion-t3-selenium')
+    et3 project(':modules:epion-t3-rest')
+    et3 project(':modules:epion-t3-rdb')
+    et3 project(':modules:epion-t3-log')
+    et3 project(':modules:epion-t3-ssh')
+}
+
+task execute(type: JavaExec) {
+    main = "com.zomu.t.epion.tropic.test.tool.core.application.Application"
+    classpath = configurations.et3
+    args = [
+            '-v',
+            'v1.0',
+            '-m',
+            'test',
+            '-p',
+            'develop',
+            '-t',
+            'scenario-selenium-sample',
+            '-s',
+            '/Users/takashimanozomu/work/30_pgworkspaces/intellij/epion-t3/modules/epion-t3-scenario/samples/unit'
+    ]
+}

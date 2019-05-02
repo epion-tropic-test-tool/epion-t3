@@ -76,7 +76,7 @@ public final class MessageManager {
      * @return
      */
     public String getMessage(Messages messages) {
-        return getMessageFormat(messages.getMessageCode()).format(null);
+        return "[" + messages.getMessageCode() + "] " + getMessageFormat(messages.getMessageCode()).format(null);
     }
 
     /**

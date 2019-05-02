@@ -1,6 +1,7 @@
 package com.zomu.t.epion.tropic.test.tool.core.exception.handler.impl;
 
 import com.zomu.t.epion.tropic.test.tool.core.common.bean.ET3Notification;
+import com.zomu.t.epion.tropic.test.tool.core.common.bean.Message;
 import com.zomu.t.epion.tropic.test.tool.core.common.context.ExecuteContext;
 import com.zomu.t.epion.tropic.test.tool.core.exception.ScenarioParseException;
 import com.zomu.t.epion.tropic.test.tool.core.exception.SystemException;
@@ -38,8 +39,10 @@ public final class ExceptionHandlerImpl implements ExceptionHandler<Context, Exe
         MessageManager messageManager = MessageManager.getInstance();
 
 //        if (context.getOption().getDebug()) {
-            t.printStackTrace();
+        t.printStackTrace();
 //        }
+
+        log.error(MessageManager.getInstance().getMessage(CoreMessages.CORE_ERR_0040));
 
         if (ScenarioParseException.class.isAssignableFrom(t.getClass())) {
             // シナリオ解析エラー

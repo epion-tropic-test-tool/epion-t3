@@ -1,5 +1,6 @@
 package com.zomu.t.epion.tropic.test.tool.core.custom.validator;
 
+import com.google.common.reflect.ClassPath;
 import com.zomu.t.epion.tropic.test.tool.core.common.bean.CommandInfo;
 import com.zomu.t.epion.tropic.test.tool.core.common.bean.CommandSpecInfo;
 import com.zomu.t.epion.tropic.test.tool.core.common.bean.CommandSpecStructure;
@@ -14,6 +15,8 @@ import com.zomu.t.epion.tropic.test.tool.core.scenario.bean.CommandSpecValidateE
 import com.zomu.t.epion.tropic.test.tool.core.message.MessageManager;
 import com.zomu.t.epion.tropic.test.tool.core.message.impl.CoreMessages;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.ClassPathUtils;
+import org.apache.commons.lang3.ClassUtils;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.TypeVariable;
@@ -63,9 +66,9 @@ public class CustomSpecValidator {
 
         for (CommandSpecStructure css : commandSpec.getStructures().values()) {
             try {
-
-                Class modelClazz = commandInfo.getModel();
-                Field structure = modelClazz.getDeclaredField(css.getName());
+                // フィールドの取得
+                Class.forName(commandInfo.getModel().getName());
+                Field structure = getFieldFromClass(commandInfo.getModel(), css.getName());
 
                 // 設計定義の型
                 StructureType type = StructureType.valueOfByValue(css.getType());
@@ -92,6 +95,7 @@ public class CustomSpecValidator {
                             result.add(CommandSpecStructureValidateError
                                     .commandSpecStructureValidateErrorBuilder()
                                     .stage(executeContext.getStage())
+                                    .level(NotificationType.ERROR)
                                     .customName(customName)
                                     .structureName(css.getName())
                                     .message(MessageManager.getInstance().getMessage(
@@ -104,6 +108,7 @@ public class CustomSpecValidator {
                             result.add(CommandSpecStructureValidateError
                                     .commandSpecStructureValidateErrorBuilder()
                                     .stage(executeContext.getStage())
+                                    .level(NotificationType.ERROR)
                                     .customName(customName)
                                     .structureName(css.getName())
                                     .message(MessageManager.getInstance().getMessage(
@@ -116,6 +121,7 @@ public class CustomSpecValidator {
                             result.add(CommandSpecStructureValidateError
                                     .commandSpecStructureValidateErrorBuilder()
                                     .stage(executeContext.getStage())
+                                    .level(NotificationType.ERROR)
                                     .customName(customName)
                                     .structureName(css.getName())
                                     .message(MessageManager.getInstance().getMessage(
@@ -124,10 +130,11 @@ public class CustomSpecValidator {
                         }
                         break;
                     case OBJECT:
-                        if (implType.isPrimitive()) {
+                        if (ClassUtils.isPrimitiveOrWrapper(implType)) {
                             result.add(CommandSpecStructureValidateError
                                     .commandSpecStructureValidateErrorBuilder()
                                     .stage(executeContext.getStage())
+                                    .level(NotificationType.ERROR)
                                     .customName(customName)
                                     .structureName(css.getName())
                                     .message(MessageManager.getInstance().getMessage(
@@ -150,9 +157,36 @@ public class CustomSpecValidator {
                         .structureName(css.getName())
                         .message(MessageManager.getInstance().getMessage(
                                 CoreMessages.CORE_ERR_0031, customName, commandInfo.getId(), css.getName())).build());
+            } catch (ClassNotFoundException e) {
+                result.add(CommandSpecStructureValidateError
+                        .commandSpecStructureValidateErrorBuilder()
+                        .stage(executeContext.getStage())
+                        .level(NotificationType.ERROR)
+                        .error(e)
+                        .customName(customName)
+                        .structureName(css.getName())
+                        .message(MessageManager.getInstance().getMessage(
+                                CoreMessages.CORE_ERR_0039, customName, commandInfo.getId())).build());
             }
         }
         return result;
     }
 
+    private Field getFieldFromClass(Class clazz, String fieldName)
+            throws NoSuchFieldException {
+        Field field = null;
+        while (clazz != null) {
+            try {
+                field = clazz.getDeclaredField(fieldName);
+                break;
+            } catch (NoSuchFieldException e) {
+                clazz = clazz.getSuperclass();
+            }
+        }
+
+        if (field == null) {
+            throw new NoSuchFieldException();
+        }
+        return field;
+    }
 }

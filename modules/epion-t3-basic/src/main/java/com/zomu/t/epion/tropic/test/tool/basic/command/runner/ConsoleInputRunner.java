@@ -21,20 +21,20 @@ public class ConsoleInputRunner extends AbstractCommandRunner<ConsoleInput> {
      * {@inheritDoc}
      */
     @Override
-    public CommandResult execute(final ConsoleInput process,
+    public CommandResult execute(final ConsoleInput command,
                                  final Logger logger) throws Exception {
 
         Console c = System.console();
         if (c != null) {
             // JDK1.6以降からのコンソールからシステムコンソールが取得できたならば、こちらを利用する
-            String s = c.readLine(process.getTarget() + ": ");
-            getScenarioScopeVariables().put(process.getValue(), s);
+            String s = c.readLine(command.getTarget() + ": ");
+            getScenarioScopeVariables().put(command.getValue(), s);
         } else {
             // コンソールが取得できない場合は、従来の方法でコンソールからユーザ入力を取得する
             try (BufferedReader br = new BufferedReader(new InputStreamReader(System.in))) {
-                System.out.print(process.getTarget() + ": ");
+                System.out.print(command.getTarget() + ": ");
                 String s = br.readLine();
-                getScenarioScopeVariables().put(process.getValue(), s);
+                setVariable(command.getValue(), s);
             } catch (Exception e) {
                 throw new SystemException(e, BasicMessages.BASIC_ERR_9006);
             }
