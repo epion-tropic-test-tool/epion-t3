@@ -21,6 +21,10 @@ public class Command implements Serializable {
     @NotEmpty
     private List<Content> summary;
 
+    private Boolean assertCommand = false;
+
+    private Boolean evidenceCommand = false;
+
     @NotEmpty
     @Valid
     private List<TestItem> testItem = new ArrayList<>();

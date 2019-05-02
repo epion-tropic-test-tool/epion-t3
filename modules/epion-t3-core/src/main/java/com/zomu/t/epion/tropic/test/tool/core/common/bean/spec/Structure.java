@@ -29,10 +29,25 @@ public class Structure implements Serializable {
 
     private String pattern;
 
+    /**
+     * 概要説明.
+     */
     @NotEmpty
     @Valid
     private List<Content> summary;
 
+    /**
+     * 詳細説明.
+     */
     private List<Content> description;
+
+    /**
+     * プロパティ.
+     * typeがobjectの場合に、子階層を表す.
+     * typeがarrayの場合に、要素型を表す.
+     */
+    @Valid
+    private List<Structure> property;
+
 
 }

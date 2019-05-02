@@ -1,13 +1,19 @@
 package com.zomu.t.epion.tropic.test.tool.core.common.bean;
 
+import com.zomu.t.epion.tropic.test.tool.core.common.bean.spec.Command;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+/**
+ * @author takashno
+ */
 @Getter
 @Setter
 public class CommandSpecStructure implements Serializable {
@@ -17,20 +23,41 @@ public class CommandSpecStructure implements Serializable {
      */
     private static final long serialVersionUID = 1L;
 
+    /**
+     * 名称.
+     */
     private String name;
 
+    /**
+     * 型.
+     */
     private String type;
 
+    /**
+     * 正規表現パターン.
+     */
     private String pattern;
 
+    /**
+     * 概要説明.
+     */
     private Map<Locale, String> summaries = new ConcurrentHashMap<>();
 
+    /**
+     * 詳細説明.
+     */
     private Map<Locale, String> descriptions = new ConcurrentHashMap<>();
+
+    /**
+     * プロパティ.
+     * typeがobjectの場合に、ネスト構造となるため子階層を表す.
+     */
+    private List<CommandSpecStructure> property = new ArrayList<>();
 
     /**
      * 概要を追加.
      *
-     * @param lang ロケール名
+     * @param lang     ロケール名
      * @param contents コンテンツ
      */
     public void putSummary(String lang, String contents) {
@@ -40,7 +67,7 @@ public class CommandSpecStructure implements Serializable {
     /**
      * 詳細を追加.
      *
-     * @param lang ロケール名
+     * @param lang     ロケール名
      * @param contents コンテンツ
      */
     public void putDescription(String lang, String contents) {

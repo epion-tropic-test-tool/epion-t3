@@ -14,6 +14,7 @@ public enum StructureType {
     NUMBER("number"),
     BOOLEAN("boolean"),
     ARRAY("array"),
+    MAP("map"),
     OBJECT("object");
 
 

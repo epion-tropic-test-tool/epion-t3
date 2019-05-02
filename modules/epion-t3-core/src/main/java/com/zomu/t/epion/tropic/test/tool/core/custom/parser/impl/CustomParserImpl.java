@@ -16,6 +16,7 @@ import com.zomu.t.epion.tropic.test.tool.core.common.bean.scenario.Configuration
 import com.zomu.t.epion.tropic.test.tool.core.common.bean.scenario.ET3Base;
 import com.zomu.t.epion.tropic.test.tool.core.common.bean.scenario.Flow;
 import com.zomu.t.epion.tropic.test.tool.core.common.bean.spec.ET3Spec;
+import com.zomu.t.epion.tropic.test.tool.core.common.bean.spec.Structure;
 import com.zomu.t.epion.tropic.test.tool.core.common.context.Context;
 import com.zomu.t.epion.tropic.test.tool.core.common.context.ExecuteContext;
 import com.zomu.t.epion.tropic.test.tool.core.common.type.NotificationType;
@@ -38,6 +39,7 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Comparator;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -209,7 +211,7 @@ public final class CustomParserImpl implements CustomParser<Context, ExecuteCont
                 ET3Spec et3Spec = context.getObjectMapper().readValue(is, ET3Spec.class);
 
 
-                Set<ConstraintViolation<ET3Spec>> validationErrors =  validationFactory.getValidator().validate(et3Spec);
+                Set<ConstraintViolation<ET3Spec>> validationErrors = validationFactory.getValidator().validate(et3Spec);
 
 
                 // カスタム設計情報の読み込み
@@ -258,6 +260,9 @@ public final class CustomParserImpl implements CustomParser<Context, ExecuteCont
                                             s.getDescription().stream()
                                                     .forEach(sm -> commandSpecStructure.putDescription(sm.getLang(), sm.getContents()));
                                         }
+                                        if (s.getProperty() != null && !s.getProperty().isEmpty()) {
+                                            parseCustomCommandStructureRecursive(commandSpecStructure, s.getProperty());
+                                        }
                                         commandSpecInfo.addStructure(commandSpecStructure);
                                     });
 
@@ -292,6 +297,28 @@ public final class CustomParserImpl implements CustomParser<Context, ExecuteCont
 
         }
 
+    }
+
+    private void parseCustomCommandStructureRecursive(CommandSpecStructure parent, List<Structure> structures) {
+
+        // コマンド構成を設定
+        structures.stream().sorted(Comparator.comparing(s -> s.getOrder()))
+                .forEach(s -> {
+                    CommandSpecStructure commandSpecStructure = new CommandSpecStructure();
+                    commandSpecStructure.setName(s.getName());
+                    commandSpecStructure.setPattern(s.getPattern());
+                    commandSpecStructure.setType(s.getType());
+                    s.getSummary().stream()
+                            .forEach(sm -> commandSpecStructure.putSummary(sm.getLang(), sm.getContents()));
+                    if (s.getDescription() != null) {
+                        s.getDescription().stream()
+                                .forEach(sm -> commandSpecStructure.putDescription(sm.getLang(), sm.getContents()));
+                    }
+                    if (s.getProperty() != null && !s.getProperty().isEmpty()) {
+                        parseCustomCommandStructureRecursive(commandSpecStructure, s.getProperty());
+                    }
+                    parent.getProperty().add(commandSpecStructure);
+                });
     }
 
     /**

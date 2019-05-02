@@ -29,8 +29,8 @@ task execute(type: JavaExec) {
             '-p',
             'develop',
             '-t',
-            'scenario-selenium-sample',
+            'scenario-rest-sample',
             '-s',
-            '/Users/takashimanozomu/work/30_pgworkspaces/intellij/epion-t3/modules/epion-t3-scenario/samples/unit'
+            "${projectDir}/scenario"
     ]
 }
