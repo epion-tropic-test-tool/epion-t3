@@ -6,8 +6,8 @@ import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.jsontype.TypeIdResolver;
 import com.fasterxml.jackson.databind.type.TypeFactory;
 import com.zomu.t.epion.tropic.test.tool.core.common.bean.CommandInfo;
-import com.zomu.t.epion.tropic.test.tool.core.exception.CommandCanNotResolveException;
 import com.zomu.t.epion.tropic.test.tool.core.custom.holder.CustomPackageHolder;
+import com.zomu.t.epion.tropic.test.tool.core.exception.CommandNotFoundException;
 
 import java.io.IOException;
 
@@ -51,7 +51,7 @@ public class CommandTypeIdResolver implements TypeIdResolver {
         if (commandInfo != null) {
             return typeFactory.constructType(commandInfo.getModel());
         }
-        throw new CommandCanNotResolveException(id);
+        throw new CommandNotFoundException(id);
     }
 
     @Override

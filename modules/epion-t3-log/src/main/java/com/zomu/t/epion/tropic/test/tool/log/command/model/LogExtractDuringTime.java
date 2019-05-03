@@ -21,14 +21,14 @@ public class LogExtractDuringTime extends Command {
     @NotEmpty
     private String extractPattern;
 
-    private int group = 1;
+    private Integer group = 1;
 
     private String datePattern = "yyyy-MM-ddTHH:mm:ss";
 
     /**
      * 前後バッファ数.
      */
-    private int roundBuffer = 0;
+    private Integer roundBuffer = 0;
 
     /**
      * 前後バッファ時間ユニット.

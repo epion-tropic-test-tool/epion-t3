@@ -476,51 +476,83 @@ commands:
 # メッセージ定義
 #####################################
 messages:
-  - id: com.epion_t3.basic.inf.0001
+  - id: com.epion_t3.rest.info.1001
     message:
       - lang: ja_JP
-        contents: "指定パターンに合致する文字列が含まれています.指定パターン:{0}"
-  - id: com.epion_t3.basic.err.9001
+        contents: "HTTPステータスコードは一致します."
+  - id: com.epion_t3.rest.info.1002
     message:
       - lang: ja_JP
-        contents: "参照する変数のスコープが不正です.スコープ:{0}"
-  - id: com.epion_t3.basic.err.9002
+        contents: "HTTPヘッダは一致します."
+  - id: com.epion_t3.rest.err.9001
     message:
       - lang: ja_JP
-        contents: "指定パターンに合致する文字列が含まれていません.指定パターン:{0}"
-  - id: com.epion_t3.basic.err.9003
+        contents: "不明なメソッドです.メソッド:{0}"
+  - id: com.epion_t3.rest.err.9002
     message:
       - lang: ja_JP
-        contents: "値（value）は必須です."
-  - id: com.epion_t3.basic.err.9004
+        contents: "HTTPステータスコードは数値で指定してください.ステータスコード:{0}"
+  - id: com.epion_t3.rest.err.9003
     message:
       - lang: ja_JP
-        contents: "値（value）は数値で指定してください."
-  - id: com.epion_t3.basic.err.9005
+        contents: "HTTPステータスコードは一致しません."
+  - id: com.epion_t3.rest.err.9004
     message:
       - lang: ja_JP
         contents: "対象（target）は必須です."
-  - id: com.epion_t3.basic.err.9006
+  - id: com.epion_t3.rest.err.9005
     message:
       - lang: ja_JP
-        contents: "ユーザー入力にてエラーが発生しました."
-  - id: com.epion_t3.basic.err.9007
+        contents: "値（value）は必須です."
+  - id: com.epion_t3.rest.err.9006
     message:
       - lang: ja_JP
-        contents: "対象のファイルが見つかりません.パス：{0}"
-  - id: com.epion_t3.basic.err.9008
+        contents: "エビデンスが参照できません.FlowID：{0}"
+  - id: com.epion_t3.rest.err.9007
     message:
       - lang: ja_JP
-        contents: "対象のファイルの読み込みに失敗しました.パス：{0}"
-  - id: com.epion_t3.basic.err.9009
+        contents: "エビデンスはREST-APIの実行結果のレスポンスではありません.FlowID：{0}"
+  - id: com.epion_t3.rest.err.9008
     message:
       - lang: ja_JP
-        contents: "本コマンドはjava.util.Dateを扱うためのコマンドです.変数に格納されているものは型が異なります."
-  - id: com.epion_t3.basic.err.9010
+        contents: "エビデンスのREST-APIの実行結果のレスポンスにはBodyが存在しません.FlowID：{0}"
+  - id: com.epion_t3.rest.err.9009
     message:
       - lang: ja_JP
-        contents: "フォーマット後の格納先変数の指定は必須です."
-  - id: com.epion_t3.basic.err.9011
+        contents: "JSONパスが不正です.JSONPath：{0}"
+  - id: com.epion_t3.rest.err.9010
     message:
       - lang: ja_JP
-        contents: "日付演算後の格納先変数の指定は必須です."
+        contents: "JSONパスは必須です."
+  - id: com.epion_t3.rest.err.9011
+    message:
+      - lang: ja_JP
+        contents: "ストアは単一プロパティのみ可能です.ArrayやObjectは不可能です.JSONPath：{0}"
+  - id: com.epion_t3.rest.err.9012
+    message:
+      - lang: ja_JP
+        contents: "接続タイムアウトは必須です."
+  - id: com.epion_t3.rest.err.9013
+    message:
+      - lang: ja_JP
+        contents: "接続タイムアウトは数値(ms)で指定してください.接続タイムアウト：{0}"
+  - id: com.epion_t3.rest.err.9014
+    message:
+      - lang: ja_JP
+        contents: "読込タイムアウトは必須です."
+  - id: com.epion_t3.rest.err.9015
+    message:
+      - lang: ja_JP
+        contents: "読込タイムアウトは数値(ms)で指定してください.読込タイムアウト：{0}"
+  - id: com.epion_t3.rest.err.9016
+    message:
+      - lang: ja_JP
+        contents: "HTTPヘッダ名は必須です."
+  - id: com.epion_t3.rest.err.9017
+    message:
+      - lang: ja_JP
+        contents: "HTTPヘッダは一致しません."
+  - id: com.epion_t3.rest.err.9018
+    message:
+      - lang: ja_JP
+        contents: "指定されたエンコーディングはサポート対象外です.エンコーディング：{0}"

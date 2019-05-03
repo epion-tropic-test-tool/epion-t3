@@ -122,7 +122,7 @@ public class CustomSpecValidator {
                         }
                         break;
                     case BOOLEAN:
-                        if (!Boolean.class.isAssignableFrom(implType)) {
+                        if (!(Boolean.class.isAssignableFrom(implType) || boolean.class.isAssignableFrom(implType))) {
                             result.add(CommandSpecStructureValidateError
                                     .commandSpecStructureValidateErrorBuilder()
                                     .stage(executeContext.getStage())
@@ -279,7 +279,7 @@ public class CustomSpecValidator {
                         }
                         break;
                     case BOOLEAN:
-                        if (!Boolean.class.isAssignableFrom(implType)) {
+                        if (!(Boolean.class.isAssignableFrom(implType) || boolean.class.isAssignableFrom(implType))) {
                             result.add(CommandSpecStructureValidateError
                                     .commandSpecStructureValidateErrorBuilder()
                                     .stage(executeContext.getStage())

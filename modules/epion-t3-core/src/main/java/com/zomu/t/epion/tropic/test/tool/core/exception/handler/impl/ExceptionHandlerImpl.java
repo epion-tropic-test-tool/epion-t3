@@ -38,14 +38,10 @@ public final class ExceptionHandlerImpl implements ExceptionHandler<Context, Exe
 
         MessageManager messageManager = MessageManager.getInstance();
 
-//        if (context.getOption().getDebug()) {
-        t.printStackTrace();
-//        }
-
-        log.error(MessageManager.getInstance().getMessage(CoreMessages.CORE_ERR_0040));
-
         if (ScenarioParseException.class.isAssignableFrom(t.getClass())) {
+
             // シナリオ解析エラー
+            log.error(messageManager.getMessage(CoreMessages.CORE_ERR_0040));
 
             for (ET3Notification notification : executeContext.getNotifications()) {
 
@@ -54,10 +50,18 @@ public final class ExceptionHandlerImpl implements ExceptionHandler<Context, Exe
                         log.info(notification.getMessage());
                         break;
                     case WARN:
-                        log.warn(notification.getMessage());
+                        if (context.getOption().getDebug() && notification.getError() != null) {
+                            log.warn(notification.getMessage(), notification.getError());
+                        } else {
+                            log.warn(notification.getMessage());
+                        }
                         break;
                     case ERROR:
-                        log.error(notification.getMessage(), notification.getError());
+                        if (context.getOption().getDebug()) {
+                            log.error(notification.getMessage(), notification.getError());
+                        } else {
+                            log.error(notification.getMessage());
+                        }
                         break;
                     default:
                         // Do Nothing...
@@ -70,7 +74,12 @@ public final class ExceptionHandlerImpl implements ExceptionHandler<Context, Exe
         // システムエラー
         else if (SystemException.class.isAssignableFrom(t.getClass())) {
             SystemException se = SystemException.class.cast(t);
-            log.error(se.getMessage());
+            log.error(se.getMessage(), se);
+        }
+        // 不明エラー
+        else {
+
+            t.printStackTrace();
         }
 
 

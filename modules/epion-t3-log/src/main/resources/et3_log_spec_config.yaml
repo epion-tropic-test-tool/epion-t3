@@ -1,0 +1,150 @@
+t3: 1.0
+#####################################
+# カスタム機能定義
+#####################################
+info:
+  name: log
+  customPackage: com.epion_t3.log
+  summary:
+    - lang: ja_JP
+      contents: ログ関連のコマンドを提供します。
+  description:
+    - lang: ja_JP
+      contents: テスト実行時のログ関連の機能を提供します。
+#####################################
+# コマンド定義
+#####################################
+commands:
+  ##########################
+  # LogExtractDuringTime
+  ##########################
+  - id: LogExtractDuringTime
+    evidenceCommand: true
+    summary:
+      - lang: ja_JP
+        contents: "ログの抽出を実行時間から行います。指定したログファイルから指定したコマンドの実行時間（開始〜終了の間）のログを抽出します。エビデンスを残すための手段となります。"
+    testItem:
+      - order: 1
+        summary:
+          - lang: ja_JP
+            contents: REST-APIを呼び出します。対象URL「${request.targetUrl}」、メソッド「${request.method}」、
+    function:
+      - order: 1
+        summary:
+          - lang: ja_JP
+            contents: "ログファイルから実行時間分のみのログを抽出することが可能です。"
+      - order: 2
+        summary:
+          - lang: ja_JP
+            contents: "ログファイルは最終的に抽出された内容で上書きされます。"
+      - order: 3
+        summary:
+          - lang: ja_JP
+            contents: "対象とするログファイルは事前にエビデンスとして取得している必要があります。"
+    structure:
+      - order: 1
+        name: id
+        required: true
+        type: string
+        summary:
+          - lang: ja_JP
+            contents: コマンドのID
+          - lang: en_US
+            contents: Core Functions.
+      - order: 2
+        name: command
+        required: true
+        type: string
+        summary:
+          - lang: ja_JP
+            contents: 「LogExtractDuringTime」固定
+          - lang: en_US
+            contents: Fix Value SetVariable
+      - order: 3
+        name: summary
+        required: false
+        type: string
+        summary:
+          - lang: ja_JP
+            contents: コマンドの概要（任意）
+          - lang: en_US
+            contents: Fix Value SetVariable
+      - order: 4
+        name: description
+        required: false
+        type: string
+        summary:
+          - lang: ja_JP
+            contents: コマンドの詳細（任意）
+          - lang: en_US
+            contents: Fix Value SetVariable
+      - order: 5
+        name: target
+        required: true
+        type: string
+        summary:
+          - lang: ja_JP
+            contents: "対象のログファイルをエビデンス取得したFlowIDを指定 # (1)"
+        description:
+          - lang: ja_JP
+            contents: "読み込むログファイルを特定するために、エビデンス取得を行なったFlowIDを指定します。"
+      - order: 6
+        name: targetFlow
+        required: true
+        type: string
+        summary:
+          - lang: ja_JP
+            contents: "ログの抽出対象とする操作を行なったFlowID # (2)"
+        description:
+          - lang: ja_JP
+            contents: "ログの抽出を行うべき時間を特定するために利用する。試験対象に対してログを取得したい操作を行なったFlowIDを指定する。"
+      - order: 7
+        name: extractPattern
+        required: false
+        type: string
+        summary:
+          - lang: ja_JP
+            contents: "時間の抽出パターン # (3)"
+        description:
+          - lang: ja_JP
+            contents: "ファイルを読み込み、１行ずつ時間の範囲内であるか判断を行います。その際に日付時間を抽出するための正規表現パターンを設定します。"
+      - order: 8
+        name: group
+        required: false
+        type: number
+        summary:
+          - lang: ja_JP
+            contents: "時間の抽出パターンに対する対象グループ #(4)"
+        description:
+          - lang: ja_JP
+            contents: "時間の抽出パターンでは正規表現のグループを使用します。その際に日付時間と認識するグループを指定します。デフォルトは「1」です。"
+      - order: 9
+        name: encoding
+        required: false
+        type: object
+        summary:
+          - lang: ja_JP
+            contents: "ログファイル読み込みエンコーディング #(4)"
+        description:
+          - lang: ja_JP
+            contents: "ログファイルを読み込むエンコーディングの指定を行います。デフォルトは「UTF-8」です。"
+#####################################
+# メッセージ定義
+#####################################
+messages:
+  - id: com.epion_t3.log.err.9001
+    message:
+      - lang: ja_JP
+        contents: "対象（target）は必須です."
+  - id: com.epion_t3.log.err.9002
+    message:
+      - lang: ja_JP
+        contents: "値（value）は必須です."
+  - id: com.epion_t3.log.err.9003
+    message:
+      - lang: ja_JP
+        contents: "抽出パターンは必須です."
+  - id: com.epion_t3.log.err.9004
+    message:
+      - lang: ja_JP
+        contents: "日付解析にてエラーが発生しました.抽出文字列：{0}、パターン：{1}"

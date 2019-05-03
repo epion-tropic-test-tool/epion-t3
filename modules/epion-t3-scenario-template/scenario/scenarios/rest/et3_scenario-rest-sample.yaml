@@ -1,6 +1,6 @@
 t3: '1.0'
 info:
-  id: "scenarios-rest-sample"
+  id: "scenario-rest-sample"
   version: 1.0.0
   summary: "REST-APIのサンプル"
   description: "REST-APIのサンプル"

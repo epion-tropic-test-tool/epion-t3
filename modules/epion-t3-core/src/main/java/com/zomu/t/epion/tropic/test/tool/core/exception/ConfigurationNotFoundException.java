@@ -13,6 +13,6 @@ public class ConfigurationNotFoundException extends SystemException {
     private String configurationId;
 
     public ConfigurationNotFoundException(String configurationId) {
-        super("not found configuration: '" + configurationId + "'");
+        this.configurationId = configurationId;
     }
 }

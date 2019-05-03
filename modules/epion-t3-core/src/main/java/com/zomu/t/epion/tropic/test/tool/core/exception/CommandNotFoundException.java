@@ -13,7 +13,6 @@ public class CommandNotFoundException extends SystemException {
     private String commandId;
 
     public CommandNotFoundException(String commandId) {
-        super("not found command: '" + commandId + "'");
         this.commandId = commandId;
     }
 }
