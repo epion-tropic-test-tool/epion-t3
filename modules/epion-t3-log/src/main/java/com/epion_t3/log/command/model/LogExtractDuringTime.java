@@ -1,8 +1,8 @@
-package com.zomu.t.epion.tropic.test.tool.log.command.model;
+package com.epion_t3.log.command.model;
 
+import com.epion_t3.log.command.runner.LogExtractDuringTimeRunner;
 import com.zomu.t.epion.tropic.test.tool.core.common.annotation.CommandDefinition;
 import com.zomu.t.epion.tropic.test.tool.core.common.bean.scenario.Command;
-import com.zomu.t.epion.tropic.test.tool.log.command.runner.LogExtractDuringTimeRunner;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.bval.constraints.NotEmpty;

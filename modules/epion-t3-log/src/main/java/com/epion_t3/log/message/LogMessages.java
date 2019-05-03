@@ -1,4 +1,4 @@
-package com.zomu.t.epion.tropic.test.tool.log.message;
+package com.epion_t3.log.message;
 
 import com.zomu.t.epion.tropic.test.tool.core.message.Messages;
 import lombok.AllArgsConstructor;
