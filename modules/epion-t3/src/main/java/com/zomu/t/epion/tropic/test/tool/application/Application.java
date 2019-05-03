@@ -1,14 +1,14 @@
-package com.zomu.t.epion.tropic.test.tool.application;
+package com.epion_t3.application;
 
 import com.google.common.reflect.ClassPath;
-import com.zomu.t.epion.tropic.test.tool.core.common.annotation.ApplicationVersion;
-import com.zomu.t.epion.tropic.test.tool.core.application.runner.ApplicationRunner;
-import com.zomu.t.epion.tropic.test.tool.core.initialize.InitializeEpion;
-import com.zomu.t.epion.tropic.test.tool.core.message.impl.CoreMessages;
-import com.zomu.t.epion.tropic.test.tool.core.message.MessageManager;
-import com.zomu.t.epion.tropic.test.tool.core.common.type.Args;
-import com.zomu.t.epion.tropic.test.tool.core.common.type.InitializeArgs;
-import com.zomu.t.epion.tropic.test.tool.core.common.type.ExitCode;
+import com.epion_t3.core.common.annotation.ApplicationVersion;
+import com.epion_t3.core.application.runner.ApplicationRunner;
+import com.epion_t3.core.initialize.InitializeEpion;
+import com.epion_t3.core.message.impl.CoreMessages;
+import com.epion_t3.core.message.MessageManager;
+import com.epion_t3.core.common.type.Args;
+import com.epion_t3.core.common.type.InitializeArgs;
+import com.epion_t3.core.common.type.ExitCode;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.cli.*;
 import org.apache.commons.io.IOUtils;
@@ -31,7 +31,7 @@ import java.util.stream.Collectors;
 @Slf4j
 public class Application {
 
-    private static final String BASE_PACKAGE = "com.zomu.t.epion.tropic.test.tool";
+    private static final String BASE_PACKAGE = "com.epion_t3";
 
     private static final Options OPTIONS = new Options();
 

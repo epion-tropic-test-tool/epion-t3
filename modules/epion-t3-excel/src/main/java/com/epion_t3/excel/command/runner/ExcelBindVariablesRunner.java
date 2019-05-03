@@ -1,8 +1,8 @@
 package com.epion_t3.excel.command.runner;
 
 import com.epion_t3.excel.command.model.ExcelBindVariables;
-import com.zomu.t.epion.tropic.test.tool.core.command.bean.CommandResult;
-import com.zomu.t.epion.tropic.test.tool.core.command.runner.impl.AbstractCommandRunner;
+import com.epion_t3.core.command.bean.CommandResult;
+import com.epion_t3.core.command.runner.impl.AbstractCommandRunner;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.ss.usermodel.*;
 import org.slf4j.Logger;

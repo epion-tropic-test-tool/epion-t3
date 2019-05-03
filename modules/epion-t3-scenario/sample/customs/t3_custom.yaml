@@ -5,8 +5,8 @@ customs:
   # カスタム機能の定義（名称と実装パッケージ）
   # なお、クラスパスに実装パッケージを参照できるクラスもしくはJarが含まれていることが必須となる
   packages:
-    core: "com.zomu.t.epion.tropic.test.tool.core"
-    basic: "com.zomu.t.epion.tropic.test.tool.basic"
-    selenium: "com.zomu.t.epion.tropic.test.tool.selenium"
-    random: "com.zomu.t.epion.tropic.test.tool.random"
-    rest: "com.zomu.t.epion.tropic.test.tool.rest"
+    core: "com.epion_t3.core"
+    basic: "com.epion_t3.basic"
+    selenium: "com.epion_t3.selenium"
+    random: "com.epion_t3.random"
+    rest: "com.epion_t3.rest"

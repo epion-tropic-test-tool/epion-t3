@@ -218,7 +218,7 @@
                 </thead>
                 <tbody>
                 <th:block th:each="entry,stat : ${executeScenario.evidences}">
-                    <tr th:if="${entry.value.getClass().getName() == 'com.zomu.t.epion.tropic.test.tool.core.common.context.FileEvidenceInfo'}">
+                    <tr th:if="${entry.value.getClass().getName() == 'com.epion_t3.core.common.context.FileEvidenceInfo'}">
                         <td scope="col">
                             <a th:href="${#strings.concat('#',entry.value.executeFlowId)}"
                                th:text="${entry.value.fqfn}">flow-0001</a>

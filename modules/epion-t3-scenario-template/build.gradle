@@ -19,7 +19,7 @@ dependencies {
 }
 
 task execute(type: JavaExec) {
-    main = "com.zomu.t.epion.tropic.test.tool.core.application.Application"
+    main = "com.epion_t3.core.application.Application"
     classpath = configurations.et3
     args = [
             '-v',

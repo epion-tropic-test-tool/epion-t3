@@ -186,7 +186,7 @@
                 </thead>
                 <tbody>
                 <th:block th:each="evidenceInfo,stat : ${executeScenario.evidences}">
-                    <tr th:if="${evidenceInfo.getClass().getName() == 'com.zomu.t.epion.tropic.test.tool.core.common.context.FileEvidenceInfo'}">
+                    <tr th:if="${evidenceInfo.getClass().getName() == 'com.epion_t3.core.common.context.FileEvidenceInfo'}">
                         <td scope="row" th:text="${evidenceInfo.value.name}">key1</td>
                         <td scope="col">
                             <a href="#execution-id"

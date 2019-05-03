@@ -29,7 +29,7 @@ http://ettt.t-zomu.com/
 ### 処理説明
 
 #### Application
-`com.zomu.t.epion.tropic.test.tool.application.Application`にmainメソッドがあり、ツール起動はこのクラスから行う。
+`com.epion_t3.application.Application`にmainメソッドがあり、ツール起動はこのクラスから行う。
 このクラスでは、`ApplicationRunner`を探す処理を入れているが、あんまり今のところ拡張予定はない・・・
 `v1.0`とか`v2.0`とかとんでもない変更を入れたときとか、根元から動き替えたいときに助かるかなぁと妄想して作っているレベル。
 

@@ -1,6 +1,6 @@
 package com.epion_t3.log.message;
 
-import com.zomu.t.epion.tropic.test.tool.core.message.Messages;
+import com.epion_t3.core.message.Messages;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
