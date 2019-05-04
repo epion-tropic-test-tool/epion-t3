@@ -106,10 +106,10 @@
                 </thead>
                 <tbody>
                 <tr th:each="scenario,stat : ${executeContext.scenarios}">
-                    <th scope="row"><a th:href="${#strings.concat('./',scenario.resultPath.getFileName(),'/','scenario_report.html')}" th:text="${scenario.info.id}">scenario-id</a></th>
-                    <td class="table-success" th:text="${scenario.status}" th:class="${scenario.status.getCssClass()}">SUCCESS</td>
-                    <td th:text="${scenario.info.summary}">Summary</td>
-                    <td th:text="${#strings.concat(dateTimeUtils.formatTimeNormal(scenario.start), ' ~ ', dateTimeUtils.formatTimeNormal(scenario.end), ' (', dateTimeUtils.getMillis(scenario.start, scenario.end), ' ms)')}"></td>
+                    <th scope="row"><a th:href="${#strings.concat('./',com.epion_t3.core.common.bean.scenario.resultPath.getFileName(),'/','scenario_report.html')}" th:text="${com.epion_t3.core.common.bean.scenario.info.id}">scenario-id</a></th>
+                    <td class="table-success" th:text="${com.epion_t3.core.common.bean.scenario.status}" th:class="${com.epion_t3.core.common.bean.scenario.status.getCssClass()}">SUCCESS</td>
+                    <td th:text="${com.epion_t3.core.common.bean.scenario.info.summary}">Summary</td>
+                    <td th:text="${#strings.concat(dateTimeUtils.formatTimeNormal(com.epion_t3.core.common.bean.scenario.start), ' ~ ', dateTimeUtils.formatTimeNormal(com.epion_t3.core.common.bean.scenario.end), ' (', dateTimeUtils.getMillis(com.epion_t3.core.common.bean.scenario.start, com.epion_t3.core.common.bean.scenario.end), ' ms)')}"></td>
                 </tr>
                 <tr th:remove="all">
                     <th scope="row">fef4d139-a550-490a-8365-9fd26ce3f871</th>

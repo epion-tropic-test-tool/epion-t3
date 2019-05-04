@@ -23,7 +23,7 @@ public enum ReferenceVariableType {
     /**
      * シナリオスコープ.
      */
-    SCENARIO("scenario"),
+    SCENARIO("com/epion_t3/core/common/bean/scenario"),
 
     /**
      * Flowスコープ.

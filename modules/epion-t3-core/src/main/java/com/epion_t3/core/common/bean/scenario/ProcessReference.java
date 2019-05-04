@@ -8,7 +8,7 @@ import java.util.Map;
 
 @Getter
 @Setter
-public class ProcessReference implements Serializable{
+public class ProcessReference implements Serializable {
 
     private String id;
 

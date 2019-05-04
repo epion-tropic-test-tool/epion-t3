@@ -25,6 +25,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * カスタム機能の設計検証処理.
+ *
  * @author takashno
  */
 @Slf4j
@@ -71,6 +73,10 @@ public class CustomSpecValidator {
 
         CommandSpecInfo commandSpec =
                 CustomPackageHolder.getInstance().getCommandSpec(customName, commandInfo.getId());
+
+        // ここで初めてコマンドIDとコマンドモデルクラスの付き合わせが行えるため、
+        // このタイミングでCustomPackageHolderへ登録を行う.
+        CustomPackageHolder.getInstance().addCustomCommandSpec(commandInfo.getModel(), commandSpec);
 
         if (commandSpec == null) {
             executeContext.addNotification(ET3Notification.builder()
@@ -227,6 +233,18 @@ public class CustomSpecValidator {
         return result;
     }
 
+    /**
+     * カスタム機能の設計と実装とのバリデーション.（再帰処理用）
+     *
+     * @param context        コンテキスト
+     * @param executeContext 実行コンテキスト
+     * @param customName     カスタム名
+     * @param commandInfo    コマンド情報
+     * @param result         結果
+     * @param clazz          対象クラス
+     * @param properties     構成リスト
+     * @param parentPath     ネストパス
+     */
     private void validateCommandSpecRecursive(Context context,
                                               ExecuteContext executeContext,
                                               String customName, final
@@ -391,7 +409,6 @@ public class CustomSpecValidator {
      * @return フィールド
      * @throws NoSuchFieldException フィールドが見つからなかった場合
      */
-    @Nullable
     private Field getFieldFromClass(Class clazz, String fieldName)
             throws NoSuchFieldException {
         Field field = null;

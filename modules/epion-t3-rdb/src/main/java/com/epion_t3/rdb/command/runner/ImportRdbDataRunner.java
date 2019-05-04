@@ -111,7 +111,7 @@ public class ImportRdbDataRunner extends AbstractCommandRunner<ImportRdbData> {
             // シナリオ変数
             for (Map.Entry<String, Object> entry : getScenarioScopeVariables().entrySet()) {
                 ((ReplacementDataSet) iDataSet).addReplacementObject(
-                        String.format("${%s.%s}", "scenario", entry.getKey()),
+                        String.format("${%s.%s}", "com/epion_t3/core/common/bean/scenario", entry.getKey()),
                         entry.getValue().toString());
             }
 

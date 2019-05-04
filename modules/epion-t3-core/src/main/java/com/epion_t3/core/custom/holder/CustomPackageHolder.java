@@ -1,6 +1,7 @@
 package com.epion_t3.core.custom.holder;
 
 import com.epion_t3.core.common.bean.*;
+import com.epion_t3.core.common.bean.scenario.Command;
 import com.epion_t3.core.common.bean.scenario.Configuration;
 
 import java.util.ArrayList;
@@ -67,6 +68,20 @@ public final class CustomPackageHolder {
      * Value: カスタム設計情報
      */
     private final Map<String, CustomSpecInfo> customSpecs = new ConcurrentHashMap<>();
+
+//    /**
+//     * カスタムコマンド設計情報.
+//     * Key: カスタムコマンドID
+//     * Value: カスタムコマンド設計情報
+//     */
+//    private final Map<String, CommandSpecInfo> customCommandSpecs = new ConcurrentHashMap<>();
+
+    /**
+     * カスタムコマンド設計情報.
+     * Key: カスタムコマンドモデルクラス
+     * Value: カスタムコマンド設計情報
+     */
+    private final Map<Class<? extends Command>, CommandSpecInfo> customCommandSpecs = new ConcurrentHashMap<>();
 
 
     /**
@@ -198,5 +213,16 @@ public final class CustomPackageHolder {
     }
 
     // -----------------------------------------------------------------------------------------------------------
+
+    public void addCustomCommandSpec(Class<? extends Command>  commandModelClass, CommandSpecInfo commandSpecInfo) {
+        customCommandSpecs.put(commandModelClass, commandSpecInfo);
+    }
+
+    public CommandSpecInfo getCustomCommandSpec(Class<? extends Command> commandModelClass) {
+        return customCommandSpecs.get(commandModelClass);
+    }
+
+    // -----------------------------------------------------------------------------------------------------------
+
 
 }

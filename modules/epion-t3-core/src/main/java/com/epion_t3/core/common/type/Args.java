@@ -14,7 +14,7 @@ public enum Args {
 
     SCENARIO("t", "target", true, "target of tool run.", true),
 
-    ROOT_PATH("s", "scenario", true, "scenario root path.", true),
+    ROOT_PATH("s", "com/epion_t3/core/common/bean/scenario", true, "scenario root path.", true),
 
     RESULT_ROOT_PATH("o", "output", true, "result output root path.", false),
 

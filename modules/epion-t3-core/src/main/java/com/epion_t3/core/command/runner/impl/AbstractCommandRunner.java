@@ -10,6 +10,8 @@ import com.epion_t3.core.common.bean.ExecuteCommand;
 import com.epion_t3.core.common.context.ExecuteContext;
 import com.epion_t3.core.common.bean.ExecuteFlow;
 import com.epion_t3.core.common.bean.ExecuteScenario;
+import com.epion_t3.core.custom.validator.CommandValidator;
+import com.epion_t3.core.exception.CommandValidationException;
 import com.epion_t3.core.exception.SystemException;
 import com.epion_t3.core.message.impl.CoreMessages;
 import com.epion_t3.core.common.bean.scenario.Command;
@@ -110,6 +112,13 @@ public abstract class AbstractCommandRunner<COMMAND extends Command>
         CommandResult result = null;
 
         try {
+
+            executeScenario.getNotifications().addAll(
+                    CommandValidator.getInstance().validate(context, executeContext, command));
+
+            if (executeScenario.hasErrorNotification()) {
+                throw new CommandValidationException();
+            }
 
             result = execute(command, logger);
 

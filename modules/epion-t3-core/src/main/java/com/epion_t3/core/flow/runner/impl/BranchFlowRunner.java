@@ -44,7 +44,7 @@ public class BranchFlowRunner extends AbstractFlowRunner<
         ScriptEngine engine = factory.getEngineByName("JavaScript");
 
         engine.put("global", executeContext.getGlobalVariables());
-        engine.put("scenario", executeScenario.getScenarioVariables());
+        engine.put("com/epion_t3/core/common/bean/scenario", executeScenario.getScenarioVariables());
         engine.put("flow", executeFlow.getFlowVariables());
 
         try {

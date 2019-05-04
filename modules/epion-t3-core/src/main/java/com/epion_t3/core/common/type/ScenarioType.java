@@ -12,7 +12,7 @@ import java.util.Arrays;
 @AllArgsConstructor
 public enum ScenarioType {
 
-    SCENARIO("scenario"),
+    SCENARIO("com/epion_t3/core/common/bean/scenario"),
 
     PARTS("parts"),
 

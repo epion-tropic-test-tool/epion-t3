@@ -34,6 +34,11 @@ public class CommandSpecStructure implements Serializable {
     private String type;
 
     /**
+     * 必須.
+     */
+    private Boolean required;
+
+    /**
      * 正規表現パターン.
      */
     private String pattern;
