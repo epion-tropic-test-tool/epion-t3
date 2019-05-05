@@ -252,6 +252,7 @@ public final class CustomParserImpl implements CustomParser<Context, ExecuteCont
                                     .forEach(s -> {
                                         CommandSpecStructure commandSpecStructure = new CommandSpecStructure();
                                         commandSpecStructure.setName(s.getName());
+                                        commandSpecStructure.setRequired(s.getRequired());
                                         commandSpecStructure.setPattern(s.getPattern());
                                         commandSpecStructure.setType(s.getType());
                                         s.getSummary().stream()
@@ -306,6 +307,7 @@ public final class CustomParserImpl implements CustomParser<Context, ExecuteCont
                 .forEach(s -> {
                     CommandSpecStructure commandSpecStructure = new CommandSpecStructure();
                     commandSpecStructure.setName(s.getName());
+                    commandSpecStructure.setRequired(s.getRequired());
                     commandSpecStructure.setPattern(s.getPattern());
                     commandSpecStructure.setType(s.getType());
                     s.getSummary().stream()

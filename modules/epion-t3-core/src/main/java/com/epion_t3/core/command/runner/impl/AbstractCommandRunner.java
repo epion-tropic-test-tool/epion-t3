@@ -114,7 +114,8 @@ public abstract class AbstractCommandRunner<COMMAND extends Command>
         try {
 
             executeScenario.getNotifications().addAll(
-                    CommandValidator.getInstance().validate(context, executeContext, command));
+                    CommandValidator.getInstance().validate(
+                            context, executeContext, executeScenario, executeFlow, command));
 
             if (executeScenario.hasErrorNotification()) {
                 throw new CommandValidationException();

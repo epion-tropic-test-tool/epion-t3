@@ -67,7 +67,7 @@ public final class ScenarioReporterImpl implements ThymeleafScenarioReporter<Exe
      */
     @Override
     public String templatePath() {
-        return "com/epion_t3/core/common/bean/scenario";
+        return "scenario";
     }
 
     /**

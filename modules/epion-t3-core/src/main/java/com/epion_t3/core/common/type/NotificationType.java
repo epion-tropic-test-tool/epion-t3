@@ -7,10 +7,12 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum NotificationType {
 
-    INFO,
+    INFO("table-secondary"),
 
-    WARN,
+    WARN("table-warning"),
 
-    ERROR;
+    ERROR("table-danger");
+
+    private String cssClass;
 
 }
