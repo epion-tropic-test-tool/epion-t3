@@ -6,15 +6,23 @@ configurations {
     et3
 }
 
+repositories {
+    maven {
+        url "https://dl.bintray.com/epion-tropic-test-tool/maven"
+    }
+    mavenCentral()
+    jcenter()
+}
+
 dependencies {
     // Core
-    et3 project(':modules:epion-t3-core')
+    et3 'com.epion_t3:epion-t3-core:0.0.1'
     // Customs
-    et3 project(':modules:epion-t3-basic')
+    et3 'com.epion_t3:epion-t3-basic:0.0.1'
     et3 project(':modules:epion-t3-selenium')
-    et3 project(':modules:epion-t3-rest')
+    et3 'com.epion_t3:epion-t3-rest:0.0.1'
     et3 project(':modules:epion-t3-rdb')
-    et3 project(':modules:epion-t3-log')
+    et3 'com.epion_t3:epion-t3-log:0.0.1'
     et3 project(':modules:epion-t3-ssh')
 }
 
