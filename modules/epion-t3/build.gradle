@@ -9,7 +9,7 @@ dependencies {
     //compile project(':modules:epion-t3-random')
     implementation project(':modules:epion-t3-rest')
     implementation project(':modules:epion-t3-rdb')
-    implementation project(':modules:epion-t3-log')
+    //implementation project(':modules:epion-t3-log')
     implementation project(':modules:epion-t3-ssh')
 
     // Custom Commands
