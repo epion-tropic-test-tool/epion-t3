@@ -1,6 +1,6 @@
 dependencies {
 
-    compile project(':modules:epion-t3-core')
+    implementation 'com.epion_t3:epion-t3-core:0.0.1'
 
     compileOnly('commons-net:commons-net:3.6')
 

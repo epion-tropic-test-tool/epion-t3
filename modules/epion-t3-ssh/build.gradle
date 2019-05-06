@@ -1,8 +1,17 @@
 dependencies {
 
-    compile project(':modules:epion-t3-core')
+    // Core Library
+    implementation 'com.epion_t3:epion-t3-core:0.0.1'
+
+    // SSH
     compile('org.apache.sshd:sshd-core:1.4.0')
     compile('ch.ethz.ganymed:ganymed-ssh2:build210')
+
+    // For Develop
+    compileOnly 'org.projectlombok:lombok:1.18.6'
+    annotationProcessor 'org.projectlombok:lombok:1.18.6'
+
+    testCompile 'junit:junit:4.12'
 
 }
 

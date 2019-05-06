@@ -1,3 +1,15 @@
 [submodule "submodules/epion-t3-log"]
 	path = submodules/epion-t3-log
 	url = https://github.com/epion-tropic-test-tool/epion-t3-log.git
+[submodule "submodules/epion-t3-basic"]
+	path = submodules/epion-t3-basic
+	url = https://github.com/epion-tropic-test-tool/epion-t3-basic.git
+[submodule "submodules/epion-t3-core"]
+	path = submodules/epion-t3-core
+	url = https://github.com/epion-tropic-test-tool/epion-t3-core.git
+[submodule "submodules/epion-t3-rest"]
+	path = submodules/epion-t3-rest
+	url = https://github.com/epion-tropic-test-tool/epion-t3-rest.git
+[submodule "submodules/epion-t3-rdb"]
+	path = submodules/epion-t3-rdb
+	url = https://github.com/epion-tropic-test-tool/epion-t3-rdb.git

@@ -9,7 +9,7 @@ import org.apache.bval.constraints.NotEmpty;
 
 @Getter
 @Setter
-@CommandDefinition(id = "WDContainsUrlText", runner = WDContainsUrlTextRunner.class)
+//@CommandDefinition(id = "WDContainsUrlText", runner = WDContainsUrlTextRunner.class)
 public class WDContainsUrlText extends Command {
 
     @NotEmpty

@@ -9,5 +9,5 @@ customs:
     rest: "com.epion_t3.rest"
     rdb: "com.epion_t3.rdb"
     log: "com.epion_t3.log"
+    selenium: "com.epion_t3.selenium"
     # ssh: "com.epion_t3.ssh"
-    # selenium: "com.epion_t3.selenium"

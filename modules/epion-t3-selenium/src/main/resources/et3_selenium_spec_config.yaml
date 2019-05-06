@@ -1,0 +1,1396 @@
+t3: 1.0
+#####################################
+# カスタム機能定義
+#####################################
+info:
+  name: selenium
+  customPackage: com.epion_t3.selenium
+  summary:
+    - lang: ja_JP
+      contents: "Selenium関連のコマンドを提供します。"
+  description:
+    - lang: ja_JP
+      contents: "Seleniumを利用したWebブラウザテストを実行するための機能を提供します。本機能は、`Firefox 47` 以降にのみ対応します。geckodriverが必要となりますのでご注意ください。"
+#####################################
+# コマンド定義
+#####################################
+commands:
+  ##########################
+  # StartLocalWD
+  ##########################
+  - id: StartLocalWD
+    summary:
+      - lang: ja_JP
+        contents: "SeleniumのWebDriverを起動します。"
+    testItem:
+      - order: 1
+        summary:
+          - lang: ja_JP
+            contents: "Webブラウザ「${browser}」を開始します。"
+    function:
+      - order: 1
+        summary:
+          - lang: ja_JP
+            contents: "SeleniumのWebDriverを起動して、シナリオスコープの変数に保持します。"
+      - order: 2
+        summary:
+          - lang: ja_JP
+            contents: "現状、Chrome、FireFox、IEのWebDriverへ対応をしています。"
+      - order: 3
+        summary:
+          - lang: ja_JP
+            contents: "複数のWebDriverを同時に立ち上げることが可能です。"
+    structure:
+      - order: 1
+        name: id
+        required: true
+        type: string
+        summary:
+          - lang: ja_JP
+            contents: コマンドのID
+      - order: 2
+        name: command
+        required: true
+        type: string
+        summary:
+          - lang: ja_JP
+            contents: 「StartLocalWD」固定
+      - order: 3
+        name: summary
+        required: false
+        type: string
+        summary:
+          - lang: ja_JP
+            contents: コマンドの概要（任意）
+      - order: 4
+        name: description
+        required: false
+        type: string
+        summary:
+          - lang: ja_JP
+            contents: コマンドの詳細（任意）
+      - order: 5
+        name: browser
+        required: true
+        type: string
+        summary:
+          - lang: ja_JP
+            contents: "起動するブラウザを指定 # (1)"
+        description:
+          - lang: ja_JP
+            contents: "`chrome` `firefox` `ie` のいずれかを指定します。"
+      - order: 6
+        name: target
+        required: false
+        type: string
+        summary:
+          - lang: ja_JP
+            contents: "WebDriver/Browserに対して付与する変数名 # (2)"
+        description:
+          - lang: ja_JP
+            contents: "ブラウザを複数個立ち上げて相互に試験するような場合に特定する変数名を指定します。デフォルト値では、`WEBDRIVER_001` のような連番が付与されます。"
+      - order: 7
+        name: driverPath
+        required: true
+        type: string
+        summary:
+          - lang: ja_JP
+            contents: "起動するWebDriverのパスを指定（相対） # (3)"
+        description:
+          - lang: ja_JP
+            contents: "ブラウザを起動するWebDriverのパスを相対パスにて指定する。相対パスの起点はこの定義が含まれるシナリオファイルからとなる。"
+      - order: 8
+        name: height
+        required: false
+        type: number
+        summary:
+          - lang: ja_JP
+            contents: "ブラウザの高さ指定"
+      - order: 9
+        name: width
+        required: false
+        type: number
+        summary:
+          - lang: ja_JP
+            contents: "ブラウザの幅指定"
+  ##########################
+  # EndLocalWD
+  ##########################
+  - id: EndLocalWD
+    summary:
+      - lang: ja_JP
+        contents: "SeleniumのWebDriverを終了します。"
+    testItem:
+      - order: 1
+        summary:
+          - lang: ja_JP
+            contents: "Webブラウザ「${browser}」を終了します。"
+    function:
+      - order: 1
+        summary:
+          - lang: ja_JP
+            contents: "SeleniumのWebDriverを終了して、シナリオスコープの変数を削除します。"
+    structure:
+      - order: 1
+        name: id
+        required: true
+        type: string
+        summary:
+          - lang: ja_JP
+            contents: コマンドのID
+      - order: 2
+        name: command
+        required: true
+        type: string
+        summary:
+          - lang: ja_JP
+            contents: 「EndLocalWD」固定
+      - order: 3
+        name: summary
+        required: false
+        type: string
+        summary:
+          - lang: ja_JP
+            contents: コマンドの概要（任意）
+      - order: 4
+        name: description
+        required: false
+        type: string
+        summary:
+          - lang: ja_JP
+            contents: コマンドの詳細（任意）
+      - order: 5
+        name: refWebDriver
+        required: true
+        type: string
+        summary:
+          - lang: ja_JP
+            contents: "対象とするWebDriver/ブラウザを格納した変数名を指定 # (1)"
+        description:
+          - lang: ja_JP
+            contents: "WebDriver/ブラウザを開始した際に指定した変数名を指定します。デフォルト値を利用する場合にも連番を想定して指定が必要です。"
+  ##########################
+  # WDGet
+  ##########################
+  - id: WDGet
+    summary:
+      - lang: ja_JP
+        contents: "指定したURLへ遷移します。"
+    testItem:
+      - order: 1
+        summary:
+          - lang: ja_JP
+            contents: "直リンクアクセスにて「${target}」へ遷移します。"
+    function:
+      - order: 1
+        summary:
+          - lang: ja_JP
+            contents: "指定したURLに対して遷移します。"
+    structure:
+      - order: 1
+        name: id
+        required: true
+        type: string
+        summary:
+          - lang: ja_JP
+            contents: コマンドのID
+      - order: 2
+        name: command
+        required: true
+        type: string
+        summary:
+          - lang: ja_JP
+            contents: 「WDGet」固定
+      - order: 3
+        name: summary
+        required: false
+        type: string
+        summary:
+          - lang: ja_JP
+            contents: コマンドの概要（任意）
+      - order: 4
+        name: description
+        required: false
+        type: string
+        summary:
+          - lang: ja_JP
+            contents: コマンドの詳細（任意）
+      - order: 5
+        name: refWebDriver
+        required: true
+        type: string
+        summary:
+          - lang: ja_JP
+            contents: "対象とするWebDriver/ブラウザを格納した変数名を指定 # (1)"
+        description:
+          - lang: ja_JP
+            contents: "WebDriver/ブラウザを開始した際に指定した変数名を指定します。デフォルト値を利用する場合にも連番を想定して指定が必要です。"
+      - order: 6
+        name: target
+        required: true
+        type: string
+        summary:
+          - lang: ja_JP
+            contents: "遷移先URLを指定"
+  ##########################
+  # WDClickElement
+  ##########################
+  - id: WDClickElement
+    summary:
+      - lang: ja_JP
+        contents: "指定した要素をクリックします。"
+    testItem:
+      - order: 1
+        summary:
+          - lang: ja_JP
+            contents: "セレクタ「${selector}」にて「${target}」を走査し、クリックします。"
+    function:
+      - order: 1
+        summary:
+          - lang: ja_JP
+            contents: "指定した要素をクリックします。"
+    structure:
+      - order: 1
+        name: id
+        required: true
+        type: string
+        summary:
+          - lang: ja_JP
+            contents: コマンドのID
+      - order: 2
+        name: command
+        required: true
+        type: string
+        summary:
+          - lang: ja_JP
+            contents: 「WDClickElement」固定
+      - order: 3
+        name: summary
+        required: false
+        type: string
+        summary:
+          - lang: ja_JP
+            contents: コマンドの概要（任意）
+      - order: 4
+        name: description
+        required: false
+        type: string
+        summary:
+          - lang: ja_JP
+            contents: コマンドの詳細（任意）
+      - order: 5
+        name: refWebDriver
+        required: true
+        type: string
+        summary:
+          - lang: ja_JP
+            contents: "対象とするWebDriver/ブラウザを格納した変数名を指定 # (1)"
+        description:
+          - lang: ja_JP
+            contents: "WebDriver/ブラウザを開始した際に指定した変数名を指定します。デフォルト値を利用する場合にも連番を想定して指定が必要です。"
+      - order: 6
+        name: selector
+        required: true
+        type: string
+        summary:
+          - lang: ja_JP
+            contents: "対象を特定するためのセレクター種別"
+      - order: 7
+        name: target
+        required: true
+        type: string
+        summary:
+          - lang: ja_JP
+            contents: "対象を特定するためのセレクター値"
+  ##########################
+  # WDClickElements
+  ##########################
+  - id: WDClickElements
+    summary:
+      - lang: ja_JP
+        contents: "指定した要素をクリックします。"
+    testItem:
+      - order: 1
+        summary:
+          - lang: ja_JP
+            contents: "セレクタ「${selector}」にて「${target}」の「${elementIndex}」番目を走査し、クリックします。"
+    function:
+      - order: 1
+        summary:
+          - lang: ja_JP
+            contents: "指定した要素をクリックします。"
+      - order: 2
+        summary:
+          - lang: ja_JP
+            contents: "タグが複数存在する場合に、何個目のタグかを指定することができます。"
+    structure:
+      - order: 1
+        name: id
+        required: true
+        type: string
+        summary:
+          - lang: ja_JP
+            contents: コマンドのID
+      - order: 2
+        name: command
+        required: true
+        type: string
+        summary:
+          - lang: ja_JP
+            contents: 「WDClickElements」固定
+      - order: 3
+        name: summary
+        required: false
+        type: string
+        summary:
+          - lang: ja_JP
+            contents: コマンドの概要（任意）
+      - order: 4
+        name: description
+        required: false
+        type: string
+        summary:
+          - lang: ja_JP
+            contents: コマンドの詳細（任意）
+      - order: 5
+        name: refWebDriver
+        required: true
+        type: string
+        summary:
+          - lang: ja_JP
+            contents: "対象とするWebDriver/ブラウザを格納した変数名を指定 # (1)"
+        description:
+          - lang: ja_JP
+            contents: "WebDriver/ブラウザを開始した際に指定した変数名を指定します。デフォルト値を利用する場合にも連番を想定して指定が必要です。"
+      - order: 6
+        name: selector
+        required: true
+        type: string
+        summary:
+          - lang: ja_JP
+            contents: "対象を特定するためのセレクター種別"
+      - order: 7
+        name: target
+        required: true
+        type: string
+        summary:
+          - lang: ja_JP
+            contents: "対象を特定するためのセレクター値"
+      - order: 8
+        name: elementIndex
+        required: true
+        type: number
+        summary:
+          - lang: ja_JP
+            contents: "何番目かを指定するインデックス（0始まり）"
+  ##########################
+  # WDSendKeysElement
+  ##########################
+  - id: WDSendKeysElement
+    summary:
+      - lang: ja_JP
+        contents: "指定した要素に対して入力を行います。"
+    testItem:
+      - order: 1
+        summary:
+          - lang: ja_JP
+            contents: "セレクタ「${selector}」にて「${target}」を走査し、キー入力「${value}」を行います。"
+    function:
+      - order: 1
+        summary:
+          - lang: ja_JP
+            contents: "指定した要素に対して入力を行います。"
+      - order: 2
+        summary:
+          - lang: ja_JP
+            contents: "クリア機能はないため、追記になります。"
+    structure:
+      - order: 1
+        name: id
+        required: true
+        type: string
+        summary:
+          - lang: ja_JP
+            contents: "コマンドのID"
+      - order: 2
+        name: command
+        required: true
+        type: string
+        summary:
+          - lang: ja_JP
+            contents: "「WDSendKeysElement」固定"
+      - order: 3
+        name: summary
+        required: false
+        type: string
+        summary:
+          - lang: ja_JP
+            contents: "コマンドの概要（任意）"
+      - order: 4
+        name: description
+        required: false
+        type: string
+        summary:
+          - lang: ja_JP
+            contents: "コマンドの詳細（任意）"
+      - order: 5
+        name: refWebDriver
+        required: true
+        type: string
+        summary:
+          - lang: ja_JP
+            contents: "対象とするWebDriver/ブラウザを格納した変数名を指定 # (1)"
+        description:
+          - lang: ja_JP
+            contents: "WebDriver/ブラウザを開始した際に指定した変数名を指定します。デフォルト値を利用する場合にも連番を想定して指定が必要です。"
+      - order: 6
+        name: selector
+        required: true
+        type: string
+        summary:
+          - lang: ja_JP
+            contents: "対象を特定するためのセレクター種別"
+      - order: 7
+        name: target
+        required: true
+        type: string
+        summary:
+          - lang: ja_JP
+            contents: "対象を特定するためのセレクター値"
+      - order: 8
+        name: value
+        required: true
+        type: string
+        summary:
+          - lang: ja_JP
+            contents: "入力する値"
+  ##########################
+  # WDSendKeysElements
+  ##########################
+  - id: WDSendKeysElements
+    summary:
+      - lang: ja_JP
+        contents: "指定した要素に対して入力を行います。"
+    testItem:
+      - order: 1
+        summary:
+          - lang: ja_JP
+            contents: "セレクタ「${selector}」にて「${target}」を走査し、キー入力「${value}」を行います。"
+    function:
+      - order: 1
+        summary:
+          - lang: ja_JP
+            contents: "指定した要素に対して入力を行います。"
+      - order: 2
+        summary:
+          - lang: ja_JP
+            contents: "クリア機能はないため、追記になります。"
+      - order: 3
+        summary:
+          - lang: ja_JP
+            contents: "タグが複数存在する場合に、何個目のタグかを指定することができます。"
+    structure:
+      - order: 1
+        name: id
+        required: true
+        type: string
+        summary:
+          - lang: ja_JP
+            contents: "コマンドのID"
+      - order: 2
+        name: command
+        required: true
+        type: string
+        summary:
+          - lang: ja_JP
+            contents: "「WDSendKeysElements」固定"
+      - order: 3
+        name: summary
+        required: false
+        type: string
+        summary:
+          - lang: ja_JP
+            contents: "コマンドの概要（任意）"
+      - order: 4
+        name: description
+        required: false
+        type: string
+        summary:
+          - lang: ja_JP
+            contents: "コマンドの詳細（任意）"
+      - order: 5
+        name: refWebDriver
+        required: true
+        type: string
+        summary:
+          - lang: ja_JP
+            contents: "対象とするWebDriver/ブラウザを格納した変数名を指定 # (1)"
+        description:
+          - lang: ja_JP
+            contents: "WebDriver/ブラウザを開始した際に指定した変数名を指定します。デフォルト値を利用する場合にも連番を想定して指定が必要です。"
+      - order: 6
+        name: selector
+        required: true
+        type: string
+        summary:
+          - lang: ja_JP
+            contents: "対象を特定するためのセレクター種別"
+      - order: 7
+        name: target
+        required: true
+        type: string
+        summary:
+          - lang: ja_JP
+            contents: "対象を特定するためのセレクター値"
+      - order: 8
+        name: value
+        required: true
+        type: string
+        summary:
+          - lang: ja_JP
+            contents: "入力する値"
+      - order: 9
+        name: elementIndex
+        required: true
+        type: number
+        summary:
+          - lang: ja_JP
+            contents: "何番目かを指定するインデックス（0始まり）"
+  ##########################
+  # WDClearSendKeysElement
+  ##########################
+  - id: WDClearSendKeysElement
+    summary:
+      - lang: ja_JP
+        contents: "指定した要素に対して入力を行います。"
+    testItem:
+      - order: 1
+        summary:
+          - lang: ja_JP
+            contents: "セレクタ「${selector}」にて「${target}」を走査し、クリア後キー入力「${value}」を行います。"
+    function:
+      - order: 1
+        summary:
+          - lang: ja_JP
+            contents: "指定した要素に対して入力を行います。"
+      - order: 2
+        summary:
+          - lang: ja_JP
+            contents: "指定した要素をクリアしてから入力します。"
+    structure:
+      - order: 1
+        name: id
+        required: true
+        type: string
+        summary:
+          - lang: ja_JP
+            contents: "コマンドのID"
+      - order: 2
+        name: command
+        required: true
+        type: string
+        summary:
+          - lang: ja_JP
+            contents: "「WDClearSendKeysElement」固定"
+      - order: 3
+        name: summary
+        required: false
+        type: string
+        summary:
+          - lang: ja_JP
+            contents: "コマンドの概要（任意）"
+      - order: 4
+        name: description
+        required: false
+        type: string
+        summary:
+          - lang: ja_JP
+            contents: "コマンドの詳細（任意）"
+      - order: 5
+        name: refWebDriver
+        required: true
+        type: string
+        summary:
+          - lang: ja_JP
+            contents: "対象とするWebDriver/ブラウザを格納した変数名を指定 # (1)"
+        description:
+          - lang: ja_JP
+            contents: "WebDriver/ブラウザを開始した際に指定した変数名を指定します。デフォルト値を利用する場合にも連番を想定して指定が必要です。"
+      - order: 6
+        name: selector
+        required: true
+        type: string
+        summary:
+          - lang: ja_JP
+            contents: "対象を特定するためのセレクター種別"
+      - order: 7
+        name: target
+        required: true
+        type: string
+        summary:
+          - lang: ja_JP
+            contents: "対象を特定するためのセレクター値"
+      - order: 8
+        name: value
+        required: true
+        type: string
+        summary:
+          - lang: ja_JP
+            contents: "入力する値"
+  ##########################
+  # WDClearSendKeysElements
+  ##########################
+  - id: WDClearSendKeysElements
+    summary:
+      - lang: ja_JP
+        contents: "指定した要素に対して入力を行います。"
+    testItem:
+      - order: 1
+        summary:
+          - lang: ja_JP
+            contents: "セレクタ「${selector}」にて「${target}」を走査し、クリア後キー入力「${value}」を行います。"
+    function:
+      - order: 1
+        summary:
+          - lang: ja_JP
+            contents: "指定した要素に対して入力を行います。"
+      - order: 2
+        summary:
+          - lang: ja_JP
+            contents: "指定した要素をクリアしてから入力します。"
+      - order: 3
+        summary:
+          - lang: ja_JP
+            contents: "タグが複数存在する場合に、何個目のタグかを指定することができます。"
+    structure:
+      - order: 1
+        name: id
+        required: true
+        type: string
+        summary:
+          - lang: ja_JP
+            contents: "コマンドのID"
+      - order: 2
+        name: command
+        required: true
+        type: string
+        summary:
+          - lang: ja_JP
+            contents: "「WDClearSendKeysElements」固定"
+      - order: 3
+        name: summary
+        required: false
+        type: string
+        summary:
+          - lang: ja_JP
+            contents: "コマンドの概要（任意）"
+      - order: 4
+        name: description
+        required: false
+        type: string
+        summary:
+          - lang: ja_JP
+            contents: "コマンドの詳細（任意）"
+      - order: 5
+        name: refWebDriver
+        required: true
+        type: string
+        summary:
+          - lang: ja_JP
+            contents: "対象とするWebDriver/ブラウザを格納した変数名を指定 # (1)"
+        description:
+          - lang: ja_JP
+            contents: "WebDriver/ブラウザを開始した際に指定した変数名を指定します。デフォルト値を利用する場合にも連番を想定して指定が必要です。"
+      - order: 6
+        name: selector
+        required: true
+        type: string
+        summary:
+          - lang: ja_JP
+            contents: "対象を特定するためのセレクター種別"
+      - order: 7
+        name: target
+        required: true
+        type: string
+        summary:
+          - lang: ja_JP
+            contents: "対象を特定するためのセレクター値"
+      - order: 8
+        name: value
+        required: true
+        type: string
+        summary:
+          - lang: ja_JP
+            contents: "入力する値"
+      - order: 9
+        name: elementIndex
+        required: true
+        type: number
+        summary:
+          - lang: ja_JP
+            contents: "何番目かを指定するインデックス（0始まり）"
+  ##########################
+  # WDSendKeysSpaceElement
+  ##########################
+  - id: WDSendKeysSpaceElement
+    summary:
+      - lang: ja_JP
+        contents: "指定した要素に対してスペースキー入力を行います。"
+    testItem:
+      - order: 1
+        summary:
+          - lang: ja_JP
+            contents: "スペースキーのみを入力という特殊なコマンドになりますが、 Radioボタンの選択時にクリックでは反応しない場合に利用することを想定して作成しています。実際に動作確認を行なった[日本Seleniumユーザーコミュニティ 様のテスト用サイト](http://example.selenium.jp/reserveApp_Renewal/) のRadioボタンにてクリックでは対応ができなかったため、コマンド実装対応を行なっています。"
+    function:
+      - order: 1
+        summary:
+          - lang: ja_JP
+            contents: "指定した要素に対してスペースキー入力を行います。"
+    structure:
+      - order: 1
+        name: id
+        required: true
+        type: string
+        summary:
+          - lang: ja_JP
+            contents: "コマンドのID"
+      - order: 2
+        name: command
+        required: true
+        type: string
+        summary:
+          - lang: ja_JP
+            contents: "「WDSendKeysSpaceElement」固定"
+      - order: 3
+        name: summary
+        required: false
+        type: string
+        summary:
+          - lang: ja_JP
+            contents: "コマンドの概要（任意）"
+      - order: 4
+        name: description
+        required: false
+        type: string
+        summary:
+          - lang: ja_JP
+            contents: "コマンドの詳細（任意）"
+      - order: 5
+        name: refWebDriver
+        required: true
+        type: string
+        summary:
+          - lang: ja_JP
+            contents: "対象とするWebDriver/ブラウザを格納した変数名を指定 # (1)"
+        description:
+          - lang: ja_JP
+            contents: "WebDriver/ブラウザを開始した際に指定した変数名を指定します。デフォルト値を利用する場合にも連番を想定して指定が必要です。"
+      - order: 6
+        name: selector
+        required: true
+        type: string
+        summary:
+          - lang: ja_JP
+            contents: "対象を特定するためのセレクター種別"
+      - order: 7
+        name: target
+        required: true
+        type: string
+        summary:
+          - lang: ja_JP
+            contents: "対象を特定するためのセレクター値"
+  ##########################
+  # WDSelectByIndexElement
+  ##########################
+  - id: WDSelectByIndexElement
+    summary:
+      - lang: ja_JP
+        contents: "Selectタグ用のコマンドであり、指定した要素を選択します。"
+    testItem:
+      - order: 1
+        summary:
+          - lang: ja_JP
+            contents: "セレクタ「${selector}」にて「${target}」を走査し「${index}」番目の要素を選択します。"
+    function:
+      - order: 1
+        summary:
+          - lang: ja_JP
+            contents: "Select/Optionタグの選択に使用します。"
+      - order: 2
+        summary:
+          - lang: ja_JP
+            contents: "指定した要素の指定したインデックスの要素を選択します。"
+    structure:
+      - order: 1
+        name: id
+        required: true
+        type: string
+        summary:
+          - lang: ja_JP
+            contents: "コマンドのID"
+      - order: 2
+        name: command
+        required: true
+        type: string
+        summary:
+          - lang: ja_JP
+            contents: "「WDSelectByIndexElement」固定"
+      - order: 3
+        name: summary
+        required: false
+        type: string
+        summary:
+          - lang: ja_JP
+            contents: "コマンドの概要（任意）"
+      - order: 4
+        name: description
+        required: false
+        type: string
+        summary:
+          - lang: ja_JP
+            contents: "コマンドの詳細（任意）"
+      - order: 5
+        name: refWebDriver
+        required: true
+        type: string
+        summary:
+          - lang: ja_JP
+            contents: "対象とするWebDriver/ブラウザを格納した変数名を指定 # (1)"
+        description:
+          - lang: ja_JP
+            contents: "WebDriver/ブラウザを開始した際に指定した変数名を指定します。デフォルト値を利用する場合にも連番を想定して指定が必要です。"
+      - order: 6
+        name: selector
+        required: true
+        type: string
+        summary:
+          - lang: ja_JP
+            contents: "対象を特定するためのセレクター種別"
+      - order: 7
+        name: target
+        required: true
+        type: string
+        summary:
+          - lang: ja_JP
+            contents: "対象を特定するためのセレクター値"
+      - order: 8
+        name: index
+        required: true
+        type: number
+        summary:
+          - lang: ja_JP
+            contents: "選択するインデックスを指定"
+  ##########################
+  # WDSelectByIndexElements
+  ##########################
+  - id: WDSelectByIndexElements
+    summary:
+      - lang: ja_JP
+        contents: "Selectタグ用のコマンドであり、指定した要素を選択します。"
+    testItem:
+      - order: 1
+        summary:
+          - lang: ja_JP
+            contents: "セレクタ「${selector}」にて「${target}」を走査し「${index}」番目の要素を選択します。"
+    function:
+      - order: 1
+        summary:
+          - lang: ja_JP
+            contents: "Select/Optionタグの選択に使用します。"
+      - order: 2
+        summary:
+          - lang: ja_JP
+            contents: "指定した要素の指定したインデックスの要素を選択します。"
+      - order: 3
+        summary:
+          - lang: ja_JP
+            contents: "タグが複数存在する場合に、何個目のタグかを指定することができます。"
+    structure:
+      - order: 1
+        name: id
+        required: true
+        type: string
+        summary:
+          - lang: ja_JP
+            contents: "コマンドのID"
+      - order: 2
+        name: command
+        required: true
+        type: string
+        summary:
+          - lang: ja_JP
+            contents: "「WDSelectByIndexElements」固定"
+      - order: 3
+        name: summary
+        required: false
+        type: string
+        summary:
+          - lang: ja_JP
+            contents: "コマンドの概要（任意）"
+      - order: 4
+        name: description
+        required: false
+        type: string
+        summary:
+          - lang: ja_JP
+            contents: "コマンドの詳細（任意）"
+      - order: 5
+        name: refWebDriver
+        required: true
+        type: string
+        summary:
+          - lang: ja_JP
+            contents: "対象とするWebDriver/ブラウザを格納した変数名を指定 # (1)"
+        description:
+          - lang: ja_JP
+            contents: "WebDriver/ブラウザを開始した際に指定した変数名を指定します。デフォルト値を利用する場合にも連番を想定して指定が必要です。"
+      - order: 6
+        name: selector
+        required: true
+        type: string
+        summary:
+          - lang: ja_JP
+            contents: "対象を特定するためのセレクター種別"
+      - order: 7
+        name: target
+        required: true
+        type: string
+        summary:
+          - lang: ja_JP
+            contents: "対象を特定するためのセレクター値"
+      - order: 8
+        name: index
+        required: true
+        type: number
+        summary:
+          - lang: ja_JP
+            contents: "選択するインデックスを指定"
+      - order: 9
+        name: elementIndex
+        required: true
+        type: number
+        summary:
+          - lang: ja_JP
+            contents: "何番目かを指定するインデックス（0始まり）"
+  ##########################
+  # WDSelectByValueElement
+  ##########################
+  - id: WDSelectByValueElement
+    summary:
+      - lang: ja_JP
+        contents: "Select/Optionタグ用のコマンドであり、指定したvalue属性値の要素を選択します。"
+    testItem:
+      - order: 1
+        summary:
+          - lang: ja_JP
+            contents: "セレクタ「${selector}」にて「${target}」を走査しvalue属性が「${value}」の要素を選択します。"
+    function:
+      - order: 1
+        summary:
+          - lang: ja_JP
+            contents: "Select/Optionタグの選択に使用します。"
+      - order: 2
+        summary:
+          - lang: ja_JP
+            contents: "指定した要素の指定したインデックスの要素を選択します。"
+    structure:
+      - order: 1
+        name: id
+        required: true
+        type: string
+        summary:
+          - lang: ja_JP
+            contents: "コマンドのID"
+      - order: 2
+        name: command
+        required: true
+        type: string
+        summary:
+          - lang: ja_JP
+            contents: "「WDSelectByValueElement」固定"
+      - order: 3
+        name: summary
+        required: false
+        type: string
+        summary:
+          - lang: ja_JP
+            contents: "コマンドの概要（任意）"
+      - order: 4
+        name: description
+        required: false
+        type: string
+        summary:
+          - lang: ja_JP
+            contents: "コマンドの詳細（任意）"
+      - order: 5
+        name: refWebDriver
+        required: true
+        type: string
+        summary:
+          - lang: ja_JP
+            contents: "対象とするWebDriver/ブラウザを格納した変数名を指定 # (1)"
+        description:
+          - lang: ja_JP
+            contents: "WebDriver/ブラウザを開始した際に指定した変数名を指定します。デフォルト値を利用する場合にも連番を想定して指定が必要です。"
+      - order: 6
+        name: selector
+        required: true
+        type: string
+        summary:
+          - lang: ja_JP
+            contents: "対象を特定するためのセレクター種別"
+      - order: 7
+        name: target
+        required: true
+        type: string
+        summary:
+          - lang: ja_JP
+            contents: "対象を特定するためのセレクター値"
+      - order: 8
+        name: value
+        required: true
+        type: string
+        summary:
+          - lang: ja_JP
+            contents: "選択するvalue属性値"
+  ##########################
+  # WDSelectByValueElements
+  ##########################
+  - id: WDSelectByValueElements
+    summary:
+      - lang: ja_JP
+        contents: "Select/Optionタグ用のコマンドであり、指定したvalue属性値の要素を選択します。"
+    testItem:
+      - order: 1
+        summary:
+          - lang: ja_JP
+            contents: "セレクタ「${selector}」にて「${target}」を走査し「${index}」番目の要素を選択します。"
+    function:
+      - order: 1
+        summary:
+          - lang: ja_JP
+            contents: "Select/Optionタグの選択に使用します。"
+      - order: 2
+        summary:
+          - lang: ja_JP
+            contents: "指定した要素の指定したインデックスの要素を選択します。"
+      - order: 3
+        summary:
+          - lang: ja_JP
+            contents: "タグが複数存在する場合に、何個目のタグかを指定することができます。"
+    structure:
+      - order: 1
+        name: id
+        required: true
+        type: string
+        summary:
+          - lang: ja_JP
+            contents: "コマンドのID"
+      - order: 2
+        name: command
+        required: true
+        type: string
+        summary:
+          - lang: ja_JP
+            contents: "「WDSelectByIndexElements」固定"
+      - order: 3
+        name: summary
+        required: false
+        type: string
+        summary:
+          - lang: ja_JP
+            contents: "コマンドの概要（任意）"
+      - order: 4
+        name: description
+        required: false
+        type: string
+        summary:
+          - lang: ja_JP
+            contents: "コマンドの詳細（任意）"
+      - order: 5
+        name: refWebDriver
+        required: true
+        type: string
+        summary:
+          - lang: ja_JP
+            contents: "対象とするWebDriver/ブラウザを格納した変数名を指定 # (1)"
+        description:
+          - lang: ja_JP
+            contents: "WebDriver/ブラウザを開始した際に指定した変数名を指定します。デフォルト値を利用する場合にも連番を想定して指定が必要です。"
+      - order: 6
+        name: selector
+        required: true
+        type: string
+        summary:
+          - lang: ja_JP
+            contents: "対象を特定するためのセレクター種別"
+      - order: 7
+        name: target
+        required: true
+        type: string
+        summary:
+          - lang: ja_JP
+            contents: "対象を特定するためのセレクター値"
+      - order: 8
+        name: value
+        required: true
+        type: string
+        summary:
+          - lang: ja_JP
+            contents: "選択するvalue属性値"
+      - order: 9
+        name: elementIndex
+        required: true
+        type: number
+        summary:
+          - lang: ja_JP
+            contents: "何番目かを指定するインデックス（0始まり）"
+  ##########################
+  # WDSelectVisibleTextElement
+  ##########################
+  - id: WDSelectVisibleTextElement
+    summary:
+      - lang: ja_JP
+        contents: "Select/Optionタグ用のコマンドであり、指定したoptionのラベル属性値の要素を選択します。"
+    testItem:
+      - order: 1
+        summary:
+          - lang: ja_JP
+            contents: "セレクタ「${selector}」にて「${target}」を走査し表示されているラベルが「${value}」の要素を選択します。"
+    function:
+      - order: 1
+        summary:
+          - lang: ja_JP
+            contents: "Select/Optionタグの選択に使用します。"
+      - order: 2
+        summary:
+          - lang: ja_JP
+            contents: "指定した要素の指定したインデックスの要素を選択します。"
+    structure:
+      - order: 1
+        name: id
+        required: true
+        type: string
+        summary:
+          - lang: ja_JP
+            contents: "コマンドのID"
+      - order: 2
+        name: command
+        required: true
+        type: string
+        summary:
+          - lang: ja_JP
+            contents: "「WDSelectVisibleTextElement」固定"
+      - order: 3
+        name: summary
+        required: false
+        type: string
+        summary:
+          - lang: ja_JP
+            contents: "コマンドの概要（任意）"
+      - order: 4
+        name: description
+        required: false
+        type: string
+        summary:
+          - lang: ja_JP
+            contents: "コマンドの詳細（任意）"
+      - order: 5
+        name: refWebDriver
+        required: true
+        type: string
+        summary:
+          - lang: ja_JP
+            contents: "対象とするWebDriver/ブラウザを格納した変数名を指定 # (1)"
+        description:
+          - lang: ja_JP
+            contents: "WebDriver/ブラウザを開始した際に指定した変数名を指定します。デフォルト値を利用する場合にも連番を想定して指定が必要です。"
+      - order: 6
+        name: selector
+        required: true
+        type: string
+        summary:
+          - lang: ja_JP
+            contents: "対象を特定するためのセレクター種別"
+      - order: 7
+        name: target
+        required: true
+        type: string
+        summary:
+          - lang: ja_JP
+            contents: "対象を特定するためのセレクター値"
+      - order: 8
+        name: value
+        required: true
+        type: string
+        summary:
+          - lang: ja_JP
+            contents: "選択するvalue属性値"
+  ##########################
+  # WDSelectVisibleTextElements
+  ##########################
+  - id: WDSelectVisibleTextElements
+    summary:
+      - lang: ja_JP
+        contents: "Select/Optionタグ用のコマンドであり、指定したoptionのラベル属性値の要素を選択します。"
+    testItem:
+      - order: 1
+        summary:
+          - lang: ja_JP
+            contents: "セレクタ「${selector}」にて「${target}」を走査し表示されているラベルが「${value}」の要素を選択します。"
+    function:
+      - order: 1
+        summary:
+          - lang: ja_JP
+            contents: "Select/Optionタグの選択に使用します。"
+      - order: 2
+        summary:
+          - lang: ja_JP
+            contents: "指定した要素の指定したインデックスの要素を選択します。"
+      - order: 3
+        summary:
+          - lang: ja_JP
+            contents: "タグが複数存在する場合に、何個目のタグかを指定することができます。"
+    structure:
+      - order: 1
+        name: id
+        required: true
+        type: string
+        summary:
+          - lang: ja_JP
+            contents: "コマンドのID"
+      - order: 2
+        name: command
+        required: true
+        type: string
+        summary:
+          - lang: ja_JP
+            contents: "「WDSelectVisibleTextElements」固定"
+      - order: 3
+        name: summary
+        required: false
+        type: string
+        summary:
+          - lang: ja_JP
+            contents: "コマンドの概要（任意）"
+      - order: 4
+        name: description
+        required: false
+        type: string
+        summary:
+          - lang: ja_JP
+            contents: "コマンドの詳細（任意）"
+      - order: 5
+        name: refWebDriver
+        required: true
+        type: string
+        summary:
+          - lang: ja_JP
+            contents: "対象とするWebDriver/ブラウザを格納した変数名を指定 # (1)"
+        description:
+          - lang: ja_JP
+            contents: "WebDriver/ブラウザを開始した際に指定した変数名を指定します。デフォルト値を利用する場合にも連番を想定して指定が必要です。"
+      - order: 6
+        name: selector
+        required: true
+        type: string
+        summary:
+          - lang: ja_JP
+            contents: "対象を特定するためのセレクター種別"
+      - order: 7
+        name: target
+        required: true
+        type: string
+        summary:
+          - lang: ja_JP
+            contents: "対象を特定するためのセレクター値"
+      - order: 8
+        name: value
+        required: true
+        type: string
+        summary:
+          - lang: ja_JP
+            contents: "選択するvalue属性値"
+      - order: 9
+        name: elementIndex
+        required: true
+        type: number
+        summary:
+          - lang: ja_JP
+            contents: "何番目かを指定するインデックス（0始まり）"
+  ##########################
+  # WDScreenShot
+  ##########################
+  - id: WDScreenShot
+    summary:
+      - lang: ja_JP
+        contents: "操作中のWebDriver/Browserのスクリーンショットを取得します。"
+    testItem:
+      - order: 1
+        summary:
+          - lang: ja_JP
+            contents: "スクリーンショットを取得します。"
+    function:
+      - order: 1
+        summary:
+          - lang: ja_JP
+            contents: "操作中のWebDriver/Browserのスクリーンショットを取得します。"
+    structure:
+      - order: 1
+        name: id
+        required: true
+        type: string
+        summary:
+          - lang: ja_JP
+            contents: "コマンドのID"
+      - order: 2
+        name: command
+        required: true
+        type: string
+        summary:
+          - lang: ja_JP
+            contents: "「WDScreenShot」固定"
+      - order: 3
+        name: summary
+        required: false
+        type: string
+        summary:
+          - lang: ja_JP
+            contents: "コマンドの概要（任意）"
+      - order: 4
+        name: description
+        required: false
+        type: string
+        summary:
+          - lang: ja_JP
+            contents: "コマンドの詳細（任意）"
+      - order: 5
+        name: refWebDriver
+        required: true
+        type: string
+        summary:
+          - lang: ja_JP
+            contents: "対象とするWebDriver/ブラウザを格納した変数名を指定 # (1)"
+        description:
+          - lang: ja_JP
+            contents: "WebDriver/ブラウザを開始した際に指定した変数名を指定します。デフォルト値を利用する場合にも連番を想定して指定が必要です。"
+#####################################
+# メッセージ定義
+#####################################
+messages:
+  - id: com.epion_t3.log.err.9001
+    message:
+      - lang: ja_JP
+        contents: "対象（target）は必須です."
+  - id: com.epion_t3.log.err.9002
+    message:
+      - lang: ja_JP
+        contents: "値（value）は必須です."
+  - id: com.epion_t3.log.err.9003
+    message:
+      - lang: ja_JP
+        contents: "抽出パターンは必須です."
+  - id: com.epion_t3.log.err.9004
+    message:
+      - lang: ja_JP
+        contents: "日付解析にてエラーが発生しました.抽出文字列：{0}、パターン：{1}"

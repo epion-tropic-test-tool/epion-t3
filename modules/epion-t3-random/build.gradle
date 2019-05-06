@@ -1,5 +1,5 @@
 dependencies {
-    compile project(':modules:epion-t3-core')
+    implementation 'com.epion_t3:epion-t3-core:0.0.1'
     compile files('lib/jrand-0.2.5-alpha.jar')
     compile 'joda-time:joda-time:2.10'
 }

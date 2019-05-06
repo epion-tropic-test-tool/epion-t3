@@ -12,6 +12,5 @@ import org.apache.bval.constraints.NotEmpty;
 @CommandDefinition(id = "EndLocalWD", runner = EndLocalWDRunner.class)
 public class EndLocalWD extends Command {
 
-    @NotEmpty
     private String refWebDriver;
 }
