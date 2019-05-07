@@ -24,7 +24,7 @@ hs_err_pid*
 
 ### Gradle ###
 .gradle
-/build/
+build/
 !gradle/wrapper/gradle-wrapper.jar
 
 ### STS ###
@@ -40,6 +40,7 @@ hs_err_pid*
 *.iws
 *.iml
 *.ipr
+out/
 
 ### NetBeans ###
 nbproject/private/
