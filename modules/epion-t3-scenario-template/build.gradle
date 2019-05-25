@@ -16,7 +16,7 @@ repositories {
 
 dependencies {
     // Core
-    // et3 'com.epion_t3:epion-t3-core:0.0.1'
+    //et3 'com.epion_t3:epion-t3-core:0.0.1'
     et3 project(':submodules:epion-t3-core')
     // Customs
     et3 'com.epion_t3:epion-t3-basic:0.0.1'
@@ -43,3 +43,5 @@ task execute(type: JavaExec) {
             "${projectDir}/scenario"
     ]
 }
+
+defaultTasks 'execute'
