@@ -32,7 +32,7 @@ public class ScpGetRunner extends AbstractCommandRunner<ScpGet> {
         SshConnectionConfiguration sshConnectionConfiguration =
                 referConfiguration(command.getSshConnectConfigRef());
 
-        // 転送するローカルファイルを解決
+        // 転送したファイルを保存するローカルファイルを解決（エビデンス）
         Path localFilePath = getEvidencePath(Paths.get(command.getRemoteFile()).getFileName().toString());
 
         try {
