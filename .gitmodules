@@ -13,3 +13,9 @@
 [submodule "submodules/epion-t3-rdb"]
 	path = submodules/epion-t3-rdb
 	url = https://github.com/epion-tropic-test-tool/epion-t3-rdb.git
+[submodule "submodules/epion-t3-excel"]
+	path = submodules/epion-t3-excel
+	url = https://github.com/epion-tropic-test-tool/epion-t3-excel.git
+[submodule "submodules/epion-t3-ssh"]
+	path = submodules/epion-t3-ssh
+	url = https://github.com/epion-tropic-test-tool/epion-t3-ssh.git
