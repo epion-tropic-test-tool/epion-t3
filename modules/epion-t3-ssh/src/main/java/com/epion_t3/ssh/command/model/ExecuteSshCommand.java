@@ -13,7 +13,7 @@ import java.util.List;
  */
 @Getter
 @Setter
-@CommandDefinition(id = "ExecuteSshCommand", runner = ExecuteSshCommandRunner.class)
+//@CommandDefinition(id = "ExecuteSshCommand", runner = ExecuteSshCommandRunner.class)
 public class ExecuteSshCommand extends Command {
 
     private String waitFor;

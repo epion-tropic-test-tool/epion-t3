@@ -9,7 +9,7 @@ import org.apache.bval.constraints.NotEmpty;
 
 @Getter
 @Setter
-@CommandDefinition(id = "StartSsh", runner = StartSshRunner.class)
+//@CommandDefinition(id = "StartSsh", runner = StartSshRunner.class)
 public class StartSsh extends Command {
 
     /**

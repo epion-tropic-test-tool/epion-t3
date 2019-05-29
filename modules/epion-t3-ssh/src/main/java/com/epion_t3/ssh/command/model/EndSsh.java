@@ -8,6 +8,6 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@CommandDefinition(id="EndSsh", runner = EndSshRunner.class)
+//@CommandDefinition(id="EndSsh", runner = EndSshRunner.class)
 public class EndSsh extends Command {
 }
