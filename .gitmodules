@@ -19,3 +19,6 @@
 [submodule "submodules/epion-t3-ssh"]
 	path = submodules/epion-t3-ssh
 	url = https://github.com/epion-tropic-test-tool/epion-t3-ssh.git
+[submodule "submodules/epion-t3-scenario-template"]
+	path = submodules/epion-t3-scenario-template
+	url = https://github.com/epion-tropic-test-tool/epion-t3-scenario-template.git
