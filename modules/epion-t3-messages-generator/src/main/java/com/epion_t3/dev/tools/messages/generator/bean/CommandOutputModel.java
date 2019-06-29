@@ -6,9 +6,10 @@ import lombok.Setter;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 /**
+ * コマンド出力モデル.
+ *
  * @author takashno
  */
 @Getter
@@ -21,11 +22,6 @@ public class CommandOutputModel implements Serializable {
      * ID.
      */
     private String id;
-
-    /**
-     * Locale.
-     */
-    private Locale locale;
 
     /**
      * アサートコマンド.
@@ -46,6 +42,8 @@ public class CommandOutputModel implements Serializable {
      * コマンド機能説明.
      */
     private List<String> function;
+
+    private String structure;
 
     /**
      * コマンド構成詳細.
